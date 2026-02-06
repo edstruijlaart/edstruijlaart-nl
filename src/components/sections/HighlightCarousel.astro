@@ -213,6 +213,37 @@ const slides: Slide[] = [
     let isPaused = false;
     let videoPlaying = false;
 
+    // Meet de hoogte van alle slides en zet een vaste min-height
+    // zodat de container niet verspringt bij slide-wissel
+    const slidesWrapper = container.querySelector<HTMLElement>('.carousel-slides');
+    function lockHeight() {
+      if (!slidesWrapper) return;
+      // Tijdelijk alle slides zichtbaar en relative maken om te meten
+      slidesWrapper.style.minHeight = '';
+      const originalClasses: string[] = [];
+      slides.forEach((s, i) => {
+        originalClasses[i] = s.className;
+        s.style.position = 'relative';
+        s.style.visibility = 'visible';
+        s.style.opacity = '1';
+      });
+      // Meet de hoogste slide
+      let maxH = 0;
+      slides.forEach(s => {
+        maxH = Math.max(maxH, s.offsetHeight);
+      });
+      // Herstel originele state
+      slides.forEach((s, i) => {
+        s.className = originalClasses[i];
+        s.style.position = '';
+        s.style.visibility = '';
+        s.style.opacity = '';
+      });
+      slidesWrapper.style.minHeight = `${maxH}px`;
+    }
+    lockHeight();
+    window.addEventListener('resize', lockHeight);
+
     function goTo(index: number) {
       // Stop eventuele video in huidige slide
       const iframe = slides[current].querySelector('iframe');
