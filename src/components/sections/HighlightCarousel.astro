@@ -54,97 +54,104 @@ const slides: Slide[] = [
 ---
 
 <div
-  class="highlight-carousel relative"
+  class="highlight-carousel"
   role="region"
   aria-roledescription="carousel"
   aria-label="Highlights"
   tabindex="0"
 >
-  {slides.map((slide, i) => (
-    <div
-      class:list={[
-        'highlight-slide grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center transition-opacity duration-1000',
-        i === 0 ? 'relative opacity-100 z-10' : 'absolute inset-0 opacity-0 z-0',
-      ]}
-      role="group"
-      aria-roledescription="slide"
-      aria-label={`Slide ${i + 1} van ${slides.length}`}
-      aria-hidden={i !== 0 ? 'true' : 'false'}
-    >
-      {/* Visual — afbeelding of YouTube lite-embed */}
-      <div class="rounded-lg overflow-hidden" style="box-shadow: var(--shadow-card);">
-        {slide.youtubeId ? (
-          <div
-            class="youtube-lite relative cursor-pointer group aspect-video"
-            data-youtube-id={slide.youtubeId}
-            role="button"
-            aria-label="Speel video af"
-          >
-            <Image
-              src={slide.image}
-              alt={slide.imageAlt}
-              width={640}
-              class="w-full h-full object-cover"
-              loading={i === 0 ? 'eager' : 'lazy'}
-            />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors duration-300">
-              <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[var(--color-gold)] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <svg class="w-7 h-7 md:w-8 md:h-8 text-white ml-1" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
+  {/* Slides wrapper — relative container, alle slides absoluut behalve de actieve die de hoogte bepaalt */}
+  <div class="carousel-slides relative">
+    {slides.map((slide, i) => (
+      <div
+        class:list={[
+          'highlight-slide transition-opacity duration-700 ease-in-out',
+          i === 0
+            ? 'relative opacity-100 pointer-events-auto'
+            : 'absolute top-0 left-0 w-full opacity-0 pointer-events-none',
+        ]}
+        role="group"
+        aria-roledescription="slide"
+        aria-label={`Slide ${i + 1} van ${slides.length}`}
+        aria-hidden={i !== 0 ? 'true' : 'false'}
+      >
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Visual — afbeelding of YouTube lite-embed */}
+          <div class="rounded-lg overflow-hidden" style="box-shadow: var(--shadow-card);">
+            {slide.youtubeId ? (
+              <div
+                class="youtube-lite relative cursor-pointer group aspect-video"
+                data-youtube-id={slide.youtubeId}
+                role="button"
+                aria-label="Speel video af"
+              >
+                <Image
+                  src={slide.image}
+                  alt={slide.imageAlt}
+                  width={640}
+                  class="w-full h-full object-cover"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                />
+                <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors duration-300">
+                  <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[var(--color-gold)] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-7 h-7 md:w-8 md:h-8 text-white ml-1" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
               </div>
+            ) : (
+              <Image
+                src={slide.image}
+                alt={slide.imageAlt}
+                width={540}
+                class="w-full h-auto"
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            )}
+          </div>
+
+          {/* Tekst */}
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/10 text-[var(--color-gold)] mb-4">
+              {slide.badge}
+            </span>
+            <h2 class="font-[var(--font-display)] text-4xl lg:text-5xl">
+              {slide.title}
+            </h2>
+            {slide.subtitle && (
+              <p class="mt-2 font-[var(--font-display)] text-2xl text-[var(--color-gold)]">
+                {slide.subtitle}
+              </p>
+            )}
+            <p class="mt-4 text-lg" style="color: var(--fg-muted);">
+              {slide.description}
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <Button
+                href={slide.ctaPrimary.href}
+                variant="primary"
+                target={slide.ctaPrimary.external ? '_blank' : undefined}
+                rel={slide.ctaPrimary.external ? 'noopener noreferrer' : undefined}
+              >
+                {slide.ctaPrimary.label}
+              </Button>
+              {slide.ctaSecondary && (
+                <Button
+                  href={slide.ctaSecondary.href}
+                  variant="outline"
+                  target={slide.ctaSecondary.external ? '_blank' : undefined}
+                  rel={slide.ctaSecondary.external ? 'noopener noreferrer' : undefined}
+                >
+                  {slide.ctaSecondary.label}
+                </Button>
+              )}
             </div>
           </div>
-        ) : (
-          <Image
-            src={slide.image}
-            alt={slide.imageAlt}
-            width={540}
-            class="w-full h-auto"
-            loading={i === 0 ? 'eager' : 'lazy'}
-          />
-        )}
-      </div>
-
-      {/* Tekst */}
-      <div class="min-h-[280px] lg:min-h-[320px] flex flex-col justify-center">
-        <span class="inline-block self-start px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/10 text-[var(--color-gold)] mb-4">
-          {slide.badge}
-        </span>
-        <h2 class="font-[var(--font-display)] text-4xl lg:text-5xl">
-          {slide.title}
-        </h2>
-        {slide.subtitle && (
-          <p class="mt-2 font-[var(--font-display)] text-2xl text-[var(--color-gold)]">
-            {slide.subtitle}
-          </p>
-        )}
-        <p class="mt-4 text-lg" style="color: var(--fg-muted);">
-          {slide.description}
-        </p>
-        <div class="mt-8 flex flex-wrap gap-4">
-          <Button
-            href={slide.ctaPrimary.href}
-            variant="primary"
-            target={slide.ctaPrimary.external ? '_blank' : undefined}
-            rel={slide.ctaPrimary.external ? 'noopener noreferrer' : undefined}
-          >
-            {slide.ctaPrimary.label}
-          </Button>
-          {slide.ctaSecondary && (
-            <Button
-              href={slide.ctaSecondary.href}
-              variant="outline"
-              target={slide.ctaSecondary.external ? '_blank' : undefined}
-              rel={slide.ctaSecondary.external ? 'noopener noreferrer' : undefined}
-            >
-              {slide.ctaSecondary.label}
-            </Button>
-          )}
         </div>
       </div>
-    </div>
-  ))}
+    ))}
+  </div>
 
   {/* Dot navigatie */}
   <div class="flex justify-center gap-2 mt-8" role="tablist" aria-label="Slide navigatie">
@@ -182,14 +189,10 @@ const slides: Slide[] = [
     let isPaused = false;
 
     function goTo(index: number) {
-      // Deactiveer huidige slide
-      slides[current].classList.remove('opacity-100', 'z-10');
-      slides[current].classList.add('opacity-0', 'z-0');
+      // Verberg huidige slide
+      slides[current].classList.remove('relative', 'opacity-100', 'pointer-events-auto');
+      slides[current].classList.add('absolute', 'top-0', 'left-0', 'w-full', 'opacity-0', 'pointer-events-none');
       slides[current].setAttribute('aria-hidden', 'true');
-      if (current > 0) {
-        slides[current].classList.remove('relative');
-        slides[current].classList.add('absolute', 'inset-0');
-      }
 
       dots[current].classList.remove('bg-[var(--color-gold)]', 'w-6');
       dots[current].classList.add('bg-[var(--color-gold)]/30', 'w-2');
@@ -197,9 +200,9 @@ const slides: Slide[] = [
 
       current = index;
 
-      // Activeer nieuwe slide
-      slides[current].classList.remove('opacity-0', 'z-0', 'absolute', 'inset-0');
-      slides[current].classList.add('opacity-100', 'z-10', 'relative');
+      // Toon nieuwe slide — maak relative zodat deze de hoogte bepaalt
+      slides[current].classList.remove('absolute', 'top-0', 'left-0', 'w-full', 'opacity-0', 'pointer-events-none');
+      slides[current].classList.add('relative', 'opacity-100', 'pointer-events-auto');
       slides[current].setAttribute('aria-hidden', 'false');
 
       dots[current].classList.remove('bg-[var(--color-gold)]/30', 'w-2');
@@ -278,7 +281,6 @@ const slides: Slide[] = [
       el.addEventListener('click', () => {
         const id = el.dataset.youtubeId;
         if (!id) return;
-        // Pauzeer carousel als video wordt afgespeeld
         isPaused = true;
         el.innerHTML = `<iframe
           src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0"
