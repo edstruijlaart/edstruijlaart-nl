@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
 
 // Slide images
-import cdCover from '../../assets/shop/gitaarmannen-3-cd-cover.png';
+import concertfilmThumb from '../../assets/theater/gitaarmannen-3-concertfilm-thumbnail.jpg';
 import posterImage from '../../assets/theater/gitaarmannen-3-poster.png';
 import huiskamerImage from '../../assets/photos/ed-struijlaart-warm-interieur.jpg';
 
@@ -27,8 +27,8 @@ const slides: Slide[] = [
     description: 'Beleef de theatervoorstelling thuis. De volledige show in Full HD audio en video — een concertfilm waarin de muziek van een gitarist die een generatie inspireert wordt geëerd.',
     ctaPrimary: { label: 'Bestel de concertfilm', href: 'https://payhip.com/b/QZ7Fi', external: true },
     ctaSecondary: { label: 'Bekijk trailer', href: 'https://www.youtube.com/watch?v=Jl7qoEpe9xk', external: true },
-    image: cdCover,
-    imageAlt: 'Gitaarmannen 3: John Mayer concertfilm DVD/Blu-ray hoes',
+    image: concertfilmThumb,
+    imageAlt: 'Gitaarmannen 3: John Mayer concertfilm',
   },
   {
     badge: 'Nu in het theater',
@@ -60,15 +60,13 @@ const slides: Slide[] = [
   aria-label="Highlights"
   tabindex="0"
 >
-  {/* Slides wrapper — relative container, alle slides absoluut behalve de actieve die de hoogte bepaalt */}
-  <div class="carousel-slides relative">
+  {/* Slides wrapper */}
+  <div class="carousel-slides relative overflow-hidden">
     {slides.map((slide, i) => (
       <div
         class:list={[
-          'highlight-slide transition-opacity duration-700 ease-in-out',
-          i === 0
-            ? 'relative opacity-100 pointer-events-auto'
-            : 'absolute top-0 left-0 w-full opacity-0 pointer-events-none',
+          'highlight-slide',
+          i === 0 ? 'carousel-slide-active' : 'carousel-slide-hidden',
         ]}
         role="group"
         aria-roledescription="slide"
@@ -76,7 +74,7 @@ const slides: Slide[] = [
         aria-hidden={i !== 0 ? 'true' : 'false'}
       >
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Visual — afbeelding of YouTube lite-embed */}
+          {/* Visual */}
           <div class="rounded-lg overflow-hidden" style="box-shadow: var(--shadow-card);">
             {slide.youtubeId ? (
               <div
@@ -174,6 +172,31 @@ const slides: Slide[] = [
   </div>
 </div>
 
+<style>
+  .carousel-slide-active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 700ms ease-in-out;
+  }
+
+  .carousel-slide-hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 700ms ease-in-out, visibility 0s 700ms;
+  }
+
+  /* When becoming visible: show immediately, fade in */
+  .carousel-slide-active {
+    transition: opacity 700ms ease-in-out, visibility 0s 0s;
+  }
+</style>
+
 <script>
   function initHighlightCarousel() {
     const container = document.querySelector<HTMLElement>('.highlight-carousel');
@@ -190,8 +213,7 @@ const slides: Slide[] = [
 
     function goTo(index: number) {
       // Verberg huidige slide
-      slides[current].classList.remove('relative', 'opacity-100', 'pointer-events-auto');
-      slides[current].classList.add('absolute', 'top-0', 'left-0', 'w-full', 'opacity-0', 'pointer-events-none');
+      slides[current].className = 'highlight-slide carousel-slide-hidden';
       slides[current].setAttribute('aria-hidden', 'true');
 
       dots[current].classList.remove('bg-[var(--color-gold)]', 'w-6');
@@ -200,9 +222,8 @@ const slides: Slide[] = [
 
       current = index;
 
-      // Toon nieuwe slide — maak relative zodat deze de hoogte bepaalt
-      slides[current].classList.remove('absolute', 'top-0', 'left-0', 'w-full', 'opacity-0', 'pointer-events-none');
-      slides[current].classList.add('relative', 'opacity-100', 'pointer-events-auto');
+      // Toon nieuwe slide
+      slides[current].className = 'highlight-slide carousel-slide-active';
       slides[current].setAttribute('aria-hidden', 'false');
 
       dots[current].classList.remove('bg-[var(--color-gold)]/30', 'w-2');
@@ -240,7 +261,7 @@ const slides: Slide[] = [
       });
     });
 
-    // Keyboard navigatie (pijltjes)
+    // Keyboard navigatie
     container.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
@@ -253,7 +274,7 @@ const slides: Slide[] = [
       }
     });
 
-    // Touch swipe (mobile)
+    // Touch swipe
     let touchStartX = 0;
     const SWIPE_THRESHOLD = 50;
 
@@ -276,7 +297,7 @@ const slides: Slide[] = [
       isPaused = false;
     }, { passive: true });
 
-    // YouTube lite-embed: klik om iframe te laden
+    // YouTube lite-embed
     container.querySelectorAll<HTMLElement>('.youtube-lite').forEach(el => {
       el.addEventListener('click', () => {
         const id = el.dataset.youtubeId;
