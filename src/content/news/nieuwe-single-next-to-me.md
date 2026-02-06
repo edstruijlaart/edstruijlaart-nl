@@ -1,7 +1,7 @@
 ---
 title: "Nieuwe single: Next to Me"
 slug: "nieuwe-single-next-to-me"
-date: ""
+date: "2020-02-15"
 originalUrl: "/news/nieuwe-single-next-to-me/"
 ---
 

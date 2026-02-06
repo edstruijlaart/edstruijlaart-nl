@@ -1,7 +1,7 @@
 ---
 title: "15 maart: De 1 jaar in de shit"
 slug: "15-maart-de-1-jaar-in-de-shit-stream"
-date: ""
+date: "2021-03-15"
 originalUrl: "/news/15-maart-de-1-jaar-in-de-shit-stream/"
 ---
 

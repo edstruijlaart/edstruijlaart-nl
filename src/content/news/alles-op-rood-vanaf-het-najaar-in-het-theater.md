@@ -1,7 +1,7 @@
 ---
 title: "Alles op Rood! Vanaf het najaar in het theater"
 slug: "alles-op-rood-vanaf-het-najaar-in-het-theater"
-date: ""
+date: "2020-07-01"
 originalUrl: "/news/alles-op-rood-vanaf-het-najaar-in-het-theater/"
 ---
 

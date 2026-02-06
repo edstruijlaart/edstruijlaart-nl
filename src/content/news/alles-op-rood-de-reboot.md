@@ -1,7 +1,7 @@
 ---
 title: "Alles op Rood: de reboot!"
 slug: "alles-op-rood-de-reboot"
-date: ""
+date: "2021-09-01"
 originalUrl: "/news/alles-op-rood-de-reboot/"
 ---
 

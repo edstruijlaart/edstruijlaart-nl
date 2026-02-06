@@ -1,7 +1,7 @@
 ---
 title: "Plezant! Belgie ontdekt What I Like About You"
 slug: "plezant-belgie-ontdekt-what-i-like-about-you"
-date: ""
+date: "2023-07-15"
 originalUrl: "/news/plezant-belgie-ontdekt-what-i-like-about-you/"
 ---
 

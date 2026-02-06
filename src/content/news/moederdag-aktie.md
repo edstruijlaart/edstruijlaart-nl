@@ -1,7 +1,7 @@
 ---
 title: "Moederdag aktie!"
 slug: "moederdag-aktie"
-date: ""
+date: "2020-05-01"
 originalUrl: "/news/moederdag-aktie/"
 ---
 

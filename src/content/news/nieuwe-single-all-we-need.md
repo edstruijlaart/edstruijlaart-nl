@@ -1,7 +1,7 @@
 ---
 title: "Nieuwe single: All We Need"
 slug: "nieuwe-single-all-we-need"
-date: ""
+date: "2024-04-05"
 originalUrl: "/news/nieuwe-single-all-we-need/"
 ---
 

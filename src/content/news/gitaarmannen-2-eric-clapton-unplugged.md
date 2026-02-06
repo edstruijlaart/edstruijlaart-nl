@@ -1,7 +1,7 @@
 ---
 title: "Gitaarmannen 2: Eric Clapton Unplugged in reprise"
 slug: "gitaarmannen-2-eric-clapton-unplugged"
-date: ""
+date: "2023-01-15"
 originalUrl: "/news/gitaarmannen-2-eric-clapton-unplugged/"
 ---
 

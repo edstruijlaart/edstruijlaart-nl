@@ -1,7 +1,7 @@
 ---
 title: "De Tijd Dat Alles Kon En Mocht bij Evers Staat Op"
 slug: "de-tijd-dat-alles-kon-en-mocht-bij-evers-staat-op"
-date: ""
+date: "2019-06-15"
 originalUrl: "/news/de-tijd-dat-alles-kon-en-mocht-bij-evers-staat-op/"
 ---
 

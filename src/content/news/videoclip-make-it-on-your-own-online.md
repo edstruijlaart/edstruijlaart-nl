@@ -1,7 +1,7 @@
 ---
 title: "Videoclip Make It On Your Own online"
 slug: "videoclip-make-it-on-your-own-online"
-date: ""
+date: "2018-02-15"
 originalUrl: "/news/videoclip-make-it-on-your-own-online/"
 ---
 

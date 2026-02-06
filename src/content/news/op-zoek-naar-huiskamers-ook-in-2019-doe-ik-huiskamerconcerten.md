@@ -1,7 +1,7 @@
 ---
 title: "Op zoek naar huiskamers! Ook in 2019 doe ik huiskamerconcerten"
 slug: "op-zoek-naar-huiskamers-ook-in-2019-doe-ik-huiskamerconcerten"
-date: ""
+date: "2018-12-15"
 originalUrl: "/news/op-zoek-naar-huiskamers-ook-in-2019-doe-ik-huiskamerconcerten/"
 ---
 

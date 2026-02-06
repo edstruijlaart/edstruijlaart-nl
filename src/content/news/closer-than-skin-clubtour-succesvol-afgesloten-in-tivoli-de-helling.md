@@ -1,7 +1,7 @@
 ---
 title: "Ed Struijlaart&#039;s Closer Than Skin tour succesvol afgesloten"
 slug: "closer-than-skin-clubtour-succesvol-afgesloten-in-tivoli-de-helling"
-date: ""
+date: "2015-04-01"
 originalUrl: "/news/closer-than-skin-clubtour-succesvol-afgesloten-in-tivoli-de-helling/"
 ---
 

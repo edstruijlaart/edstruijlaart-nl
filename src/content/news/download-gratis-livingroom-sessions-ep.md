@@ -1,7 +1,7 @@
 ---
 title: "5 jaar solo: Download gratis Livingroom Sessions EP"
 slug: "download-gratis-livingroom-sessions-ep"
-date: ""
+date: "2015-02-01"
 originalUrl: "/news/download-gratis-livingroom-sessions-ep/"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "De Troubadours: Terug Naar Mijn Roots"
 slug: "de-troubadours-terug-naar-mijn-roots-in-leidschendam"
-date: ""
+date: "2023-10-15"
 originalUrl: "/news/de-troubadours-terug-naar-mijn-roots-in-leidschendam/"
 ---
 

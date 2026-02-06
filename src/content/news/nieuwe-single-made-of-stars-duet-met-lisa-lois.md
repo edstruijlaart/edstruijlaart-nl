@@ -1,7 +1,7 @@
 ---
 title: "Made of Stars, nieuwe single en duet met Lisa Lois"
 slug: "nieuwe-single-made-of-stars-duet-met-lisa-lois"
-date: ""
+date: "2016-05-20"
 originalUrl: "/news/nieuwe-single-made-of-stars-duet-met-lisa-lois/"
 ---
 

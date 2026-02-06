@@ -1,7 +1,7 @@
 ---
 title: "20 december: Ed&#039;s Online X"
 slug: "20-december-eds-online-x-mas-party"
-date: ""
+date: "2020-12-01"
 originalUrl: "/news/20-december-eds-online-x-mas-party/"
 ---
 

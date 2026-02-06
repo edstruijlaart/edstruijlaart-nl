@@ -1,7 +1,7 @@
 ---
 title: "Giraff Remix Make It On Your Own"
 slug: "giraff-remix-make-it-on-your-own"
-date: ""
+date: "2018-04-15"
 originalUrl: "/news/giraff-remix-make-it-on-your-own/"
 ---
 

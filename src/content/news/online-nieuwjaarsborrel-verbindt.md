@@ -1,7 +1,7 @@
 ---
 title: "ONLINE NIEUWJAARSBORREL VERBINDT!"
 slug: "online-nieuwjaarsborrel-verbindt"
-date: ""
+date: "2020-12-15"
 originalUrl: "/news/online-nieuwjaarsborrel-verbindt/"
 ---
 

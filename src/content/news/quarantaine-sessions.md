@@ -1,7 +1,7 @@
 ---
 title: "Quarantaine Sessions"
 slug: "quarantaine-sessions"
-date: ""
+date: "2020-03-22"
 originalUrl: "/news/quarantaine-sessions/"
 ---
 

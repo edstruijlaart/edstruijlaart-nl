@@ -1,7 +1,7 @@
 ---
 title: "Moederdag Serenade: Boek zelf je timeslot!"
 slug: "moederdag-serenade-boek-zelf-de-tijd-die-je-uitkomt"
-date: ""
+date: "2021-04-15"
 originalUrl: "/news/moederdag-serenade-boek-zelf-de-tijd-die-je-uitkomt/"
 ---
 

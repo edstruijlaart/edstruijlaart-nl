@@ -1,7 +1,7 @@
 ---
 title: "Closer Than Skin binnen op nummer 19 in de Album Top 100"
 slug: "closer-than-skin-binnen-op-19-in-de-album-top-100"
-date: ""
+date: "2014-10-24"
 originalUrl: "/news/closer-than-skin-binnen-op-19-in-de-album-top-100/"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Ed Sheeran Ziggo Dome, naprogramma!"
 slug: "naprogramma-ed-sheeran-in-de-ziggo-dome"
-date: ""
+date: "2015-06-15"
 originalUrl: "/news/naprogramma-ed-sheeran-in-de-ziggo-dome/"
 ---
 

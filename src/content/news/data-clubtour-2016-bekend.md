@@ -1,7 +1,7 @@
 ---
 title: "Clubtour data 2016 bekend!"
 slug: "data-clubtour-2016-bekend"
-date: ""
+date: "2016-08-15"
 originalUrl: "/news/data-clubtour-2016-bekend/"
 ---
 

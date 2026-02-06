@@ -2,17 +2,23 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import portraitImage from '../assets/photos/ed-struijlaart-portrait.jpg';
+import spelendImage from '../assets/photos/ed-struijlaart-spelend.jpg';
+import raamImage from '../assets/photos/ed-struijlaart-raam.jpg';
+import warmImage from '../assets/photos/ed-struijlaart-warm-interieur.jpg';
+import recentImage from '../assets/photos/ed-struijlaart-recent-2025.jpg';
+import klokkenImage from '../assets/photos/ed-struijlaart-klokken-portret.jpg';
 ---
 
 <BaseLayout
   title="Over Ed"
   description="Leer meer over Ed Struijlaart — singer-songwriter, theatermaker en podcastmaker."
 >
-  <section class="py-24">
+  <!-- Hero bio -->
+  <section class="pt-24 lg:pt-32 pb-20">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         <!-- Foto -->
-        <div class="rounded-lg overflow-hidden" style="box-shadow: var(--shadow-card);">
+        <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
           <Image
             src={portraitImage}
             alt="Ed Struijlaart persfoto"
@@ -40,23 +46,86 @@ import portraitImage from '../assets/photos/ed-struijlaart-portrait.jpg';
               voor onder andere een 3FM Award en een 100% NL Award. Sindsdien groeide hij uit tot een
               artiest die zich niet laat vastpinnen op één vorm of podium.
             </p>
-            <p>
-              Naast zijn solocarrière ontwikkelde Ed het succesvolle concept Gitaarmannen, waarmee hij
-              zijn passie voor het instrument vertaalt naar uitverkochte theatervoorstellingen en een
-              populaire podcast waarin hij nationale en internationale topgitaristen interviewt.
-            </p>
-            <p>
-              Op het podium staat Ed bekend om zijn sterke live-energie, zijn open en persoonlijke
-              manier van vertellen en zijn vermogen om publiek van begin tot eind mee te nemen in een
-              muzikale reis.
-            </p>
-            <p>
-              Met honderden optredens op zijn naam, variërend van intieme huiskamerconcerten tot theaters
-              en festivals, heeft Ed zich ontwikkeld tot een artiest die zich moeiteloos aanpast aan
-              verschillende settings zonder zijn eigen signatuur te verliezen.
-            </p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pull quote -->
+  <section class="py-16" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8 text-center">
+      <blockquote class="text-xl md:text-2xl font-[var(--font-display)] italic" style="color: var(--fg);">
+        &ldquo;Ik geloof dat de mooiste muziek ontstaat als je dicht bij jezelf en bij je publiek blijft.&rdquo;
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- Vervolg bio + foto -->
+  <section class="py-20">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-4 text-lg text-[var(--fg-muted)] leading-relaxed">
+          <p>
+            Naast zijn solocarrière ontwikkelde Ed het succesvolle concept Gitaarmannen, waarmee hij
+            zijn passie voor het instrument vertaalt naar uitverkochte theatervoorstellingen en een
+            populaire podcast waarin hij nationale en internationale topgitaristen interviewt.
+          </p>
+          <p>
+            Op het podium staat Ed bekend om zijn sterke live-energie, zijn open en persoonlijke
+            manier van vertellen en zijn vermogen om publiek van begin tot eind mee te nemen in een
+            muzikale reis.
+          </p>
+        </div>
+        <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <Image
+            src={spelendImage}
+            alt="Ed Struijlaart aan het spelen"
+            width={560}
+            class="w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Foto galerij -->
+  <section class="py-20" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <h2 class="font-[var(--font-display)] text-3xl mb-8">Galerij</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="rounded-xl overflow-hidden aspect-[4/5]" style="box-shadow: var(--shadow-card);">
+          <Image src={raamImage} alt="Ed Struijlaart bij het raam" width={400} class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/5]" style="box-shadow: var(--shadow-card);">
+          <Image src={klokkenImage} alt="Ed Struijlaart portret" width={400} class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/5]" style="box-shadow: var(--shadow-card);">
+          <Image src={recentImage} alt="Ed Struijlaart 2025" width={400} class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/5] md:col-span-2" style="box-shadow: var(--shadow-card);">
+          <Image src={warmImage} alt="Ed Struijlaart in warm interieur" width={800} class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/5]" style="box-shadow: var(--shadow-card);">
+          <Image src={portraitImage} alt="Ed Struijlaart portretfoto" width={400} class="w-full h-full object-cover object-top" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Afsluiting -->
+  <section class="py-20">
+    <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
+      <p class="text-lg text-[var(--fg-muted)] leading-relaxed">
+        Met honderden optredens op zijn naam, variërend van intieme huiskamerconcerten tot theaters
+        en festivals, heeft Ed zich ontwikkeld tot een artiest die zich moeiteloos aanpast aan
+        verschillende settings zonder zijn eigen signatuur te verliezen.
+      </p>
+      <div class="mt-8">
+        <a href="/contact/" class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-base bg-[var(--color-gold)] text-white hover:bg-[var(--color-gold-light)] transition-colors duration-300">
+          Neem contact op
+        </a>
       </div>
     </div>
   </section>

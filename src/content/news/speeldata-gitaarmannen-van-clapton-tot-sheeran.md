@@ -1,7 +1,7 @@
 ---
 title: "Speeldata Gitaarmannen: van Clapton tot Sheeran"
 slug: "speeldata-gitaarmannen-van-clapton-tot-sheeran"
-date: ""
+date: "2018-09-15"
 originalUrl: "/news/speeldata-gitaarmannen-van-clapton-tot-sheeran/"
 ---
 

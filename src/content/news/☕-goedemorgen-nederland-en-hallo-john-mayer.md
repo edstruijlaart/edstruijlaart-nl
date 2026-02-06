@@ -1,7 +1,7 @@
 ---
 title: "☕ Goedemorgen Nederland en hallo John Mayer"
 slug: "☕-goedemorgen-nederland-en-hallo-john-mayer"
-date: ""
+date: "2025-01-20"
 originalUrl: "/news/%e2%98%95-goedemorgen-nederland-en-hallo-john-mayer/"
 ---
 

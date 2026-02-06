@@ -1,7 +1,7 @@
 ---
 title: "Ed de theaters in met een ode aan Clapton&#039;s Unplugged"
 slug: "ed-de-theaters-in-met-een-ode-aan-claptons-unplugged"
-date: ""
+date: "2022-06-15"
 originalUrl: "/news/ed-de-theaters-in-met-een-ode-aan-claptons-unplugged/"
 ---
 

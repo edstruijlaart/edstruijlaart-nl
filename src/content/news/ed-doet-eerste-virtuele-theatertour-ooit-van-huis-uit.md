@@ -1,7 +1,7 @@
 ---
 title: "Ed doet eerste virtuele theatertour ooit: Van Huis Uit"
 slug: "ed-doet-eerste-virtuele-theatertour-ooit-van-huis-uit"
-date: ""
+date: "2020-04-28"
 originalUrl: "/news/ed-doet-eerste-virtuele-theatertour-ooit-van-huis-uit/"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Like December, de nieuwe single"
 slug: "nieuwe-single-like-december"
-date: ""
+date: "2016-12-01"
 originalUrl: "/news/nieuwe-single-like-december/"
 ---
 

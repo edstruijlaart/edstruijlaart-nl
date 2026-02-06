@@ -1,7 +1,7 @@
 ---
 title: "Online kerstconcert, ontdek de mogelijkheden!"
 slug: "online-kerstconcert-boeken"
-date: ""
+date: "2020-11-15"
 originalUrl: "/news/online-kerstconcert-boeken/"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "EDTV, vanaf nu ook mijn persoonlijke VLOG op Youtube"
 slug: "edtv-vlog-mis-vanaf-nu-niks-meer"
-date: ""
+date: "2015-02-15"
 originalUrl: "/news/edtv-vlog-mis-vanaf-nu-niks-meer/"
 ---
 

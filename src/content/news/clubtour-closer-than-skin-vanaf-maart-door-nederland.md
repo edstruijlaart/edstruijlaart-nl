@@ -1,7 +1,7 @@
 ---
 title: "Clubtour &#039; Closer Than Skin&#039; vanaf maart door Nederland"
 slug: "clubtour-closer-than-skin-vanaf-maart-door-nederland"
-date: ""
+date: "2015-01-10"
 originalUrl: "/news/clubtour-closer-than-skin-vanaf-maart-door-nederland/"
 ---
 

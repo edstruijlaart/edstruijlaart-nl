@@ -1,7 +1,7 @@
 ---
 title: "Ed covert &#039;Iedereen Is Van De Wereld&#039; bij Ekdom in de Ochtend"
 slug: "ed-covert-iedereen-is-van-de-wereld-bij-ekdom-in-de-ochtend"
-date: ""
+date: "2016-10-16"
 originalUrl: "/news/ed-covert-iedereen-is-van-de-wereld-bij-ekdom-in-de-ochtend/"
 ---
 

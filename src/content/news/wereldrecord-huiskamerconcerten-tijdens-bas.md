@@ -1,7 +1,7 @@
 ---
 title: "Wereldrecord Huiskamerconcerten tijdens BAS"
 slug: "wereldrecord-huiskamerconcerten-tijdens-bas"
-date: ""
+date: "2015-07-15"
 originalUrl: "/news/wereldrecord-huiskamerconcerten-tijdens-bas/"
 ---
 

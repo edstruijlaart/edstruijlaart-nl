@@ -1,7 +1,7 @@
 ---
 title: "Nieuwe single: Voor Jou"
 slug: "nieuwe-single-voor-jou"
-date: ""
+date: "2020-08-15"
 originalUrl: "/news/nieuwe-single-voor-jou/"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "23 december 2017: Ed&#039;s Pre X"
 slug: "23-december-2017-eds-pre-x-mas-party"
-date: ""
+date: "2017-12-01"
 originalUrl: "/news/23-december-2017-eds-pre-x-mas-party/"
 ---
 

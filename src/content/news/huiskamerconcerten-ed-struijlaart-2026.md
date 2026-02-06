@@ -1,7 +1,7 @@
 ---
 title: "Huiskamerconcerten Ed Struijlaart 2026"
 slug: "huiskamerconcerten-ed-struijlaart-2026"
-date: ""
+date: "2025-09-15"
 originalUrl: "/news/huiskamerconcerten-ed-struijlaart-2026/"
 ---
 

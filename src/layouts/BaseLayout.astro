@@ -66,7 +66,7 @@ const canonicalUrl = Astro.url.href;
     })();
   </script>
 
-  <!-- JSON-LD: Person -->
+  <!-- JSON-LD: Person + MusicGroup -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Person",
@@ -74,14 +74,28 @@ const canonicalUrl = Astro.url.href;
     "url": "https://edstruijlaart.nl",
     "jobTitle": "Singer-songwriter, Theatermaker, Podcastmaker",
     "email": "ed@earswantmusic.nl",
+    "description": "Nederlandse singer-songwriter, theatermaker en podcastmaker. Bekend van Gitaarmannen, NPO Radio 2 Topsongs en Make It On Your Own (26M+ streams).",
+    "knowsAbout": ["Muziek", "Gitaar", "Theater", "Podcast"],
     "sameAs": [
-      "https://open.spotify.com/artist/1FxkdMiSbZFBgWnr0YsFOk",
+      "https://open.spotify.com/artist/08cpwYrPWo8Xkxl9qdiDP2",
       "https://youtube.com/@edstruijlaart",
       "https://instagram.com/edstruijlaart",
-      "https://facebook.com/edstruijlaart",
+      "https://facebook.com/edstruijlaartofficial",
       "https://soundcloud.com/edstruijlaart"
     ]
   })} />
+
+  <!-- JSON-LD: BreadcrumbList -->
+  {title !== 'Home' && (
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://edstruijlaart.nl" },
+        { "@type": "ListItem", "position": 2, "name": title, "item": canonicalUrl }
+      ]
+    })} />
+  )}
 </head>
 <body class="min-h-screen flex flex-col">
   <a href="#main-content" class="skip-link">Ga naar inhoud</a>

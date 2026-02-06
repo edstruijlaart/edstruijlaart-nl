@@ -1,7 +1,7 @@
 ---
 title: "EP &#039;Alles op Rood&#039; vanaf nu te bestellen!"
 slug: "ep-alles-op-rood-vanaf-nu-te-bestellen"
-date: ""
+date: "2020-09-21"
 originalUrl: "/news/ep-alles-op-rood-vanaf-nu-te-bestellen/"
 ---
 

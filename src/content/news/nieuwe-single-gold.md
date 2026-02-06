@@ -1,7 +1,7 @@
 ---
 title: "Nieuwe single: GOLD"
 slug: "nieuwe-single-gold"
-date: ""
+date: "2016-07-01"
 originalUrl: "/news/nieuwe-single-gold/"
 ---
 

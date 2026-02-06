@@ -1,7 +1,7 @@
 ---
 title: "Veronica Express rijdt door Nederland"
 slug: "op-pad-met-de-veronica-express"
-date: ""
+date: "2017-06-09"
 originalUrl: "/news/op-pad-met-de-veronica-express/"
 ---
 

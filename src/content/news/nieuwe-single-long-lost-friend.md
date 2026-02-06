@@ -1,7 +1,7 @@
 ---
 title: "Nieuwe single: Long Lost Friend"
 slug: "nieuwe-single-long-lost-friend"
-date: ""
+date: "2022-10-15"
 originalUrl: "/news/nieuwe-single-long-lost-friend/"
 ---
 

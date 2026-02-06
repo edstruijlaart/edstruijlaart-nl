@@ -1,7 +1,7 @@
 ---
 title: "Move On"
 slug: "move-on-nieuwe-single-ziet-het-daglicht"
-date: ""
+date: "2017-06-22"
 originalUrl: "/news/move-on-nieuwe-single-ziet-het-daglicht/"
 ---
 

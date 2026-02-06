@@ -1,7 +1,7 @@
 ---
 title: "4 optredens op Record Store Day 2015"
 slug: "4-optredens-op-record-store-day-2015"
-date: ""
+date: "2015-04-10"
 originalUrl: "/news/4-optredens-op-record-store-day-2015/"
 ---
 

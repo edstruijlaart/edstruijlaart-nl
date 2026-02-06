@@ -1,7 +1,7 @@
 ---
 title: "Livestream Luistersessie nieuwe EP!"
 slug: "livestream-luistersessie-nieuwe-ep"
-date: ""
+date: "2020-09-15"
 originalUrl: "/news/livestream-luistersessie-nieuwe-ep/"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Speel samen met je kind in de video van Make It On Your Own!"
 slug: "speel-samen-met-je-kind-in-de-clip-van-make-it-on-your-own"
-date: ""
+date: "2018-01-10"
 originalUrl: "/news/speel-samen-met-je-kind-in-de-clip-van-make-it-on-your-own/"
 ---
 

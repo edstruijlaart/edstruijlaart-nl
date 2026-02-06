@@ -1,7 +1,7 @@
 ---
 title: "De Wereld Draait Door..!"
 slug: "de-wereld-draait-door"
-date: ""
+date: "2016-10-19"
 originalUrl: "/news/de-wereld-draait-door/"
 ---
 

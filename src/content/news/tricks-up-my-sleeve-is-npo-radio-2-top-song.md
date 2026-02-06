@@ -1,7 +1,7 @@
 ---
 title: "Tricks Up My Sleeve is NPO Radio 2 Top Song!"
 slug: "tricks-up-my-sleeve-is-npo-radio-2-top-song"
-date: ""
+date: "2016-01-08"
 originalUrl: "/news/tricks-up-my-sleeve-is-npo-radio-2-top-song/"
 ---
 

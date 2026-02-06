@@ -1,7 +1,7 @@
 ---
 title: "Reprise Gitaarmannen: van Clapton tot Sheeran!"
 slug: "reprise-gitaarmannen-van-clapton-tot-sheeran"
-date: ""
+date: "2019-01-15"
 originalUrl: "/news/reprise-gitaarmannen-van-clapton-tot-sheeran/"
 ---
 

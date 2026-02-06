@@ -1,7 +1,7 @@
 ---
 title: "Guitar! Beluister mijn nieuwe single"
 slug: "nieuwe-single-guitar"
-date: ""
+date: "2018-08-20"
 originalUrl: "/news/nieuwe-single-guitar/"
 ---
 

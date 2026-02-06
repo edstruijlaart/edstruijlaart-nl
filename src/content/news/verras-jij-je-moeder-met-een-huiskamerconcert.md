@@ -1,7 +1,7 @@
 ---
 title: "Moederdag huiskamerconcert!? Verrassing!"
 slug: "verras-jij-je-moeder-met-een-huiskamerconcert"
-date: ""
+date: "2015-04-15"
 originalUrl: "/news/verras-jij-je-moeder-met-een-huiskamerconcert/"
 ---
 

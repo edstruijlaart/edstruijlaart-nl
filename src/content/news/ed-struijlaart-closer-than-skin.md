@@ -1,7 +1,7 @@
 ---
 title: "Ed Struijlaart"
 slug: "ed-struijlaart-closer-than-skin"
-date: ""
+date: "2014-10-17"
 originalUrl: "/news/ed-struijlaart-closer-than-skin/"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Beluister het album nu al op Spotify in Track By Track"
 slug: "beluister-het-album-nu-al-op-spotify-in-track-by-track"
-date: ""
+date: "2014-10-10"
 originalUrl: "/news/beluister-het-album-nu-al-op-spotify-in-track-by-track/"
 ---
 

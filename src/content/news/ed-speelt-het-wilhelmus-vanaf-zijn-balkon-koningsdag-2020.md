@@ -1,7 +1,7 @@
 ---
 title: "Ed speelt het Wilhelmus vanaf zijn balkon (Koningsdag 2020)"
 slug: "ed-speelt-het-wilhelmus-vanaf-zijn-balkon-koningsdag-2020"
-date: ""
+date: "2020-04-27"
 originalUrl: "/news/ed-speelt-het-wilhelmus-vanaf-zijn-balkon-koningsdag-2020/"
 ---
 

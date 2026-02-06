@@ -1,7 +1,7 @@
 ---
 title: "Huiskamerconcert: 5 tips voor een unieke ervaring!"
 slug: "huiskamerconcert-5-tips-voor-een-unieke-muzikale-ervaring"
-date: ""
+date: "2023-09-15"
 originalUrl: "/news/huiskamerconcert-5-tips-voor-een-unieke-muzikale-ervaring/"
 ---
 

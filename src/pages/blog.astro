@@ -1,17 +1,151 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SectionHeading from '../components/ui/SectionHeading.astro';
-import BlogGrid from '../components/sections/BlogGrid.astro';
+import { getCollection } from 'astro:content';
+
+// Get all news posts
+const allPosts = await getCollection('news');
+
+// Sort by date (newest first), posts without date go to the end
+const sortedPosts = allPosts.sort((a, b) => {
+  const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+  const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+  return dateB - dateA;
+});
+
+// Format date helper
+function formatDate(dateStr?: string): string {
+  if (!dateStr) return '';
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('nl-NL', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  } catch {
+    return '';
+  }
+}
+
+// Group by year
+const postsByYear = new Map<string, typeof sortedPosts>();
+sortedPosts.forEach(post => {
+  const date = post.data.date ? new Date(post.data.date) : null;
+  const year = date && !isNaN(date.getTime()) ? String(date.getFullYear()) : 'Overig';
+  if (!postsByYear.has(year)) postsByYear.set(year, []);
+  postsByYear.get(year)!.push(post);
+});
+
+// Sort years descending
+const years = [...postsByYear.keys()].sort((a, b) => {
+  if (a === 'Overig') return 1;
+  if (b === 'Overig') return -1;
+  return Number(b) - Number(a);
+});
+
+// Featured: newest 3 posts
+const featured = sortedPosts.slice(0, 3);
+const rest = sortedPosts.slice(3);
 ---
 
 <BaseLayout
   title="Nieuws"
-  description="Nieuws en verhalen van Ed Struijlaart."
+  description="Nieuws, verhalen en updates van Ed Struijlaart — singer-songwriter, theatermaker en podcastmaker."
 >
-  <section class="py-24">
+  <!-- Hero header -->
+  <section class="pt-24 lg:pt-32 pb-12">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-      <SectionHeading title="Nieuws" subtitle="Alle berichten" />
-      <BlogGrid limit={71} showMore={false} />
+      <h1 class="font-[var(--font-display)] text-4xl lg:text-5xl">Nieuws</h1>
+      <p class="mt-4 text-lg text-[var(--fg-muted)] max-w-2xl">
+        Verhalen, updates en aankondigingen — van nieuwe muziek tot theateravonturen.
+      </p>
+      <div class="mt-4 h-1 w-16 rounded-full" style="background-color: var(--color-gold);"></div>
+    </div>
+  </section>
+
+  <!-- Featured (newest 3) -->
+  <section class="pb-16">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {featured.map((post, i) => (
+          <a
+            href={`/news/${post.data.slug}/`}
+            class:list={[
+              'group block rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg',
+              i === 0 ? 'md:col-span-2 md:row-span-2' : '',
+            ]}
+            style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
+          >
+            <div class="p-6 lg:p-8 flex flex-col h-full">
+              {formatDate(post.data.date) && (
+                <time class="text-sm text-[var(--color-gold)] font-medium uppercase tracking-wider">
+                  {formatDate(post.data.date)}
+                </time>
+              )}
+              <h2 class:list={[
+                'font-[var(--font-display)] mt-2 group-hover:text-[var(--color-gold)] transition-colors duration-300',
+                i === 0 ? 'text-2xl md:text-3xl' : 'text-xl',
+              ]}>
+                {post.data.title}
+              </h2>
+              {post.data.excerpt && (
+                <p class:list={[
+                  'mt-3 text-[var(--fg-muted)] line-clamp-3',
+                  i === 0 ? 'text-base' : 'text-sm',
+                ]}>
+                  {post.data.excerpt}
+                </p>
+              )}
+              <span class="mt-auto pt-4 text-sm text-[var(--color-gold)] font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
+                Lees meer
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- All posts by year -->
+  <section class="pb-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      {years.map(year => {
+        const yearPosts = postsByYear.get(year)!;
+        // Skip posts already in featured for the first year
+        const postsToShow = year === years[0]
+          ? yearPosts.filter(p => !featured.includes(p))
+          : yearPosts;
+        if (postsToShow.length === 0) return null;
+        return (
+          <div class="mb-12">
+            <div class="flex items-center gap-4 mb-6">
+              <h2 class="font-[var(--font-display)] text-2xl text-[var(--color-gold)]">{year}</h2>
+              <div class="flex-1 h-px" style="background-color: var(--bg-surface);"></div>
+              <span class="text-sm text-[var(--fg-muted)]">{postsToShow.length} {postsToShow.length === 1 ? 'bericht' : 'berichten'}</span>
+            </div>
+            <div class="space-y-3">
+              {postsToShow.map(post => (
+                <a
+                  href={`/news/${post.data.slug}/`}
+                  class="group flex items-baseline gap-4 py-3 px-4 -mx-4 rounded-lg transition-colors duration-300 hover:bg-[var(--bg-surface)]"
+                >
+                  {formatDate(post.data.date) && (
+                    <time class="flex-shrink-0 text-sm text-[var(--fg-muted)] w-32 hidden sm:block">
+                      {formatDate(post.data.date)}
+                    </time>
+                  )}
+                  <h3 class="font-medium text-base group-hover:text-[var(--color-gold)] transition-colors duration-300 flex-1">
+                    {post.data.title}
+                  </h3>
+                  <svg class="w-4 h-4 flex-shrink-0 text-[var(--fg-muted)] group-hover:text-[var(--color-gold)] transition-colors duration-300 hidden sm:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </div>
   </section>
 </BaseLayout>

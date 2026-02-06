@@ -1,7 +1,7 @@
 ---
 title: "Tricks Up My Sleeve live bij Gerard Ekdom op Radio 2"
 slug: "nieuwe-single-live-bij-gerard-ekdom-op-radio-2"
-date: ""
+date: "2016-01-18"
 originalUrl: "/news/nieuwe-single-live-bij-gerard-ekdom-op-radio-2/"
 ---
 

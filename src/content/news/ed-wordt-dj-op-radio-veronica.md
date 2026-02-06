@@ -1,7 +1,7 @@
 ---
 title: "Ed Struijlaart nieuwe DJ Radio Veronica!"
 slug: "ed-wordt-dj-op-radio-veronica"
-date: ""
+date: "2017-06-01"
 originalUrl: "/news/ed-wordt-dj-op-radio-veronica/"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Nieuwe single Make It on Your Own"
 slug: "nieuwe-single-make-it-on-your-own"
-date: ""
+date: "2018-01-05"
 originalUrl: "/news/nieuwe-single-make-it-on-your-own/"
 ---
 

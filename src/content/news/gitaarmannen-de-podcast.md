@@ -1,7 +1,7 @@
 ---
 title: "Gitaarmannen, de podcast"
 slug: "gitaarmannen-de-podcast"
-date: ""
+date: "2018-09-01"
 originalUrl: "/news/gitaarmannen-de-podcast/"
 ---
 

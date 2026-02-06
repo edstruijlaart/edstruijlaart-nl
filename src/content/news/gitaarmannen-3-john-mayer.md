@@ -1,7 +1,7 @@
 ---
 title: "🎸 Gitaarmannen 3: John Mayer"
 slug: "gitaarmannen-3-john-mayer"
-date: ""
+date: "2025-01-15"
 originalUrl: "/news/gitaarmannen-3-john-mayer/"
 ---
 

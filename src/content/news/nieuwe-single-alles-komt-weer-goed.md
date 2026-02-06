@@ -1,7 +1,7 @@
 ---
 title: "Nieuwe single: Alles Komt Weer Goed"
 slug: "nieuwe-single-alles-komt-weer-goed"
-date: ""
+date: "2020-04-15"
 originalUrl: "/news/nieuwe-single-alles-komt-weer-goed/"
 ---
 

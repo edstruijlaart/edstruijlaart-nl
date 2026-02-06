@@ -1,7 +1,7 @@
 ---
 title: "DWDD, Evers Staat Op en TROS Muziekcafe terugkijken/luisteren"
 slug: "dwdd-en-evers-staat-op-terugkijken"
-date: ""
+date: "2016-10-20"
 originalUrl: "/news/dwdd-en-evers-staat-op-terugkijken/"
 ---
 

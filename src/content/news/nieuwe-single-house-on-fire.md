@@ -1,7 +1,7 @@
 ---
 title: "Nieuwe single: House on Fire!"
 slug: "nieuwe-single-house-on-fire"
-date: ""
+date: "2015-01-15"
 originalUrl: "/news/nieuwe-single-house-on-fire/"
 ---
 

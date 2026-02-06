@@ -1,7 +1,7 @@
 ---
 title: "360 graden video Made of Stars"
 slug: "360-graden-video-made-of-stars"
-date: ""
+date: "2016-05-15"
 originalUrl: "/news/360-graden-video-made-of-stars/"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "All We Need live in premiere bij Edwin Evers op 538"
 slug: "all-we-need-live-in-premiere-bij-edwin-evers-op-538"
-date: ""
+date: "2024-03-25"
 originalUrl: "/news/all-we-need-live-in-premiere-bij-edwin-evers-op-538/"
 ---
 

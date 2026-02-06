@@ -1,7 +1,7 @@
 ---
 title: "Boek nu jouw eigen huiskamerconcert met Ed Struijlaart!"
 slug: "boek-nu-jouw-eigen-huiskamerconcert-met-ed-struijlaart"
-date: ""
+date: "2024-08-15"
 originalUrl: "/news/boek-nu-jouw-eigen-huiskamerconcert-met-ed-struijlaart/"
 ---
 

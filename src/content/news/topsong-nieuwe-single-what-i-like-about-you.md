@@ -1,7 +1,7 @@
 ---
 title: "TOPSONG: Nieuwe single What I Like About You!"
 slug: "topsong-nieuwe-single-what-i-like-about-you"
-date: ""
+date: "2023-06-15"
 originalUrl: "/news/topsong-nieuwe-single-what-i-like-about-you/"
 ---
 

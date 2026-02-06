@@ -1,7 +1,7 @@
 ---
 title: "Gitaarmannen 3: John Mayer theatertour"
 slug: "gitaarmannen-3-john-mayer-theatertour"
-date: ""
+date: "2024-06-15"
 originalUrl: "/news/gitaarmannen-3-john-mayer-theatertour/"
 ---
 

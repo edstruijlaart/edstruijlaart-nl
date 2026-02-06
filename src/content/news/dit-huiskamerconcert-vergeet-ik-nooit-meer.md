@@ -1,7 +1,7 @@
 ---
 title: "Dit huiskamerconcert vergeet ik nooit meer..."
 slug: "dit-huiskamerconcert-vergeet-ik-nooit-meer"
-date: ""
+date: "2025-03-15"
 originalUrl: "/news/dit-huiskamerconcert-vergeet-ik-nooit-meer/"
 ---
 
