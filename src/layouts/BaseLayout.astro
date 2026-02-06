@@ -56,11 +56,11 @@ const canonicalUrl = Astro.url.href;
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- Dark mode: voorkom flash -->
+  <!-- Dark mode: voorkom flash — default is light, dark alleen als expliciet gekozen -->
   <script is:inline>
     (function() {
       const stored = localStorage.getItem('theme');
-      if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      if (stored === 'dark') {
         document.documentElement.classList.add('dark');
       }
     })();

@@ -5,70 +5,155 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import TheaterHighlight from '../components/sections/TheaterHighlight.astro';
 import ShowList from '../components/sections/ShowList.astro';
 import PodcastSection from '../components/sections/PodcastSection.astro';
-import MusicPlayer from '../components/sections/MusicPlayer.astro';
+import SpotifyStrip from '../components/sections/SpotifyStrip.astro';
+import HuiskamerSection from '../components/sections/HuiskamerSection.astro';
 import BlogGrid from '../components/sections/BlogGrid.astro';
-import CtaBanner from '../components/sections/CtaBanner.astro';
 import NewsletterForm from '../components/sections/NewsletterForm.astro';
+import { Image } from 'astro:assets';
 
+// Hero images — roterende foto's
 import heroImage from '../assets/photos/ed-struijlaart-hero.jpg';
+import heroPortrait from '../assets/photos/ed-struijlaart-portrait.jpg';
+import heroRecent from '../assets/photos/ed-struijlaart-recent.jpg';
+import heroLachend from '../assets/photos/ed-struijlaart-lachend.jpg';
+import heroTv from '../assets/photos/ed-struijlaart-tv-optreden.jpg';
+
+// About section photo
+import aboutPhoto from '../assets/photos/ed-struijlaart-portrait.jpg';
 ---
 
 <BaseLayout title="Home">
-  <!-- 1. Hero -->
+  <!-- 1. Hero — prototype-stijl met roterende foto's, tekst onderaan -->
   <Hero
-    title="Ed Struijlaart"
-    subtitle="Singer-songwriter | Theatermaker | Podcastmaker"
-    image={heroImage}
+    title="Verhalen vertellen met een gitaar."
+    subtitle="Singer-songwriter · Theatermaker · Podcastmaker"
+    images={[heroImage, heroRecent, heroPortrait, heroLachend, heroTv]}
     imageAlt="Ed Struijlaart"
-    height="large"
+    height="full"
+    ctaPrimary={{ label: "Bekijk agenda", href: "/tour/" }}
+    ctaSecondary={{ label: "Boek een huiskamerconcert", href: "https://boeken.edstruijlaart.nl" }}
   />
 
-  <!-- 2. Theater Highlight -->
-  <section class="py-24">
+  <!-- 2. Theater Highlight — Gitaarmannen 3: John Mayer -->
+  <section class="py-20 md:py-28 reveal-section">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
       <TheaterHighlight />
     </div>
   </section>
 
   <!-- 3. Agenda -->
-  <section class="py-24" style="background-color: var(--bg-surface);">
+  <section class="py-20 md:py-28 reveal-section" style="background-color: var(--bg-surface);">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
       <SectionHeading title="Agenda" subtitle="Aankomende shows en optredens" />
-      <ShowList limit={3} />
+      <ShowList limit={4} />
     </div>
   </section>
 
-  <!-- 4. Podcasts -->
-  <section class="py-24">
+  <!-- 4. Huiskamerconcert — dark section met foto en quote -->
+  <div class="reveal-section">
+    <HuiskamerSection />
+  </div>
+
+  <!-- 5. Spotify Strip — Make It On Your Own -->
+  <SpotifyStrip />
+
+  <!-- 6. Podcasts -->
+  <section class="py-20 md:py-28 reveal-section">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
       <SectionHeading title="Podcasts" subtitle="Gitaarmannen & Liedjesmensen" />
       <PodcastSection />
     </div>
   </section>
 
-  <!-- 5. Muziek -->
-  <section class="py-24" style="background-color: var(--bg-surface);">
+  <!-- 7. Over Ed — korte intro met foto -->
+  <section class="py-20 md:py-28 reveal-section" style="background-color: var(--bg-surface);">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-      <SectionHeading title="Muziek" subtitle="Luister naar de laatste singles en albums" />
-      <MusicPlayer />
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/10 text-[var(--color-gold)] mb-4">
+            Over Ed
+          </span>
+          <h2 class="font-[var(--font-display)] text-3xl md:text-4xl">
+            Singer-songwriter, theatermaker, podcastmaker
+          </h2>
+          <blockquote class="mt-6 text-lg italic border-l-4 border-[var(--color-gold)] pl-6" style="color: var(--fg-muted);">
+            &ldquo;Op zijn negende zag hij Eric Clapton op tv en wist hij: dit wil ik ook.&rdquo;
+          </blockquote>
+          <p class="mt-6 text-base" style="color: var(--fg-muted);">
+            Ed Struijlaart is singer-songwriter, theatermaker en podcastmaker. Bekend van zijn theatershows Gitaarmannen, zijn podcasts en zijn single Make It On Your Own met meer dan 20 miljoen streams op Spotify.
+          </p>
+          <a
+            href="/about/"
+            class="inline-flex items-center gap-2 mt-6 text-[var(--color-gold)] font-medium hover:gap-3 transition-all duration-300"
+          >
+            Lees meer over Ed
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <Image
+            src={aboutPhoto}
+            alt="Ed Struijlaart portret"
+            width={560}
+            class="w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- 6. Nieuws -->
-  <section class="py-24">
+  <!-- 8. Nieuws / Blog -->
+  <section class="py-20 md:py-28 reveal-section">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
       <SectionHeading title="Nieuws" subtitle="Het laatste van Ed" />
       <BlogGrid limit={3} />
     </div>
   </section>
 
-  <!-- 7. Nieuwsbrief -->
-  <section class="py-24" style="background-color: var(--bg-surface);">
+  <!-- 9. Nieuwsbrief -->
+  <section class="py-20 md:py-28" style="background-color: var(--bg-surface);">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
       <NewsletterForm />
     </div>
   </section>
-
-  <!-- 8. CTA -->
-  <CtaBanner />
 </BaseLayout>
+
+<!-- Scroll reveal animations -->
+<style>
+  .reveal-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal-section.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  function initScrollReveal() {
+    const sections = document.querySelectorAll('.reveal-section');
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  // Run on initial load
+  initScrollReveal();
+  // Re-run after Astro page transitions
+  document.addEventListener('astro:after-swap', initScrollReveal);
+</script>

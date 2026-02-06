@@ -1,0 +1,63 @@
+---
+/**
+ * HuiskamerSection — featured section for house concerts.
+ * Dark background with image, stat badge, and quote.
+ */
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+import huiskamerImg from '../../assets/photos/ed-struijlaart-lachend.jpg';
+---
+
+<section class="py-20 md:py-28 relative overflow-hidden" style="background-color: var(--color-dark-bg);">
+  {/* Subtle gold glow */}
+  <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-5" style="background-color: var(--color-gold);"></div>
+
+  <div class="relative mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* Image with stat badge */}
+      <div class="relative">
+        <div class="rounded-2xl overflow-hidden">
+          <Image
+            src={huiskamerImg}
+            alt="Ed Struijlaart tijdens een huiskamerconcert"
+            width={600}
+            class="w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+        {/* Stat badge */}
+        <div class="absolute -bottom-4 -right-4 md:bottom-4 md:right-4 bg-[var(--color-gold)] text-white rounded-2xl px-6 py-4 text-center" style="box-shadow: 0 8px 30px rgba(184, 134, 11, 0.3);">
+          <span class="block text-3xl font-bold">500+</span>
+          <span class="block text-sm opacity-90">huiskamerconcerten</span>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div>
+        <span class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/20 text-[var(--color-gold)] mb-6">
+          Huiskamerconcert
+        </span>
+        <h2 class="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl text-white">
+          Een concert bij jou thuis
+        </h2>
+        <blockquote class="mt-6 text-lg text-white/70 italic border-l-4 border-[var(--color-gold)] pl-6">
+          &ldquo;Alsof je een avond bij een vriend zit die toevallig prachtig kan zingen.&rdquo;
+        </blockquote>
+        <p class="mt-6 text-base text-white/60">
+          Geschikt voor 20 tot 80 personen. Een intieme avond vol eigen songs, covers en verhalen. Ed neemt zijn gitaar mee en doet de rest.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <Button href="https://boeken.edstruijlaart.nl" variant="primary" size="lg">
+            Boek een huiskamerconcert
+          </Button>
+          <a
+            href="/contact/"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-base border-2 border-white/30 text-white hover:border-white/60 hover:bg-white/5 transition-all duration-300"
+          >
+            Meer informatie
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
