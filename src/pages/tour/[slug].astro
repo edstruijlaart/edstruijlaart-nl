@@ -97,6 +97,11 @@ function formatShortDate(dateStr: string): string {
                 Bekijk agenda
               </Button>
             )}
+            {tour.shopCta && (
+              <Button href={tour.shopCta.href} variant="primary">
+                {tour.shopCta.label}
+              </Button>
+            )}
             <Button href="/tour/" variant="outline">
               ← Terug naar overzicht
             </Button>

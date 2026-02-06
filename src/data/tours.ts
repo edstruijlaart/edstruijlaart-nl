@@ -10,6 +10,7 @@ export interface Tour {
   current: boolean;
   setlist?: string[];
   spotifyPlaylistUri?: string;
+  shopCta?: { label: string; href: string };
 }
 
 export const tours: Tour[] = [
@@ -30,6 +31,7 @@ export const tours: Tour[] = [
     current: true,
     setlist: [],
     spotifyPlaylistUri: '0XALcsmURQkFcLasrfOQZm',
+    shopCta: { label: 'Bestel de concertfilm', href: '/shop/' },
   },
   {
     slug: 'gitaarmannen-2-clapton',
