@@ -1,7 +1,11 @@
 {
+  "crons": [
+    {
+      "path": "/api/sumup-webhook",
+      "schedule": "*/5 * * * *"
+    }
+  ],
   "redirects": [
-    { "source": "/news", "destination": "/blog", "permanent": true },
-    { "source": "/news/", "destination": "/blog/", "permanent": true },
     { "source": "/photo", "destination": "/about", "permanent": true },
     { "source": "/photo/", "destination": "/about/", "permanent": true }
   ],

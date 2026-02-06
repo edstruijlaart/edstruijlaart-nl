@@ -16,7 +16,6 @@ export default defineConfig({
   },
 
   redirects: {
-    '/news': '/blog',
     '/photo': '/about',
   },
 });
