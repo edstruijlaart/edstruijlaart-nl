@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import { Image } from 'astro:assets';
+
+import heroImg from '../assets/photos/ed-struijlaart-lachend-gitaar.jpg';
+import sfeerImg from '../assets/photos/ed-struijlaart-warm-interieur.jpg';
+import portretImg from '../assets/photos/ed-struijlaart-raam.jpg';
+---
+
+<BaseLayout
+  title="Huiskamerconcerten"
+  description="Boek Ed Struijlaart voor een huiskamerconcert. Eén stem, één gitaar, een stapel liedjes en goede verhalen. Geschikt voor 20 tot 80 personen."
+>
+  <!-- Hero -->
+  <section class="relative min-h-[60vh] flex items-end overflow-hidden">
+    <Image
+      src={heroImg}
+      alt="Ed Struijlaart speelt een huiskamerconcert"
+      widths={[640, 1024, 1920]}
+      sizes="100vw"
+      class="absolute inset-0 w-full h-full object-cover"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+    <div class="relative z-10 w-full px-4 sm:px-6 lg:px-8 pb-16 md:pb-20 max-w-[1200px] mx-auto">
+      <span class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/20 text-[var(--color-gold)] mb-4">
+        Huiskamerconcert
+      </span>
+      <h1 class="font-[var(--font-display)] text-4xl sm:text-5xl md:text-6xl text-white max-w-2xl">
+        Een concert bij jou thuis
+      </h1>
+      <p class="mt-4 text-lg text-white/80 max-w-xl">
+        Eén stem. Eén gitaar. Een stapel liedjes en goede verhalen.
+      </p>
+    </div>
+  </section>
+
+  <!-- Introductie -->
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
+      <div class="prose-section">
+        <p class="text-lg leading-relaxed" style="color: var(--fg-muted);">
+          Ik speel weer huiskamerconcerten. Dat doe ik al sinds 2012. En iedere keer opnieuw verbaast het me hoe bijzonder deze avonden zijn.
+        </p>
+
+        <blockquote class="my-10 text-xl md:text-2xl font-[var(--font-display)] italic border-l-4 border-[var(--color-gold)] pl-6" style="color: var(--fg);">
+          &ldquo;Zie het als een mini-theatershow, maar dan bij jou thuis. Zonder podium. Zonder afstand.&rdquo;
+        </blockquote>
+
+        <p class="text-lg leading-relaxed" style="color: var(--fg-muted);">
+          Bij mooi weer speel ik net zo lief in de tuin of onder de veranda. Een huiskamerconcert is geen achtergrondmuziek. Het is luisteren, met en bij elkaar zijn, even alles uit. We maken er altijd iets bijzonders van.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Foto + details -->
+  <section class="py-20" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <Image
+            src={sfeerImg}
+            alt="Ed Struijlaart in een warme, intieme setting"
+            width={600}
+            class="w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+        <div>
+          <h2 class="font-[var(--font-display)] text-3xl md:text-4xl">Wat kun je verwachten?</h2>
+          <div class="mt-6 space-y-4">
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-gold)]/10 flex items-center justify-center">
+                <svg class="w-5 h-5 text-[var(--color-gold)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              </div>
+              <div>
+                <h3 class="font-medium text-lg">Eigen songs & covers</h3>
+                <p class="text-sm" style="color: var(--fg-muted);">Liedjes uit de Gitaarmannen-theatershows, eigen werk, of een combinatie. Het hangt af van de avond en de mensen in de kamer.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-gold)]/10 flex items-center justify-center">
+                <svg class="w-5 h-5 text-[var(--color-gold)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div>
+                <h3 class="font-medium text-lg">20 tot 80 personen</h3>
+                <p class="text-sm" style="color: var(--fg-muted);">Intiem, persoonlijk en dichtbij. Geschikt voor verjaardagen, jubilea, afscheid, of gewoon omdat je iets wilt vieren.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-gold)]/10 flex items-center justify-center">
+                <svg class="w-5 h-5 text-[var(--color-gold)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <div>
+                <h3 class="font-medium text-lg">Jij regelt de ruimte</h3>
+                <p class="text-sm" style="color: var(--fg-muted);">Ed speelt volledig akoestisch, maar kan ook geluid meenemen als het nodig is. Jij hoeft alleen te zorgen voor een ruimte en een publiek.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stat + quote -->
+  <section class="py-16 md:py-20 relative overflow-hidden" style="background-color: var(--color-dark-bg);">
+    <div class="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full blur-3xl opacity-5" style="background-color: var(--color-gold);"></div>
+    <div class="relative mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-[var(--color-gold)] text-5xl md:text-6xl font-bold">500+</p>
+      <p class="mt-2 text-white/60 text-lg">huiskamerconcerten gespeeld sinds 2012</p>
+      <blockquote class="mt-8 text-xl md:text-2xl text-white/80 italic font-[var(--font-display)]">
+        &ldquo;Alsof je een avond bij een vriend zit die toevallig prachtig kan zingen.&rdquo;
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- Boeken CTA -->
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="font-[var(--font-display)] text-3xl md:text-4xl">Boek een huiskamerconcert</h2>
+          <p class="mt-4 text-lg" style="color: var(--fg-muted);">
+            Nieuwsgierig? Boek direct via het boekingsformulier of neem contact op per e-mail. Ik vertel je graag meer over de mogelijkheden.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <Button href="https://boeken.edstruijlaart.nl" variant="primary" size="lg">
+              Boek direct
+            </Button>
+            <Button href="mailto:ed@earswantmusic.nl" variant="outline" size="lg">
+              Mail Ed
+            </Button>
+          </div>
+          <p class="mt-6 text-sm" style="color: var(--fg-muted);">
+            Of bel/mail: <a href="mailto:ed@earswantmusic.nl" class="text-[var(--color-gold)] hover:underline">ed@earswantmusic.nl</a>
+          </p>
+        </div>
+        <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <Image
+            src={portretImg}
+            alt="Ed Struijlaart met gitaar bij het raam"
+            width={560}
+            class="w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

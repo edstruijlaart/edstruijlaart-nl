@@ -11,15 +11,14 @@ import BlogGrid from '../components/sections/BlogGrid.astro';
 import NewsletterForm from '../components/sections/NewsletterForm.astro';
 import { Image } from 'astro:assets';
 
-// Hero images — roterende foto's
-import heroImage from '../assets/photos/ed-struijlaart-hero.jpg';
-import heroPortrait from '../assets/photos/ed-struijlaart-portrait.jpg';
-import heroRecent from '../assets/photos/ed-struijlaart-recent.jpg';
-import heroLachend from '../assets/photos/ed-struijlaart-lachend.jpg';
-import heroTv from '../assets/photos/ed-struijlaart-tv-optreden.jpg';
+// Hero images — cinematische, brede foto's voor fullscreen hero
+import heroStudio from '../assets/photos/ed-struijlaart-studio-breed.jpg';
+import heroKruk from '../assets/photos/ed-struijlaart-kruk-gitaar.jpg';
+import heroPersfoto from '../assets/photos/ed-struijlaart-persfoto-liggend.jpg';
+import heroKlokken from '../assets/photos/ed-struijlaart-klokkenmaker.jpg';
 
 // About section photo
-import aboutPhoto from '../assets/photos/ed-struijlaart-portrait.jpg';
+import aboutPhoto from '../assets/photos/ed-struijlaart-spelend.jpg';
 ---
 
 <BaseLayout title="Home">
@@ -27,7 +26,7 @@ import aboutPhoto from '../assets/photos/ed-struijlaart-portrait.jpg';
   <Hero
     title="Verhalen vertellen met een gitaar."
     subtitle="Singer-songwriter · Theatermaker · Podcastmaker"
-    images={[heroImage, heroRecent, heroPortrait, heroLachend, heroTv]}
+    images={[heroStudio, heroKruk, heroPersfoto, heroKlokken]}
     imageAlt="Ed Struijlaart"
     height="full"
     ctaPrimary={{ label: "Bekijk agenda", href: "/tour/" }}
