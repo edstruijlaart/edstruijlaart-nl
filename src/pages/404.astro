@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<BaseLayout title="Pagina niet gevonden" description="De pagina die je zoekt bestaat niet of is verplaatst.">
+  <section class="py-24 lg:py-32">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-8xl md:text-9xl font-[var(--font-display)] text-[var(--color-gold)] opacity-20 select-none">
+        404
+      </p>
+      <h1 class="mt-4 font-[var(--font-display)] text-3xl md:text-4xl">
+        Pagina niet gevonden
+      </h1>
+      <p class="mt-4 text-lg text-[var(--fg-muted)] max-w-md mx-auto">
+        De pagina die je zoekt bestaat niet meer of is verplaatst. Misschien vind je wat je zoekt via een van onderstaande links.
+      </p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <Button href="/" variant="primary">
+          Naar de homepage
+        </Button>
+        <Button href="/tour/" variant="outline">
+          Bekijk agenda
+        </Button>
+        <Button href="/contact/" variant="outline">
+          Contact
+        </Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

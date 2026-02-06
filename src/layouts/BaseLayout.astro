@@ -96,6 +96,9 @@ const canonicalUrl = Astro.url.href;
       ]
     })} />
   )}
+
+  <!-- Page-specific head content (JSON-LD etc.) -->
+  <slot name="head" />
 </head>
 <body class="min-h-screen flex flex-col">
   <a href="#main-content" class="skip-link">Ga naar inhoud</a>

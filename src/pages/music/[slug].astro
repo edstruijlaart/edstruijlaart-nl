@@ -24,6 +24,24 @@ const artwork = getAlbumImage(album.image);
 ---
 
 <BaseLayout title={album.title} description={album.description}>
+  {/* JSON-LD: MusicAlbum structured data */}
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": album.slug === 'what-i-like-about-you' ? "MusicRecording" : "MusicAlbum",
+    "name": album.title,
+    "description": album.description,
+    "datePublished": album.year,
+    ...(album.slug !== 'what-i-like-about-you' ? {
+      "albumReleaseType": album.slug === 'head-heart-hands' ? "https://schema.org/EPRelease" : "https://schema.org/AlbumRelease"
+    } : {}),
+    "byArtist": {
+      "@type": "Person",
+      "name": "Ed Struijlaart",
+      "url": "https://edstruijlaart.nl"
+    },
+    "url": `https://edstruijlaart.nl/music/${album.slug}/`
+  })} />
+
   <section class="py-24">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">

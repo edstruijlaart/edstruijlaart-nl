@@ -47,6 +47,46 @@ function formatShortDate(dateStr: string): string {
   title={`${tour.title}${tour.subtitle ? ': ' + tour.subtitle : ''}`}
   description={tour.shortDescription}
 >
+  {/* JSON-LD: Event structured data voor aankomende shows */}
+  {futureShows.length > 0 && futureShows.map(show => (
+    <script type="application/ld+json" slot="head" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "TheaterEvent",
+      "name": `${tour.title}${tour.subtitle ? ': ' + tour.subtitle : ''}`,
+      "description": tour.shortDescription,
+      "startDate": show.date,
+      "eventStatus": show.soldOut ? "https://schema.org/EventSoldOut" : "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "PerformingArtsTheater",
+        "name": show.venue,
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": show.city,
+          "addressCountry": "NL"
+        }
+      },
+      "performer": {
+        "@type": "Person",
+        "name": "Ed Struijlaart",
+        "url": "https://edstruijlaart.nl"
+      },
+      "organizer": {
+        "@type": "Person",
+        "name": "Ed Struijlaart",
+        "url": "https://edstruijlaart.nl"
+      },
+      ...(show.ticketUrl && show.ticketUrl !== '#' ? {
+        "offers": {
+          "@type": "Offer",
+          "url": show.ticketUrl,
+          "availability": show.soldOut ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+          "priceCurrency": "EUR"
+        }
+      } : {})
+    })} />
+  ))}
+
   <!-- Hero -->
   <section class="py-24 lg:py-32">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">

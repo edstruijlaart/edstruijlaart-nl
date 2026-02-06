@@ -1,7 +1,9 @@
 {
   "redirects": [
     { "source": "/photo", "destination": "/about", "permanent": true },
-    { "source": "/photo/", "destination": "/about/", "permanent": true }
+    { "source": "/photo/", "destination": "/about/", "permanent": true },
+    { "source": "/news", "destination": "/blog", "permanent": true },
+    { "source": "/news/", "destination": "/blog/", "permanent": true }
   ],
   "headers": [
     {

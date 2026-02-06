@@ -38,6 +38,28 @@ const categories = [
   title="Shop"
   description="Shop van Ed Struijlaart. Video-opnames, muziek, CD's en Gitaarmannen merchandise."
 >
+  {/* JSON-LD: Product structured data */}
+  {available.map(product => (
+    <script type="application/ld+json" slot="head" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "description": product.description,
+      "brand": {
+        "@type": "Person",
+        "name": "Ed Struijlaart"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": product.price.toFixed(2),
+        "priceCurrency": "EUR",
+        "availability": product.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        ...(product.buyUrl ? { "url": product.buyUrl } : {})
+      },
+      ...(product.digital ? { "isAccessibleForFree": false } : {})
+    })} />
+  ))}
+
   <!-- Hero -->
   <section class="py-16 sm:py-24" style="background-color: var(--bg-surface);">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 text-center">
