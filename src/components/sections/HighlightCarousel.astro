@@ -61,22 +61,24 @@ const slides: Slide[] = [
   tabindex="0"
 >
   {/* Slides wrapper */}
-  <div class="carousel-slides">
+  <div class="carousel-slides relative overflow-hidden">
     {slides.map((slide, i) => (
       <div
-        class="highlight-slide"
-        style={i === 0 ? 'opacity:1; pointer-events:auto;' : 'opacity:0; pointer-events:none;'}
+        class:list={[
+          'highlight-slide',
+          i === 0 ? 'is-active' : 'is-hidden',
+        ]}
         role="group"
         aria-roledescription="slide"
         aria-label={`Slide ${i + 1} van ${slides.length}`}
         aria-hidden={i !== 0 ? 'true' : 'false'}
       >
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Visual */}
-          <div class="rounded-lg overflow-hidden" style="box-shadow: var(--shadow-card);">
+          {/* Visual — alle afbeeldingen in aspect-video zodat slides gelijke hoogte hebben */}
+          <div class="rounded-lg overflow-hidden aspect-video" style="box-shadow: var(--shadow-card);">
             {slide.youtubeId ? (
               <div
-                class="youtube-lite relative cursor-pointer group aspect-video"
+                class="youtube-lite relative cursor-pointer group w-full h-full"
                 data-youtube-id={slide.youtubeId}
                 data-youtube-title={slide.imageAlt}
                 role="button"
@@ -102,7 +104,7 @@ const slides: Slide[] = [
                 src={slide.image}
                 alt={slide.imageAlt}
                 width={540}
-                class="w-full h-auto"
+                class="w-full h-full object-cover"
                 loading={i === 0 ? 'eager' : 'lazy'}
               />
             )}
@@ -172,16 +174,22 @@ const slides: Slide[] = [
 </div>
 
 <style>
-  .carousel-slides {
+  /* Eerste slide bepaalt de hoogte, rest is absolute erboven */
+  .highlight-slide.is-active {
     position: relative;
-    overflow: hidden;
+    opacity: 1;
+    z-index: 1;
+    transition: opacity 700ms ease-in-out;
   }
 
-  .highlight-slide {
+  .highlight-slide.is-hidden {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
     transition: opacity 700ms ease-in-out;
   }
 </style>
@@ -201,15 +209,6 @@ const slides: Slide[] = [
     let isPaused = false;
     let videoPlaying = false;
 
-    // Zet wrapper hoogte op de actieve slide (alle slides zijn absolute)
-    const slidesWrapper = container.querySelector<HTMLElement>('.carousel-slides');
-    function syncHeight() {
-      if (!slidesWrapper) return;
-      slidesWrapper.style.height = slides[current].scrollHeight + 'px';
-    }
-    syncHeight();
-    window.addEventListener('resize', syncHeight);
-
     function goTo(index: number) {
       // Stop eventuele video in huidige slide
       const iframe = slides[current].querySelector('iframe');
@@ -223,8 +222,8 @@ const slides: Slide[] = [
       }
 
       // Verberg huidige slide
-      slides[current].style.opacity = '0';
-      slides[current].style.pointerEvents = 'none';
+      slides[current].classList.remove('is-active');
+      slides[current].classList.add('is-hidden');
       slides[current].setAttribute('aria-hidden', 'true');
 
       dots[current].classList.remove('bg-[var(--color-gold)]', 'w-6');
@@ -234,27 +233,13 @@ const slides: Slide[] = [
       current = index;
 
       // Toon nieuwe slide
-      slides[current].style.opacity = '1';
-      slides[current].style.pointerEvents = 'auto';
+      slides[current].classList.remove('is-hidden');
+      slides[current].classList.add('is-active');
       slides[current].setAttribute('aria-hidden', 'false');
 
       dots[current].classList.remove('bg-[var(--color-gold)]/30', 'w-2');
       dots[current].classList.add('bg-[var(--color-gold)]', 'w-6');
       dots[current].setAttribute('aria-selected', 'true');
-
-      // Update wrapper hoogte en compenseer scroll zodat pagina niet verspringt
-      requestAnimationFrame(() => {
-        if (!slidesWrapper) return;
-        const oldH = slidesWrapper.offsetHeight;
-        const newH = slides[current].scrollHeight;
-        if (oldH === newH) return;
-        slidesWrapper.style.height = newH + 'px';
-        // Compenseer scrollpositie als carousel boven de viewport-onderkant zit
-        const rect = slidesWrapper.getBoundingClientRect();
-        if (rect.top < window.innerHeight) {
-          window.scrollBy(0, newH - oldH);
-        }
-      });
 
       // Update live regio
       const liveRegion = container.querySelector('.highlight-live');
@@ -276,7 +261,7 @@ const slides: Slide[] = [
       }, INTERVAL);
     }
 
-    // Pause on hover (niet als video speelt, die stopt al)
+    // Pause on hover
     container.addEventListener('mouseenter', () => { isPaused = true; });
     container.addEventListener('mouseleave', () => { if (!videoPlaying) isPaused = false; });
 
@@ -340,7 +325,7 @@ const slides: Slide[] = [
         const title = el.dataset.youtubeTitle || 'Video';
         el.innerHTML = `<iframe
           src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0"
-          class="w-full aspect-video rounded-lg"
+          class="w-full h-full rounded-lg"
           allow="autoplay; encrypted-media"
           allowfullscreen
           title="${title}"
