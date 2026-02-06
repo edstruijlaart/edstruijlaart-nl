@@ -243,16 +243,18 @@ const slides: Slide[] = [
       dots[current].setAttribute('aria-selected', 'true');
 
       // Update wrapper hoogte en compenseer scroll zodat pagina niet verspringt
-      if (slidesWrapper) {
+      requestAnimationFrame(() => {
+        if (!slidesWrapper) return;
         const oldH = slidesWrapper.offsetHeight;
         const newH = slides[current].scrollHeight;
+        if (oldH === newH) return;
         slidesWrapper.style.height = newH + 'px';
-        const diff = newH - oldH;
-        if (diff !== 0 && slidesWrapper.getBoundingClientRect().bottom < window.innerHeight) {
-          // Carousel is (deels) in beeld — compenseer scrollpositie
-          window.scrollBy(0, diff);
+        // Compenseer scrollpositie als carousel boven de viewport-onderkant zit
+        const rect = slidesWrapper.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          window.scrollBy(0, newH - oldH);
         }
-      }
+      });
 
       // Update live regio
       const liveRegion = container.querySelector('.highlight-live');
