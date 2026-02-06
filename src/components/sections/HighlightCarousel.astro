@@ -64,10 +64,8 @@ const slides: Slide[] = [
   <div class="carousel-slides">
     {slides.map((slide, i) => (
       <div
-        class:list={[
-          'highlight-slide',
-          i === 0 ? 'carousel-slide-active' : 'carousel-slide-hidden',
-        ]}
+        class="highlight-slide"
+        style={i === 0 ? 'opacity:1; pointer-events:auto;' : 'opacity:0; pointer-events:none;'}
         role="group"
         aria-roledescription="slide"
         aria-label={`Slide ${i + 1} van ${slides.length}`}
@@ -185,19 +183,7 @@ const slides: Slide[] = [
     top: 0;
     left: 0;
     width: 100%;
-  }
-
-  .carousel-slide-active {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 700ms ease-in-out, visibility 0s 0s;
-  }
-
-  .carousel-slide-hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 700ms ease-in-out, visibility 0s 700ms;
+    transition: opacity 700ms ease-in-out;
   }
 </style>
 
@@ -232,7 +218,6 @@ const slides: Slide[] = [
       if (iframe) {
         const litEl = iframe.closest('.youtube-lite') || iframe.parentElement;
         if (litEl) {
-          // Herstel thumbnail (opgeslagen in data attribuut)
           const original = litEl.getAttribute('data-original-html');
           if (original) litEl.innerHTML = original;
         }
@@ -240,7 +225,8 @@ const slides: Slide[] = [
       }
 
       // Verberg huidige slide
-      slides[current].className = 'highlight-slide carousel-slide-hidden';
+      slides[current].style.opacity = '0';
+      slides[current].style.pointerEvents = 'none';
       slides[current].setAttribute('aria-hidden', 'true');
 
       dots[current].classList.remove('bg-[var(--color-gold)]', 'w-6');
@@ -250,7 +236,8 @@ const slides: Slide[] = [
       current = index;
 
       // Toon nieuwe slide
-      slides[current].className = 'highlight-slide carousel-slide-active';
+      slides[current].style.opacity = '1';
+      slides[current].style.pointerEvents = 'auto';
       slides[current].setAttribute('aria-hidden', 'false');
 
       dots[current].classList.remove('bg-[var(--color-gold)]/30', 'w-2');
