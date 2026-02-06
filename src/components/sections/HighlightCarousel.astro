@@ -174,7 +174,6 @@ const slides: Slide[] = [
 <style>
   .carousel-slides {
     position: relative;
-    transition: height 500ms ease-in-out;
     overflow: hidden;
   }
 
@@ -204,13 +203,12 @@ const slides: Slide[] = [
 
     // Zet wrapper hoogte op de actieve slide (alle slides zijn absolute)
     const slidesWrapper = container.querySelector<HTMLElement>('.carousel-slides');
-    function updateHeight() {
+    function syncHeight() {
       if (!slidesWrapper) return;
-      const activeSlide = slides[current];
-      slidesWrapper.style.height = `${activeSlide.scrollHeight}px`;
+      slidesWrapper.style.height = slides[current].scrollHeight + 'px';
     }
-    updateHeight();
-    window.addEventListener('resize', updateHeight);
+    syncHeight();
+    window.addEventListener('resize', syncHeight);
 
     function goTo(index: number) {
       // Stop eventuele video in huidige slide
@@ -244,8 +242,17 @@ const slides: Slide[] = [
       dots[current].classList.add('bg-[var(--color-gold)]', 'w-6');
       dots[current].setAttribute('aria-selected', 'true');
 
-      // Update wrapper hoogte naar nieuwe slide
-      updateHeight();
+      // Update wrapper hoogte en compenseer scroll zodat pagina niet verspringt
+      if (slidesWrapper) {
+        const oldH = slidesWrapper.offsetHeight;
+        const newH = slides[current].scrollHeight;
+        slidesWrapper.style.height = newH + 'px';
+        const diff = newH - oldH;
+        if (diff !== 0 && slidesWrapper.getBoundingClientRect().bottom < window.innerHeight) {
+          // Carousel is (deels) in beeld — compenseer scrollpositie
+          window.scrollBy(0, diff);
+        }
+      }
 
       // Update live regio
       const liveRegion = container.querySelector('.highlight-live');
