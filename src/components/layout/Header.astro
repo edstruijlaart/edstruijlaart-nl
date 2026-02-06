@@ -1,0 +1,151 @@
+---
+import { mainNav } from '../../data/navigation';
+import DarkModeToggle from '../ui/DarkModeToggle.astro';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-[var(--bg-surface)]"
+  style="background-color: var(--bg); transition: background-color 300ms ease;"
+>
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between lg:h-20">
+      <!-- Logo -->
+      <a href="/" class="font-[var(--font-display)] text-xl lg:text-2xl text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors duration-300">
+        Ed Struijlaart
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-6" aria-label="Hoofdnavigatie">
+        {mainNav.map(item => (
+          <a
+            href={item.href}
+            class:list={[
+              'text-sm font-[var(--font-body)] font-medium uppercase tracking-wider transition-colors duration-300',
+              currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
+                ? 'text-[var(--color-gold)]'
+                : 'text-[var(--fg-muted)] hover:text-[var(--color-gold)]',
+            ]}
+            aria-current={currentPath === item.href ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))}
+        <DarkModeToggle />
+      </nav>
+
+      <!-- Mobile -->
+      <div class="flex items-center gap-2 lg:hidden">
+        <DarkModeToggle />
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          class="p-2 rounded-lg transition-colors duration-300 hover:bg-[var(--bg-surface)]"
+          aria-label="Menu openen"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <svg class="w-6 h-6 text-[var(--fg)]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="fixed inset-0 z-50 hidden lg:hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Mobiel menu"
+  >
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/50" id="mobile-menu-backdrop"></div>
+
+    <!-- Menu panel -->
+    <div
+      class="absolute right-0 top-0 h-full w-72 max-w-[80vw] transform translate-x-full transition-transform duration-300 ease-in-out"
+      id="mobile-menu-panel"
+      style="background-color: var(--bg);"
+    >
+      <div class="flex items-center justify-between p-4 border-b border-[var(--bg-surface)]">
+        <span class="font-[var(--font-display)] text-lg text-[var(--color-gold)]">Menu</span>
+        <button
+          id="mobile-menu-close"
+          type="button"
+          class="p-2 rounded-lg transition-colors duration-300 hover:bg-[var(--bg-surface)]"
+          aria-label="Menu sluiten"
+        >
+          <svg class="w-6 h-6 text-[var(--fg)]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="p-4" aria-label="Mobiele navigatie">
+        <ul class="space-y-1">
+          {mainNav.map(item => (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  'block px-4 py-3 rounded-lg text-base font-medium transition-colors duration-300',
+                  currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
+                    ? 'text-[var(--color-gold)] bg-[var(--color-gold)]/10'
+                    : 'text-[var(--fg)] hover:text-[var(--color-gold)] hover:bg-[var(--bg-surface)]',
+                ]}
+                aria-current={currentPath === item.href ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script>
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const closeBtn = document.getElementById('mobile-menu-close');
+  const backdrop = document.getElementById('mobile-menu-backdrop');
+  const menu = document.getElementById('mobile-menu');
+  const panel = document.getElementById('mobile-menu-panel');
+
+  function openMenu() {
+    menu?.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      panel?.classList.remove('translate-x-full');
+      panel?.classList.add('translate-x-0');
+    });
+    menuBtn?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    panel?.classList.remove('translate-x-0');
+    panel?.classList.add('translate-x-full');
+    menuBtn?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      menu?.classList.add('hidden');
+    }, 300);
+  }
+
+  menuBtn?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  backdrop?.addEventListener('click', closeMenu);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu?.classList.contains('hidden')) {
+      closeMenu();
+    }
+  });
+</script>

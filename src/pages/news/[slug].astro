@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/ui/Button.astro';
+import { blogPosts } from '../../data/blogPosts';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return blogPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+};
+
+const { post } = Astro.props;
+---
+
+<BaseLayout title={post.title} description={post.description} type="article">
+  <article class="py-24">
+    <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
+      <header class="mb-12">
+        <h1 class="font-[var(--font-display)] text-4xl lg:text-5xl">
+          {post.title}
+        </h1>
+        <div class="mt-4 h-1 w-16 rounded-full" style="background-color: var(--color-gold);"></div>
+      </header>
+
+      <div class="max-w-none space-y-4 text-lg text-[var(--fg-muted)] leading-relaxed">
+        {post.content && post.content.length > 0 ? (
+          post.content.map(paragraph => (
+            <p>{paragraph}</p>
+          ))
+        ) : (
+          <>
+            <p>{post.description}</p>
+            <p class="mt-8 text-base italic">
+              Dit bericht wordt binnenkort volledig aangevuld.
+            </p>
+          </>
+        )}
+      </div>
+
+      {post.cta && (
+        <div class="mt-12">
+          <Button href={post.cta.href} variant="primary" size="lg">
+            {post.cta.label}
+          </Button>
+        </div>
+      )}
+
+      <div class="mt-12 pt-8 border-t border-[var(--bg-surface)]">
+        <Button href="/blog/" variant="ghost">
+          ← Terug naar blog
+        </Button>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/ui/Hero.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import TheaterHighlight from '../components/sections/TheaterHighlight.astro';
+import ShowList from '../components/sections/ShowList.astro';
+import PodcastSection from '../components/sections/PodcastSection.astro';
+import MusicPlayer from '../components/sections/MusicPlayer.astro';
+import BlogGrid from '../components/sections/BlogGrid.astro';
+import CtaBanner from '../components/sections/CtaBanner.astro';
+import NewsletterForm from '../components/sections/NewsletterForm.astro';
+
+import heroImage from '../assets/photos/ed-struijlaart-hero.jpg';
+---
+
+<BaseLayout title="Home">
+  <!-- 1. Hero -->
+  <Hero
+    title="Ed Struijlaart"
+    subtitle="Singer-songwriter | Theatermaker | Podcastmaker"
+    image={heroImage}
+    imageAlt="Ed Struijlaart"
+    height="large"
+  />
+
+  <!-- 2. Theater Highlight -->
+  <section class="py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <TheaterHighlight />
+    </div>
+  </section>
+
+  <!-- 3. Agenda -->
+  <section class="py-24" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title="Agenda" subtitle="Aankomende shows en optredens" />
+      <ShowList limit={3} />
+    </div>
+  </section>
+
+  <!-- 4. Podcasts -->
+  <section class="py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title="Podcasts" subtitle="Gitaarmannen & Liedjesmensen" />
+      <PodcastSection />
+    </div>
+  </section>
+
+  <!-- 5. Muziek -->
+  <section class="py-24" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title="Muziek" subtitle="Luister naar de laatste singles en albums" />
+      <MusicPlayer />
+    </div>
+  </section>
+
+  <!-- 6. Nieuws -->
+  <section class="py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title="Nieuws" subtitle="Het laatste van Ed" />
+      <BlogGrid limit={3} />
+    </div>
+  </section>
+
+  <!-- 7. Nieuwsbrief -->
+  <section class="py-24" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <NewsletterForm />
+    </div>
+  </section>
+
+  <!-- 8. CTA -->
+  <CtaBanner />
+</BaseLayout>

@@ -1,0 +1,251 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import Button from '../components/ui/Button.astro';
+import { products } from '../data/products';
+
+// Group products by category
+const videoProducts = products.filter(p => p.category === 'video');
+const audioProducts = products.filter(p => p.category === 'audio');
+const bundleProducts = products.filter(p => p.category === 'bundle');
+const merchandiseProducts = products.filter(p => p.category === 'merchandise');
+
+function formatPrice(price: number) {
+  return new Intl.NumberFormat('nl-NL', {
+    style: 'currency',
+    currency: 'EUR',
+  }).format(price);
+}
+
+// Category icon SVGs for products without images
+const categoryIcons = {
+  video: `<svg class="w-16 h-16 text-[var(--color-gold)] opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>`,
+  audio: `<svg class="w-16 h-16 text-[var(--color-gold)] opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" /></svg>`,
+  bundle: `<svg class="w-16 h-16 text-[var(--color-gold)] opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>`,
+  merchandise: `<svg class="w-16 h-16 text-[var(--color-gold)] opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>`,
+};
+
+const categories = [
+  { title: 'Digitale producten', products: [...videoProducts, ...audioProducts], icon: 'video' },
+  { title: 'CD + Video', products: bundleProducts, icon: 'bundle' },
+  { title: 'Merchandise', products: merchandiseProducts, icon: 'merchandise' },
+].filter(c => c.products.length > 0);
+---
+
+<BaseLayout
+  title="Shop"
+  description="Shop van Ed Struijlaart. Video-opnames, muziek, CD's en Gitaarmannen merchandise."
+>
+  <!-- Hero -->
+  <section class="py-16 sm:py-24" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 text-center">
+      <SectionHeading
+        title="Shop"
+        subtitle="Video-opnames, muziek en merchandise"
+      />
+      <p class="text-lg text-[var(--fg-muted)] max-w-2xl mx-auto">
+        Van live-opnames tot Gitaarmannen plectrums — bestel direct en ontvang digitale producten per email.
+        Veilig betalen via SumUp (iDEAL, creditcard en meer).
+      </p>
+    </div>
+  </section>
+
+  <!-- Products -->
+  {categories.map(category => (
+    <section class="py-16 sm:py-20">
+      <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+        <h2 class="font-[var(--font-display)] text-2xl mb-8 text-[var(--fg)]">
+          {category.title}
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {category.products.map(product => (
+            <div
+              class="rounded-xl overflow-hidden flex flex-col transition-shadow duration-300 hover:shadow-lg"
+              style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
+            >
+              {/* Product image or fallback icon */}
+              <div class="aspect-[4/3] relative overflow-hidden" style="background-color: var(--bg);">
+                {product.image ? (
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    class="w-full h-full object-cover"
+                    widths={[400, 600]}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                ) : (
+                  <div class="w-full h-full flex items-center justify-center" set:html={categoryIcons[product.category] || categoryIcons.merchandise} />
+                )}
+
+                {/* Badge */}
+                {product.badge && (
+                  <span class="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-medium bg-[var(--color-gold)] text-white">
+                    {product.badge}
+                  </span>
+                )}
+              </div>
+
+              {/* Content */}
+              <div class="p-5 flex flex-col flex-1">
+                <h3 class="font-[var(--font-display)] text-lg text-[var(--fg)] mb-2">
+                  {product.name}
+                </h3>
+                <p class="text-sm text-[var(--fg-muted)] mb-4 flex-1">
+                  {product.description}
+                </p>
+
+                {/* Details */}
+                {product.details && (
+                  <ul class="mb-4 space-y-1">
+                    {product.details.map(detail => (
+                      <li class="text-sm text-[var(--fg-muted)] flex items-start gap-2">
+                        <span class="text-[var(--color-gold)] mt-0.5 flex-shrink-0">&#10003;</span>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {/* Bundle includes */}
+                {product.bundleIncludes && (
+                  <div class="mb-4 p-3 rounded-lg" style="background-color: var(--bg);">
+                    <p class="text-xs font-medium uppercase tracking-wider text-[var(--color-gold)] mb-2">Inbegrepen</p>
+                    {product.bundleIncludes.map(item => (
+                      <p class="text-sm text-[var(--fg-muted)]">&#8226; {item}</p>
+                    ))}
+                  </div>
+                )}
+
+                {/* Shipping note */}
+                {product.shippingNote && (
+                  <div class="mb-4 flex items-center gap-2 text-sm text-[var(--fg-muted)]">
+                    {product.digital ? (
+                      <svg class="w-4 h-4 text-[var(--color-gold)] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                      </svg>
+                    ) : (
+                      <svg class="w-4 h-4 text-[var(--fg-muted)] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                      </svg>
+                    )}
+                    <span>{product.shippingNote}</span>
+                  </div>
+                )}
+
+                {/* Price + CTA */}
+                <div class="flex items-center justify-between mt-auto pt-4 border-t border-[var(--bg)]">
+                  <span class="text-xl font-bold text-[var(--fg)]">
+                    {formatPrice(product.price)}
+                  </span>
+                  {product.buyUrl ? (
+                    <a
+                      href={product.buyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-white transition-colors duration-300"
+                      style="background-color: var(--color-gold);"
+                      onmouseover="this.style.backgroundColor='var(--color-gold-light)'"
+                      onmouseout="this.style.backgroundColor='var(--color-gold)'"
+                    >
+                      Bestellen
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                      </svg>
+                    </a>
+                  ) : (
+                    <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm text-[var(--fg-muted)]" style="background-color: var(--bg);">
+                      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      Binnenkort
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- Hoe werkt het? -->
+  <section class="py-16 sm:py-20" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <h2 class="font-[var(--font-display)] text-2xl text-center mb-12 text-[var(--fg)]">
+        Hoe werkt het?
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full bg-[var(--color-gold)] text-white flex items-center justify-center mx-auto mb-4 text-lg font-bold">
+            1
+          </div>
+          <h3 class="font-medium text-[var(--fg)] mb-2">Kies</h3>
+          <p class="text-sm text-[var(--fg-muted)]">
+            Selecteer je product en klik op bestellen.
+          </p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full bg-[var(--color-gold)] text-white flex items-center justify-center mx-auto mb-4 text-lg font-bold">
+            2
+          </div>
+          <h3 class="font-medium text-[var(--fg)] mb-2">Betaal</h3>
+          <p class="text-sm text-[var(--fg-muted)]">
+            Betaal veilig via iDEAL, creditcard of andere betaalmethoden via SumUp.
+          </p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full bg-[var(--color-gold)] text-white flex items-center justify-center mx-auto mb-4 text-lg font-bold">
+            3
+          </div>
+          <h3 class="font-medium text-[var(--fg)] mb-2">Ontvang</h3>
+          <p class="text-sm text-[var(--fg-muted)]">
+            Digitale producten ontvang je direct per email. Fysieke producten worden verzonden.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Huiskamerconcert CTA -->
+  <section class="py-16 sm:py-20">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="rounded-xl p-8 sm:p-12 text-center" style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);">
+        <div class="w-16 h-16 rounded-full bg-[var(--color-gold)]/10 flex items-center justify-center mx-auto mb-6">
+          <svg class="w-8 h-8 text-[var(--color-gold)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+          </svg>
+        </div>
+        <h2 class="font-[var(--font-display)] text-2xl sm:text-3xl text-[var(--fg)] mb-4">
+          Boek een huiskamerconcert
+        </h2>
+        <p class="text-lg text-[var(--fg-muted)] max-w-xl mx-auto mb-8">
+          Een intiem concert van Ed bij jou thuis, op kantoor of op een bijzondere locatie.
+          Een unieke muzikale ervaring voor jou en je gasten.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Button href="https://boeken.edstruijlaart.nl/boeken" variant="primary">
+            Boek nu →
+          </Button>
+          <Button href="/contact/" variant="outline">
+            Meer informatie
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="py-16 sm:py-20" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-[var(--fg-muted)] mb-4">
+        Vragen over een bestelling of product?
+      </p>
+      <Button href="mailto:ed@earswantmusic.nl" variant="outline">
+        Neem contact op
+      </Button>
+    </div>
+  </section>
+</BaseLayout>

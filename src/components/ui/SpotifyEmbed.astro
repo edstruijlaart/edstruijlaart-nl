@@ -1,0 +1,24 @@
+---
+interface Props {
+  uri: string;
+  type?: 'track' | 'album' | 'playlist' | 'show' | 'episode';
+  height?: number;
+  compact?: boolean;
+}
+
+const { uri, type = 'playlist', height = 380, compact = false } = Astro.props;
+const embedHeight = compact ? 152 : height;
+---
+
+<div class="rounded-lg overflow-hidden">
+  <iframe
+    src={`https://open.spotify.com/embed/${type}/${uri}?theme=0`}
+    width="100%"
+    height={embedHeight}
+    frameborder="0"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    loading="lazy"
+    title="Spotify Player"
+    style="border-radius: 0.5rem;"
+  ></iframe>
+</div>

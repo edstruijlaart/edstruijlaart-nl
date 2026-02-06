@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import Button from '../../components/ui/Button.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import ShowList from '../../components/sections/ShowList.astro';
+import { tours } from '../../data/tours';
+import { tourShowHistory } from '../../data/tourShows';
+import type { GetStaticPaths } from 'astro';
+
+// Import theater posters
+const posterImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/theater/*.{jpg,jpeg,png}', { eager: true });
+
+function getPosterImage(filename: string): ImageMetadata | undefined {
+  const key = Object.keys(posterImages).find(k => k.endsWith(filename));
+  return key ? posterImages[key].default : undefined;
+}
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return tours.map(tour => ({
+    params: { slug: tour.slug },
+    props: { tour },
+  }));
+};
+
+const { tour } = Astro.props;
+const poster = getPosterImage(tour.posterImage);
+
+// Get show history for this tour
+const history = tourShowHistory.find(h => h.tourSlug === tour.slug);
+const pastShows = history?.shows.filter(s => new Date(s.date) < new Date()) ?? [];
+const futureShows = history?.shows.filter(s => new Date(s.date) >= new Date()) ?? [];
+
+// Format date helper
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function formatShortDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+---
+
+<BaseLayout
+  title={`${tour.title}${tour.subtitle ? ': ' + tour.subtitle : ''}`}
+  description={tour.shortDescription}
+>
+  <!-- Hero -->
+  <section class="py-24 lg:py-32">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <!-- Poster -->
+        {poster && (
+          <div class="rounded-lg overflow-hidden" style="box-shadow: var(--shadow-card);">
+            <Image
+              src={poster}
+              alt={`${tour.title} ${tour.subtitle || ''} theaterposter`}
+              width={600}
+              class="w-full h-auto"
+              loading="eager"
+            />
+          </div>
+        )}
+
+        <!-- Info -->
+        <div>
+          {tour.current && (
+            <span class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/10 text-[var(--color-gold)] mb-4">
+              Nu in het theater
+            </span>
+          )}
+          <h1 class="font-[var(--font-display)] text-4xl lg:text-5xl">
+            {tour.title}
+          </h1>
+          {tour.subtitle && (
+            <p class="mt-2 font-[var(--font-display)] text-2xl text-[var(--color-gold)]">
+              {tour.subtitle}
+            </p>
+          )}
+          <p class="mt-2 text-lg text-[var(--fg-muted)]">{tour.year}</p>
+
+          <div class="mt-6 space-y-4">
+            {tour.description.map(paragraph => (
+              <p class="text-lg text-[var(--fg-muted)] leading-relaxed">{paragraph}</p>
+            ))}
+          </div>
+
+          {tour.credits && (
+            <p class="mt-4 text-sm text-[var(--fg-muted)] italic">{tour.credits}</p>
+          )}
+
+          <div class="mt-8 flex flex-wrap gap-4">
+            {tour.current && (
+              <Button href="#agenda" variant="primary">
+                Bekijk agenda
+              </Button>
+            )}
+            <Button href="/tour/" variant="outline">
+              ← Terug naar overzicht
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Speellijst -->
+  {tour.setlist && tour.setlist.length > 0 && (
+    <section class="py-24" style="background-color: var(--bg-surface);">
+      <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+        <SectionHeading title="Speellijst" align="left" />
+        <ol class="max-w-2xl space-y-3">
+          {tour.setlist.map((song, i) => (
+            <li class="flex items-center gap-4 p-3 rounded-lg" style="background-color: var(--bg);">
+              <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-[var(--color-gold)] text-white">
+                {i + 1}
+              </span>
+              <span class="text-base">{song}</span>
+            </li>
+          ))}
+        </ol>
+
+        {tour.spotifyPlaylistUri && (
+          <div class="mt-8 max-w-2xl">
+            <iframe
+              src={`https://open.spotify.com/embed/playlist/${tour.spotifyPlaylistUri}?theme=0`}
+              width="100%"
+              height="380"
+              frameborder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              title="Spotify speellijst"
+              style="border-radius: 0.5rem;"
+            ></iframe>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- Spotify playlist als er geen setlist is maar wel een playlist URI -->
+  {(!tour.setlist || tour.setlist.length === 0) && tour.spotifyPlaylistUri && (
+    <section class="py-24" style="background-color: var(--bg-surface);">
+      <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+        <SectionHeading title="Speellijst" subtitle="Beluister de nummers uit de voorstelling" />
+        <div class="max-w-2xl mx-auto">
+          <iframe
+            src={`https://open.spotify.com/embed/playlist/${tour.spotifyPlaylistUri}?theme=0`}
+            width="100%"
+            height="380"
+            frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title="Spotify speellijst"
+            style="border-radius: 0.5rem;"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Agenda (alleen voor huidige tour) -->
+  {tour.current && (
+    <section id="agenda" class="py-24">
+      <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+        <SectionHeading title="Agenda" subtitle="Aankomende shows" />
+        <ShowList />
+      </div>
+    </section>
+  )}
+
+  <!-- Gespeelde voorstellingen -->
+  {pastShows.length > 0 && (
+    <section class="py-24" style={tour.current ? 'background-color: var(--bg-surface);' : ''}>
+      <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+        <SectionHeading
+          title="Gespeelde voorstellingen"
+          subtitle={`${history!.totalShows} voorstellingen in totaal`}
+        />
+        <div class="max-w-3xl mx-auto">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {pastShows.map(show => (
+              <div class="flex items-center gap-3 p-3 rounded-lg" style="background-color: var(--bg-surface);">
+                <div class="flex-shrink-0 w-14 text-center">
+                  <span class="text-xs font-medium text-[var(--color-gold)] uppercase">
+                    {new Date(show.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}
+                  </span>
+                  <span class="block text-xs text-[var(--fg-muted)]">
+                    {new Date(show.date).getFullYear()}
+                  </span>
+                </div>
+                <div class="min-w-0">
+                  <p class="text-sm font-medium truncate">{show.city}</p>
+                  {show.venue && (
+                    <p class="text-xs text-[var(--fg-muted)] truncate">{show.venue}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

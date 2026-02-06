@@ -1,0 +1,79 @@
+---
+import { footerNav } from '../../data/navigation';
+import SocialIcons from '../icons/SocialIcons.astro';
+import NewsletterForm from '../sections/NewsletterForm.astro';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer
+  class="border-t border-[var(--bg-surface)] py-12 lg:py-16"
+  style="background-color: var(--bg-surface);"
+>
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Brand -->
+      <div>
+        <a href="/" class="font-[var(--font-display)] text-xl text-[var(--color-gold)]">
+          Ed Struijlaart
+        </a>
+        <p class="mt-3 text-sm text-[var(--fg-muted)]">
+          Singer-songwriter | Theatermaker | Podcastmaker
+        </p>
+      </div>
+
+      <!-- Quick links -->
+      <nav aria-label="Footer navigatie">
+        <h3 class="font-[var(--font-body)] font-medium text-sm uppercase tracking-wider mb-4 text-[var(--fg)]">
+          Pagina's
+        </h3>
+        <ul class="space-y-2">
+          {footerNav.map(item => (
+            <li>
+              <a
+                href={item.href}
+                class="text-sm text-[var(--fg-muted)] hover:text-[var(--color-gold)] transition-colors duration-300"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Social + contact -->
+      <div>
+        <h3 class="font-[var(--font-body)] font-medium text-sm uppercase tracking-wider mb-4 text-[var(--fg)]">
+          Volg Ed
+        </h3>
+        <SocialIcons />
+        <p class="mt-6 text-sm text-[var(--fg-muted)]">
+          <a
+            href="mailto:ed@earswantmusic.nl"
+            class="hover:text-[var(--color-gold)] transition-colors duration-300"
+          >
+            ed@earswantmusic.nl
+          </a>
+        </p>
+      </div>
+
+      <!-- Newsletter -->
+      <div>
+        <h3 class="font-[var(--font-body)] font-medium text-sm uppercase tracking-wider mb-4 text-[var(--fg)]">
+          Nieuwsbrief
+        </h3>
+        <p class="text-sm text-[var(--fg-muted)] mb-3">
+          Blijf op de hoogte van shows en nieuwe muziek.
+        </p>
+        <NewsletterForm variant="compact" />
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="mt-12 pt-6 border-t border-[var(--bg-surface)] text-center">
+      <p class="text-sm text-[var(--fg-muted)]">
+        &copy; {currentYear} Ed Struijlaart. Alle rechten voorbehouden.
+      </p>
+    </div>
+  </div>
+</footer>

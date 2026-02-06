@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets';
+import SpotifyEmbed from '../ui/SpotifyEmbed.astro';
+import Button from '../ui/Button.astro';
+import closerThanSkin from '../../assets/albums/closer-than-skin.jpg';
+import headHeartHands from '../../assets/albums/head-heart-hands.jpg';
+
+const albums = [
+  { title: 'Closer Than Skin', image: closerThanSkin, href: '/music/closer-than-skin/' },
+  { title: 'Head, Heart & Hands', image: headHeartHands, href: '/music/head-heart-hands/' },
+];
+---
+
+<div class="max-w-4xl mx-auto">
+  <!-- Spotify Playlist Embed -->
+  <SpotifyEmbed uri="5ZoRiQK1FP8OXrKRuPp56J" type="playlist" height={380} />
+
+  <!-- Album thumbnails -->
+  <div class="mt-8 grid grid-cols-2 sm:grid-cols-2 gap-4 max-w-md mx-auto">
+    {albums.map(album => (
+      <a href={album.href} class="group block">
+        <div class="rounded-lg overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <Image
+            src={album.image}
+            alt={`${album.title} album artwork`}
+            width={240}
+            height={240}
+            class="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+          />
+        </div>
+        <p class="mt-2 text-sm text-center font-medium group-hover:text-[var(--color-gold)] transition-colors duration-300">
+          {album.title}
+        </p>
+      </a>
+    ))}
+  </div>
+
+  <!-- Link naar muziekpagina -->
+  <div class="mt-8 text-center">
+    <Button href="/music/" variant="ghost">
+      Alle muziek bekijken →
+    </Button>
+  </div>
+</div>

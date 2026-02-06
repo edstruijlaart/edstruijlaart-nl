@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://edstruijlaart.nl/sitemap-index.xml

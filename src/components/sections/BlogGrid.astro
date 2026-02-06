@@ -1,0 +1,52 @@
+---
+import Card from '../ui/Card.astro';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  limit?: number;
+}
+
+const { limit = 3 } = Astro.props;
+
+// Placeholder blogposts — later vervangen door Sanity data
+const posts = [
+  {
+    title: 'Huiskamerconcerten Ed Struijlaart 2026',
+    description: 'Boek nu jouw eigen huiskamerconcert met Ed Struijlaart. Een intieme avond vol muziek en verhalen, bij jou thuis.',
+    date: '15 januari 2026',
+    slug: 'huiskamerconcerten-ed-struijlaart-2026',
+  },
+  {
+    title: 'Gitaarmannen 3: John Mayer Theatertour',
+    description: 'De derde editie van Gitaarmannen is een feit! Dit keer duikt Ed in het universum van John Mayer.',
+    date: '10 december 2025',
+    slug: 'gitaarmannen-3-john-mayer-theatertour',
+  },
+  {
+    title: 'Nieuwe single: House on Fire',
+    description: 'House on Fire is de nieuwste single van Ed Struijlaart. Beluister hem nu op alle streamingplatforms.',
+    date: '1 november 2025',
+    slug: 'nieuwe-single-house-on-fire',
+  },
+];
+
+const displayPosts = posts.slice(0, limit);
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  {displayPosts.map(post => (
+    <Card
+      title={post.title}
+      description={post.description}
+      date={post.date}
+      href={`/news/${post.slug}/`}
+      tag="Nieuws"
+    />
+  ))}
+</div>
+
+<div class="mt-8 text-center">
+  <Button href="/blog/" variant="ghost">
+    Alle berichten →
+  </Button>
+</div>

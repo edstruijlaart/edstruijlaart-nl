@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import Button from '../../components/ui/Button.astro';
+import { albums } from '../../data/albums';
+import type { GetStaticPaths } from 'astro';
+
+const albumImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/albums/*.{jpg,jpeg,png}', { eager: true });
+
+function getAlbumImage(filename: string): ImageMetadata | undefined {
+  const key = Object.keys(albumImages).find(k => k.endsWith(filename));
+  return key ? albumImages[key].default : undefined;
+}
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return albums.map(album => ({
+    params: { slug: album.slug },
+    props: { album },
+  }));
+};
+
+const { album } = Astro.props;
+const artwork = getAlbumImage(album.image);
+---
+
+<BaseLayout title={album.title} description={album.description}>
+  <section class="py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        {artwork && (
+          <div class="rounded-lg overflow-hidden max-w-md mx-auto lg:mx-0" style="box-shadow: var(--shadow-card);">
+            <Image
+              src={artwork}
+              alt={`${album.title} album artwork`}
+              width={500}
+              class="w-full h-auto"
+              loading="eager"
+            />
+          </div>
+        )}
+        <div>
+          <h1 class="font-[var(--font-display)] text-4xl lg:text-5xl">{album.title}</h1>
+          <p class="mt-2 text-lg text-[var(--fg-muted)]">{album.year}</p>
+          <div class="mt-4 h-1 w-16 rounded-full" style="background-color: var(--color-gold);"></div>
+          <p class="mt-6 text-lg text-[var(--fg-muted)] leading-relaxed">{album.description}</p>
+          <div class="mt-8">
+            <Button href="/music/" variant="outline">
+              ← Terug naar muziek
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

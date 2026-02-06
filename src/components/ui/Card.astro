@@ -1,0 +1,66 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  href?: string;
+  date?: string;
+  tag?: string;
+  class?: string;
+}
+
+const { title, description, image, imageAlt = '', href, date, tag, class: className } = Astro.props;
+---
+
+<article
+  class:list={[
+    'group rounded-lg overflow-hidden transition-shadow duration-300',
+    className,
+  ]}
+  style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
+>
+  {image && (
+    <div class="aspect-video overflow-hidden">
+      <Image
+        src={image}
+        alt={imageAlt}
+        width={600}
+        height={338}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        loading="lazy"
+      />
+    </div>
+  )}
+  <div class="p-5 lg:p-6">
+    {(date || tag) && (
+      <div class="flex items-center gap-3 mb-2">
+        {tag && (
+          <span class="text-sm font-medium text-[var(--color-gold)] uppercase tracking-wider">
+            {tag}
+          </span>
+        )}
+        {date && (
+          <time class="text-sm text-[var(--fg-muted)]">{date}</time>
+        )}
+      </div>
+    )}
+    {href ? (
+      <a href={href} class="block">
+        <h3 class="font-[var(--font-display)] text-2xl group-hover:text-[var(--color-gold)] transition-colors duration-300">
+          {title}
+        </h3>
+      </a>
+    ) : (
+      <h3 class="font-[var(--font-display)] text-2xl">{title}</h3>
+    )}
+    {description && (
+      <p class="mt-2 text-base text-[var(--fg-muted)] line-clamp-3">
+        {description}
+      </p>
+    )}
+    <slot />
+  </div>
+</article>

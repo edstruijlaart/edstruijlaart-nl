@@ -1,0 +1,94 @@
+---
+import '@fontsource/dm-serif-display/400.css';
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/dm-sans/500.css';
+import '../styles/global.css';
+
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  type?: 'website' | 'article' | 'profile';
+}
+
+const {
+  title,
+  description = 'Ed Struijlaart — singer-songwriter, theatermaker en podcastmaker. Bekend van Gitaarmannen, NPO Radio 2 en Make It On Your Own.',
+  ogImage = '/favicon.svg',
+  type = 'website',
+} = Astro.props;
+
+const siteTitle = title === 'Home'
+  ? 'Ed Struijlaart | Singer-songwriter, Theatermaker & Podcastmaker'
+  : `${title} | Ed Struijlaart`;
+
+const canonicalUrl = Astro.url.href;
+---
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{siteTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={siteTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:type" content={type} />
+  <meta property="og:locale" content="nl_NL" />
+  <meta property="og:site_name" content="Ed Struijlaart" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={siteTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Dark mode: voorkom flash -->
+  <script is:inline>
+    (function() {
+      const stored = localStorage.getItem('theme');
+      if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+
+  <!-- JSON-LD: Person -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Ed Struijlaart",
+    "url": "https://edstruijlaart.nl",
+    "jobTitle": "Singer-songwriter, Theatermaker, Podcastmaker",
+    "email": "ed@earswantmusic.nl",
+    "sameAs": [
+      "https://open.spotify.com/artist/1FxkdMiSbZFBgWnr0YsFOk",
+      "https://youtube.com/@edstruijlaart",
+      "https://instagram.com/edstruijlaart",
+      "https://facebook.com/edstruijlaart",
+      "https://soundcloud.com/edstruijlaart"
+    ]
+  })} />
+</head>
+<body class="min-h-screen flex flex-col">
+  <a href="#main-content" class="skip-link">Ga naar inhoud</a>
+  <Header />
+  <main id="main-content" class="flex-1">
+    <slot />
+  </main>
+  <Footer />
+</body>
+</html>

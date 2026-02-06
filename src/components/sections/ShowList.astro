@@ -1,0 +1,85 @@
+---
+import { shows as staticShows } from '../../data/shows';
+import { fetchBandsintownEvents } from '../../lib/bandsintown';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+
+// Fetch live data from Bandsintown at build time, fall back to static data
+let shows = await fetchBandsintownEvents();
+if (shows.length === 0) {
+  shows = staticShows;
+}
+
+const displayShows = limit ? shows.slice(0, limit) : shows;
+
+function formatDate(dateStr: string) {
+  const date = new Date(dateStr);
+  const day = date.getDate();
+  const month = date.toLocaleDateString('nl-NL', { month: 'short' }).toUpperCase();
+  return { day, month };
+}
+---
+
+{displayShows.length > 0 ? (
+  <div class="space-y-4">
+    {displayShows.map(show => {
+      const { day, month } = formatDate(show.date);
+      return (
+        <div
+          class="flex items-center gap-4 sm:gap-6 p-4 rounded-lg transition-shadow duration-300"
+          style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
+        >
+          {/* Datum badge */}
+          <div class="flex-shrink-0 w-16 h-16 rounded-lg flex flex-col items-center justify-center bg-[var(--color-gold)] text-white">
+            <span class="text-2xl font-bold leading-none">{day}</span>
+            <span class="text-xs uppercase tracking-wider">{month}</span>
+          </div>
+
+          {/* Info */}
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-base truncate">{show.venue}</h3>
+            <p class="text-sm text-[var(--fg-muted)]">{show.city}</p>
+            {show.production && (
+              <p class="text-sm text-[var(--color-gold)]">{show.production}</p>
+            )}
+          </div>
+
+          {/* Action */}
+          <div class="flex-shrink-0">
+            {show.soldOut ? (
+              <span class="px-4 py-2 rounded-full text-sm font-medium bg-[var(--fg-muted)]/20 text-[var(--fg-muted)]">
+                Uitverkocht
+              </span>
+            ) : show.ticketUrl ? (
+              <Button href={show.ticketUrl} variant="outline" size="sm">
+                Tickets
+              </Button>
+            ) : null}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+) : (
+  <div class="text-center py-8">
+    <p class="text-lg text-[var(--fg-muted)]">
+      Er staan momenteel geen shows gepland.
+    </p>
+    <p class="mt-2 text-sm text-[var(--fg-muted)]">
+      Schrijf je in voor de nieuwsbrief om als eerste op de hoogte te zijn van nieuwe data.
+    </p>
+  </div>
+)}
+
+{limit && shows.length > limit && (
+  <div class="mt-8 text-center">
+    <Button href="/tour/" variant="ghost">
+      Bekijk alle shows →
+    </Button>
+  </div>
+)}

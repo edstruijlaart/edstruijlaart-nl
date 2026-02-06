@@ -1,0 +1,25 @@
+---
+import Button from '../ui/Button.astro';
+---
+
+<section class="py-24 relative overflow-hidden" style="background-color: var(--color-dark-bg);">
+  <!-- Gold accent glow -->
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-3xl opacity-10" style="background-color: var(--color-gold);"></div>
+
+  <div class="relative mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="font-[var(--font-display)] text-4xl lg:text-5xl text-[var(--color-dark-text)]">
+      Boek een huiskamerconcert
+    </h2>
+    <p class="mt-4 text-lg text-[var(--color-dark-muted)] max-w-2xl mx-auto">
+      Een intieme avond met Ed Struijlaart bij jou thuis. Eigen songs, covers en verhalen — alsof je in de huiskamer van een vriend zit. Geschikt voor 20 tot 80 personen.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-4">
+      <Button href="https://boeken.edstruijlaart.nl" variant="primary" size="lg">
+        Boek een huiskamerconcert
+      </Button>
+      <Button href="/contact/" variant="outline" size="lg">
+        <span class="text-[var(--color-dark-text)] border-[var(--color-dark-text)]">Theater programmeren</span>
+      </Button>
+    </div>
+  </div>
+</section>

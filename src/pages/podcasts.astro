@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import PodcastSection from '../components/sections/PodcastSection.astro';
+
+const youtubeEmbeds = [
+  {
+    title: 'Gitaarmannen',
+    playlistId: 'PLTdnmnE9bQhNDajmR3JPsEaYoIBOpM5hV',
+  },
+  {
+    title: 'Liedjesmensen',
+    playlistId: 'PLTdnmnE9bQhO4nYyPJ6wkCkPFTzt-7aUh',
+  },
+];
+---
+
+<BaseLayout
+  title="Podcasts"
+  description="Luister naar de Gitaarmannen en Liedjesmensen podcasts van Ed Struijlaart."
+>
+  <section class="py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading
+        title="Podcasts"
+        subtitle="Gitaarmannen & Liedjesmensen — luister nu op Spotify, Apple Podcasts en YouTube"
+      />
+      <PodcastSection />
+    </div>
+  </section>
+
+  <!-- YouTube Playlists -->
+  <section class="py-24" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading
+        title="Bekijk op YouTube"
+        subtitle="Alle afleveringen op video"
+      />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {youtubeEmbeds.map(embed => (
+          <div>
+            <h3 class="font-[var(--font-display)] text-xl mb-4 text-[var(--fg)]">{embed.title}</h3>
+            <div class="rounded-lg overflow-hidden" style="box-shadow: var(--shadow-card);">
+              <div class="aspect-video">
+                <iframe
+                  src={`https://www.youtube.com/embed/videoseries?list=${embed.playlistId}`}
+                  title={`${embed.title} YouTube playlist`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  loading="lazy"
+                  class="w-full h-full"
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

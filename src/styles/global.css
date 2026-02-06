@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/* ============================================
+   BRAND TOKENS via Tailwind v4 @theme
+   ============================================ */
+@theme {
+  /* --- Colors --- */
+  --color-gold: #B8860B;
+  --color-gold-light: #D4A843;
+  --color-gold-dark: #8B6508;
+
+  --color-warm-white: #FAF8F5;
+  --color-warm-gray: #F0EDE8;
+  --color-text-primary: #1A1A1A;
+  --color-text-muted: #6B6B6B;
+
+  --color-dark-bg: #0F0F0F;
+  --color-dark-surface: #1A1A1A;
+  --color-dark-text: #F0EDE8;
+  --color-dark-muted: #9B9B9B;
+
+  --color-spotify: #1DB954;
+  --color-youtube: #FF0000;
+
+  /* --- Fonts --- */
+  --font-display: "DM Serif Display", Georgia, serif;
+  --font-body: "DM Sans", -apple-system, sans-serif;
+
+  /* --- Spacing --- */
+  --spacing-section: 6rem;
+  --spacing-grid: 2rem;
+
+  /* --- Layout --- */
+  --container-max: 1200px;
+
+  /* --- Border Radius --- */
+  --radius-card: 0.5rem;
+  --radius-pill: 9999px;
+
+  /* --- Shadows --- */
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  /* --- Transitions --- */
+  --transition-default: 300ms ease;
+}
+
+/* ============================================
+   DARK MODE CSS CUSTOM PROPERTIES
+   Runtime vars die wisselen met dark mode.
+   ============================================ */
+:root {
+  --bg: var(--color-warm-white);
+  --bg-surface: var(--color-warm-gray);
+  --fg: var(--color-text-primary);
+  --fg-muted: var(--color-text-muted);
+}
+
+:root.dark {
+  --bg: var(--color-dark-bg);
+  --bg-surface: var(--color-dark-surface);
+  --fg: var(--color-dark-text);
+  --fg-muted: var(--color-dark-muted);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    background-color: var(--bg);
+    color: var(--fg);
+    transition: background-color var(--transition-default),
+                color var(--transition-default);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    line-height: 1.2;
+    color: var(--fg);
+  }
+
+  h1 { font-size: 3rem; }
+  h2 { font-size: 2.25rem; }
+  h3 { font-size: 1.5rem; }
+
+  a {
+    transition: color var(--transition-default);
+  }
+
+  /* Skip to content link */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    z-index: 100;
+    padding: 0.5rem 1rem;
+    background: var(--color-gold);
+    color: white;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+
+  /* Focus indicators */
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  /* Responsive images */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}

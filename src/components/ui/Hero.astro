@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  height?: 'full' | 'large' | 'medium';
+}
+
+const { title, subtitle, image, imageAlt, height = 'large' } = Astro.props;
+
+const heightClasses: Record<string, string> = {
+  full: 'min-h-screen',
+  large: 'min-h-[70vh]',
+  medium: 'min-h-[50vh]',
+};
+---
+
+<section class:list={['relative flex items-center justify-center overflow-hidden', heightClasses[height]]}>
+  <Image
+    src={image}
+    alt={imageAlt}
+    widths={[640, 1024, 1920]}
+    sizes="100vw"
+    class="absolute inset-0 w-full h-full object-cover"
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
+  <div class="relative z-10 text-center text-white px-4 max-w-3xl">
+    <h1 class="font-[var(--font-display)] text-5xl md:text-6xl lg:text-7xl leading-tight">
+      {title}
+    </h1>
+    {subtitle && (
+      <p class="mt-4 text-lg md:text-xl lg:text-2xl text-white/90">
+        {subtitle}
+      </p>
+    )}
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Neem contact op met Ed Struijlaart voor boekingen, huiskamerconcerten of andere vragen."
+>
+  <section class="py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Contact info -->
+        <div>
+          <h1 class="font-[var(--font-display)] text-4xl lg:text-5xl">Contact</h1>
+          <div class="mt-4 h-1 w-16 rounded-full" style="background-color: var(--color-gold);"></div>
+
+          <div class="mt-8 space-y-6">
+            <div>
+              <h2 class="font-[var(--font-display)] text-2xl">Boekingen & management</h2>
+              <p class="mt-2 text-lg text-[var(--fg-muted)]">
+                Voor boekingen van huiskamerconcerten, theater of festivals:
+              </p>
+              <a
+                href="mailto:ed@earswantmusic.nl"
+                class="mt-2 inline-block text-lg text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors duration-300"
+              >
+                ed@earswantmusic.nl
+              </a>
+            </div>
+
+            <div>
+              <h2 class="font-[var(--font-display)] text-2xl">Huiskamerconcert boeken</h2>
+              <p class="mt-2 text-lg text-[var(--fg-muted)]">
+                Wil je Ed boeken voor een intieme avond bij jou thuis? Een huiskamerconcert is geschikt
+                voor 20 tot 80 personen.
+              </p>
+              <a
+                href="https://boeken.edstruijlaart.nl"
+                class="mt-2 inline-block text-lg text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors duration-300"
+              >
+                Boek direct via boeken.edstruijlaart.nl →
+              </a>
+            </div>
+
+            <div>
+              <h2 class="font-[var(--font-display)] text-2xl">Theater programmeren</h2>
+              <p class="mt-2 text-lg text-[var(--fg-muted)]">
+                Wil je Gitaarmannen of een andere productie programmeren in jouw theater?
+                Neem contact op met Mark van ATnext:
+              </p>
+              <a
+                href="mailto:mark@atnext.nl"
+                class="mt-2 inline-block text-lg text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors duration-300"
+              >
+                mark@atnext.nl
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact form -->
+        <div
+          class="p-6 lg:p-8 rounded-lg"
+          style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
+        >
+          <h2 class="font-[var(--font-display)] text-2xl mb-6">Stuur een bericht</h2>
+          <form class="space-y-4" action="https://formspree.io/f/placeholder" method="POST">
+            <div>
+              <label for="name" class="block text-sm font-medium mb-1">Naam</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);"
+              />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium mb-1">E-mail</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);"
+              />
+            </div>
+            <div>
+              <label for="subject" class="block text-sm font-medium mb-1">Onderwerp</label>
+              <select
+                id="subject"
+                name="subject"
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);"
+              >
+                <option>Huiskamerconcert boeken</option>
+                <option>Theater programmeren</option>
+                <option>Media / pers</option>
+                <option>Samenwerking</option>
+                <option>Anders</option>
+              </select>
+            </div>
+            <div>
+              <label for="message" class="block text-sm font-medium mb-1">Bericht</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                required
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none resize-y"
+                style="background-color: var(--bg); color: var(--fg);"
+              ></textarea>
+            </div>
+            <Button variant="primary" size="lg">
+              Verstuur bericht
+            </Button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

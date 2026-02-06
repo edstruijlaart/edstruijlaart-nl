@@ -1,0 +1,18 @@
+export const siteConfig = {
+  name: 'Ed Struijlaart',
+  tagline: 'Singer-songwriter | Theatermaker | Podcastmaker',
+  email: 'ed@earswantmusic.nl',
+  url: 'https://edstruijlaart.nl',
+  spotifyPlaylistId: '5ZoRiQK1FP8OXrKRuPp56J',
+  social: {
+    spotify: 'https://open.spotify.com/artist/1FxkdMiSbZFBgWnr0YsFOk',
+    youtube: 'https://youtube.com/@edstruijlaart',
+    instagram: 'https://instagram.com/edstruijlaart',
+    facebook: 'https://facebook.com/edstruijlaart',
+    soundcloud: 'https://soundcloud.com/edstruijlaart',
+  },
+  newsletter: {
+    listmonkUrl: 'https://newsletter.earswantmusic.nl/api/public/subscription',
+    listUuid: '681b5ef7-29cc-4be5-a0c7-6d8453f26cc8',
+  },
+} as const;

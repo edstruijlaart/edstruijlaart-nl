@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import portraitImage from '../assets/photos/ed-struijlaart-portrait.jpg';
+---
+
+<BaseLayout
+  title="Over Ed"
+  description="Leer meer over Ed Struijlaart — singer-songwriter, theatermaker en podcastmaker."
+>
+  <section class="py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <!-- Foto -->
+        <div class="rounded-lg overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <Image
+            src={portraitImage}
+            alt="Ed Struijlaart persfoto"
+            width={600}
+            class="w-full h-auto"
+            loading="eager"
+          />
+        </div>
+
+        <!-- Bio -->
+        <div>
+          <h1 class="font-[var(--font-display)] text-4xl lg:text-5xl">Over Ed</h1>
+          <div class="mt-4 h-1 w-16 rounded-full" style="background-color: var(--color-gold);"></div>
+
+          <div class="mt-8 space-y-4 text-lg text-[var(--fg-muted)] leading-relaxed">
+            <p>
+              Ed Struijlaart is singer-songwriter, gitarist en verhalenverteller die moeiteloos laveert
+              tussen het theater, het clubcircuit, festivals en de podcastwereld. Met zijn warme stem,
+              sterke liedjes en uitgesproken liefde voor de gitaar bouwde hij de afgelopen jaren een
+              veelzijdige carrière op waarin muzikaliteit en storytelling centraal staan.
+            </p>
+            <p>
+              Ed brak landelijk door met eigen werk dat meerdere NPO Radio 2 Topsongs opleverde en hem
+              een platina plaat bezorgde voor Make It On Your Own. Zijn muziek leverde hem nominaties op
+              voor onder andere een 3FM Award en een 100% NL Award. Sindsdien groeide hij uit tot een
+              artiest die zich niet laat vastpinnen op één vorm of podium.
+            </p>
+            <p>
+              Naast zijn solocarrière ontwikkelde Ed het succesvolle concept Gitaarmannen, waarmee hij
+              zijn passie voor het instrument vertaalt naar uitverkochte theatervoorstellingen en een
+              populaire podcast waarin hij nationale en internationale topgitaristen interviewt.
+            </p>
+            <p>
+              Op het podium staat Ed bekend om zijn sterke live-energie, zijn open en persoonlijke
+              manier van vertellen en zijn vermogen om publiek van begin tot eind mee te nemen in een
+              muzikale reis.
+            </p>
+            <p>
+              Met honderden optredens op zijn naam, variërend van intieme huiskamerconcerten tot theaters
+              en festivals, heeft Ed zich ontwikkeld tot een artiest die zich moeiteloos aanpast aan
+              verschillende settings zonder zijn eigen signatuur te verliezen.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

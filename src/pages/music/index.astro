@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import MusicPlayer from '../../components/sections/MusicPlayer.astro';
+---
+
+<BaseLayout
+  title="Muziek"
+  description="Luister naar de muziek van Ed Struijlaart. Albums, singles en meer."
+>
+  <section class="py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading
+        title="Muziek"
+        subtitle="Albums, singles en meer"
+      />
+      <MusicPlayer />
+    </div>
+  </section>
+</BaseLayout>

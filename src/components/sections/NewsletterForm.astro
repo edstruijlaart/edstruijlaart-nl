@@ -1,0 +1,147 @@
+---
+interface Props {
+  variant?: 'default' | 'compact' | 'dark';
+}
+
+const { variant = 'default' } = Astro.props;
+const isDark = variant === 'dark';
+const isCompact = variant === 'compact';
+---
+
+<div
+  class:list={[
+    'newsletter-widget',
+    { 'text-center': !isCompact },
+  ]}
+>
+  {!isCompact && (
+    <h3 class:list={[
+      'font-[var(--font-display)] text-2xl lg:text-3xl',
+      isDark ? 'text-[var(--color-dark-text)]' : '',
+    ]}>
+      Nieuwsbrief
+    </h3>
+    <p class:list={[
+      'mt-2 text-base max-w-lg',
+      isDark ? 'text-[var(--color-dark-muted)]' : 'text-[var(--fg-muted)]',
+      !isCompact ? 'mx-auto' : '',
+    ]}>
+      Blijf op de hoogte van shows, nieuwe muziek en meer. Geen spam, alleen het goede nieuws.
+    </p>
+  )}
+
+  <form
+    class:list={[
+      'newsletter-form flex gap-3',
+      isCompact ? 'flex-col' : 'flex-col sm:flex-row mt-6 max-w-lg mx-auto',
+    ]}
+  >
+    {!isCompact && (
+      <input
+        type="text"
+        name="name"
+        placeholder="Je naam"
+        autocomplete="name"
+        class:list={[
+          'flex-1 min-w-0 px-4 py-3 rounded-full text-base border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:border-transparent',
+          isDark
+            ? 'bg-white/10 border-white/20 text-white placeholder:text-white/50'
+            : 'bg-[var(--bg)] border-[var(--bg-surface)] text-[var(--fg)] placeholder:text-[var(--fg-muted)]',
+        ]}
+      />
+    )}
+    <input
+      type="email"
+      name="email"
+      placeholder="Je emailadres"
+      required
+      autocomplete="email"
+      class:list={[
+        'flex-1 min-w-0 px-4 py-3 rounded-full text-base border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:border-transparent',
+        isDark
+          ? 'bg-white/10 border-white/20 text-white placeholder:text-white/50'
+          : 'bg-[var(--bg)] border-[var(--bg-surface)] text-[var(--fg)] placeholder:text-[var(--fg-muted)]',
+      ]}
+    />
+    <button
+      type="submit"
+      class="flex-shrink-0 px-6 py-3 rounded-full font-medium text-base text-white transition-colors duration-300 bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:ring-offset-2"
+    >
+      Inschrijven
+    </button>
+  </form>
+
+  <p
+    class:list={[
+      'newsletter-message mt-3 text-sm min-h-[1.25rem]',
+      isDark ? 'text-[var(--color-dark-muted)]' : 'text-[var(--fg-muted)]',
+      !isCompact ? 'text-center' : '',
+    ]}
+    aria-live="polite"
+  ></p>
+</div>
+
+<script>
+  const LISTMONK_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
+  const LIST_UUID = '681b5ef7-29cc-4be5-a0c7-6d8453f26cc8';
+
+  function initNewsletterForms() {
+    document.querySelectorAll<HTMLFormElement>('.newsletter-form').forEach(form => {
+      if (form.dataset.init) return;
+      form.dataset.init = '1';
+
+      const widget = form.closest('.newsletter-widget')!;
+      const messageEl = widget.querySelector('.newsletter-message') as HTMLElement;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const email = formData.get('email') as string;
+        const name = (formData.get('name') as string) || '';
+
+        const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Bezig...';
+        submitBtn.disabled = true;
+        messageEl.textContent = '';
+        messageEl.classList.remove('text-[var(--color-gold)]', 'text-red-500');
+
+        try {
+          let response: Response;
+          try {
+            response = await fetch(LISTMONK_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, name, list_uuids: [LIST_UUID] }),
+            });
+          } catch {
+            response = await fetch('/api/newsletter', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, name }),
+            });
+          }
+
+          if (response.ok) {
+            messageEl.textContent = 'Bedankt! Check je email voor bevestiging.';
+            messageEl.classList.add('text-[var(--color-gold)]');
+            form.reset();
+          } else {
+            const data = await response.json().catch(() => ({}));
+            messageEl.textContent = (data as Record<string, string>).error || (data as Record<string, string>).message || 'Er ging iets mis. Probeer het later opnieuw.';
+            messageEl.classList.add('text-red-500');
+          }
+        } catch {
+          messageEl.textContent = 'Er ging iets mis. Probeer het later opnieuw.';
+          messageEl.classList.add('text-red-500');
+        } finally {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+    });
+  }
+
+  initNewsletterForms();
+  document.addEventListener('astro:after-swap', initNewsletterForms);
+</script>

@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import BlogGrid from '../components/sections/BlogGrid.astro';
+---
+
+<BaseLayout
+  title="Blog"
+  description="Nieuws en verhalen van Ed Struijlaart."
+>
+  <section class="py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title="Blog" subtitle="Nieuws en verhalen" />
+      <BlogGrid limit={9} />
+    </div>
+  </section>
+</BaseLayout>
