@@ -9,7 +9,7 @@ Sinds 2012 breng ik muziek tot in de huiskamers, en na honderden optredens is he
 
 Benieuwd hoe zo’n huiskamerconcert eruitziet? Check het filmpje hieronder en proef alvast de sfeer!
 
-Wil jij dit zelf beleven? Boek nu eenvoudig jouw huiskamerconcert via www.calendly.com/huiskamerconcert. Kies een datum die jou uitkomt en ik zorg voor de rest! Of als je liever overleg hebt: stuur me een mail: huiskamerconcert@edstruijlaart.nl
+Wil jij dit zelf beleven? Boek nu eenvoudig jouw huiskamerconcert via boeken.edstruijlaart.nl. Kies een datum die jou uitkomt en ik zorg voor de rest! Of als je liever overleg hebt: stuur me een mail: huiskamerconcert@edstruijlaart.nl
 
 Waarom een huiskamerconcert?
 

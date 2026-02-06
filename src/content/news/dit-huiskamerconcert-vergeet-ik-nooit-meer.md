@@ -58,4 +58,4 @@ Maar voor momenten die ertoe doen.
 Misschien ken jij zo’n huiskamer.
 Of zo’n reden.
 
-Boek vandaag nog je huiskamerconcert. Doe dat direct via deze link: www.calendly.com/huiskamerconcert en gebruik de kortingscode HUISKAMER5 voor 5% korting op je boeking.
+Boek vandaag nog je huiskamerconcert. Doe dat direct via deze link: boeken.edstruijlaart.nl en gebruik de kortingscode HUISKAMER5 voor 5% korting op je boeking.

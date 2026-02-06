@@ -22,7 +22,7 @@ Makkelijk!
 Het leuke én makkelijke is dat je zelf het tijdslot kan boeken in mijn agenda, geen gedoe en geen onnodig ge-mail heen en weer. Helder en makkelijk! Als je er voor kiest om het via Zoom te doen krijg je direct de Zoom link in de boekingsbevestiging. Wil je het via Youtube laten verlopen? Geen probleem! Dan volgt die link later, aangezien ik die handmatig moet aanmaken.
 
 De stappen:
-– Ga naar https://calendly.com/edstruijlaart
+– Ga naar boeken.edstruijlaart.nl
 – Kies de lengte van het concert (15, 30 of 60 min)
 – Kies je tijdslot
 – Betaal via http://bunq.me/edmusic (de boeking is 100% gegarandeerd na betaling)
