@@ -61,7 +61,7 @@ const slides: Slide[] = [
   tabindex="0"
 >
   {/* Slides wrapper */}
-  <div class="carousel-slides relative overflow-hidden">
+  <div class="carousel-slides">
     {slides.map((slide, i) => (
       <div
         class:list={[
@@ -174,27 +174,30 @@ const slides: Slide[] = [
 </div>
 
 <style>
-  .carousel-slide-active {
+  .carousel-slides {
     position: relative;
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 700ms ease-in-out;
+    transition: height 500ms ease-in-out;
+    overflow: hidden;
   }
 
-  .carousel-slide-hidden {
+  .highlight-slide {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+  }
+
+  .carousel-slide-active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 700ms ease-in-out, visibility 0s 0s;
+  }
+
+  .carousel-slide-hidden {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     transition: opacity 700ms ease-in-out, visibility 0s 700ms;
-  }
-
-  /* When becoming visible: show immediately, fade in */
-  .carousel-slide-active {
-    transition: opacity 700ms ease-in-out, visibility 0s 0s;
   }
 </style>
 
@@ -213,36 +216,15 @@ const slides: Slide[] = [
     let isPaused = false;
     let videoPlaying = false;
 
-    // Meet de hoogte van alle slides en zet een vaste min-height
-    // zodat de container niet verspringt bij slide-wissel
+    // Zet wrapper hoogte op de actieve slide (alle slides zijn absolute)
     const slidesWrapper = container.querySelector<HTMLElement>('.carousel-slides');
-    function lockHeight() {
+    function updateHeight() {
       if (!slidesWrapper) return;
-      // Tijdelijk alle slides zichtbaar en relative maken om te meten
-      slidesWrapper.style.minHeight = '';
-      const originalClasses: string[] = [];
-      slides.forEach((s, i) => {
-        originalClasses[i] = s.className;
-        s.style.position = 'relative';
-        s.style.visibility = 'visible';
-        s.style.opacity = '1';
-      });
-      // Meet de hoogste slide
-      let maxH = 0;
-      slides.forEach(s => {
-        maxH = Math.max(maxH, s.offsetHeight);
-      });
-      // Herstel originele state
-      slides.forEach((s, i) => {
-        s.className = originalClasses[i];
-        s.style.position = '';
-        s.style.visibility = '';
-        s.style.opacity = '';
-      });
-      slidesWrapper.style.minHeight = `${maxH}px`;
+      const activeSlide = slides[current];
+      slidesWrapper.style.height = `${activeSlide.scrollHeight}px`;
     }
-    lockHeight();
-    window.addEventListener('resize', lockHeight);
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
 
     function goTo(index: number) {
       // Stop eventuele video in huidige slide
@@ -274,6 +256,9 @@ const slides: Slide[] = [
       dots[current].classList.remove('bg-[var(--color-gold)]/30', 'w-2');
       dots[current].classList.add('bg-[var(--color-gold)]', 'w-6');
       dots[current].setAttribute('aria-selected', 'true');
+
+      // Update wrapper hoogte naar nieuwe slide
+      updateHeight();
 
       // Update live regio
       const liveRegion = container.querySelector('.highlight-live');
