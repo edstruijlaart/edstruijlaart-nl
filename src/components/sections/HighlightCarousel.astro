@@ -211,8 +211,21 @@ const slides: Slide[] = [
     const total = slides.length;
     const INTERVAL = 7500;
     let isPaused = false;
+    let videoPlaying = false;
 
     function goTo(index: number) {
+      // Stop eventuele video in huidige slide
+      const iframe = slides[current].querySelector('iframe');
+      if (iframe) {
+        const litEl = iframe.closest('.youtube-lite') || iframe.parentElement;
+        if (litEl) {
+          // Herstel thumbnail (opgeslagen in data attribuut)
+          const original = litEl.getAttribute('data-original-html');
+          if (original) litEl.innerHTML = original;
+        }
+        videoPlaying = false;
+      }
+
       // Verberg huidige slide
       slides[current].className = 'highlight-slide carousel-slide-hidden';
       slides[current].setAttribute('aria-hidden', 'true');
@@ -240,19 +253,20 @@ const slides: Slide[] = [
 
     // Auto-advance
     let timer = setInterval(() => {
-      if (!isPaused) goTo((current + 1) % total);
+      if (!isPaused && !videoPlaying) goTo((current + 1) % total);
     }, INTERVAL);
 
     function resetTimer() {
+      videoPlaying = false;
       clearInterval(timer);
       timer = setInterval(() => {
-        if (!isPaused) goTo((current + 1) % total);
+        if (!isPaused && !videoPlaying) goTo((current + 1) % total);
       }, INTERVAL);
     }
 
-    // Pause on hover
+    // Pause on hover (niet als video speelt, die stopt al)
     container.addEventListener('mouseenter', () => { isPaused = true; });
-    container.addEventListener('mouseleave', () => { isPaused = false; });
+    container.addEventListener('mouseleave', () => { if (!videoPlaying) isPaused = false; });
 
     // Dot klik navigatie
     dots.forEach((dot, i) => {
@@ -300,10 +314,17 @@ const slides: Slide[] = [
 
     // YouTube lite-embed
     container.querySelectorAll<HTMLElement>('.youtube-lite').forEach(el => {
+      // Bewaar originele HTML voor herstel bij slide-wissel
+      el.setAttribute('data-original-html', el.innerHTML);
+
       el.addEventListener('click', () => {
+        // Niet opnieuw embedden als iframe al actief is
+        if (el.querySelector('iframe')) return;
         const id = el.dataset.youtubeId;
         if (!id) return;
+        videoPlaying = true;
         isPaused = true;
+        clearInterval(timer);
         const title = el.dataset.youtubeTitle || 'Video';
         el.innerHTML = `<iframe
           src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0"
