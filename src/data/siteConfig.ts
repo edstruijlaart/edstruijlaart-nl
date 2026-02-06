@@ -9,7 +9,7 @@ export const siteConfig = {
     youtube: 'https://youtube.com/@edstruijlaart',
     instagram: 'https://instagram.com/edstruijlaart',
     facebook: 'https://facebook.com/edstruijlaartofficial',
-    soundcloud: 'https://soundcloud.com/edstruijlaart',
+    tiktok: 'https://tiktok.com/@edstruijlaart_zelf',
   },
   newsletter: {
     listmonkUrl: 'https://newsletter.earswantmusic.nl/api/public/subscription',
