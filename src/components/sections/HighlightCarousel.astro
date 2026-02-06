@@ -1,0 +1,297 @@
+---
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+
+// Slide images
+import cdCover from '../../assets/shop/gitaarmannen-3-cd-cover.png';
+import posterImage from '../../assets/theater/gitaarmannen-3-poster.png';
+import huiskamerImage from '../../assets/photos/ed-struijlaart-warm-interieur.jpg';
+
+interface Slide {
+  badge: string;
+  title: string;
+  subtitle?: string;
+  description: string;
+  ctaPrimary: { label: string; href: string; external?: boolean };
+  ctaSecondary?: { label: string; href: string; external?: boolean };
+  image: ImageMetadata;
+  imageAlt: string;
+  youtubeId?: string;
+}
+
+const slides: Slide[] = [
+  {
+    badge: 'Nieuw',
+    title: 'Gitaarmannen 3: John Mayer',
+    subtitle: 'De Concertfilm',
+    description: 'Beleef de theatervoorstelling thuis. De volledige show in Full HD audio en video — een concertfilm waarin de muziek van een gitarist die een generatie inspireert wordt geëerd.',
+    ctaPrimary: { label: 'Bestel de concertfilm', href: 'https://payhip.com/b/QZ7Fi', external: true },
+    ctaSecondary: { label: 'Bekijk trailer', href: 'https://www.youtube.com/watch?v=Jl7qoEpe9xk', external: true },
+    image: cdCover,
+    imageAlt: 'Gitaarmannen 3: John Mayer concertfilm DVD/Blu-ray hoes',
+  },
+  {
+    badge: 'Nu in het theater',
+    title: 'Gitaarmannen 3',
+    subtitle: 'John Mayer',
+    description: 'In de derde editie van Gitaarmannen duikt Ed Struijlaart in het universum van John Mayer. Van de eerste blueslicks tot de inmiddels iconische songs — een avondvullend eerbetoon aan een van de grootste gitaristen van deze generatie.',
+    ctaPrimary: { label: 'Bekijk alle data', href: '/tour/' },
+    ctaSecondary: { label: 'Meer theater', href: '/tour/' },
+    image: posterImage,
+    imageAlt: 'Gitaarmannen 3: John Mayer theaterposter',
+  },
+  {
+    badge: 'Nu boeken',
+    title: 'Huiskamerconcert',
+    subtitle: 'Bij jou thuis',
+    description: 'Een intieme avond met Ed bij jou thuis, in de tuin of op locatie. Al meer dan 600 keer eerder gedaan — en iedere keer weer bijzonder. Eigen repertoire, covers en verhalen in een setting waar iedereen stil wordt.',
+    ctaPrimary: { label: 'Boek een huiskamerconcert', href: 'https://boeken.edstruijlaart.nl', external: true },
+    image: huiskamerImage,
+    imageAlt: 'Ed Struijlaart speelt een huiskamerconcert',
+    youtubeId: 'luQq4YDNJ_c',
+  },
+];
+---
+
+<div
+  class="highlight-carousel relative"
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="Highlights"
+  tabindex="0"
+>
+  {slides.map((slide, i) => (
+    <div
+      class:list={[
+        'highlight-slide grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center transition-opacity duration-1000',
+        i === 0 ? 'relative opacity-100 z-10' : 'absolute inset-0 opacity-0 z-0',
+      ]}
+      role="group"
+      aria-roledescription="slide"
+      aria-label={`Slide ${i + 1} van ${slides.length}`}
+      aria-hidden={i !== 0 ? 'true' : 'false'}
+    >
+      {/* Visual — afbeelding of YouTube lite-embed */}
+      <div class="rounded-lg overflow-hidden" style="box-shadow: var(--shadow-card);">
+        {slide.youtubeId ? (
+          <div
+            class="youtube-lite relative cursor-pointer group aspect-video"
+            data-youtube-id={slide.youtubeId}
+            role="button"
+            aria-label="Speel video af"
+          >
+            <Image
+              src={slide.image}
+              alt={slide.imageAlt}
+              width={640}
+              class="w-full h-full object-cover"
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+            <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors duration-300">
+              <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[var(--color-gold)] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <svg class="w-7 h-7 md:w-8 md:h-8 text-white ml-1" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <Image
+            src={slide.image}
+            alt={slide.imageAlt}
+            width={540}
+            class="w-full h-auto"
+            loading={i === 0 ? 'eager' : 'lazy'}
+          />
+        )}
+      </div>
+
+      {/* Tekst */}
+      <div class="min-h-[280px] lg:min-h-[320px] flex flex-col justify-center">
+        <span class="inline-block self-start px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/10 text-[var(--color-gold)] mb-4">
+          {slide.badge}
+        </span>
+        <h2 class="font-[var(--font-display)] text-4xl lg:text-5xl">
+          {slide.title}
+        </h2>
+        {slide.subtitle && (
+          <p class="mt-2 font-[var(--font-display)] text-2xl text-[var(--color-gold)]">
+            {slide.subtitle}
+          </p>
+        )}
+        <p class="mt-4 text-lg" style="color: var(--fg-muted);">
+          {slide.description}
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <Button
+            href={slide.ctaPrimary.href}
+            variant="primary"
+            target={slide.ctaPrimary.external ? '_blank' : undefined}
+            rel={slide.ctaPrimary.external ? 'noopener noreferrer' : undefined}
+          >
+            {slide.ctaPrimary.label}
+          </Button>
+          {slide.ctaSecondary && (
+            <Button
+              href={slide.ctaSecondary.href}
+              variant="outline"
+              target={slide.ctaSecondary.external ? '_blank' : undefined}
+              rel={slide.ctaSecondary.external ? 'noopener noreferrer' : undefined}
+            >
+              {slide.ctaSecondary.label}
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  ))}
+
+  {/* Dot navigatie */}
+  <div class="flex justify-center gap-2 mt-8" role="tablist" aria-label="Slide navigatie">
+    {slides.map((_, i) => (
+      <button
+        class:list={[
+          'highlight-dot h-2 rounded-full transition-all duration-300',
+          i === 0 ? 'bg-[var(--color-gold)] w-6' : 'bg-[var(--color-gold)]/30 w-2',
+        ]}
+        role="tab"
+        aria-selected={i === 0 ? 'true' : 'false'}
+        aria-label={`Ga naar slide ${i + 1}`}
+      />
+    ))}
+  </div>
+
+  {/* Screen reader live regio */}
+  <div class="sr-only highlight-live" aria-live="polite" aria-atomic="true">
+    Slide 1 van {slides.length}
+  </div>
+</div>
+
+<script>
+  function initHighlightCarousel() {
+    const container = document.querySelector<HTMLElement>('.highlight-carousel');
+    if (!container) return;
+
+    const slides = container.querySelectorAll<HTMLElement>('.highlight-slide');
+    const dots = container.querySelectorAll<HTMLElement>('.highlight-dot');
+    if (slides.length <= 1) return;
+
+    let current = 0;
+    const total = slides.length;
+    const INTERVAL = 7500;
+    let isPaused = false;
+
+    function goTo(index: number) {
+      // Deactiveer huidige slide
+      slides[current].classList.remove('opacity-100', 'z-10');
+      slides[current].classList.add('opacity-0', 'z-0');
+      slides[current].setAttribute('aria-hidden', 'true');
+      if (current > 0) {
+        slides[current].classList.remove('relative');
+        slides[current].classList.add('absolute', 'inset-0');
+      }
+
+      dots[current].classList.remove('bg-[var(--color-gold)]', 'w-6');
+      dots[current].classList.add('bg-[var(--color-gold)]/30', 'w-2');
+      dots[current].setAttribute('aria-selected', 'false');
+
+      current = index;
+
+      // Activeer nieuwe slide
+      slides[current].classList.remove('opacity-0', 'z-0', 'absolute', 'inset-0');
+      slides[current].classList.add('opacity-100', 'z-10', 'relative');
+      slides[current].setAttribute('aria-hidden', 'false');
+
+      dots[current].classList.remove('bg-[var(--color-gold)]/30', 'w-2');
+      dots[current].classList.add('bg-[var(--color-gold)]', 'w-6');
+      dots[current].setAttribute('aria-selected', 'true');
+
+      // Update live regio
+      const liveRegion = container.querySelector('.highlight-live');
+      if (liveRegion) {
+        liveRegion.textContent = `Slide ${current + 1} van ${total}`;
+      }
+    }
+
+    // Auto-advance
+    let timer = setInterval(() => {
+      if (!isPaused) goTo((current + 1) % total);
+    }, INTERVAL);
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => {
+        if (!isPaused) goTo((current + 1) % total);
+      }, INTERVAL);
+    }
+
+    // Pause on hover
+    container.addEventListener('mouseenter', () => { isPaused = true; });
+    container.addEventListener('mouseleave', () => { isPaused = false; });
+
+    // Dot klik navigatie
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        goTo(i);
+        resetTimer();
+      });
+    });
+
+    // Keyboard navigatie (pijltjes)
+    container.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goTo((current - 1 + total) % total);
+        resetTimer();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goTo((current + 1) % total);
+        resetTimer();
+      }
+    });
+
+    // Touch swipe (mobile)
+    let touchStartX = 0;
+    const SWIPE_THRESHOLD = 50;
+
+    container.addEventListener('touchstart', (e: TouchEvent) => {
+      touchStartX = e.changedTouches[0].screenX;
+      isPaused = true;
+    }, { passive: true });
+
+    container.addEventListener('touchend', (e: TouchEvent) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > SWIPE_THRESHOLD) {
+        if (diff > 0) {
+          goTo((current + 1) % total);
+        } else {
+          goTo((current - 1 + total) % total);
+        }
+        resetTimer();
+      }
+      isPaused = false;
+    }, { passive: true });
+
+    // YouTube lite-embed: klik om iframe te laden
+    container.querySelectorAll<HTMLElement>('.youtube-lite').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = el.dataset.youtubeId;
+        if (!id) return;
+        // Pauzeer carousel als video wordt afgespeeld
+        isPaused = true;
+        el.innerHTML = `<iframe
+          src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0"
+          class="w-full aspect-video rounded-lg"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+          title="Huiskamerconcert sfeerimpressie"
+          style="border: 0;"
+        ></iframe>`;
+      });
+    });
+  }
+
+  initHighlightCarousel();
+  document.addEventListener('astro:after-swap', initHighlightCarousel);
+</script>

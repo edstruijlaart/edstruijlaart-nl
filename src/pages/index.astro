@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/ui/Hero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
-import TheaterHighlight from '../components/sections/TheaterHighlight.astro';
+import HighlightCarousel from '../components/sections/HighlightCarousel.astro';
 import ShowList from '../components/sections/ShowList.astro';
 import PodcastSection from '../components/sections/PodcastSection.astro';
 import SpotifyStrip from '../components/sections/SpotifyStrip.astro';
@@ -33,10 +33,10 @@ import aboutPhoto from '../assets/photos/ed-struijlaart-spelend.jpg';
     ctaSecondary={{ label: "Boek een huiskamerconcert", href: "https://boeken.edstruijlaart.nl" }}
   />
 
-  <!-- 2. Theater Highlight — Gitaarmannen 3: John Mayer -->
+  <!-- 2. Highlight Carousel — Concertfilm, Theatertour, Huiskamerconcert -->
   <section class="py-20 md:py-28 reveal-section">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-      <TheaterHighlight />
+      <HighlightCarousel />
     </div>
   </section>
 
