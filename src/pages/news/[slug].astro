@@ -1,55 +1,59 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/ui/Button.astro';
-import { blogPosts } from '../../data/blogPosts';
+import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 
-export const getStaticPaths: GetStaticPaths = () => {
-  return blogPosts.map(post => ({
-    params: { slug: post.slug },
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('news');
+  return posts.map(post => ({
+    params: { slug: post.data.slug },
     props: { post },
   }));
 };
 
 const { post } = Astro.props;
+const { Content } = await render(post);
+
+// Format date if available
+const dateStr = post.data.date;
+let formattedDate = '';
+if (dateStr) {
+  try {
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) {
+      formattedDate = d.toLocaleDateString('nl-NL', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    }
+  } catch { /* no date available */ }
+}
 ---
 
-<BaseLayout title={post.title} description={post.description} type="article">
+<BaseLayout title={post.data.title} description={post.data.excerpt || post.data.title} type="article">
   <article class="py-24">
     <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
       <header class="mb-12">
-        <h1 class="font-[var(--font-display)] text-4xl lg:text-5xl">
-          {post.title}
+        {formattedDate && (
+          <time class="text-sm text-[var(--fg-muted)] uppercase tracking-wide">
+            {formattedDate}
+          </time>
+        )}
+        <h1 class="font-[var(--font-display)] text-4xl lg:text-5xl mt-2">
+          {post.data.title}
         </h1>
         <div class="mt-4 h-1 w-16 rounded-full" style="background-color: var(--color-gold);"></div>
       </header>
 
-      <div class="max-w-none space-y-4 text-lg text-[var(--fg-muted)] leading-relaxed">
-        {post.content && post.content.length > 0 ? (
-          post.content.map(paragraph => (
-            <p>{paragraph}</p>
-          ))
-        ) : (
-          <>
-            <p>{post.description}</p>
-            <p class="mt-8 text-base italic">
-              Dit bericht wordt binnenkort volledig aangevuld.
-            </p>
-          </>
-        )}
+      <div class="prose-ed max-w-none text-lg text-[var(--fg-muted)] leading-relaxed [&>p]:mb-6 [&>h2]:font-[var(--font-display)] [&>h2]:text-2xl [&>h2]:text-[var(--fg)] [&>h2]:mt-10 [&>h2]:mb-4 [&>h3]:font-[var(--font-display)] [&>h3]:text-xl [&>h3]:text-[var(--fg)] [&>h3]:mt-8 [&>h3]:mb-3 [&>a]:text-[var(--color-gold)] [&>a]:underline hover:[&>a]:text-[var(--color-gold-light)] [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 [&>blockquote]:border-l-4 [&>blockquote]:border-[var(--color-gold)] [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:my-6">
+        <Content />
       </div>
-
-      {post.cta && (
-        <div class="mt-12">
-          <Button href={post.cta.href} variant="primary" size="lg">
-            {post.cta.label}
-          </Button>
-        </div>
-      )}
 
       <div class="mt-12 pt-8 border-t border-[var(--bg-surface)]">
         <Button href="/blog/" variant="ghost">
-          ← Terug naar blog
+          ← Terug naar nieuws
         </Button>
       </div>
     </div>

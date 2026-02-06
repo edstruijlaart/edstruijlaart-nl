@@ -1,52 +1,60 @@
 ---
 import Card from '../ui/Card.astro';
 import Button from '../ui/Button.astro';
+import { getCollection } from 'astro:content';
 
 interface Props {
   limit?: number;
+  showMore?: boolean;
 }
 
-const { limit = 3 } = Astro.props;
+const { limit = 3, showMore = true } = Astro.props;
 
-// Placeholder blogposts — later vervangen door Sanity data
-const posts = [
-  {
-    title: 'Huiskamerconcerten Ed Struijlaart 2026',
-    description: 'Boek nu jouw eigen huiskamerconcert met Ed Struijlaart. Een intieme avond vol muziek en verhalen, bij jou thuis.',
-    date: '15 januari 2026',
-    slug: 'huiskamerconcerten-ed-struijlaart-2026',
-  },
-  {
-    title: 'Gitaarmannen 3: John Mayer Theatertour',
-    description: 'De derde editie van Gitaarmannen is een feit! Dit keer duikt Ed in het universum van John Mayer.',
-    date: '10 december 2025',
-    slug: 'gitaarmannen-3-john-mayer-theatertour',
-  },
-  {
-    title: 'Nieuwe single: House on Fire',
-    description: 'House on Fire is de nieuwste single van Ed Struijlaart. Beluister hem nu op alle streamingplatforms.',
-    date: '1 november 2025',
-    slug: 'nieuwe-single-house-on-fire',
-  },
-];
+// Get all news posts from markdown content collection
+const allPosts = await getCollection('news');
 
-const displayPosts = posts.slice(0, limit);
+// Sort by date (newest first), posts without date go to the end
+const sortedPosts = allPosts.sort((a, b) => {
+  const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+  const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+  return dateB - dateA;
+});
+
+const displayPosts = sortedPosts.slice(0, limit);
+
+// Format date helper
+function formatDate(dateStr?: string): string {
+  if (!dateStr) return '';
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('nl-NL', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  } catch {
+    return '';
+  }
+}
 ---
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
   {displayPosts.map(post => (
     <Card
-      title={post.title}
-      description={post.description}
-      date={post.date}
-      href={`/news/${post.slug}/`}
+      title={post.data.title}
+      description={post.data.excerpt || ''}
+      date={formatDate(post.data.date)}
+      href={`/news/${post.data.slug}/`}
       tag="Nieuws"
     />
   ))}
 </div>
 
-<div class="mt-8 text-center">
-  <Button href="/blog/" variant="ghost">
-    Alle berichten →
-  </Button>
-</div>
+{showMore && (
+  <div class="mt-8 text-center">
+    <Button href="/blog/" variant="ghost">
+      Alle berichten →
+    </Button>
+  </div>
+)}
