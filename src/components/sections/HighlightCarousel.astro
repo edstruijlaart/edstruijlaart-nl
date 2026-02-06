@@ -26,9 +26,9 @@ const slides: Slide[] = [
     subtitle: 'De Concertfilm',
     description: 'Beleef de theatervoorstelling thuis. De volledige show in Full HD audio en video — een concertfilm waarin de muziek van een gitarist die een generatie inspireert wordt geëerd.',
     ctaPrimary: { label: 'Bestel de concertfilm', href: 'https://payhip.com/b/QZ7Fi', external: true },
-    ctaSecondary: { label: 'Bekijk trailer', href: 'https://www.youtube.com/watch?v=Jl7qoEpe9xk', external: true },
     image: concertfilmThumb,
     imageAlt: 'Gitaarmannen 3: John Mayer concertfilm',
+    youtubeId: 'Jl7qoEpe9xk',
   },
   {
     badge: 'Nu in het theater',
@@ -80,6 +80,7 @@ const slides: Slide[] = [
               <div
                 class="youtube-lite relative cursor-pointer group aspect-video"
                 data-youtube-id={slide.youtubeId}
+                data-youtube-title={slide.imageAlt}
                 role="button"
                 aria-label="Speel video af"
               >
@@ -303,12 +304,13 @@ const slides: Slide[] = [
         const id = el.dataset.youtubeId;
         if (!id) return;
         isPaused = true;
+        const title = el.dataset.youtubeTitle || 'Video';
         el.innerHTML = `<iframe
           src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0"
           class="w-full aspect-video rounded-lg"
           allow="autoplay; encrypted-media"
           allowfullscreen
-          title="Huiskamerconcert sfeerimpressie"
+          title="${title}"
           style="border: 0;"
         ></iframe>`;
       });
