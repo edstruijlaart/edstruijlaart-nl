@@ -31,8 +31,10 @@ function formatDate(dateStr: string) {
       const { day, month } = formatDate(show.date);
       return (
         <div
-          class="flex items-center gap-4 sm:gap-6 p-4 rounded-lg transition-shadow duration-300"
+          class="flex items-center gap-4 sm:gap-6 p-4 rounded-xl border-l-4 border-transparent hover:border-[var(--color-gold)] transition-all duration-300 hover:-translate-y-0.5"
           style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
+          onmouseenter="this.style.boxShadow='var(--shadow-card-hover)'"
+          onmouseleave="this.style.boxShadow='var(--shadow-card)'"
         >
           {/* Datum badge */}
           <div class="flex-shrink-0 w-16 h-16 rounded-lg flex flex-col items-center justify-center bg-[var(--color-gold)] text-white">

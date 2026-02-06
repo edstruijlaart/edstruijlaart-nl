@@ -17,10 +17,12 @@ const { title, description, image, imageAlt = '', href, date, tag, class: classN
 
 <article
   class:list={[
-    'group rounded-lg overflow-hidden transition-shadow duration-300',
+    'group rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1',
     className,
   ]}
-  style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
+  style="background-color: var(--bg-surface); box-shadow: var(--shadow-card); transition: box-shadow 300ms ease, transform 300ms ease;"
+  onmouseenter="this.style.boxShadow='var(--shadow-card-hover)'"
+  onmouseleave="this.style.boxShadow='var(--shadow-card)'"
 >
   {image && (
     <div class="aspect-video overflow-hidden">

@@ -8,16 +8,16 @@ interface Props {
 const { title, subtitle, align = 'center' } = Astro.props;
 ---
 
-<div class:list={['mb-12', align === 'center' && 'text-center']}>
+<div class:list={['section-heading mb-12', align === 'center' && 'text-center']}>
   <h2 class="font-[var(--font-display)] text-4xl">
     {title}
   </h2>
   <div
     class:list={[
-      'mt-4 h-1 w-16 rounded-full',
+      'gold-divider mt-4 h-1 rounded-full',
       align === 'center' && 'mx-auto',
     ]}
-    style="background-color: var(--color-gold);"
+    style="background: linear-gradient(90deg, var(--color-gold-dark), var(--color-gold), var(--color-gold-light)); width: 3rem;"
   />
   {subtitle && (
     <p
@@ -31,3 +31,13 @@ const { title, subtitle, align = 'center' } = Astro.props;
     </p>
   )}
 </div>
+
+<style>
+  .section-heading .gold-divider {
+    transition: width 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .section-heading.revealed .gold-divider,
+  .revealed .section-heading .gold-divider {
+    width: 4rem !important;
+  }
+</style>

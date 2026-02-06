@@ -9,10 +9,10 @@ interface Props {
 
 const { variant = 'primary', size = 'md', href, class: className, ...rest } = Astro.props;
 
-const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-300 rounded-full';
+const baseClasses = 'inline-flex items-center justify-center font-medium rounded-full transition-all duration-300 active:scale-[0.97]';
 
 const variantClasses: Record<string, string> = {
-  primary: 'bg-[var(--color-gold)] text-white hover:bg-[var(--color-gold-light)] active:bg-[var(--color-gold-dark)]',
+  primary: 'btn-primary bg-[var(--color-gold)] text-white hover:bg-[var(--color-gold-light)] active:bg-[var(--color-gold-dark)]',
   outline: 'border-2 border-[var(--color-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-white',
   ghost: 'text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10',
 };
@@ -35,3 +35,12 @@ const classes = [baseClasses, variantClasses[variant], sizeClasses[size], classN
     <slot />
   </button>
 )}
+
+<style>
+  .btn-primary {
+    box-shadow: 0 2px 8px rgba(184, 134, 11, 0.2);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
+  }
+</style>

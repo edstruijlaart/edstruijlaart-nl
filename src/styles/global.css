@@ -38,11 +38,14 @@
   --radius-pill: 9999px;
 
   /* --- Shadows --- */
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.08);
-  --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.1);
+  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.12), 0 0 1px rgba(0, 0, 0, 0.1);
+  --shadow-gold-glow: 0 4px 20px rgba(184, 134, 11, 0.15);
+  --shadow-gold-glow-hover: 0 8px 30px rgba(184, 134, 11, 0.25);
 
   /* --- Transitions --- */
   --transition-default: 300ms ease;
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ============================================
@@ -61,6 +64,8 @@
   --bg-surface: var(--color-dark-surface);
   --fg: var(--color-dark-text);
   --fg-muted: var(--color-dark-muted);
+  --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.2), 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 /* ============================================
@@ -124,5 +129,11 @@
   img {
     max-width: 100%;
     height: auto;
+  }
+
+  /* Selection — gold branded */
+  ::selection {
+    background-color: rgba(184, 134, 11, 0.2);
+    color: inherit;
   }
 }

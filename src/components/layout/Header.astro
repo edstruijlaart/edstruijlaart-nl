@@ -6,8 +6,8 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header
-  class="sticky top-0 z-50 border-b border-[var(--bg-surface)]"
-  style="background-color: var(--bg); transition: background-color 300ms ease;"
+  class="sticky top-0 z-50 border-b border-[var(--bg-surface)]/60"
+  style="background-color: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(12px) saturate(1.2); -webkit-backdrop-filter: blur(12px) saturate(1.2); transition: background-color 300ms ease;"
 >
   <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between lg:h-20">
