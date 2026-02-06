@@ -16,7 +16,7 @@ export interface Product {
   badge?: string; // e.g. "Nieuw", "Populair", "Bundel"
   details?: string[];
   digital?: boolean;
-  // SumUp Payment Link URL — Ed vult deze in vanuit SumUp dashboard
+  // Payhip checkout URL
   buyUrl?: string;
   bundleIncludes?: string[];
   available: boolean;
@@ -35,7 +35,7 @@ export const products: Product[] = [
     image: cdCover,
     badge: 'Populair',
     digital: true,
-    buyUrl: 'https://ed-struijlaart.sumupstore.com/product/gitaarmannen-3-john-mayer-videoregistratie',
+    buyUrl: 'https://payhip.com/b/QZ7Fi',
     details: [
       'Full HD video registratie',
       'Volledige theatershow (~2 uur)',
@@ -55,7 +55,7 @@ export const products: Product[] = [
     category: 'audio',
     image: gm2Poster,
     digital: true,
-    buyUrl: 'https://ed-struijlaart.sumupstore.com/product/gitaarmannen-2-eric-clapton-unplugged',
+    buyUrl: 'https://payhip.com/b/dsYK7',
     details: [
       'Hoge kwaliteit audio (MP3/FLAC)',
       'Volledige theatershow',
@@ -74,7 +74,7 @@ export const products: Product[] = [
     category: 'bundle',
     image: cdCover,
     badge: 'CD + Video',
-    buyUrl: 'https://ed-struijlaart.sumupstore.com/product/gitaarmannen-3-john-mayer-cd-videoregistratie',
+    buyUrl: '',
     details: [
       'Fysieke CD met live-opname',
       'Gratis video registratie inbegrepen',
@@ -85,7 +85,7 @@ export const products: Product[] = [
       'Video: Gitaarmannen 3 registratie (digitaal)',
     ],
     shippingNote: 'Verzendkosten via checkout',
-    available: true,
+    available: false,
   },
 
   // ─── Merchandise ───
@@ -93,10 +93,10 @@ export const products: Product[] = [
     slug: 'gitaarmannen-plectrums-088',
     name: 'Gitaarmannen Plectrums — 0.88mm (10 stuks)',
     description: 'Set van 10 Dunlop plectrums met het Gitaarmannen de Podcast logo. Dikte: 0.88mm.',
-    price: 9.99,
+    price: 10.00,
     category: 'merchandise',
     image: plectrum088,
-    buyUrl: 'https://ed-struijlaart.sumupstore.com/product/gitaarmannen-plectrums-0-88mm-10-stuks',
+    buyUrl: 'https://payhip.com/b/y5thn',
     details: [
       '10 stuks per set',
       'Dunlop plectrums',
@@ -110,10 +110,10 @@ export const products: Product[] = [
     slug: 'gitaarmannen-plectrums-100',
     name: 'Gitaarmannen Plectrums — 1.0mm (10 stuks)',
     description: 'Set van 10 Dunlop plectrums met het Gitaarmannen de Podcast logo. Dikte: 1.0mm.',
-    price: 9.99,
+    price: 10.00,
     category: 'merchandise',
     image: plectrum1mm,
-    buyUrl: 'https://ed-struijlaart.sumupstore.com/product/gitaarmannen-plectrums-1-0mm-10-stuks',
+    buyUrl: 'https://payhip.com/b/LIkwa',
     details: [
       '10 stuks per set',
       'Dunlop plectrums',

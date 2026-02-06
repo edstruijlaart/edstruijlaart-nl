@@ -5,11 +5,12 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import Button from '../components/ui/Button.astro';
 import { products } from '../data/products';
 
-// Group products by category
-const videoProducts = products.filter(p => p.category === 'video');
-const audioProducts = products.filter(p => p.category === 'audio');
-const bundleProducts = products.filter(p => p.category === 'bundle');
-const merchandiseProducts = products.filter(p => p.category === 'merchandise');
+// Group available products by category
+const available = products.filter(p => p.available);
+const videoProducts = available.filter(p => p.category === 'video');
+const audioProducts = available.filter(p => p.category === 'audio');
+const bundleProducts = available.filter(p => p.category === 'bundle');
+const merchandiseProducts = available.filter(p => p.category === 'merchandise');
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat('nl-NL', {
@@ -46,7 +47,7 @@ const categories = [
       />
       <p class="text-lg text-[var(--fg-muted)] max-w-2xl mx-auto">
         Van live-opnames tot Gitaarmannen plectrums — bestel direct en ontvang digitale producten per email.
-        Veilig betalen via SumUp (iDEAL, creditcard en meer).
+        Veilig betalen via iDEAL, creditcard en meer.
       </p>
     </div>
   </section>
@@ -193,7 +194,7 @@ const categories = [
           </div>
           <h3 class="font-medium text-[var(--fg)] mb-2">Betaal</h3>
           <p class="text-sm text-[var(--fg-muted)]">
-            Betaal veilig via iDEAL, creditcard of andere betaalmethoden via SumUp.
+            Betaal veilig via iDEAL, creditcard of andere betaalmethoden.
           </p>
         </div>
         <div class="text-center">
