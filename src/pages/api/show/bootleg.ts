@@ -3,19 +3,37 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import { sanityWriteClient, sanityClient } from '../../../lib/sanity';
 
+// OPTIONS handler voor CORS preflight (iOS Shortcuts, externe clients)
+export const OPTIONS: APIRoute = async () => {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
+    },
+  });
+};
+
 export const POST: APIRoute = async ({ request }) => {
+  // CORS headers voor response (iOS Shortcuts stuurt geen Origin)
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+  };
+
   try {
     // Auth check — API key zodat niet iedereen kan uploaden
     const apiKey = request.headers.get('x-api-key');
     if (apiKey !== import.meta.env.BOOTLEG_API_KEY) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders });
     }
 
     const formData = await request.formData();
     const audio = formData.get('audio') as File;
 
     if (!audio) {
-      return new Response(JSON.stringify({ error: 'Geen audiobestand ontvangen' }), { status: 400 });
+      return new Response(JSON.stringify({ error: 'Geen audiobestand ontvangen' }), { status: 400, headers: corsHeaders });
     }
 
     // Vind de actieve show (starttijd < nu, status = live)
@@ -28,7 +46,7 @@ export const POST: APIRoute = async ({ request }) => {
     `, { now });
 
     if (!show) {
-      return new Response(JSON.stringify({ error: 'Geen actieve show gevonden' }), { status: 404 });
+      return new Response(JSON.stringify({ error: 'Geen actieve show gevonden' }), { status: 404, headers: corsHeaders });
     }
 
     // Upload audio naar Sanity assets (als file)
@@ -57,10 +75,10 @@ export const POST: APIRoute = async ({ request }) => {
       url: asset.url,
     }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: corsHeaders,
     });
   } catch (error) {
     console.error('Bootleg upload error:', error);
-    return new Response(JSON.stringify({ error: 'Upload mislukt' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'Upload mislukt' }), { status: 500, headers: corsHeaders });
   }
 };

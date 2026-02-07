@@ -11,6 +11,11 @@ export default defineConfig({
   output: 'static',
   adapter: vercel(),
 
+  // CSRF uitschakelen voor externe API calls (iOS Shortcuts bootleg upload, webhooks)
+  security: {
+    checkOrigin: false,
+  },
+
   integrations: [
     sitemap(),
     react(),
