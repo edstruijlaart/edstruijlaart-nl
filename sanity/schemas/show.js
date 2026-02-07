@@ -231,7 +231,28 @@ export default {
       type: 'boolean',
       initialValue: false,
       readOnly: true
-    }
+    },
+
+    // --- TICKET TAILOR ---
+    {
+      name: 'ticketTailorEventId',
+      title: 'Ticket Tailor Event ID',
+      type: 'string',
+      description: 'Automatisch gevuld bij sync. Niet handmatig wijzigen.',
+      readOnly: true,
+    },
+    {
+      name: 'ticketTailorSeriesId',
+      title: 'Ticket Tailor Series ID',
+      type: 'string',
+      readOnly: true,
+    },
+    {
+      name: 'ticketUrl',
+      title: 'Ticket URL',
+      type: 'url',
+      description: 'Link naar de Ticket Tailor ticketpagina',
+    },
   ],
 
   preview: {

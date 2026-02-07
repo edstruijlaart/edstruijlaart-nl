@@ -1,6 +1,7 @@
 ---
 import { shows as staticShows } from '../../data/shows';
 import { fetchBandsintownEvents } from '../../lib/bandsintown';
+import { fetchHuiskamerconcerten } from '../../lib/huiskamerconcerten';
 import Button from '../ui/Button.astro';
 
 interface Props {
@@ -9,11 +10,17 @@ interface Props {
 
 const { limit } = Astro.props;
 
-// Fetch live data from Bandsintown at build time, fall back to static data
-let shows = await fetchBandsintownEvents();
-if (shows.length === 0) {
-  shows = staticShows;
-}
+// Fetch live data from both sources, fall back to static data for theater shows
+const [bandsintownShows, huiskamerconcerten] = await Promise.all([
+  fetchBandsintownEvents(),
+  fetchHuiskamerconcerten(),
+]);
+
+let theaterShows = bandsintownShows.length > 0 ? bandsintownShows : staticShows;
+
+// Merge and sort by date
+const shows = [...theaterShows, ...huiskamerconcerten]
+  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
 const displayShows = limit ? shows.slice(0, limit) : shows;
 
@@ -29,6 +36,7 @@ function formatDate(dateStr: string) {
   <div class="space-y-4">
     {displayShows.map(show => {
       const { day, month } = formatDate(show.date);
+      const showUrl = show.isHuiskamerconcert && show.showPageUrl ? show.showPageUrl : undefined;
       return (
         <div
           class="flex items-center gap-4 sm:gap-6 p-4 rounded-xl border-l-4 border-transparent hover:border-[var(--color-gold)] transition-all duration-300 hover:-translate-y-0.5"
@@ -44,10 +52,19 @@ function formatDate(dateStr: string) {
 
           {/* Info */}
           <div class="flex-1 min-w-0">
-            <h3 class="font-medium text-base truncate">{show.venue}</h3>
+            <h3 class="font-medium text-base truncate">
+              {showUrl ? (
+                <a href={showUrl} class="hover:text-[var(--color-gold)] transition-colors">{show.venue}</a>
+              ) : show.venue}
+            </h3>
             <p class="text-sm text-[var(--fg-muted)]">{show.city}</p>
-            {show.production && (
+            {show.production && !show.isHuiskamerconcert && (
               <p class="text-sm text-[var(--color-gold)]">{show.production}</p>
+            )}
+            {show.isHuiskamerconcert && (
+              <p class="text-xs font-medium uppercase tracking-wider mt-0.5" style="color: var(--color-gold);">
+                Huiskamerconcert
+              </p>
             )}
           </div>
 
@@ -60,6 +77,10 @@ function formatDate(dateStr: string) {
             ) : show.ticketUrl ? (
               <Button href={show.ticketUrl} variant="outline" size="sm">
                 Tickets
+              </Button>
+            ) : showUrl ? (
+              <Button href={showUrl} variant="outline" size="sm">
+                Info
               </Button>
             ) : null}
           </div>

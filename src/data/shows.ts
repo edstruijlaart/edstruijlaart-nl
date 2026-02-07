@@ -5,6 +5,8 @@ export interface Show {
   ticketUrl?: string;
   soldOut?: boolean;
   production?: string;
+  isHuiskamerconcert?: boolean;
+  showPageUrl?: string;
 }
 
 export const shows: Show[] = [

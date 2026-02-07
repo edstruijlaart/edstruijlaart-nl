@@ -32,7 +32,19 @@ export default {
       name: 'signedUpAt',
       title: 'Aangemeld op',
       type: 'datetime'
-    }
+    },
+    {
+      name: 'source',
+      title: 'Bron',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Email-gate (ter plekke)', value: 'email-gate' },
+          { title: 'Ticket Tailor', value: 'ticket-tailor' },
+        ],
+      },
+      initialValue: 'email-gate',
+    },
   ],
   preview: {
     select: {
