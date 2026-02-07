@@ -1,0 +1,22 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+  introText?: string;
+}
+
+const { introText } = Astro.props;
+
+const defaultIntro = 'Welkom bij dit huiskamerconcert van Ed Struijlaart. Een avond vol originele nummers, covers en verhalen — in de meest intieme setting die er is. Geen groot podium, geen afstand, gewoon muziek van dichtbij.';
+---
+
+<section class="py-16 sm:py-24">
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto text-center">
+      <SectionHeading title="Over dit concert" />
+      <p class="mt-6 text-lg text-[var(--fg-muted)] leading-relaxed">
+        {introText || defaultIntro}
+      </p>
+    </div>
+  </div>
+</section>

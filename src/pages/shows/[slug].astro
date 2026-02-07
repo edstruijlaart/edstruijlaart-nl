@@ -1,0 +1,337 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { sanityClient } from '../../lib/sanity';
+
+// Show components
+import ShowHero from '../../components/show/ShowHero.astro';
+import ShowIntro from '../../components/show/ShowIntro.astro';
+import ShowVideos from '../../components/show/ShowVideos.astro';
+import ShowSpotify from '../../components/show/ShowSpotify.astro';
+import ShowReviews from '../../components/show/ShowReviews.astro';
+import ShowPracticalInfo from '../../components/show/ShowPracticalInfo.astro';
+import ShowCTA from '../../components/show/ShowCTA.astro';
+import Guestbook from '../../components/show/Guestbook.astro';
+
+const { slug } = Astro.params;
+
+const show = await sanityClient.fetch(`
+  *[_type == "show" && slug.current == $slug][0] {
+    _id,
+    title,
+    startDateTime,
+    city,
+    hostName,
+    heroImage,
+    introText,
+    youtubeVideos[] { url, caption },
+    spotifyEmbed,
+    reviews[] { _key, quote, author },
+    practicalInfo,
+    setlist[]->{ title, artist, spotifyUrl, isOriginal },
+    spotifyPlaylistUrl,
+    bootlegUrl,
+    bootlegExpiresAt,
+    guestbookEntries[approved == true] { name, message, submittedAt },
+    guestPhotos[approved == true] { image, uploadedBy },
+    status
+  }
+`, { slug });
+
+if (!show) {
+  return Astro.redirect('/404');
+}
+
+// Fase bepaling
+const now = new Date();
+const startTime = new Date(show.startDateTime);
+const endTime = new Date(startTime.getTime() + 24 * 60 * 60 * 1000);
+const isPhase2 = now >= startTime;
+const isArchived = now >= endTime;
+const hasBootleg = show.bootlegUrl && new Date(show.bootlegExpiresAt) > now;
+
+// YouTube URLs extracten uit Sanity array
+const youtubeUrls = show.youtubeVideos?.map((v: any) => v.url).filter(Boolean) || [];
+
+// Reviews formatteren
+const reviews = show.reviews?.map((r: any) => ({ quote: r.quote, author: r.author })) || [];
+
+// SEO
+const pageTitle = show.title || `Huiskamerconcert ${show.city}`;
+const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart in ${show.city}. Een intiem concert in de huiskamer.`;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  type="article"
+>
+  {/* JSON-LD: Event structured data */}
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "MusicEvent",
+    "name": pageTitle,
+    "startDate": show.startDateTime,
+    "location": {
+      "@type": "Place",
+      "name": `Huiskamerconcert ${show.city}`,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": show.city,
+        "addressCountry": "NL"
+      }
+    },
+    "performer": {
+      "@type": "Person",
+      "name": "Ed Struijlaart",
+      "url": "https://edstruijlaart.nl"
+    },
+    "description": pageDescription,
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode"
+  })} />
+
+  {/* Fase 1: altijd zichtbaar — promo content */}
+  <ShowHero
+    title={pageTitle}
+    city={show.city}
+    startDateTime={show.startDateTime}
+    hostName={show.hostName}
+  />
+
+  <ShowIntro introText={show.introText} />
+
+  {youtubeUrls.length > 0 && (
+    <ShowVideos youtubeVideos={youtubeUrls} />
+  )}
+
+  <ShowSpotify spotifyEmbed={show.spotifyEmbed} />
+
+  <ShowReviews reviews={reviews.length > 0 ? reviews : undefined} />
+
+  <ShowPracticalInfo
+    city={show.city}
+    startDateTime={show.startDateTime}
+    practicalInfo={show.practicalInfo}
+  />
+
+  {/* Fase 2: na starttijd — email-gate, gastenboek */}
+  {isPhase2 && !isArchived && (
+    <section class="py-16 sm:py-20" style="background-color: var(--bg-surface);">
+      <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+        <div class="max-w-lg mx-auto text-center">
+          <h2 class="font-[var(--font-display)] text-2xl sm:text-3xl text-[var(--fg)] mb-4">
+            {hasBootleg ? 'Ontvang de opname van vanavond' : 'Deel je mooiste moment'}
+          </h2>
+          <p class="text-[var(--fg-muted)] mb-8">
+            {hasBootleg
+              ? 'Vul je voornaam en e-mail in en ontvang de opname + je persoonlijke herinneringspakket.'
+              : 'Vul je voornaam en e-mail in om je ervaring te delen in het gastenboek.'}
+          </p>
+          <div id="email-gate" data-show-id={show._id} data-has-bootleg={hasBootleg ? 'true' : 'false'}>
+            <form id="signup-form" class="space-y-4">
+              {/* Honeypot */}
+              <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" />
+              <input
+                type="text"
+                name="firstName"
+                placeholder="Je voornaam"
+                required
+                class="w-full px-4 py-3 rounded-lg border text-[var(--fg)]"
+                style="background-color: var(--bg); border-color: var(--fg-muted);"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Je e-mailadres"
+                required
+                class="w-full px-4 py-3 rounded-lg border text-[var(--fg)]"
+                style="background-color: var(--bg); border-color: var(--fg-muted);"
+              />
+              <textarea
+                name="message"
+                placeholder="Laat een bericht achter in het gastenboek (optioneel)"
+                maxlength="280"
+                rows="3"
+                class="w-full px-4 py-3 rounded-lg border text-[var(--fg)]"
+                style="background-color: var(--bg); border-color: var(--fg-muted);"
+              ></textarea>
+              <p id="form-error" class="text-red-500 text-sm hidden"></p>
+              <p id="form-success" class="text-green-500 text-sm hidden"></p>
+              <button
+                type="submit"
+                class="w-full px-6 py-3 rounded-full text-white font-medium transition-colors duration-300"
+                style="background-color: var(--color-gold);"
+              >
+                {hasBootleg ? 'Verstuur & ontvang de opname' : 'Verstuur'}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* Gastenboek (zichtbaar na start) */}
+  {isPhase2 && (
+    <Guestbook entries={show.guestbookEntries || []} />
+  )}
+
+  {/* Setlist (als beschikbaar, na show) */}
+  {isPhase2 && show.setlist && show.setlist.length > 0 && (
+    <section class="py-16 sm:py-20">
+      <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto">
+          <h2 class="font-[var(--font-display)] text-2xl sm:text-3xl text-[var(--fg)] mb-8 text-center">
+            Setlist
+          </h2>
+          <ol class="space-y-3">
+            {show.setlist.map((song: any, i: number) => (
+              <li class="flex items-center gap-4 p-3 rounded-lg" style="background-color: var(--bg-surface);">
+                <span class="text-sm font-medium text-[var(--color-gold)] w-8 text-center">{i + 1}</span>
+                <div class="flex-1">
+                  <span class="font-medium text-[var(--fg)]">{song.title}</span>
+                  <span class="text-sm text-[var(--fg-muted)] ml-2">
+                    {song.isOriginal ? '(eigen)' : `— ${song.artist}`}
+                  </span>
+                </div>
+                {song.spotifyUrl && (
+                  <a href={song.spotifyUrl} target="_blank" rel="noopener noreferrer" class="text-[var(--color-spotify)] hover:opacity-80">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                    </svg>
+                  </a>
+                )}
+              </li>
+            ))}
+          </ol>
+          {show.spotifyPlaylistUrl && (
+            <div class="mt-8 text-center">
+              <a
+                href={show.spotifyPlaylistUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-medium transition-colors duration-300"
+                style="background-color: var(--color-spotify);"
+              >
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                </svg>
+                Luister de playlist op Spotify
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* Bootleg download (als beschikbaar) */}
+  {isPhase2 && hasBootleg && (
+    <section class="py-16 sm:py-20" style="background-color: var(--bg-surface);">
+      <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="font-[var(--font-display)] text-2xl sm:text-3xl text-[var(--fg)] mb-4">
+          De opname van vanavond
+        </h2>
+        <p class="text-[var(--fg-muted)] mb-6">
+          Download de live-opname van dit huiskamerconcert. Deze link is 30 dagen geldig.
+        </p>
+        <a
+          href={show.bootlegUrl}
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-medium transition-colors duration-300"
+          style="background-color: var(--color-gold);"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          Download opname
+        </a>
+        {show.bootlegFileSize && (
+          <p class="text-sm text-[var(--fg-muted)] mt-2">{show.bootlegFileSize}</p>
+        )}
+      </div>
+    </section>
+  )}
+
+  {/* CTA: boek zelf een huiskamerconcert (fase 1 only) */}
+  {!isPhase2 && <ShowCTA />}
+
+  {/* Client-side: email-gate form handler + fase check */}
+  <script define:vars={{ startDateTime: show.startDateTime, showId: show._id }}>
+    // Email-gate form handler
+    const form = document.getElementById('signup-form');
+    const errorEl = document.getElementById('form-error');
+    const successEl = document.getElementById('form-success');
+
+    // Check of gebruiker al door de gate is
+    const stored = localStorage.getItem(`show-gate-${showId}`);
+    if (stored && form) {
+      const parsed = JSON.parse(stored);
+      const gate = document.getElementById('email-gate');
+      if (gate) {
+        gate.innerHTML = `<p class="text-lg text-[var(--fg)]">Welkom terug, ${parsed.firstName}!</p>`;
+      }
+    }
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = {
+          showId: showId,
+          firstName: formData.get('firstName'),
+          email: formData.get('email'),
+          message: formData.get('message') || undefined,
+          honeypot: formData.get('website')
+        };
+
+        errorEl.classList.add('hidden');
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Even geduld...';
+
+        try {
+          const res = await fetch('/api/show/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          if (!res.ok) {
+            const result = await res.json();
+            throw new Error(result.error || 'Er ging iets mis');
+          }
+
+          localStorage.setItem(`show-gate-${showId}`, JSON.stringify({
+            firstName: data.firstName,
+            email: data.email
+          }));
+
+          const gate = document.getElementById('email-gate');
+          gate.innerHTML = `
+            <div class="text-center">
+              <p class="text-lg text-[var(--fg)] mb-2">Bedankt, ${data.firstName}!</p>
+              <p class="text-[var(--fg-muted)]">Je ontvangt een bevestiging per mail.</p>
+            </div>
+          `;
+        } catch (err) {
+          errorEl.textContent = err.message;
+          errorEl.classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = 'Verstuur';
+        }
+      });
+    }
+
+    // Fase-switch check: als pagina geladen vóór starttijd, herlaad op starttijd
+    const startTime = new Date(startDateTime);
+    if (new Date() < startTime) {
+      const checkInterval = setInterval(() => {
+        if (new Date() >= startTime) {
+          clearInterval(checkInterval);
+          window.location.reload();
+        }
+      }, 60000);
+    }
+  </script>
+</BaseLayout>

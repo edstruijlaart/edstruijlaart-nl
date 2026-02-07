@@ -1,0 +1,38 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+  reviews?: Array<{ quote: string; author: string }>;
+}
+
+const { reviews } = Astro.props;
+
+const defaultReviews = [
+  { quote: 'Dit huiskamerconcert vergeet ik nooit meer. Ed weet een sfeer te creëren die je raakt.', author: 'Gast uit Amsterdam' },
+  { quote: 'Intiem, ontroerend en vol humor. Precies wat muziek zou moeten zijn.', author: 'Gast uit Utrecht' },
+  { quote: 'Van de eerste tot de laatste noot had Ed het hele publiek in zijn zak.', author: 'Gast uit Den Haag' },
+];
+
+const displayReviews = reviews && reviews.length > 0 ? reviews : defaultReviews;
+---
+
+<section class="py-16 sm:py-24" style="background-color: var(--bg-surface);">
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+    <SectionHeading title="Wat gasten zeggen" />
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      {displayReviews.map(review => (
+        <div
+          class="p-6 rounded-xl border-l-4 border-[var(--color-gold)]"
+          style="background-color: var(--bg); box-shadow: var(--shadow-card);"
+        >
+          <blockquote class="text-base text-[var(--fg-muted)] leading-relaxed italic">
+            "{review.quote}"
+          </blockquote>
+          <p class="mt-4 text-sm font-medium text-[var(--color-gold)]">
+            — {review.author}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

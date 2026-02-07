@@ -1,0 +1,42 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+  spotifyEmbed?: string;
+}
+
+const { spotifyEmbed } = Astro.props;
+
+const defaultUri = '08cpwYrPWo8Xkxl9qdiDP2';
+const defaultType = 'artist';
+
+function parseSpotifyUrl(url: string): { type: string; id: string } | null {
+  const match = url.match(/open\.spotify\.com\/(artist|album|playlist|track)\/([a-zA-Z0-9]+)/);
+  if (match) return { type: match[1], id: match[2] };
+  return null;
+}
+
+const parsed = spotifyEmbed ? parseSpotifyUrl(spotifyEmbed) : null;
+const embedType = parsed?.type || defaultType;
+const embedId = parsed?.id || defaultUri;
+---
+
+<section class="py-16 sm:py-24">
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+    <SectionHeading title="Luister op Spotify" />
+    <div class="max-w-2xl mx-auto mt-8">
+      <div class="rounded-xl overflow-hidden">
+        <iframe
+          src={`https://open.spotify.com/embed/${embedType}/${embedId}?theme=0`}
+          width="100%"
+          height="380"
+          frameborder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+          title="Spotify Player"
+          style="border-radius: 0.75rem;"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
