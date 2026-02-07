@@ -2,11 +2,9 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 
-// Listmonk configuration
-const LISTMONK_URL = import.meta.env.LISTMONK_URL
-  ? `${import.meta.env.LISTMONK_URL}/api/public/subscription`
-  : 'https://newsletter.earswantmusic.nl/api/public/subscription';
-const LIST_UUID = import.meta.env.LISTMONK_LIST_UUID || '681b5ef7-29cc-4be5-a0c7-6d8453f26cc8';
+// Listmonk public API via Cloudflare tunnel
+const LISTMONK_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
+const LIST_UUID = '681b5ef7-29cc-4be5-a0c7-6d8453f26cc8'; // Ed Struijlaart Nieuwsbrief
 
 export const POST: APIRoute = async ({ request }) => {
   const body = await request.json();

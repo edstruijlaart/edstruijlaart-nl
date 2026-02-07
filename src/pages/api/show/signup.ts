@@ -78,30 +78,16 @@ export const POST: APIRoute = async ({ request }) => {
 };
 
 async function syncToListmonk(firstName: string, email: string, show: any) {
-  const LISTMONK_URL = import.meta.env.LISTMONK_URL;
-  const LISTMONK_USER = import.meta.env.LISTMONK_USER;
-  const LISTMONK_PASS = import.meta.env.LISTMONK_PASS;
-  const LISTMONK_LIST_ID = parseInt(import.meta.env.LISTMONK_HK_LIST_ID || '9');
+  const LISTMONK_PUBLIC_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
+  const HK_LIST_UUID = '772c8bce-57f6-4537-ada4-2408b6a839da';
 
-  if (!LISTMONK_URL) return;
-
-  const auth = btoa(`${LISTMONK_USER}:${LISTMONK_PASS}`);
-
-  await fetch(`${LISTMONK_URL}/api/subscribers`, {
+  await fetch(LISTMONK_PUBLIC_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Basic ${auth}`,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       email,
       name: firstName,
-      status: 'enabled',
-      lists: [LISTMONK_LIST_ID],
-      attribs: {
-        show_slug: show.slug?.current,
-        signup_date: new Date().toISOString(),
-      },
+      list_uuids: [HK_LIST_UUID],
     }),
   });
 }
