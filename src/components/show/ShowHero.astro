@@ -1,12 +1,16 @@
 ---
+import imageUrlBuilder from '@sanity/image-url';
+import { sanityClient } from '../../lib/sanity';
+
 interface Props {
   title: string;
   city: string;
   startDateTime: string;
   hostName?: string;
+  heroImage?: any;
 }
 
-const { title, city, startDateTime, hostName } = Astro.props;
+const { title, city, startDateTime, hostName, heroImage } = Astro.props;
 
 const date = new Date(startDateTime);
 const dateStr = date.toLocaleDateString('nl-NL', {
@@ -18,11 +22,20 @@ const timeStr = date.toLocaleTimeString('nl-NL', {
   hour: '2-digit',
   minute: '2-digit',
 });
+
+const builder = imageUrlBuilder(sanityClient);
+const heroUrl = heroImage ? builder.image(heroImage).width(1600).quality(80).auto('format').url() : null;
 ---
 
-<section class="relative overflow-hidden py-20 sm:py-32" style="background: linear-gradient(135deg, #0F0F0F 0%, #1a1510 50%, #0F0F0F 100%);">
-  <!-- Gold glow -->
-  <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 80%, rgba(184,134,11,0.15) 0%, transparent 70%);"></div>
+<section class="relative overflow-hidden py-20 sm:py-32" style={heroUrl ? undefined : "background: linear-gradient(135deg, #0F0F0F 0%, #1a1510 50%, #0F0F0F 100%);"}>
+  {heroUrl ? (
+    <div class="absolute inset-0">
+      <img src={heroUrl} alt="" class="w-full h-full object-cover" />
+      <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(15,15,15,0.3) 0%, rgba(15,15,15,0.6) 50%, rgba(15,15,15,0.95) 100%);"></div>
+    </div>
+  ) : (
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 80%, rgba(184,134,11,0.15) 0%, transparent 70%);"></div>
+  )}
 
   <div class="relative mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 text-center">
     <p class="text-[#D4A843] font-medium tracking-wide uppercase text-sm mb-4">
