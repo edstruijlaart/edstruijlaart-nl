@@ -3,15 +3,22 @@ import SectionHeading from '../ui/SectionHeading.astro';
 
 interface Props {
   entries: Array<{ name: string; message: string; submittedAt: string }>;
+  photos?: Array<{ image: any; uploadedBy: string }>;
+  showId: string;
 }
 
-const { entries } = Astro.props;
+const { entries, photos = [], showId } = Astro.props;
 ---
 
-{entries.length > 0 && (
-  <section class="py-16 sm:py-24" style="background-color: var(--bg-surface);">
-    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-      <SectionHeading title="Gastenboek" subtitle={`${entries.length} bericht${entries.length === 1 ? '' : 'en'}`} />
+<section class="py-16 sm:py-24" style="background-color: var(--bg-surface);">
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+    <SectionHeading
+      title="Gastenboek"
+      subtitle={entries.length > 0 ? `${entries.length} bericht${entries.length === 1 ? '' : 'en'}` : 'Laat een herinnering achter'}
+    />
+
+    {/* Berichten */}
+    {entries.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 max-w-4xl mx-auto">
         {entries.map(entry => (
           <div
@@ -32,6 +39,145 @@ const { entries } = Astro.props;
           </div>
         ))}
       </div>
+    ) : (
+      <p class="text-center text-[var(--fg-muted)] mt-6">
+        Nog geen berichten. Vul het formulier hierboven in om een bericht achter te laten!
+      </p>
+    )}
+
+    {/* Foto's van gasten */}
+    {photos.length > 0 && (
+      <div class="mt-12">
+        <h3 class="font-[var(--font-display)] text-xl text-[var(--fg)] text-center mb-6">Foto's</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
+          {photos.map(photo => (
+            <div class="relative aspect-square rounded-lg overflow-hidden group">
+              <img
+                src={`${photo.image?.asset?._ref ? `https://cdn.sanity.io/images/q407odag/production/${photo.image.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp').replace('-jpeg', '.jpeg')}?w=400&h=400&fit=crop` : ''}`}
+                alt={`Foto door ${photo.uploadedBy || 'gast'}`}
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                loading="lazy"
+              />
+              {photo.uploadedBy && photo.uploadedBy !== 'Anoniem' && (
+                <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                  <p class="text-xs text-white/90 text-center">{photo.uploadedBy}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* Foto upload formulier */}
+    <div class="mt-12 max-w-md mx-auto text-center">
+      <h3 class="font-[var(--font-display)] text-xl text-[var(--fg)] mb-3">Deel een foto</h3>
+      <p class="text-sm text-[var(--fg-muted)] mb-4">Heb je een leuke foto gemaakt? Deel 'm hier!</p>
+      <form id="photo-upload-form" class="space-y-3" data-show-id={showId}>
+        <input
+          type="text"
+          name="uploadedBy"
+          placeholder="Je naam (optioneel)"
+          class="w-full px-4 py-3 rounded-lg border text-[var(--fg)] text-sm"
+          style="background-color: var(--bg); border-color: var(--fg-muted);"
+        />
+        <label
+          class="flex items-center justify-center gap-3 w-full px-4 py-4 rounded-lg border-2 border-dashed cursor-pointer transition-colors duration-200 hover:border-[var(--color-gold)]"
+          style="border-color: var(--fg-muted);"
+        >
+          <svg class="w-6 h-6 text-[var(--fg-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+          </svg>
+          <span class="text-sm text-[var(--fg-muted)]" id="photo-file-label">Kies een foto...</span>
+          <input type="file" name="photo" accept="image/*" class="hidden" id="photo-file-input" />
+        </label>
+        <p id="photo-error" class="text-red-500 text-sm hidden"></p>
+        <p id="photo-success" class="text-green-500 text-sm hidden"></p>
+        <button
+          type="submit"
+          id="photo-submit-btn"
+          disabled
+          class="w-full px-6 py-3 rounded-full text-white font-medium transition-colors duration-300 disabled:opacity-40"
+          style="background-color: var(--color-gold);"
+        >
+          Upload foto
+        </button>
+      </form>
     </div>
-  </section>
-)}
+  </div>
+</section>
+
+<script>
+  // Foto bestandsnaam tonen
+  const fileInput = document.getElementById('photo-file-input') as HTMLInputElement;
+  const fileLabel = document.getElementById('photo-file-label');
+  const submitBtn = document.getElementById('photo-submit-btn') as HTMLButtonElement;
+
+  if (fileInput) {
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files.length > 0) {
+        fileLabel!.textContent = fileInput.files[0].name;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  // Foto upload handler
+  const photoForm = document.getElementById('photo-upload-form') as HTMLFormElement;
+  const photoError = document.getElementById('photo-error');
+  const photoSuccess = document.getElementById('photo-success');
+
+  if (photoForm) {
+    photoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      photoError!.classList.add('hidden');
+      photoSuccess!.classList.add('hidden');
+
+      const formData = new FormData();
+      const showId = photoForm.dataset.showId!;
+      const nameInput = photoForm.querySelector('input[name="uploadedBy"]') as HTMLInputElement;
+      const fileInput = photoForm.querySelector('input[name="photo"]') as HTMLInputElement;
+
+      if (!fileInput.files || !fileInput.files[0]) return;
+
+      const file = fileInput.files[0];
+      if (file.size > 10 * 1024 * 1024) {
+        photoError!.textContent = 'Foto is te groot (max 10MB)';
+        photoError!.classList.remove('hidden');
+        return;
+      }
+
+      formData.append('showId', showId);
+      formData.append('uploadedBy', nameInput.value || 'Anoniem');
+      formData.append('photo', file);
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Uploaden...';
+
+      try {
+        const res = await fetch('/api/show/photo', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const result = await res.json();
+          throw new Error(result.error || 'Upload mislukt');
+        }
+
+        photoSuccess!.textContent = 'Foto geüpload! Ververs de pagina om hem te zien.';
+        photoSuccess!.classList.remove('hidden');
+        photoForm.reset();
+        submitBtn.textContent = 'Upload foto';
+        submitBtn.disabled = true;
+        if (fileLabel) fileLabel.textContent = 'Kies een foto...';
+      } catch (err: any) {
+        photoError!.textContent = err.message;
+        photoError!.classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Upload foto';
+      }
+    });
+  }
+</script>
