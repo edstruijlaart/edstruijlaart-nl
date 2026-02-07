@@ -43,9 +43,8 @@ export const GET: APIRoute = async ({ request }) => {
         slug,
         bootlegUrl,
         bootlegExpiresAt,
-        spotifyPlaylistUrl,
-        setlist[]->{ title, artist, isOriginal },
-        youtubeVideos[0] { url }
+        youtubeVideos[0] { url },
+        "heroImageUrl": heroImage.asset->url
       }
     `, { twelveHoursAgo, fortyEightHoursAgo });
 
@@ -92,22 +91,27 @@ export const GET: APIRoute = async ({ request }) => {
 
       // Verstuur mail per subscriber
       for (const signup of signups) {
+        // Hero image URL met resize parameters
+        const heroImageUrl = show.heroImageUrl
+          ? `${show.heroImageUrl}?w=600&q=80`
+          : undefined;
+
         const { subject, html } = buildReminderEmail({
           firstName: signup.firstName,
           city: show.city,
           hostName: show.hostName,
           bootlegUrl: show.bootlegUrl,
           bootlegExpiresAt: show.bootlegExpiresAt,
-          setlist: show.setlist,
-          spotifyPlaylistUrl: show.spotifyPlaylistUrl,
           showSlug,
           youtubeVideoId,
+          heroImageUrl,
         });
 
         try {
           await resend.emails.send({
             from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
             to: signup.email,
+            bcc: 'edstruijlaart@gmail.com',
             subject,
             html,
           });

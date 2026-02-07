@@ -7,8 +7,8 @@ interface Props {
 
 const { spotifyEmbed } = Astro.props;
 
-const defaultUri = '08cpwYrPWo8Xkxl9qdiDP2';
-const defaultType = 'artist';
+const defaultUri = '5ZoRiQK1FP8OXrKRuPp56J';
+const defaultType = 'playlist';
 
 function parseSpotifyUrl(url: string): { type: string; id: string } | null {
   const match = url.match(/open\.spotify\.com\/(artist|album|playlist|track)\/([a-zA-Z0-9]+)/);

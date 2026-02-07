@@ -9,14 +9,15 @@ interface ReminderMailData {
   hostName?: string;
   bootlegUrl?: string;
   bootlegExpiresAt?: string;
-  setlist?: Array<{ title: string; artist: string; isOriginal: boolean }>;
-  spotifyPlaylistUrl?: string;
   showSlug: string;
   youtubeVideoId?: string;
+  heroImageUrl?: string;
 }
 
 const DEFAULT_YOUTUBE_VIDEO = 'GBx2WfYluWE';
 const SITE_URL = 'https://edstruijlaart.nl';
+const BOOKING_URL = 'https://boeken.edstruijlaart.nl';
+const SPOTIFY_URL = 'https://open.spotify.com/playlist/5ZoRiQK1FP8OXrKRuPp56J?si=246e0e5952c04078';
 
 export function buildReminderEmail(data: ReminderMailData): { subject: string; html: string } {
   const {
@@ -25,15 +26,13 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
     hostName,
     bootlegUrl,
     bootlegExpiresAt,
-    setlist,
-    spotifyPlaylistUrl,
     showSlug,
     youtubeVideoId,
+    heroImageUrl,
   } = data;
 
   const videoId = youtubeVideoId || DEFAULT_YOUTUBE_VIDEO;
   const showUrl = `${SITE_URL}/shows/${showSlug}`;
-  const bookingUrl = `${SITE_URL}/contact`;
 
   const subject = bootlegUrl
     ? `De opname van ${city} — jouw herinneringspakket 🎵`
@@ -68,50 +67,34 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
     </tr>`
     : '';
 
-  // Setlist sectie
-  const setlistSection =
-    setlist && setlist.length > 0
-      ? `
+  // Spotify sectie
+  const spotifySection = `
     <tr>
       <td style="padding: 0 32px 32px;">
-        <p style="color: #D4A843; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 16px;">📋 Setlist</p>
-        <table width="100%" cellpadding="0" cellspacing="0">
-          ${setlist
-            .map(
-              (song, i) => `
-          <tr>
-            <td style="padding: 8px 0; border-bottom: 1px solid #2a2a2a;">
-              <span style="color: #D4A843; font-size: 14px; display: inline-block; width: 28px;">${i + 1}.</span>
-              <span style="color: #F0EDE8; font-size: 15px; font-weight: 500;">${song.title}</span>
-              <span style="color: #9B9B9B; font-size: 14px;"> — ${song.isOriginal ? 'Ed Struijlaart' : song.artist}</span>
-            </td>
-          </tr>`
-            )
-            .join('')}
-        </table>
-        ${
-          spotifyPlaylistUrl
-            ? `
-        <table cellpadding="0" cellspacing="0" style="margin-top: 20px;">
+        <p style="color: #D4A843; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 12px;">🎧 Luister naar mijn muziek</p>
+        <p style="color: #F0EDE8; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+          Luister naar mijn muziek op Spotify — van eigen nummers tot covers die je vanavond hebt gehoord.
+        </p>
+        <table cellpadding="0" cellspacing="0">
           <tr>
             <td style="background-color: #1DB954; border-radius: 9999px;">
-              <a href="${spotifyPlaylistUrl}" style="display: inline-block; padding: 12px 28px; color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none;">
-                🎧 Luister de playlist op Spotify
+              <a href="${SPOTIFY_URL}" style="display: inline-block; padding: 12px 28px; color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none;">
+                Luister op Spotify
               </a>
             </td>
           </tr>
-        </table>`
-            : ''
-        }
+        </table>
       </td>
-    </tr>`
-      : '';
+    </tr>`;
 
   // Video sectie
   const videoSection = `
     <tr>
       <td style="padding: 0 32px 32px;">
-        <p style="color: #D4A843; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 16px;">🎬 Bekijk de video</p>
+        <p style="color: #D4A843; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 12px;">🎬 Bekijk de video</p>
+        <p style="color: #F0EDE8; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+          Muziek brengt mij altijd op de meest toffe (en vreemde!) plekken. Zie hier mijn optreden in een luchtballon LIVE op Radio 538.
+        </p>
         <a href="https://www.youtube.com/watch?v=${videoId}" style="display: block; text-decoration: none;">
           <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="Bekijk video van Ed Struijlaart" style="width: 100%; max-width: 520px; border-radius: 8px; display: block;" />
         </a>
@@ -160,12 +143,21 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
             </td>
           </tr>
 
+          ${heroImageUrl ? `
+          <!-- Hero Image -->
+          <tr>
+            <td style="padding: 0 0 32px;">
+              <img src="${heroImageUrl}" alt="Huiskamerconcert ${city}" style="width: 100%; max-width: 600px; border-radius: 12px; display: block;" />
+            </td>
+          </tr>
+          ` : `
           <!-- Divider -->
           <tr>
             <td style="padding: 0 32px 32px;">
               <div style="height: 1px; background: linear-gradient(to right, transparent, #D4A843, transparent);"></div>
             </td>
           </tr>
+          `}
 
           <!-- Greeting -->
           <tr>
@@ -181,7 +173,7 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
           </tr>
 
           ${bootlegSection}
-          ${setlistSection}
+          ${spotifySection}
           ${videoSection}
           ${guestbookSection}
 
@@ -204,7 +196,7 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
               <table cellpadding="0" cellspacing="0" align="center">
                 <tr>
                   <td style="background-color: #B8860B; border-radius: 9999px;">
-                    <a href="${bookingUrl}" style="display: inline-block; padding: 14px 32px; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none;">
+                    <a href="${BOOKING_URL}" style="display: inline-block; padding: 14px 32px; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none;">
                       Boek een huiskamerconcert
                     </a>
                   </td>

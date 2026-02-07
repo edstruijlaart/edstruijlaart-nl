@@ -1,4 +1,6 @@
 ---
+export const prerender = false;
+
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHeading from '../../components/ui/SectionHeading.astro';
 import ShowList from '../../components/sections/ShowList.astro';
@@ -6,6 +8,9 @@ import Button from '../../components/ui/Button.astro';
 import { Image } from 'astro:assets';
 import { tours } from '../../data/tours';
 import huiskamerImg from '../../assets/photos/ed-struijlaart-lachend-gitaar.jpg';
+
+// ISR: herrender deze pagina elk uur
+Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
 
 // Import theater posters
 const posterImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/theater/*.{jpg,jpeg,png}', { eager: true });
