@@ -170,9 +170,11 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
     </section>
   )}
 
-  {/* Gastenboek + foto's (direct na email-gate, bovenin) */}
+  {/* Gastenboek + foto's (verborgen tot na email-gate, ontgrendeld via JS) */}
   {isPhase2 && (
-    <Guestbook entries={show.guestbookEntries || []} photos={show.guestPhotos || []} showId={show._id} />
+    <div id="guestbook-section" class="hidden">
+      <Guestbook entries={show.guestbookEntries || []} photos={show.guestPhotos || []} showId={show._id} />
+    </div>
   )}
 
   {/* Fase 1: promo content (videos, spotify, reviews, praktisch) */}
@@ -293,6 +295,12 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
 
   {/* Client-side: email-gate form handler + fase check */}
   <script define:vars={{ startDateTime: show.startDateTime, showId: show._id }}>
+    // Gastenboek ontgrendelen
+    function unlockGuestbook() {
+      const gb = document.getElementById('guestbook-section');
+      if (gb) gb.classList.remove('hidden');
+    }
+
     // Email-gate form handler
     const form = document.getElementById('signup-form');
     const errorEl = document.getElementById('form-error');
@@ -306,6 +314,7 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
       if (gate) {
         gate.innerHTML = `<p class="text-lg text-[var(--fg)]">Welkom terug, ${parsed.firstName}!</p>`;
       }
+      unlockGuestbook();
     }
 
     if (form) {
@@ -346,9 +355,10 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
           gate.innerHTML = `
             <div class="text-center">
               <p class="text-lg text-[var(--fg)] mb-2">Bedankt, ${data.firstName}!</p>
-              <p class="text-[var(--fg-muted)]">Je ontvangt een bevestiging per mail.</p>
+              <p class="text-[var(--fg-muted)]">Scroll naar beneden om het gastenboek te zien en foto's te delen.</p>
             </div>
           `;
+          unlockGuestbook();
         } catch (err) {
           errorEl.textContent = err.message;
           errorEl.classList.remove('hidden');
