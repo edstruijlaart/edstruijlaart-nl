@@ -43,7 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
           asset: { _type: 'reference', _ref: asset._id },
         },
         uploadedBy: uploadedBy.trim().slice(0, 100),
-        approved: false,
+        approved: true,
         uploadedAt: new Date().toISOString(),
       }])
       .commit();
