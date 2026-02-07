@@ -47,15 +47,18 @@ export const POST: APIRoute = async ({ request }) => {
     const contentType = request.headers.get('content-type') || '';
 
     if (contentType.includes('application/json')) {
-      // Mode 2: Audio URL meegegeven (bestand is al geüpload naar Sanity via directe upload)
+      // Mode 2: Audio URL of heel Sanity asset response meegegeven
       const body = await request.json();
-      audioUrl = body.audioUrl;
+
+      // Accepteer directe audioUrl OF hele Sanity asset response (document.url)
+      audioUrl = body.audioUrl || body.document?.url || body.url || '';
 
       if (!audioUrl || !audioUrl.includes('sanity.io')) {
-        return new Response(JSON.stringify({ error: 'Ongeldige audioUrl' }), { status: 400, headers: corsHeaders });
+        return new Response(JSON.stringify({ error: 'Ongeldige audioUrl', received: body }), { status: 400, headers: corsHeaders });
       }
 
-      fileSize = body.fileSize || '';
+      const sizeBytes = body.document?.size;
+      fileSize = body.fileSize || (sizeBytes ? `${(sizeBytes / 1024 / 1024).toFixed(1)} MB` : '');
     } else {
       // Mode 1: Audio bestand meegegeven (kleine bestanden, <4.5MB)
       const formData = await request.formData();
