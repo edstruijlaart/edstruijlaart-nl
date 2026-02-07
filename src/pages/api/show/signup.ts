@@ -79,7 +79,7 @@ export const POST: APIRoute = async ({ request }) => {
 
 async function syncToListmonk(firstName: string, email: string, show: any) {
   const LISTMONK_PUBLIC_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
-  const HK_LIST_UUID = '772c8bce-57f6-4537-ada4-2408b6a839da';
+  const HK_LIST_UUID = 'ebeb2dbf-bec2-4256-9952-329bb030d734'; // Huiskamerlijst op locatie
 
   await fetch(LISTMONK_PUBLIC_URL, {
     method: 'POST',
