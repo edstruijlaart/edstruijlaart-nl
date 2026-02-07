@@ -16,24 +16,16 @@ export const OPTIONS: APIRoute = async () => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
-  // CORS headers voor response (iOS Shortcuts stuurt geen Origin)
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
   };
 
   try {
-    // Auth check — API key zodat niet iedereen kan uploaden
+    // Auth check
     const apiKey = request.headers.get('x-api-key');
     if (apiKey !== import.meta.env.BOOTLEG_API_KEY) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders });
-    }
-
-    const formData = await request.formData();
-    const audio = formData.get('audio') as File;
-
-    if (!audio) {
-      return new Response(JSON.stringify({ error: 'Geen audiobestand ontvangen' }), { status: 400, headers: corsHeaders });
     }
 
     // Vind de actieve show (starttijd < nu, status = live)
@@ -49,12 +41,39 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Geen actieve show gevonden' }), { status: 404, headers: corsHeaders });
     }
 
-    // Upload audio naar Sanity assets (als file)
-    const buffer = Buffer.from(await audio.arrayBuffer());
-    const asset = await sanityWriteClient.assets.upload('file', buffer, {
-      filename: `bootleg-${show.slug?.current || show.city}-${new Date(show.startDateTime).toISOString().split('T')[0]}.m4a`,
-      contentType: audio.type || 'audio/mp4',
-    });
+    let audioUrl: string;
+    let fileSize = '';
+
+    const contentType = request.headers.get('content-type') || '';
+
+    if (contentType.includes('application/json')) {
+      // Mode 2: Audio URL meegegeven (bestand is al geüpload naar Sanity via directe upload)
+      const body = await request.json();
+      audioUrl = body.audioUrl;
+
+      if (!audioUrl || !audioUrl.includes('sanity.io')) {
+        return new Response(JSON.stringify({ error: 'Ongeldige audioUrl' }), { status: 400, headers: corsHeaders });
+      }
+
+      fileSize = body.fileSize || '';
+    } else {
+      // Mode 1: Audio bestand meegegeven (kleine bestanden, <4.5MB)
+      const formData = await request.formData();
+      const audio = formData.get('audio') as File;
+
+      if (!audio) {
+        return new Response(JSON.stringify({ error: 'Geen audiobestand ontvangen' }), { status: 400, headers: corsHeaders });
+      }
+
+      const buffer = Buffer.from(await audio.arrayBuffer());
+      const asset = await sanityWriteClient.assets.upload('file', buffer, {
+        filename: `bootleg-${show.slug?.current || show.city}-${new Date(show.startDateTime).toISOString().split('T')[0]}.m4a`,
+        contentType: audio.type || 'audio/mp4',
+      });
+
+      audioUrl = asset.url;
+      fileSize = `${(audio.size / 1024 / 1024).toFixed(1)} MB`;
+    }
 
     // Update show in Sanity met bootleg URL
     const expiresAt = new Date();
@@ -63,16 +82,16 @@ export const POST: APIRoute = async ({ request }) => {
     await sanityWriteClient
       .patch(show._id)
       .set({
-        bootlegUrl: asset.url,
+        bootlegUrl: audioUrl,
         bootlegExpiresAt: expiresAt.toISOString(),
-        bootlegFileSize: `${(audio.size / 1024 / 1024).toFixed(1)} MB`,
+        ...(fileSize ? { bootlegFileSize: fileSize } : {}),
       })
       .commit();
 
     return new Response(JSON.stringify({
       success: true,
       show: show.city,
-      url: asset.url,
+      url: audioUrl,
     }), {
       status: 200,
       headers: corsHeaders,
