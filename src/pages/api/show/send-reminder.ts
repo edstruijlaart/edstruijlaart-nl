@@ -69,8 +69,8 @@ export const GET: APIRoute = async ({ request }) => {
 
       if (!signups || signups.length === 0) {
         results.push({ show: show.city, emails: 0, status: 'no_signups' });
-        // Markeer toch als verstuurd zodat we het niet opnieuw proberen
-        await sanityWriteClient.patch(show._id).set({ reminderSent: true }).commit();
+        // Markeer toch als verstuurd en zet op "past"
+        await sanityWriteClient.patch(show._id).set({ reminderSent: true, status: 'past' }).commit();
         continue;
       }
 
@@ -122,8 +122,9 @@ export const GET: APIRoute = async ({ request }) => {
         }
       }
 
-      // Markeer show als verstuurd
-      await sanityWriteClient.patch(show._id).set({ reminderSent: true }).commit();
+      // Markeer show als verstuurd en zet status op "past"
+      // (voorkomt dat deze show nog als "live" wordt gevonden door de bootleg endpoint)
+      await sanityWriteClient.patch(show._id).set({ reminderSent: true, status: 'past' }).commit();
 
       results.push({
         show: show.city,
