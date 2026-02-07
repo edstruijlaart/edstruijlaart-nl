@@ -17,9 +17,44 @@ const { entries, photos = [], showId } = Astro.props;
       subtitle={entries.length > 0 ? `${entries.length} bericht${entries.length === 1 ? '' : 'en'}` : 'Laat een herinnering achter'}
     />
 
+    {/* Bericht toevoegen formulier */}
+    <div class="max-w-lg mx-auto mt-8 mb-10">
+      <form id="guestbook-form" class="space-y-3" data-show-id={showId}>
+        <div class="flex gap-3">
+          <input
+            type="text"
+            name="name"
+            placeholder="Je naam"
+            required
+            class="flex-1 px-4 py-3 rounded-lg border text-[var(--fg)] text-sm"
+            style="background-color: var(--bg); border-color: var(--fg-muted);"
+          />
+        </div>
+        <textarea
+          name="message"
+          placeholder="Schrijf een bericht..."
+          required
+          maxlength="280"
+          rows="2"
+          class="w-full px-4 py-3 rounded-lg border text-[var(--fg)] text-sm"
+          style="background-color: var(--bg); border-color: var(--fg-muted);"
+        ></textarea>
+        <p id="gb-error" class="text-red-500 text-sm hidden"></p>
+        <p id="gb-success" class="text-green-500 text-sm hidden"></p>
+        <button
+          type="submit"
+          id="gb-submit-btn"
+          class="w-full px-6 py-3 rounded-full text-white font-medium transition-colors duration-300"
+          style="background-color: var(--color-gold);"
+        >
+          Plaats bericht
+        </button>
+      </form>
+    </div>
+
     {/* Berichten */}
-    {entries.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 max-w-4xl mx-auto">
+    {entries.length > 0 && (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
         {entries.map(entry => (
           <div
             class="p-5 rounded-xl"
@@ -39,10 +74,6 @@ const { entries, photos = [], showId } = Astro.props;
           </div>
         ))}
       </div>
-    ) : (
-      <p class="text-center text-[var(--fg-muted)] mt-6">
-        Nog geen berichten. Vul het formulier hierboven in om een bericht achter te laten!
-      </p>
     )}
 
     {/* Foto's van gasten */}
@@ -69,7 +100,7 @@ const { entries, photos = [], showId } = Astro.props;
       </div>
     )}
 
-    {/* Foto upload formulier */}
+    {/* Foto upload */}
     <div class="mt-12 max-w-md mx-auto text-center">
       <h3 class="font-[var(--font-display)] text-xl text-[var(--fg)] mb-3">Deel een foto</h3>
       <p class="text-sm text-[var(--fg-muted)] mb-4">Heb je een leuke foto gemaakt? Deel 'm hier!</p>
@@ -109,7 +140,67 @@ const { entries, photos = [], showId } = Astro.props;
 </section>
 
 <script>
-  // Foto bestandsnaam tonen
+  // === Gastenboek bericht formulier ===
+  const gbForm = document.getElementById('guestbook-form') as HTMLFormElement;
+  const gbError = document.getElementById('gb-error');
+  const gbSuccess = document.getElementById('gb-success');
+  const gbBtn = document.getElementById('gb-submit-btn') as HTMLButtonElement;
+
+  if (gbForm) {
+    // Vul naam automatisch in vanuit localStorage (als ze al door de gate zijn)
+    const showId = gbForm.dataset.showId!;
+    const stored = localStorage.getItem(`show-gate-${showId}`);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        const nameInput = gbForm.querySelector('input[name="name"]') as HTMLInputElement;
+        if (nameInput && parsed.firstName) {
+          nameInput.value = parsed.firstName;
+        }
+      } catch {}
+    }
+
+    gbForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      gbError!.classList.add('hidden');
+      gbSuccess!.classList.add('hidden');
+
+      const formData = new FormData(gbForm);
+      const name = (formData.get('name') as string)?.trim();
+      const message = (formData.get('message') as string)?.trim();
+
+      if (!name || !message) return;
+
+      gbBtn.disabled = true;
+      gbBtn.textContent = 'Even geduld...';
+
+      try {
+        const res = await fetch('/api/show/guestbook', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ showId, name, message }),
+        });
+
+        if (!res.ok) {
+          const result = await res.json();
+          throw new Error(result.error || 'Er ging iets mis');
+        }
+
+        gbSuccess!.textContent = 'Bericht geplaatst! Ververs de pagina om het te zien.';
+        gbSuccess!.classList.remove('hidden');
+        (gbForm.querySelector('textarea') as HTMLTextAreaElement).value = '';
+        gbBtn.disabled = false;
+        gbBtn.textContent = 'Plaats bericht';
+      } catch (err: any) {
+        gbError!.textContent = err.message;
+        gbError!.classList.remove('hidden');
+        gbBtn.disabled = false;
+        gbBtn.textContent = 'Plaats bericht';
+      }
+    });
+  }
+
+  // === Foto upload ===
   const fileInput = document.getElementById('photo-file-input') as HTMLInputElement;
   const fileLabel = document.getElementById('photo-file-label');
   const submitBtn = document.getElementById('photo-submit-btn') as HTMLButtonElement;
@@ -123,7 +214,6 @@ const { entries, photos = [], showId } = Astro.props;
     });
   }
 
-  // Foto upload handler
   const photoForm = document.getElementById('photo-upload-form') as HTMLFormElement;
   const photoError = document.getElementById('photo-error');
   const photoSuccess = document.getElementById('photo-success');
@@ -137,11 +227,11 @@ const { entries, photos = [], showId } = Astro.props;
       const formData = new FormData();
       const showId = photoForm.dataset.showId!;
       const nameInput = photoForm.querySelector('input[name="uploadedBy"]') as HTMLInputElement;
-      const fileInput = photoForm.querySelector('input[name="photo"]') as HTMLInputElement;
+      const fileEl = photoForm.querySelector('input[name="photo"]') as HTMLInputElement;
 
-      if (!fileInput.files || !fileInput.files[0]) return;
+      if (!fileEl.files || !fileEl.files[0]) return;
 
-      const file = fileInput.files[0];
+      const file = fileEl.files[0];
       if (file.size > 10 * 1024 * 1024) {
         photoError!.textContent = 'Foto is te groot (max 10MB)';
         photoError!.classList.remove('hidden');
