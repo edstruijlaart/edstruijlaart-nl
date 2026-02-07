@@ -34,7 +34,7 @@ const show = await sanityClient.fetch(`
     bootlegUrl,
     bootlegExpiresAt,
     guestbookEntries[approved == true] { name, message, submittedAt },
-    guestPhotos[approved == true] { image, uploadedBy },
+    guestPhotos[approved == true] { image, uploadedBy, uploadedAt, message },
     status,
     ticketUrl
   }

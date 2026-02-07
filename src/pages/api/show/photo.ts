@@ -8,6 +8,7 @@ export const POST: APIRoute = async ({ request }) => {
     const formData = await request.formData();
     const showId = formData.get('showId') as string;
     const uploadedBy = (formData.get('uploadedBy') as string) || 'Anoniem';
+    const message = (formData.get('message') as string)?.trim() || '';
     const photo = formData.get('photo') as File;
 
     if (!showId || !photo) {
@@ -43,6 +44,7 @@ export const POST: APIRoute = async ({ request }) => {
           asset: { _type: 'reference', _ref: asset._id },
         },
         uploadedBy: uploadedBy.trim().slice(0, 100),
+        message: message.slice(0, 280),
         approved: true,
         uploadedAt: new Date().toISOString(),
       }])

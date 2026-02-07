@@ -3,7 +3,7 @@ import SectionHeading from '../ui/SectionHeading.astro';
 
 interface Props {
   entries: Array<{ name: string; message: string; submittedAt: string }>;
-  photos?: Array<{ image: any; uploadedBy: string; uploadedAt?: string }>;
+  photos?: Array<{ image: any; uploadedBy: string; uploadedAt?: string; message?: string }>;
   showId: string;
 }
 
@@ -12,11 +12,32 @@ const { entries, photos = [], showId } = Astro.props;
 // Combineer berichten en foto's in een tijdlijn
 type TimelineItem =
   | { type: 'message'; name: string; message: string; time: string }
-  | { type: 'photo'; uploadedBy: string; imageRef: string; time: string };
+  | { type: 'photo'; uploadedBy: string; imageRef: string; time: string }
+  | { type: 'combo'; uploadedBy: string; imageRef: string; message: string; time: string };
 
 const timeline: TimelineItem[] = [];
 
+// Track welke berichten bij een foto horen (zelfde naam + dicht bij elkaar in tijd)
+const photoTimestamps = new Map<string, string[]>();
+for (const photo of photos) {
+  if (photo.message && photo.uploadedBy) {
+    // Foto heeft een bericht erbij — wordt combo
+    const key = `${photo.uploadedBy}|${photo.message}`;
+    if (!photoTimestamps.has(key)) photoTimestamps.set(key, []);
+    photoTimestamps.get(key)!.push(photo.uploadedAt || '');
+  }
+}
+
+// Entries die NIET bij een foto horen toevoegen
 for (const entry of entries) {
+  // Check of dit bericht al als combo bij een foto zit
+  const comboKey = `${entry.name}|${entry.message}`;
+  const matchingPhotoTimes = photoTimestamps.get(comboKey);
+  if (matchingPhotoTimes && matchingPhotoTimes.length > 0) {
+    // Dit bericht hoort bij een foto — skip, wordt combo
+    matchingPhotoTimes.shift(); // verbruik één match
+    continue;
+  }
   timeline.push({
     type: 'message',
     name: entry.name,
@@ -29,12 +50,25 @@ for (const photo of photos) {
   if (photo.image?.asset?._ref) {
     const ref = photo.image.asset._ref;
     const url = `https://cdn.sanity.io/images/q407odag/production/${ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp').replace('-jpeg', '.jpeg')}`;
-    timeline.push({
-      type: 'photo',
-      uploadedBy: photo.uploadedBy || 'Anoniem',
-      imageRef: url,
-      time: photo.uploadedAt || new Date().toISOString(),
-    });
+
+    if (photo.message) {
+      // Foto + bericht = combo
+      timeline.push({
+        type: 'combo',
+        uploadedBy: photo.uploadedBy || 'Anoniem',
+        imageRef: url,
+        message: photo.message,
+        time: photo.uploadedAt || new Date().toISOString(),
+      });
+    } else {
+      // Alleen foto
+      timeline.push({
+        type: 'photo',
+        uploadedBy: photo.uploadedBy || 'Anoniem',
+        imageRef: url,
+        time: photo.uploadedAt || new Date().toISOString(),
+      });
+    }
   }
 }
 
@@ -110,7 +144,7 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
       </form>
     </div>
 
-    {/* Tijdlijn — berichten en foto's gemixed */}
+    {/* Tijdlijn — berichten, foto's en combo's gemixed */}
     {timeline.length > 0 && (
       <div class="max-w-3xl mx-auto space-y-4" id="timeline">
         {timeline.map(item => (
@@ -125,6 +159,27 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
                 <span class="text-xs text-[var(--fg-muted)] ml-auto">
                   {new Date(item.time).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
                 </span>
+              </div>
+            </div>
+          ) : item.type === 'combo' ? (
+            <div class="rounded-2xl overflow-hidden transition-all duration-200 hover:translate-y-[-2px]" style="background-color: var(--bg); box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+              <img
+                src={`${item.imageRef}?w=800&q=80`}
+                alt={`Foto door ${item.uploadedBy}`}
+                class="w-full max-h-[500px] object-cover"
+                loading="lazy"
+              />
+              <div class="p-4 pt-3">
+                <p class="text-base text-[var(--fg)] leading-relaxed mb-3">{item.message}</p>
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium text-white" style="background-color: var(--color-gold);">
+                    {item.uploadedBy.charAt(0).toUpperCase()}
+                  </div>
+                  <span class="text-sm font-medium text-[var(--color-gold)]">{item.uploadedBy}</span>
+                  <span class="text-xs text-[var(--fg-muted)] ml-auto">
+                    {new Date(item.time).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
               </div>
             </div>
           ) : (
@@ -214,28 +269,27 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
       hideStatus();
 
       try {
-        // 1. Bericht plaatsen (als er tekst is)
-        if (message) {
-          const res = await fetch('/api/show/guestbook', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ showId, name, message }),
-          });
-          if (!res.ok) throw new Error('Bericht plaatsen mislukt');
-        }
-
-        // 2. Foto uploaden (als er een foto is)
         if (photo) {
+          // Foto (optioneel met bericht) — alles in één call
           const photoData = new FormData();
           photoData.append('showId', showId);
           photoData.append('uploadedBy', name);
           photoData.append('photo', photo);
+          if (message) photoData.append('message', message);
 
           const res = await fetch('/api/show/photo', {
             method: 'POST',
             body: photoData,
           });
           if (!res.ok) throw new Error('Foto uploaden mislukt');
+        } else if (message) {
+          // Alleen bericht, geen foto
+          const res = await fetch('/api/show/guestbook', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ showId, name, message }),
+          });
+          if (!res.ok) throw new Error('Bericht plaatsen mislukt');
         }
 
         showStatus('Geplaatst! De pagina ververst zo...', 'success');
