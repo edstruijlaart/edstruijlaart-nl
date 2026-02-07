@@ -191,16 +191,24 @@ export default {
         fields: [
           { name: 'image', title: 'Foto', type: 'image' },
           { name: 'uploadedBy', title: 'Geüpload door', type: 'string' },
+          { name: 'message', title: 'Bericht bij foto', type: 'text', rows: 2 },
           {
             name: 'approved',
             title: 'Goedgekeurd',
             type: 'boolean',
-            initialValue: false
+            initialValue: true
           },
           { name: 'uploadedAt', title: 'Geüpload op', type: 'datetime', readOnly: true }
-        ]
+        ],
+        preview: {
+          select: {
+            title: 'uploadedBy',
+            subtitle: 'message',
+            media: 'image'
+          }
+        }
       }],
-      description: 'Foto\'s van gasten. Keur ze goed om ze zichtbaar te maken.'
+      description: 'Foto\'s van gasten met optioneel bericht.'
     },
 
     // --- META ---

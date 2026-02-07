@@ -45,6 +45,7 @@ export const POST: APIRoute = async ({ request }) => {
       show: { _type: 'reference', _ref: showId },
       signedUpAt: new Date().toISOString(),
       syncedToListmonk: false,
+      source: 'email-gate',
     });
 
     // Gastenboek entry toevoegen (als er een bericht is)
