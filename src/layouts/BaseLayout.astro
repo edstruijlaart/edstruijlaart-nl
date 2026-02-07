@@ -12,6 +12,7 @@ interface Props {
   description?: string;
   ogImage?: string;
   type?: 'website' | 'article' | 'profile';
+  noIndex?: boolean;
 }
 
 const {
@@ -19,6 +20,7 @@ const {
   description = 'Ed Struijlaart — singer-songwriter, theatermaker en podcastmaker. Bekend van Gitaarmannen, NPO Radio 2 en Make It On Your Own.',
   ogImage = '/favicon.svg',
   type = 'website',
+  noIndex = false,
 } = Astro.props;
 
 const siteTitle = title === 'Home'
@@ -36,6 +38,7 @@ const canonicalUrl = Astro.url.href;
 
   <title>{siteTitle}</title>
   <meta name="description" content={description} />
+  {noIndex && <meta name="robots" content="noindex, nofollow" />}
   <link rel="canonical" href={canonicalUrl} />
 
   <!-- Open Graph -->
