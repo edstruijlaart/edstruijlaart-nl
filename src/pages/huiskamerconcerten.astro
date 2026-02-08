@@ -93,77 +93,77 @@ import hkGroep02 from '../assets/photos/huiskamer/hk-groep-02.jpg';
       </div>
 
       <!-- Masonry-style grid: 3 kolommen desktop, 2 mobile -->
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4" id="sfeer-grid">
         <!-- Rij 1: breed sfeerbeeld links (2 kolommen), staande foto rechts -->
-        <div class="col-span-2 row-span-1 rounded-xl overflow-hidden">
+        <button type="button" class="col-span-2 row-span-1 rounded-xl overflow-hidden cursor-pointer" data-lightbox="0" aria-label="Vergroot foto">
           <Image
             src={hkSfeer02}
             alt="Huiskamerconcert vanuit het publiek — warme sfeerverlichting, iedereen luistert aandachtig"
-            widths={[400, 800]}
+            widths={[400, 800, 1200]}
             sizes="(max-width: 768px) 100vw, 66vw"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             style="aspect-ratio: 3/2;"
             loading="lazy"
           />
-        </div>
-        <div class="col-span-1 row-span-2 rounded-xl overflow-hidden hidden md:block">
+        </button>
+        <button type="button" class="col-span-1 row-span-2 rounded-xl overflow-hidden hidden md:block cursor-pointer" data-lightbox="1" aria-label="Vergroot foto">
           <Image
             src={hkSfeer04}
             alt="Ed Struijlaart speelt gitaar in een huiskamer — staand portret met publiek op de voorgrond"
-            widths={[400, 800]}
+            widths={[400, 800, 1200]}
             sizes="33vw"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             loading="lazy"
           />
-        </div>
+        </button>
 
         <!-- Rij 2: twee kleinere sfeerbeelden -->
-        <div class="col-span-1 rounded-xl overflow-hidden">
+        <button type="button" class="col-span-1 rounded-xl overflow-hidden cursor-pointer" data-lightbox="2" aria-label="Vergroot foto">
           <Image
             src={hkSfeer01}
             alt="Ed Struijlaart speelt gitaar in een sfeervol verlichte huiskamer"
-            widths={[400, 800]}
+            widths={[400, 800, 1200]}
             sizes="(max-width: 768px) 50vw, 33vw"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             style="aspect-ratio: 3/2;"
             loading="lazy"
           />
-        </div>
-        <div class="col-span-1 rounded-xl overflow-hidden">
+        </button>
+        <button type="button" class="col-span-1 rounded-xl overflow-hidden cursor-pointer" data-lightbox="3" aria-label="Vergroot foto">
           <Image
             src={hkSfeer03}
             alt="Intieme huiskamerconcert setting met publiek rondom de artiest"
-            widths={[400, 800]}
+            widths={[400, 800, 1200]}
             sizes="(max-width: 768px) 50vw, 33vw"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             style="aspect-ratio: 3/2;"
             loading="lazy"
           />
-        </div>
+        </button>
 
         <!-- Rij 3: twee groepsfoto's breed -->
-        <div class="col-span-1 md:col-span-2 rounded-xl overflow-hidden">
+        <button type="button" class="col-span-1 md:col-span-2 rounded-xl overflow-hidden cursor-pointer" data-lightbox="4" aria-label="Vergroot foto">
           <Image
             src={hkGroep01}
             alt="Groepsfoto na een huiskamerconcert — publiek poseert samen met Ed"
-            widths={[400, 800]}
+            widths={[400, 800, 1200]}
             sizes="(max-width: 768px) 50vw, 66vw"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             style="aspect-ratio: 16/9;"
             loading="lazy"
           />
-        </div>
-        <div class="col-span-1 rounded-xl overflow-hidden">
+        </button>
+        <button type="button" class="col-span-1 rounded-xl overflow-hidden cursor-pointer" data-lightbox="5" aria-label="Vergroot foto">
           <Image
             src={hkGroep02}
             alt="Groepsfoto na een huiskamerconcert — gezellige groep in de huiskamer"
-            widths={[400, 800]}
+            widths={[400, 800, 1200]}
             sizes="(max-width: 768px) 50vw, 33vw"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             style="aspect-ratio: 16/9;"
             loading="lazy"
           />
-        </div>
+        </button>
       </div>
     </div>
   </section>
@@ -372,4 +372,156 @@ import hkGroep02 from '../assets/photos/huiskamer/hk-groep-02.jpg';
       </div>
     </div>
   </section>
+
+  <!-- Lightbox overlay -->
+  <div
+    id="lightbox"
+    class="fixed inset-0 hidden items-center justify-center"
+    style="z-index: 9999; background: rgba(0,0,0,0.92);"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Foto vergroting"
+  >
+    <!-- Sluiten -->
+    <button
+      id="lb-close"
+      type="button"
+      class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors z-10"
+      aria-label="Sluiten"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+
+    <!-- Vorige -->
+    <button
+      id="lb-prev"
+      type="button"
+      class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors z-10"
+      aria-label="Vorige foto"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+
+    <!-- Volgende -->
+    <button
+      id="lb-next"
+      type="button"
+      class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors z-10"
+      aria-label="Volgende foto"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </button>
+
+    <!-- Foto -->
+    <img
+      id="lb-img"
+      src=""
+      alt=""
+      class="max-h-[85vh] max-w-[90vw] object-contain rounded-lg select-none"
+      style="transition: opacity 0.2s ease;"
+    />
+
+    <!-- Teller -->
+    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/50 text-sm" id="lb-counter"></div>
+  </div>
+
+  <script>
+    function initLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+      const lbClose = document.getElementById('lb-close');
+      const lbPrev = document.getElementById('lb-prev');
+      const lbNext = document.getElementById('lb-next');
+      const lbCounter = document.getElementById('lb-counter');
+      if (!lightbox || !lbImg) return;
+
+      // Verzamel alle foto's uit de grid
+      const grid = document.getElementById('sfeer-grid');
+      if (!grid) return;
+      const buttons = Array.from(grid.querySelectorAll('[data-lightbox]'));
+      const photos: { src: string; alt: string }[] = [];
+
+      buttons.forEach(btn => {
+        const img = btn.querySelector('img');
+        if (img) {
+          // Pak de grootste srcset URL, of fallback naar src
+          let src = img.src;
+          if (img.srcset) {
+            const parts = img.srcset.split(',').map(s => s.trim());
+            const last = parts[parts.length - 1];
+            src = last.split(' ')[0];
+          }
+          photos.push({ src, alt: img.alt || '' });
+        }
+      });
+
+      let current = 0;
+
+      function show(index: number) {
+        current = (index + photos.length) % photos.length;
+        lbImg.style.opacity = '0';
+        setTimeout(() => {
+          lbImg.src = photos[current].src;
+          lbImg.alt = photos[current].alt;
+          lbImg.style.opacity = '1';
+        }, 100);
+        if (lbCounter) lbCounter.textContent = `${current + 1} / ${photos.length}`;
+      }
+
+      function open(index: number) {
+        show(index);
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function close() {
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+
+      // Klik op grid foto
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.getAttribute('data-lightbox') || '0');
+          open(idx);
+        });
+      });
+
+      // Controls
+      lbClose?.addEventListener('click', close);
+      lbPrev?.addEventListener('click', () => show(current - 1));
+      lbNext?.addEventListener('click', () => show(current + 1));
+
+      // Klik op achtergrond sluit
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) close();
+      });
+
+      // Keyboard
+      document.addEventListener('keydown', (e) => {
+        if (lightbox.classList.contains('hidden')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') show(current - 1);
+        if (e.key === 'ArrowRight') show(current + 1);
+      });
+
+      // Swipe support (mobile)
+      let touchStartX = 0;
+      lightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+      lightbox.addEventListener('touchend', (e) => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) show(current + 1);
+          else show(current - 1);
+        }
+      }, { passive: true });
+    }
+
+    initLightbox();
+    document.addEventListener('astro:after-swap', initLightbox);
+  </script>
 </BaseLayout>
