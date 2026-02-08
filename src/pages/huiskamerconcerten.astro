@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/ui/Button.astro';
+import FilmStrip from '../components/sections/FilmStrip.astro';
 import { Image } from 'astro:assets';
 
 import heroImg from '../assets/photos/ed-struijlaart-persfoto-liggend.jpg';
@@ -142,6 +143,9 @@ import portretImg from '../assets/photos/ed-struijlaart-raam.jpg';
       </div>
     </div>
   </section>
+
+  <!-- Wereldrecord filmstrip -->
+  <FilmStrip />
 
   <!-- Stat + quote -->
   <section class="py-16 md:py-20 relative overflow-hidden" style="background-color: var(--color-dark-bg);">

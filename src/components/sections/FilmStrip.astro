@@ -1,0 +1,175 @@
+---
+/**
+ * FilmStrip — CSS-only infinite scrolling photo strip.
+ * Photos are duplicated so the animation loops seamlessly.
+ * Zero JavaScript. Pauses on hover.
+ */
+
+const photos = [
+  'backatesa_Jufnatasja.jpg',
+  'backatesa_angela_mostert.jpg',
+  'backatesa_brenda_78.jpg',
+  'backatesa_c_elin_e.jpg',
+  'backatesa_carola_leenders.jpg',
+  'backatesa_christian.jpg',
+  'backatesa_coenspierings7.jpg',
+  'backatesa_coja.jpg',
+  'backatesa_dennis.jpg',
+  'backatesa_desnatas.jpg',
+  'backatesa_edwinenyvonne.jpg',
+  'backatesa_ellaverhoeks.jpg',
+  'backatesa_erikbatenburg.jpg',
+  'backatesa_erikvandermade.jpg',
+  'backatesa_evangils.jpg',
+  'backatesa_hansbreen.jpg',
+  'backatesa_hdenhoet.jpg',
+  'backatesa_j_tanis.jpg',
+  'backatesa_jaspervdberg.jpg',
+  'backatesa_joke.jpg',
+  'backatesa_jtheunis.jpg',
+  'backatesa_judith_blokzijl.jpg',
+  'backatesa_keithjarrod.jpg',
+  'backatesa_kimberleyroovers.jpg',
+  'backatesa_laurieoostveen.jpg',
+  'backatesa_lmholterman.jpg',
+  'backatesa_lotte_vanbeek.jpg',
+  'backatesa_luzannefoesenek.jpg',
+  'backatesa_m_louwman.jpg',
+  'backatesa_maaike.jpg',
+  'backatesa_martijngroeneveld.jpg',
+  'backatesa_mauri299.jpg',
+  'backatesa_mirandahoudijk.jpg',
+  'backatesa_monique.jpg',
+  'backatesa_nienkeveijk.jpg',
+  'backatesa_renebootsgezel.jpg',
+  'backatesa_ronald_1717.jpg',
+  'backatesa_t_spruitenburg.jpg',
+  'backatesa_thijs_degroen.jpg',
+  'backatesa_woudy.jpg',
+  'backatesa_yvonne_sprangers.jpg',
+];
+---
+
+<section class="py-16 md:py-24 overflow-hidden">
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 mb-8 text-center">
+    <p class="inline-flex items-center gap-2 text-sm font-medium uppercase tracking-wider" style="color: var(--color-gold);">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="7"/>
+        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+      </svg>
+      Wereldrecord
+    </p>
+    <h2 class="font-[var(--font-display)] text-2xl md:text-3xl mt-2">
+      44 huiskamerconcerten in één weekend
+    </h2>
+    <p class="mt-3 text-base max-w-2xl mx-auto" style="color: var(--fg-muted);">
+      In 2015 zette ik tijdens het Back at Sea festival een wereldrecord neer: 44 huiskamerconcerten in één weekend. Elk concert intiem, elk publiek uniek. Hieronder de foto's — van concert 1 tot en met 44.
+    </p>
+  </div>
+
+  <!-- Filmstrip container -->
+  <div class="filmstrip-container">
+    <div class="filmstrip-track">
+      {/* Eerste set */}
+      {photos.map((photo, i) => (
+        <img
+          src={`/images/backatesa/${photo}`}
+          alt={`Huiskamerconcert ${i + 1} van 44 — Back at Sea 2015`}
+          width="200"
+          height="133"
+          loading="lazy"
+          class="filmstrip-photo"
+        />
+      ))}
+      {/* Duplicaat voor naadloze loop */}
+      {photos.map((photo, i) => (
+        <img
+          src={`/images/backatesa/${photo}`}
+          alt=""
+          aria-hidden="true"
+          width="200"
+          height="133"
+          loading="lazy"
+          class="filmstrip-photo"
+        />
+      ))}
+    </div>
+  </div>
+
+  <p class="text-center mt-6 text-sm" style="color: var(--fg-muted);">
+    Back at Sea Festival, 2015
+  </p>
+</section>
+
+<style is:global>
+  .filmstrip-container {
+    width: 100%;
+    overflow: hidden;
+    /* Subtiele filmrol-schaduw aan de randen */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+  }
+
+  .filmstrip-track {
+    display: flex;
+    gap: 6px;
+    width: max-content;
+    animation: filmstrip-scroll 60s linear infinite;
+  }
+
+  .filmstrip-container:hover .filmstrip-track {
+    animation-play-state: paused;
+  }
+
+  .filmstrip-photo {
+    width: 200px;
+    height: 133px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  @keyframes filmstrip-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      /* 41 foto's × (200px + 6px gap) = 8446px → scroll precies 1 set */
+      transform: translateX(calc(-41 * (200px + 6px)));
+    }
+  }
+
+  /* Langzamer op mobile voor betere leesbaarheid */
+  @media (max-width: 768px) {
+    .filmstrip-photo {
+      width: 160px;
+      height: 107px;
+    }
+    .filmstrip-track {
+      gap: 4px;
+      animation-duration: 50s;
+    }
+    @keyframes filmstrip-scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-41 * (160px + 4px)));
+      }
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .filmstrip-track {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .filmstrip-container {
+      -webkit-mask-image: none;
+      mask-image: none;
+      overflow-x: auto;
+    }
+  }
+</style>
