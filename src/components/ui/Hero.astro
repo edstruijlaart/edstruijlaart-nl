@@ -8,6 +8,8 @@ interface Props {
   images?: ImageMetadata[];
   image?: ImageMetadata;
   imageAlt?: string;
+  /** Per-image object-position for mobile, e.g. ['center', 'left', 'left', 'center'] */
+  imagePositions?: string[];
   height?: 'full' | 'large' | 'medium';
   ctaPrimary?: { label: string; href: string };
   ctaSecondary?: { label: string; href: string };
@@ -20,6 +22,7 @@ const {
   images,
   image,
   imageAlt = 'Ed Struijlaart',
+  imagePositions,
   height = 'large',
   ctaPrimary,
   ctaSecondary,
@@ -52,6 +55,7 @@ const hasMultipleImages = heroImages.length > 1;
         widths={[640, 1024, 1920]}
         sizes="100vw"
         class="w-full h-full object-cover"
+        style={imagePositions?.[i] ? `object-position: ${imagePositions[i]}` : undefined}
         loading={i === 0 ? "eager" : "lazy"}
         fetchpriority={i === 0 ? "high" : undefined}
       />
