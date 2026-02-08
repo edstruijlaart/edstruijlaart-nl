@@ -19,6 +19,6 @@ Soms speel ik liedjes uit mijn Gitaarmannen-theatershows, soms mijn eigen werk. 
 
 Ik speel in principe helemaal akoestisch, maar kan als het nodig is ook geluid meenemen. Jij hoeft alleen te zorgen voor een ruimte en een publiek.
 
-Geschikt voor verjaardagen, jubilea, afscheid, of gewoon omdat je iets wilt vieren. Groepen van 20 tot 80 personen. Intiem, persoonlijk en dichtbij.
+Geschikt voor verjaardagen, jubilea, afscheid, of gewoon omdat je iets wilt vieren. Groepen van 10 tot 50 personen. Intiem, persoonlijk en dichtbij.
 
 Nieuwsgierig? Boek direct via [boeken.edstruijlaart.nl](https://boeken.edstruijlaart.nl) of neem contact op via ed@earswantmusic.nl.
