@@ -96,8 +96,12 @@ export const GET: APIRoute = async ({ request }) => {
       let sentCount = 0;
       let errorCount = 0;
 
-      // Verstuur mail per subscriber
+      // Verstuur mail per subscriber (met 1s delay om Resend rate limit te respecteren)
       for (const signup of signups) {
+        // Wacht 1 seconde tussen mails (Resend free tier: max 2 req/s)
+        if (sentCount > 0 || errorCount > 0) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
         // Hero image URL met resize parameters
         const heroImageUrl = show.heroImageUrl
           ? `${show.heroImageUrl}?w=600&q=80`
