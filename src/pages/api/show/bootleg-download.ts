@@ -73,21 +73,23 @@ export const GET: APIRoute = async ({ url, request }) => {
         console.error('Failed to increment bootleg download counter:', err);
       });
 
-    // Detect mobiel vs desktop via User-Agent
-    // Mobiel: redirect zonder ?dl= → iOS/Android geeft keuze luisteren/downloaden
-    // Desktop: redirect met ?dl= → forceer download (anders probeert browser 365MB te streamen)
+    // Detect iOS vs rest via User-Agent
+    // iOS (iPhone/iPad/iPod): redirect zonder ?dl= → Safari toont luister/download keuzemenu
+    // Android + Desktop: redirect met ?dl= → forceer download
+    //   Android Chrome streamt anders 365MB inline (content-disposition: inline faalt)
+    //   Desktop browsers proberen ook te streamen zonder ?dl=
     const userAgent = request.headers.get('user-agent') || '';
-    const isMobile = /iPhone|iPad|iPod|Android|Mobile/i.test(userAgent);
+    const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
 
     const slug = show.slug?.current || show.city?.toLowerCase().replace(/\s+/g, '-') || 'opname';
     const downloadFilename = `bootleg-${slug}.m4a`;
 
     let downloadUrl: string;
-    if (isMobile) {
-      // Mobiel: geen ?dl= → content-disposition: inline → OS geeft luister/download keuze
+    if (isIOS) {
+      // iOS: geen ?dl= → content-disposition: inline → Safari toont luister/download keuze
       downloadUrl = show.bootlegUrl;
     } else {
-      // Desktop: ?dl= → content-disposition: attachment → direct downloaden
+      // Android + Desktop: ?dl= → content-disposition: attachment → direct downloaden
       const separator = show.bootlegUrl.includes('?') ? '&' : '?';
       downloadUrl = `${show.bootlegUrl}${separator}dl=${encodeURIComponent(downloadFilename)}`;
     }
