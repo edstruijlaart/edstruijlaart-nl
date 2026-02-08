@@ -36,10 +36,15 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
   const videoId = youtubeVideoId || DEFAULT_YOUTUBE_VIDEO;
   const showUrl = `${SITE_URL}/shows/${showSlug}`;
 
-  // Gebruik tracker-URL als showId beschikbaar is, anders directe CDN URL
+  // Gebruik tracker-URL als showId beschikbaar is, anders directe CDN URL met ?dl= parameter
+  // Sanity CDN stuurt standaard content-disposition: inline, waardoor desktop browsers
+  // het bestand proberen af te spelen i.p.v. te downloaden. Met ?dl=filename forceert
+  // Sanity content-disposition: attachment.
   const bootlegDownloadUrl = bootlegUrl && showId
     ? `${SITE_URL}/api/show/bootleg-download?show=${showId}`
-    : bootlegUrl;
+    : bootlegUrl
+      ? `${bootlegUrl}${bootlegUrl.includes('?') ? '&' : '?'}dl=bootleg-${showSlug || 'opname'}.m4a`
+      : undefined;
 
   const subject = bootlegUrl
     ? `De opname van ${city} — jouw herinneringspakket 🎵`

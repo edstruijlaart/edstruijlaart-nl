@@ -33,6 +33,7 @@ export const GET: APIRoute = async ({ url }) => {
       `*[_type == "show" && _id == $showId][0] {
         _id,
         city,
+        slug,
         bootlegUrl,
         bootlegExpiresAt,
         bootlegDownloads
@@ -72,11 +73,20 @@ export const GET: APIRoute = async ({ url }) => {
         console.error('Failed to increment bootleg download counter:', err);
       });
 
-    // Redirect naar de echte CDN URL
+    // Bouw download URL met ?dl= parameter
+    // Sanity CDN stuurt standaard content-disposition: inline, waardoor browsers
+    // het bestand proberen af te spelen i.p.v. te downloaden. Met ?dl=filename
+    // forceert Sanity content-disposition: attachment.
+    const slug = show.slug?.current || show.city?.toLowerCase().replace(/\s+/g, '-') || 'opname';
+    const downloadFilename = `bootleg-${slug}.m4a`;
+    const separator = show.bootlegUrl.includes('?') ? '&' : '?';
+    const downloadUrl = `${show.bootlegUrl}${separator}dl=${encodeURIComponent(downloadFilename)}`;
+
+    // Redirect naar de CDN URL met download parameter
     return new Response(null, {
       status: 302,
       headers: {
-        Location: show.bootlegUrl,
+        Location: downloadUrl,
         'Cache-Control': 'no-store, no-cache',
       },
     });
