@@ -141,6 +141,27 @@ export const GET: APIRoute = async ({ request }) => {
       });
     }
 
+    // Stuur samenvattingsmail naar Ed
+    const summaryLines = results.map(r =>
+      `• ${r.show}: ${r.emails} mails verstuurd${r.errors ? ` (${r.errors} fouten)` : ''} — ${r.status}`
+    );
+
+    try {
+      await resend.emails.send({
+        from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
+        to: 'edstruijlaart@gmail.com',
+        subject: `✅ Herinneringsmails verstuurd (${results.reduce((sum, r) => sum + (r.emails || 0), 0)} mails)`,
+        html: `
+          <h2>Herinneringsmails verstuurd</h2>
+          <p>De volgende shows zijn verwerkt:</p>
+          <ul>${summaryLines.map(l => `<li>${l}</li>`).join('')}</ul>
+          <p><small>Automatisch verstuurd door edstruijlaart.nl</small></p>
+        `,
+      });
+    } catch (summaryErr) {
+      console.error('Failed to send summary email:', summaryErr);
+    }
+
     return new Response(JSON.stringify({
       success: true,
       showsProcessed: shows.length,
