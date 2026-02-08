@@ -116,6 +116,33 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
       </td>
     </tr>`;
 
+  // Rating sectie
+  const ratingUrl = `${SITE_URL}/api/show/rate?show=${showSlug}`;
+  const ratingSection = `
+    <tr>
+      <td style="padding: 0 32px 32px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #1A1A1A; border-radius: 12px; overflow: hidden;">
+          <tr>
+            <td style="padding: 24px 28px; text-align: center;">
+              <p style="color: #D4A843; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 12px;">⭐ Hoe was de avond?</p>
+              <p style="color: #F0EDE8; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                Laat weten wat je ervan vond — het helpt mij enorm!
+              </p>
+              <table cellpadding="0" cellspacing="0" align="center">
+                <tr>
+                  <td style="padding: 0 6px;"><a href="${ratingUrl}&r=1" style="text-decoration:none;font-size:32px;">😐</a></td>
+                  <td style="padding: 0 6px;"><a href="${ratingUrl}&r=2" style="text-decoration:none;font-size:32px;">🙂</a></td>
+                  <td style="padding: 0 6px;"><a href="${ratingUrl}&r=3" style="text-decoration:none;font-size:32px;">😊</a></td>
+                  <td style="padding: 0 6px;"><a href="${ratingUrl}&r=4" style="text-decoration:none;font-size:32px;">😍</a></td>
+                  <td style="padding: 0 6px;"><a href="${ratingUrl}&r=5" style="text-decoration:none;font-size:32px;">🤩</a></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>`;
+
   // Gastenboek sectie
   const guestbookSection = `
     <tr>
@@ -188,6 +215,7 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
           ${spotifySection}
           ${videoSection}
           ${guestbookSection}
+          ${ratingSection}
 
           <!-- Divider -->
           <tr>
