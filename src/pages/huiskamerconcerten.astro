@@ -7,6 +7,14 @@ import { Image } from 'astro:assets';
 import heroImg from '../assets/photos/ed-struijlaart-persfoto-liggend.jpg';
 import sfeerImg from '../assets/photos/ed-struijlaart-lachend-gitaar.jpg';
 import portretImg from '../assets/photos/ed-struijlaart-raam.jpg';
+
+// Sfeer foto's huiskamerconcerten
+import hkSfeer01 from '../assets/photos/huiskamer/hk-sfeer-01.jpg';
+import hkSfeer02 from '../assets/photos/huiskamer/hk-sfeer-02.jpg';
+import hkSfeer03 from '../assets/photos/huiskamer/hk-sfeer-03.jpg';
+import hkSfeer04 from '../assets/photos/huiskamer/hk-sfeer-04.jpg';
+import hkGroep01 from '../assets/photos/huiskamer/hk-groep-01.jpg';
+import hkGroep02 from '../assets/photos/huiskamer/hk-groep-02.jpg';
 ---
 
 <BaseLayout
@@ -52,6 +60,90 @@ import portretImg from '../assets/photos/ed-struijlaart-raam.jpg';
         <p class="text-lg leading-relaxed" style="color: var(--fg-muted);">
           Bij mooi weer speel ik net zo lief in de tuin of onder de veranda. Een huiskamerconcert is geen achtergrondmuziek. Het is luisteren, met en bij elkaar zijn, even alles uit. Het wordt altijd iets bijzonders.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sfeer impressie galerij -->
+  <section class="py-16 md:py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <p class="text-sm font-medium uppercase tracking-wider" style="color: var(--color-gold);">Sfeer impressie</p>
+        <h2 class="font-[var(--font-display)] text-2xl md:text-3xl mt-2">Zo ziet een huiskamerconcert eruit</h2>
+      </div>
+
+      <!-- Masonry-style grid: 3 kolommen desktop, 2 mobile -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        <!-- Rij 1: breed sfeerbeeld links (2 kolommen), staande foto rechts -->
+        <div class="col-span-2 row-span-1 rounded-xl overflow-hidden">
+          <Image
+            src={hkSfeer02}
+            alt="Huiskamerconcert vanuit het publiek — warme sfeerverlichting, iedereen luistert aandachtig"
+            widths={[400, 800]}
+            sizes="(max-width: 768px) 100vw, 66vw"
+            class="w-full h-full object-cover"
+            style="aspect-ratio: 3/2;"
+            loading="lazy"
+          />
+        </div>
+        <div class="col-span-1 row-span-2 rounded-xl overflow-hidden hidden md:block">
+          <Image
+            src={hkSfeer04}
+            alt="Ed Struijlaart speelt gitaar in een huiskamer — staand portret met publiek op de voorgrond"
+            widths={[400, 800]}
+            sizes="33vw"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+
+        <!-- Rij 2: twee kleinere sfeerbeelden -->
+        <div class="col-span-1 rounded-xl overflow-hidden">
+          <Image
+            src={hkSfeer01}
+            alt="Ed Struijlaart speelt gitaar in een sfeervol verlichte huiskamer"
+            widths={[400, 800]}
+            sizes="(max-width: 768px) 50vw, 33vw"
+            class="w-full h-full object-cover"
+            style="aspect-ratio: 3/2;"
+            loading="lazy"
+          />
+        </div>
+        <div class="col-span-1 rounded-xl overflow-hidden">
+          <Image
+            src={hkSfeer03}
+            alt="Intieme huiskamerconcert setting met publiek rondom de artiest"
+            widths={[400, 800]}
+            sizes="(max-width: 768px) 50vw, 33vw"
+            class="w-full h-full object-cover"
+            style="aspect-ratio: 3/2;"
+            loading="lazy"
+          />
+        </div>
+
+        <!-- Rij 3: twee groepsfoto's breed -->
+        <div class="col-span-1 md:col-span-2 rounded-xl overflow-hidden">
+          <Image
+            src={hkGroep01}
+            alt="Groepsfoto na een huiskamerconcert — publiek poseert samen met Ed"
+            widths={[400, 800]}
+            sizes="(max-width: 768px) 50vw, 66vw"
+            class="w-full h-full object-cover"
+            style="aspect-ratio: 16/9;"
+            loading="lazy"
+          />
+        </div>
+        <div class="col-span-1 rounded-xl overflow-hidden">
+          <Image
+            src={hkGroep02}
+            alt="Groepsfoto na een huiskamerconcert — gezellige groep in de huiskamer"
+            widths={[400, 800]}
+            sizes="(max-width: 768px) 50vw, 33vw"
+            class="w-full h-full object-cover"
+            style="aspect-ratio: 16/9;"
+            loading="lazy"
+          />
+        </div>
       </div>
     </div>
   </section>
