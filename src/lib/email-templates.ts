@@ -10,6 +10,7 @@ interface ReminderMailData {
   bootlegUrl?: string;
   bootlegExpiresAt?: string;
   showSlug: string;
+  showId?: string;
   youtubeVideoId?: string;
   heroImageUrl?: string;
 }
@@ -27,12 +28,18 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
     bootlegUrl,
     bootlegExpiresAt,
     showSlug,
+    showId,
     youtubeVideoId,
     heroImageUrl,
   } = data;
 
   const videoId = youtubeVideoId || DEFAULT_YOUTUBE_VIDEO;
   const showUrl = `${SITE_URL}/shows/${showSlug}`;
+
+  // Gebruik tracker-URL als showId beschikbaar is, anders directe CDN URL
+  const bootlegDownloadUrl = bootlegUrl && showId
+    ? `${SITE_URL}/api/show/bootleg-download?show=${showId}`
+    : bootlegUrl;
 
   const subject = bootlegUrl
     ? `De opname van ${city} — jouw herinneringspakket 🎵`
@@ -53,7 +60,7 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="background-color: #B8860B; border-radius: 9999px;">
-                    <a href="${bootlegUrl}" style="display: inline-block; padding: 14px 32px; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none;">
+                    <a href="${bootlegDownloadUrl}" style="display: inline-block; padding: 14px 32px; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none;">
                       ↓ Download opname
                     </a>
                   </td>

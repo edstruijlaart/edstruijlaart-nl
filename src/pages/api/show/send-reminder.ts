@@ -116,6 +116,7 @@ export const GET: APIRoute = async ({ request }) => {
           bootlegUrl: show.bootlegUrl,
           bootlegExpiresAt: show.bootlegExpiresAt,
           showSlug,
+          showId: show._id,
           youtubeVideoId,
           heroImageUrl,
         });

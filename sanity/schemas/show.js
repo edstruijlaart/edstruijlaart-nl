@@ -157,6 +157,14 @@ export default {
       readOnly: true,
       description: 'Automatisch ingevuld bij upload'
     },
+    {
+      name: 'bootlegDownloads',
+      title: 'Bootleg downloads',
+      type: 'number',
+      readOnly: true,
+      initialValue: 0,
+      description: 'Aantal keer dat de bootleg is gedownload'
+    },
 
     // --- GASTENBOEK ---
     {
