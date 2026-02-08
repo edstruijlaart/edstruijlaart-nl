@@ -17,7 +17,7 @@ import { sanityClient, sanityWriteClient } from '../../../lib/sanity';
  * 3. Increment bootlegDownloads counter
  * 4. Redirect (302) naar de CDN URL
  */
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, request }) => {
   try {
     const showId = url.searchParams.get('show');
 
@@ -73,16 +73,26 @@ export const GET: APIRoute = async ({ url }) => {
         console.error('Failed to increment bootleg download counter:', err);
       });
 
-    // Bouw download URL met ?dl= parameter
-    // Sanity CDN stuurt standaard content-disposition: inline, waardoor browsers
-    // het bestand proberen af te spelen i.p.v. te downloaden. Met ?dl=filename
-    // forceert Sanity content-disposition: attachment.
+    // Detect mobiel vs desktop via User-Agent
+    // Mobiel: redirect zonder ?dl= → iOS/Android geeft keuze luisteren/downloaden
+    // Desktop: redirect met ?dl= → forceer download (anders probeert browser 365MB te streamen)
+    const userAgent = request.headers.get('user-agent') || '';
+    const isMobile = /iPhone|iPad|iPod|Android|Mobile/i.test(userAgent);
+
     const slug = show.slug?.current || show.city?.toLowerCase().replace(/\s+/g, '-') || 'opname';
     const downloadFilename = `bootleg-${slug}.m4a`;
-    const separator = show.bootlegUrl.includes('?') ? '&' : '?';
-    const downloadUrl = `${show.bootlegUrl}${separator}dl=${encodeURIComponent(downloadFilename)}`;
 
-    // Redirect naar de CDN URL met download parameter
+    let downloadUrl: string;
+    if (isMobile) {
+      // Mobiel: geen ?dl= → content-disposition: inline → OS geeft luister/download keuze
+      downloadUrl = show.bootlegUrl;
+    } else {
+      // Desktop: ?dl= → content-disposition: attachment → direct downloaden
+      const separator = show.bootlegUrl.includes('?') ? '&' : '?';
+      downloadUrl = `${show.bootlegUrl}${separator}dl=${encodeURIComponent(downloadFilename)}`;
+    }
+
+    // Redirect naar de CDN URL
     return new Response(null, {
       status: 302,
       headers: {
