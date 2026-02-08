@@ -95,14 +95,16 @@ export const GET: APIRoute = async ({ request }) => {
 
       let sentCount = 0;
       let errorCount = 0;
+      let delayMs = 1000; // Start met 1s delay, verhoogt bij rate limit
+      const failedSignups: Array<{ firstName: string; email: string }> = [];
 
-      // Verstuur mail per subscriber (met 1s delay om Resend rate limit te respecteren)
+      // Verstuur mail per subscriber met retry-logica
       for (const signup of signups) {
-        // Wacht 1 seconde tussen mails (Resend free tier: max 2 req/s)
+        // Wacht tussen mails (respecteert Resend rate limit)
         if (sentCount > 0 || errorCount > 0) {
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise(resolve => setTimeout(resolve, delayMs));
         }
-        // Hero image URL met resize parameters
+
         const heroImageUrl = show.heroImageUrl
           ? `${show.heroImageUrl}?w=600&q=80`
           : undefined;
@@ -118,18 +120,46 @@ export const GET: APIRoute = async ({ request }) => {
           heroImageUrl,
         });
 
-        try {
-          await resend.emails.send({
-            from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
-            to: signup.email,
-            bcc: 'edstruijlaart@gmail.com',
-            subject,
-            html,
-          });
-          sentCount++;
-        } catch (emailErr) {
-          console.error(`Failed to send to ${signup.email}:`, emailErr);
+        // Retry logica: max 3 pogingen per mail
+        let sent = false;
+        for (let attempt = 1; attempt <= 3; attempt++) {
+          try {
+            const result = await resend.emails.send({
+              from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
+              to: signup.email,
+              bcc: 'edstruijlaart@gmail.com',
+              subject,
+              html,
+            });
+
+            // Check of Resend een ID teruggeeft (= geaccepteerd)
+            if (result?.data?.id) {
+              sentCount++;
+              sent = true;
+              break;
+            } else {
+              console.error(`No ID returned for ${signup.email} (attempt ${attempt}):`, JSON.stringify(result));
+              delayMs = Math.min(delayMs * 2, 5000);
+              await new Promise(resolve => setTimeout(resolve, delayMs));
+            }
+          } catch (emailErr: any) {
+            const isRateLimit = emailErr?.statusCode === 429 || emailErr?.message?.includes('rate');
+            console.error(`Failed to send to ${signup.email} (attempt ${attempt}):`, emailErr?.message || emailErr);
+
+            if (isRateLimit) {
+              delayMs = Math.min(delayMs * 2, 5000);
+              console.log(`Rate limit detected, increasing delay to ${delayMs}ms`);
+            }
+
+            if (attempt < 3) {
+              await new Promise(resolve => setTimeout(resolve, delayMs));
+            }
+          }
+        }
+
+        if (!sent) {
           errorCount++;
+          failedSignups.push({ firstName: signup.firstName, email: signup.email });
         }
       }
 
@@ -141,24 +171,37 @@ export const GET: APIRoute = async ({ request }) => {
         show: show.city,
         emails: sentCount,
         errors: errorCount,
+        failedSignups,
         status: 'sent',
       });
     }
 
     // Stuur samenvattingsmail naar Ed
+    const totalSent = results.reduce((sum, r) => sum + (r.emails || 0), 0);
+    const totalErrors = results.reduce((sum, r) => sum + (r.errors || 0), 0);
+    const allFailed = results.flatMap(r => (r.failedSignups || []).map((s: any) => `${s.firstName} (${s.email})`));
+
     const summaryLines = results.map(r =>
-      `• ${r.show}: ${r.emails} mails verstuurd${r.errors ? ` (${r.errors} fouten)` : ''} — ${r.status}`
+      `• ${r.show}: ${r.emails} mails verstuurd${r.errors ? ` — ⚠️ ${r.errors} mislukt` : ' ✅'}`
     );
 
+    const failedSection = allFailed.length > 0
+      ? `<h3 style="color: #cc0000;">⚠️ Niet bezorgd (na 3 pogingen):</h3><ul>${allFailed.map(f => `<li>${f}</li>`).join('')}</ul>`
+      : '';
+
+    const statusEmoji = totalErrors > 0 ? '⚠️' : '✅';
+
     try {
+      await new Promise(resolve => setTimeout(resolve, 1000)); // delay voor rate limit
       await resend.emails.send({
         from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
         to: 'edstruijlaart@gmail.com',
-        subject: `✅ Herinneringsmails verstuurd (${results.reduce((sum, r) => sum + (r.emails || 0), 0)} mails)`,
+        subject: `${statusEmoji} Herinneringsmails: ${totalSent} verstuurd${totalErrors > 0 ? `, ${totalErrors} mislukt` : ''}`,
         html: `
           <h2>Herinneringsmails verstuurd</h2>
           <p>De volgende shows zijn verwerkt:</p>
           <ul>${summaryLines.map(l => `<li>${l}</li>`).join('')}</ul>
+          ${failedSection}
           <p><small>Automatisch verstuurd door edstruijlaart.nl</small></p>
         `,
       });
