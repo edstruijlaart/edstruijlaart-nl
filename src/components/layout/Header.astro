@@ -35,7 +35,7 @@ const currentPath = Astro.url.pathname;
         <DarkModeToggle />
       </nav>
 
-      <!-- Mobile -->
+      <!-- Mobile hamburger -->
       <div class="flex items-center gap-2 lg:hidden">
         <DarkModeToggle />
         <button
@@ -55,68 +55,59 @@ const currentPath = Astro.url.pathname;
       </div>
     </div>
   </div>
+</header>
 
-  <!-- Mobile Menu — fullscreen overlay -->
-  <div
-    id="mobile-menu"
-    class="mobile-menu-overlay fixed inset-0 z-50 hidden lg:hidden"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Mobiel menu"
-  >
-    <!-- Header bar -->
-    <div class="flex items-center justify-between p-4 border-b" style="background-color: var(--bg); border-color: var(--bg-surface);">
-      <span class="font-[var(--font-display)] text-lg text-[var(--color-gold)]">Menu</span>
-      <button
-        id="mobile-menu-close"
-        type="button"
-        class="p-2 rounded-lg transition-colors duration-300 hover:bg-[var(--bg-surface)]"
-        aria-label="Menu sluiten"
-      >
-        <svg class="w-6 h-6" style="color: var(--fg);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-    </div>
+<!--
+  Mobile Menu — BUITEN de header, als sibling van <header>.
+  Geen opacity-animation, geen scoped CSS, gewoon hidden/visible toggle.
+  Hardcoded fallback kleuren zodat iOS Safari altijd een dekkende achtergrond toont.
+  z-index 9999 zodat het boven alles zit.
+-->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 hidden lg:hidden"
+  style="z-index: 9999; background: #FAF8F5;"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Mobiel menu"
+>
+  <!-- Header bar -->
+  <div class="flex items-center justify-between p-4 border-b" style="background: #FAF8F5; border-color: #F0EDE8;">
+    <span class="font-[var(--font-display)] text-lg" style="color: #B8860B;">Menu</span>
+    <button
+      id="mobile-menu-close"
+      type="button"
+      class="p-2 rounded-lg"
+      aria-label="Menu sluiten"
+    >
+      <svg class="w-6 h-6" style="color: #1A1A1A;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
 
-    <!-- Nav links -->
-    <nav class="p-6 pt-8" aria-label="Mobiele navigatie">
-      <ul class="space-y-2">
-        {mainNav.map(item => (
+  <!-- Nav links -->
+  <nav class="p-6 pt-8" style="background: #FAF8F5;" aria-label="Mobiele navigatie">
+    <ul class="space-y-2">
+      {mainNav.map(item => {
+        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        return (
           <li>
             <a
               href={item.href}
-              class:list={[
-                'block px-4 py-3 rounded-lg text-lg font-medium transition-colors duration-300 text-center',
-                currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
-                  ? 'text-[var(--color-gold)] bg-[var(--color-gold)]/10'
-                  : 'hover:text-[var(--color-gold)] hover:bg-[var(--bg-surface)]',
-              ]}
-              style={!(currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))) ? 'color: var(--fg);' : ''}
-              aria-current={currentPath === item.href ? 'page' : undefined}
+              class="block px-4 py-3 rounded-lg text-lg font-medium text-center"
+              style={`color: ${isActive ? '#B8860B' : '#1A1A1A'};`}
+              aria-current={isActive ? 'page' : undefined}
             >
               {item.label}
             </a>
           </li>
-        ))}
-      </ul>
-    </nav>
-  </div>
-</header>
-
-<style>
-  .mobile-menu-overlay {
-    background-color: var(--bg);
-    opacity: 0;
-    transition: opacity 250ms ease;
-    pointer-events: none;
-  }
-  .mobile-menu-overlay.is-open {
-    opacity: 1;
-    pointer-events: auto;
-  }
-</style>
+        );
+      })}
+    </ul>
+  </nav>
+</div>
 
 <script>
   function initMobileMenu() {
@@ -125,36 +116,60 @@ const currentPath = Astro.url.pathname;
     const menu = document.getElementById('mobile-menu');
 
     if (!menuBtn || !closeBtn || !menu) return;
-    // Prevent double-init
     if (menuBtn.dataset.init) return;
     menuBtn.dataset.init = '1';
 
-    function openMenu() {
-      menu.classList.remove('hidden');
-      requestAnimationFrame(() => {
-        menu.classList.add('is-open');
+    // Dark mode support: update hardcoded colors
+    function updateMenuColors() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const bg = isDark ? '#0F0F0F' : '#FAF8F5';
+      const border = isDark ? '#1A1A1A' : '#F0EDE8';
+      const fg = isDark ? '#F0EDE8' : '#1A1A1A';
+
+      menu.style.background = bg;
+      const headerBar = menu.querySelector(':scope > div:first-child') as HTMLElement;
+      const navEl = menu.querySelector('nav') as HTMLElement;
+      if (headerBar) {
+        headerBar.style.background = bg;
+        headerBar.style.borderColor = border;
+      }
+      if (navEl) {
+        navEl.style.background = bg;
+      }
+      // Update close button color
+      const closeSvg = closeBtn.querySelector('svg') as SVGElement;
+      if (closeSvg) closeSvg.style.color = fg;
+      // Update non-active link colors
+      menu.querySelectorAll('nav a').forEach(link => {
+        const a = link as HTMLElement;
+        if (!a.getAttribute('aria-current')) {
+          a.style.color = fg;
+        }
       });
+    }
+
+    function openMenu() {
+      updateMenuColors();
+      menu.classList.remove('hidden');
       menuBtn.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     }
 
     function closeMenu() {
-      menu.classList.remove('is-open');
+      menu.classList.add('hidden');
       menuBtn.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
-      setTimeout(() => {
-        menu.classList.add('hidden');
-      }, 250);
     }
 
     menuBtn.addEventListener('click', openMenu);
     closeBtn.addEventListener('click', closeMenu);
 
-    // Close op link klik
+    // Close on link click
     menu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', closeMenu);
     });
 
+    // Close on Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
         closeMenu();
