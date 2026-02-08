@@ -164,9 +164,12 @@ export const GET: APIRoute = async ({ request }) => {
         }
       }
 
-      // Markeer show als verstuurd en zet status op "past"
+      // Markeer show als verstuurd, zet status op "past", en sla emailsSent op
       // (voorkomt dat deze show nog als "live" wordt gevonden door de bootleg endpoint)
-      await sanityWriteClient.patch(show._id).set({ reminderSent: true, status: 'past' }).commit();
+      await sanityWriteClient
+        .patch(show._id)
+        .set({ reminderSent: true, status: 'past', emailsSent: sentCount })
+        .commit();
 
       results.push({
         show: show.city,
