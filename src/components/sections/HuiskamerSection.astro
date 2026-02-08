@@ -20,7 +20,8 @@ import huiskamerImg from '../../assets/photos/ed-struijlaart-lachend-gitaar.jpg'
           <Image
             src={huiskamerImg}
             alt="Ed Struijlaart tijdens een huiskamerconcert"
-            width={600}
+            widths={[400, 600]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
             class="w-full h-auto"
             loading="lazy"
           />

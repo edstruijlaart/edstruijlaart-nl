@@ -10,7 +10,8 @@ import posterImage from '../../assets/theater/gitaarmannen-3-poster.png';
     <Image
       src={posterImage}
       alt="Gitaarmannen 3: John Mayer theaterposter"
-      width={540}
+      widths={[400, 540]}
+      sizes="(max-width: 1024px) 100vw, 50vw"
       class="w-full h-auto"
       loading="lazy"
     />

@@ -32,8 +32,8 @@ const podcasts = [
         <Image
           src={podcast.image}
           alt={`${podcast.title} podcast artwork`}
-          width={280}
-          height={280}
+          widths={[200, 280]}
+          sizes="280px"
           class="w-full h-full object-cover rounded-lg"
           loading="lazy"
         />

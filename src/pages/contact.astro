@@ -65,7 +65,7 @@ import Button from '../components/ui/Button.astro';
           style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
         >
           <h2 class="font-[var(--font-display)] text-2xl mb-6">Stuur een bericht</h2>
-          <form class="space-y-4" action="https://formspree.io/f/mzdabblp" method="POST">
+          <form id="contact-form" class="space-y-4" action="https://formspree.io/f/mzdabblp" method="POST">
             <div>
               <label for="name" class="block text-sm font-medium mb-1">Naam</label>
               <input
@@ -114,12 +114,62 @@ import Button from '../components/ui/Button.astro';
                 style="background-color: var(--bg); color: var(--fg);"
               ></textarea>
             </div>
-            <Button variant="primary" size="lg">
+            <button
+              type="submit"
+              class="px-8 py-3 rounded-full font-medium text-base text-white transition-colors duration-300 bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               Verstuur bericht
-            </Button>
+            </button>
+            <p id="contact-message" class="text-sm min-h-[1.25rem]" aria-live="polite"></p>
           </form>
         </div>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    if (!form || form.dataset.init) return;
+    form.dataset.init = '1';
+
+    const messageEl = document.getElementById('contact-message')!;
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Bezig met versturen...';
+      submitBtn.disabled = true;
+      messageEl.textContent = '';
+      messageEl.className = 'text-sm min-h-[1.25rem]';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' },
+        });
+
+        if (response.ok) {
+          messageEl.textContent = 'Bedankt! Je bericht is verzonden. Ik neem zo snel mogelijk contact op.';
+          messageEl.classList.add('text-[var(--color-gold)]');
+          form.reset();
+        } else {
+          messageEl.textContent = 'Er ging iets mis bij het versturen. Probeer het opnieuw of mail direct.';
+          messageEl.classList.add('text-red-500');
+        }
+      } catch {
+        messageEl.textContent = 'Geen verbinding. Probeer het later opnieuw of mail naar ed@earswantmusic.nl.';
+        messageEl.classList.add('text-red-500');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  initContactForm();
+  document.addEventListener('astro:after-swap', initContactForm);
+</script>

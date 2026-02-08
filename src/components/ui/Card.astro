@@ -21,16 +21,14 @@ const { title, description, image, imageAlt = '', href, date, tag, class: classN
     className,
   ]}
   style="background-color: var(--bg-surface); box-shadow: var(--shadow-card); transition: box-shadow 300ms ease, transform 300ms ease;"
-  onmouseenter="this.style.boxShadow='var(--shadow-card-hover)'"
-  onmouseleave="this.style.boxShadow='var(--shadow-card)'"
 >
   {image && (
     <div class="aspect-video overflow-hidden">
       <Image
         src={image}
         alt={imageAlt}
-        width={600}
-        height={338}
+        widths={[400, 600]}
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         loading="lazy"
       />
@@ -66,3 +64,9 @@ const { title, description, image, imageAlt = '', href, date, tag, class: classN
     <slot />
   </div>
 </article>
+
+<style>
+  article:hover {
+    box-shadow: var(--shadow-card-hover) !important;
+  }
+</style>

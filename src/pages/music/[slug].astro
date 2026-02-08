@@ -50,7 +50,8 @@ const artwork = getAlbumImage(album.image);
             <Image
               src={artwork}
               alt={`${album.title} album artwork`}
-              width={500}
+              widths={[400, 500]}
+              sizes="(max-width: 1024px) 100vw, 448px"
               class="w-full h-auto"
               loading="eager"
             />

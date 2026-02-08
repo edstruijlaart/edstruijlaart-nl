@@ -39,10 +39,8 @@ function formatDate(dateStr: string) {
       const showUrl = show.isHuiskamerconcert && show.showPageUrl ? show.showPageUrl : undefined;
       return (
         <div
-          class="flex items-center gap-4 sm:gap-6 p-4 rounded-xl border-l-4 border-transparent hover:border-[var(--color-gold)] transition-all duration-300 hover:-translate-y-0.5"
+          class="show-item flex items-center gap-4 sm:gap-6 p-4 rounded-xl border-l-4 border-transparent hover:border-[var(--color-gold)] transition-all duration-300 hover:-translate-y-0.5"
           style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
-          onmouseenter="this.style.boxShadow='var(--shadow-card-hover)'"
-          onmouseleave="this.style.boxShadow='var(--shadow-card)'"
         >
           {/* Datum badge */}
           <div class="flex-shrink-0 w-16 h-16 rounded-lg flex flex-col items-center justify-center bg-[var(--color-gold)] text-white">
@@ -106,3 +104,46 @@ function formatDate(dateStr: string) {
     </Button>
   </div>
 )}
+
+{/* Event structured data voor SEO */}
+{shows.length > 0 && (
+  <script type="application/ld+json" set:html={JSON.stringify(
+    shows.map(show => ({
+      "@context": "https://schema.org",
+      "@type": "MusicEvent",
+      "name": show.production
+        ? `${show.production} — Ed Struijlaart`
+        : `Ed Struijlaart in ${show.city}`,
+      "startDate": show.date,
+      "location": {
+        "@type": "Place",
+        "name": show.venue,
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": show.city,
+          "addressCountry": "NL",
+        },
+      },
+      "performer": {
+        "@type": "Person",
+        "name": "Ed Struijlaart",
+      },
+      ...(show.ticketUrl ? {
+        "offers": {
+          "@type": "Offer",
+          "url": show.ticketUrl,
+          "availability": show.soldOut
+            ? "https://schema.org/SoldOut"
+            : "https://schema.org/InStock",
+        },
+      } : {}),
+      "eventStatus": "https://schema.org/EventScheduled",
+    }))
+  )} />
+)}
+
+<style>
+  .show-item:hover {
+    box-shadow: var(--shadow-card-hover) !important;
+  }
+</style>

@@ -23,8 +23,8 @@ const albums = [
           <Image
             src={album.image}
             alt={`${album.title} album artwork`}
-            width={240}
-            height={240}
+            widths={[200, 240]}
+            sizes="120px"
             class="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
           />

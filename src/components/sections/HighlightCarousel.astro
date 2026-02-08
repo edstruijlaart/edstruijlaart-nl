@@ -87,7 +87,8 @@ const slides: Slide[] = [
                 <Image
                   src={slide.image}
                   alt={slide.imageAlt}
-                  width={640}
+                  widths={[400, 640, 800]}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   class="w-full h-full object-cover"
                   loading={i === 0 ? 'eager' : 'lazy'}
                 />
@@ -103,7 +104,8 @@ const slides: Slide[] = [
               <Image
                 src={slide.image}
                 alt={slide.imageAlt}
-                width={540}
+                widths={[400, 540, 800]}
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 class="w-full h-full object-cover"
                 loading={i === 0 ? 'eager' : 'lazy'}
               />
