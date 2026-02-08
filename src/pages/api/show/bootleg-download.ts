@@ -49,17 +49,53 @@ export const GET: APIRoute = async ({ url, request }) => {
     }
 
     if (!show.bootlegUrl) {
-      return new Response(JSON.stringify({ error: 'Geen bootleg beschikbaar voor deze show' }), {
+      return new Response(`<!DOCTYPE html>
+<html lang="nl">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Geen opname beschikbaar</title></head>
+<body style="margin:0;padding:0;background:#0F0F0F;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#F0EDE8;display:flex;align-items:center;justify-content:center;min-height:100vh;">
+  <div style="text-align:center;padding:40px 24px;max-width:480px;">
+    <p style="font-size:48px;margin:0 0 16px;">🎵</p>
+    <h1 style="font-family:Georgia,serif;font-size:24px;color:#B8860B;margin:0 0 16px;">Geen opname beschikbaar</h1>
+    <p style="font-size:16px;line-height:1.6;color:#9B9B9B;margin:0 0 32px;">
+      Er is (nog) geen opname beschikbaar voor dit huiskamerconcert.
+    </p>
+    <a href="https://edstruijlaart.nl" style="display:inline-block;background:#B8860B;color:#fff;padding:12px 28px;border-radius:9999px;text-decoration:none;font-weight:600;font-size:15px;">Naar edstruijlaart.nl</a>
+  </div>
+</body>
+</html>`, {
         status: 404,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/html; charset=utf-8' },
       });
     }
 
-    // Check of bootleg niet verlopen is
+    // Check of bootleg niet verlopen is → toon nette verlopen-pagina
     if (show.bootlegExpiresAt && new Date(show.bootlegExpiresAt) < new Date()) {
-      return new Response(JSON.stringify({ error: 'Deze bootleg is verlopen' }), {
-        status: 410, // Gone
-        headers: { 'Content-Type': 'application/json' },
+      const expiredDate = new Date(show.bootlegExpiresAt).toLocaleDateString('nl-NL', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+      return new Response(`<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opname niet meer beschikbaar</title>
+</head>
+<body style="margin:0;padding:0;background:#0F0F0F;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#F0EDE8;display:flex;align-items:center;justify-content:center;min-height:100vh;">
+  <div style="text-align:center;padding:40px 24px;max-width:480px;">
+    <p style="font-size:48px;margin:0 0 16px;">🎵</p>
+    <h1 style="font-family:Georgia,serif;font-size:24px;color:#B8860B;margin:0 0 16px;">Opname niet meer beschikbaar</h1>
+    <p style="font-size:16px;line-height:1.6;color:#9B9B9B;margin:0 0 24px;">
+      De opname van het huiskamerconcert in <strong style="color:#F0EDE8;">${show.city || 'onbekend'}</strong> was beschikbaar tot ${expiredDate}. Helaas is de downloadlink verlopen.
+    </p>
+    <p style="font-size:14px;line-height:1.6;color:#6B6B6B;margin:0 0 32px;">
+      Heb je de opname gemist? Neem contact op met Ed via <a href="mailto:ed@earswantmusic.nl" style="color:#B8860B;text-decoration:none;">ed@earswantmusic.nl</a>
+    </p>
+    <a href="https://edstruijlaart.nl" style="display:inline-block;background:#B8860B;color:#fff;padding:12px 28px;border-radius:9999px;text-decoration:none;font-weight:600;font-size:15px;">Naar edstruijlaart.nl</a>
+  </div>
+</body>
+</html>`, {
+        status: 410,
+        headers: { 'Content-Type': 'text/html; charset=utf-8' },
       });
     }
 
