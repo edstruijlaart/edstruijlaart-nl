@@ -13,11 +13,18 @@ import { buildReminderEmail } from '../../../lib/email-templates';
  * Kan ook handmatig getriggerd worden met de juiste auth header.
  */
 export const GET: APIRoute = async ({ request }) => {
-  // Auth: Vercel Cron stuurt een CRON_SECRET header, of handmatig met API key
+  // Auth: Vercel Cron stuurt Authorization: Bearer CRON_SECRET
+  // Handmatig triggeren kan ook met x-api-key header (BOOTLEG_API_KEY)
   const authHeader = request.headers.get('authorization');
   const cronSecret = import.meta.env.CRON_SECRET;
+  const apiKey = request.headers.get('x-api-key');
+  const bootlegApiKey = import.meta.env.BOOTLEG_API_KEY;
 
-  if (authHeader !== `Bearer ${cronSecret}`) {
+  const isAuthorized =
+    (cronSecret && authHeader === `Bearer ${cronSecret}`) ||
+    (bootlegApiKey && apiKey === bootlegApiKey);
+
+  if (!isAuthorized) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 
