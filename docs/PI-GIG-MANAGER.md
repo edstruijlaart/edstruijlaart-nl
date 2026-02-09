@@ -138,7 +138,7 @@ Database:  listmonk_db (PostgreSQL)
 **Toegang**:
 - Extern via Cloudflare tunnel: `newsletter.earswantmusic.nl`
 - Intern: `localhost:9000`
-- Admin: `admin` / `[REDACTED]`
+- Admin: `admin` / `[wachtwoord in 1Password/lokaal — NOOIT in git]`
 
 **Belangrijk**: Cloudflare Access blokkeert de admin API van buitenaf. Voor directe database queries:
 ```bash
