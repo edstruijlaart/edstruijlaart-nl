@@ -1,7 +1,7 @@
 # edstruijlaart.nl — Website
 
 > ⚠️ Deze repo is PUBLIC op GitHub (Vercel free tier). Geen credentials in dit bestand!
-> Volledige context met credentials staat in de parent map CLAUDE.md (buiten git).
+> Volledige context met credentials staat in `CLAUDE-local.md` (zelfde map, in .gitignore).
 
 ## Wat is dit?
 
