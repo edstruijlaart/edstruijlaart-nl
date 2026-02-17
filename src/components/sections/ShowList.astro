@@ -1,7 +1,6 @@
 ---
 import { shows as staticShows } from '../../data/shows';
 import { fetchBandsintownEvents } from '../../lib/bandsintown';
-import { fetchHuiskamerconcerten } from '../../lib/huiskamerconcerten';
 import Button from '../ui/Button.astro';
 
 interface Props {
@@ -10,16 +9,14 @@ interface Props {
 
 const { limit } = Astro.props;
 
-// Fetch live data from both sources, fall back to static data for theater shows
-const [bandsintownShows, huiskamerconcerten] = await Promise.all([
-  fetchBandsintownEvents(),
-  fetchHuiskamerconcerten(),
-]);
+// Fetch live theater/festival shows, fall back to static data
+const bandsintownShows = await fetchBandsintownEvents();
 
 let theaterShows = bandsintownShows.length > 0 ? bandsintownShows : staticShows;
 
-// Merge and sort by date
-const shows = [...theaterShows, ...huiskamerconcerten]
+// Huiskamerconcerten zijn niet publiek zichtbaar in de agenda
+// (wel bereikbaar via directe link en edstruijlaart.nl/live)
+const shows = [...theaterShows]
   .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
 const displayShows = limit ? shows.slice(0, limit) : shows;
