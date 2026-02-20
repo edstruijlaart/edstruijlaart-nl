@@ -28,5 +28,6 @@ export default defineConfig({
   redirects: {
     '/photo': '/about',
     '/news': '/blog',
+    '/huiskamerconcert': '/huiskamerconcerten',
   },
 });
