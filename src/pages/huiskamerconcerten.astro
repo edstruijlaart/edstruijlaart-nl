@@ -21,6 +21,77 @@ import hkGroep02 from '../assets/photos/huiskamer/hk-groep-02.jpg';
   title="Huiskamerconcerten"
   description="Boek Ed Struijlaart voor een huiskamerconcert. Eén stem, één gitaar, een stapel liedjes en goede verhalen. Geschikt voor 10 tot 50 personen."
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Huiskamerconcert Ed Struijlaart",
+      "description": "Boek Ed Struijlaart voor een intiem huiskamerconcert bij jou thuis. Geschikt voor 10 tot 50 personen. Privéconcert of met ticketverkoop.",
+      "provider": {
+        "@type": "Person",
+        "name": "Ed Struijlaart",
+        "url": "https://edstruijlaart.nl"
+      },
+      "serviceType": "Huiskamerconcert",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Nederland"
+      },
+      "url": "https://edstruijlaart.nl/huiskamerconcerten/",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "description": "Privéconcert voor een vaste prijs, of met ticketverkoop"
+      }
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Hoe gaat een huiskamerconcert eraan toe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ed komt bij jou thuis met zijn gitaar. Hij speelt een intiem concert van ongeveer anderhalf uur met eigen songs, covers en verhalen. Volledig akoestisch, maar geluid kan meegenomen worden als het nodig is."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hoeveel mensen passen er bij een huiskamerconcert?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Een huiskamerconcert is geschikt voor 10 tot 50 personen. Dat kan in je woonkamer, tuin, veranda of een andere ruimte. Jij regelt de locatie en het publiek."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wat kost een huiskamerconcert?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Er zijn twee opties: een privéconcert voor een vaste prijs, of een concert met ticketverkoop waarmee je de kosten (deels) terugverdient. Neem contact op voor een offerte op maat."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hoe boek ik een huiskamerconcert?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Boek direct via het boekingsformulier op boeken.edstruijlaart.nl of stuur een mail naar ed@earswantmusic.nl. Ed vertelt je graag meer over de mogelijkheden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Voor welke gelegenheden is een huiskamerconcert geschikt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Huiskamerconcerten zijn ideaal voor verjaardagen, jubilea, afscheid, bedrijfsuitjes, of gewoon een bijzondere avond met vrienden. Bij mooi weer kan het ook in de tuin of onder de veranda."
+          }
+        }
+      ]
+    })} />
+  </Fragment>
   <!-- Hero -->
   <section class="relative min-h-[60vh] flex items-end overflow-hidden">
     <Image

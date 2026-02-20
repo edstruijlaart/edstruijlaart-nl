@@ -33,6 +33,29 @@ if (dateStr) {
 ---
 
 <BaseLayout title={post.data.title} description={post.data.excerpt || post.data.title} type="article">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.data.title,
+      ...(post.data.date ? { "datePublished": new Date(post.data.date).toISOString() } : {}),
+      "author": {
+        "@type": "Person",
+        "name": "Ed Struijlaart",
+        "url": "https://edstruijlaart.nl"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Ed Struijlaart",
+        "url": "https://edstruijlaart.nl"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://edstruijlaart.nl/news/${post.data.slug}/`
+      },
+      ...(post.data.excerpt ? { "description": post.data.excerpt } : {})
+    })} />
+  </Fragment>
   <article class="py-24">
     <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
       <header class="mb-12">

@@ -17,7 +17,12 @@ export default defineConfig({
   },
 
   integrations: [
-    sitemap(),
+    sitemap({
+      serialize(item) {
+        item.lastmod = new Date();
+        return item;
+      },
+    }),
     react(),
   ],
 
