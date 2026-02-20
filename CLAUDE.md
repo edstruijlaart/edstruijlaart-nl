@@ -28,12 +28,16 @@ edstruijlaart-nl/
 │   ├── pages/           # Alle pagina's + API endpoints
 │   │   ├── api/show/    # Huiskamerconcerten API's
 │   │   ├── news/[slug]  # Blog posts (SEO: NOOIT breken!)
+│   │   ├── blog.astro   # Blog listing met featured images
 │   │   └── ...
+│   ├── content/
+│   │   └── news/        # 71 markdown blog posts (content collection)
 │   ├── components/      # Astro + React componenten
-│   ├── layouts/         # Base layouts
+│   ├── layouts/         # BaseLayout (GSC, Person schema, OG)
 │   ├── lib/             # Sanity client, email templates, utils
 │   └── styles/          # Tailwind + custom CSS
-├── public/              # Statische assets
+├── public/
+│   └── images/news/     # 67 featured images (max 1200px, ~36MB)
 ├── docs/                # Verdiepingsdocumentatie
 │   ├── API-ENDPOINTS.md
 │   ├── PI-GIG-MANAGER.md
@@ -66,14 +70,39 @@ Preview URLs beschikbaar bij Pull Requests.
 - **Fonts**: DM Serif Display (headings), DM Sans (body)
 - **Vibe**: Warm, persoonlijk, premium muzikant-gevoel
 
+## SEO & Structured Data (feb 2026)
+
+Na WordPress → Astro migratie is de SEO volledig opgezet:
+
+**Redirects:**
+- `vercel.json` + `astro.config.mjs`: `/huiskamerconcert` → `/huiskamerconcerten/`, `/news` → `/blog`, `/photo` → `/about`
+
+**Google Search Console:** Geverifieerd via meta tag in `BaseLayout.astro`
+
+**JSON-LD Structured Data:**
+- `BaseLayout.astro`: Person schema + BreadcrumbList (alle pagina's)
+- `huiskamerconcerten.astro`: Service + FAQPage (5 vragen)
+- `news/[slug].astro`: BlogPosting (per post, met image + excerpt)
+
+**Blog (71 posts):**
+- Content collection in `src/content/news/*.md`
+- Schema: title, slug, date, featuredImage, excerpt, originalUrl (`src/content.config.ts`)
+- Featured images in `public/images/news/` (67 bestanden, max 1200px)
+- Blog listing (`/blog`): featured cards met afbeeldingen
+- Blog post (`/news/[slug]`): featured image + OG tags + BlogPosting JSON-LD
+- Alle content hersteld uit WordPress DB (One.com export)
+
+**Sitemap:** Met lastmod via serialize function
+
 ## Belangrijke Regels
 
 1. **NOOIT** `/news/[slug]/` URLs breken — SEO geindexeerd
-2. **Nederlands** voor alle UI-tekst
-3. **Mobile-first** altijd
-4. **Sanity** is single source of truth voor show data
-5. **Geen credentials** in code of CLAUDE.md (repo is public!)
-6. Alle env vars via Vercel dashboard
+2. **NOOIT** redirects in `vercel.json` verwijderen — Google indexeert oude URLs
+3. **Nederlands** voor alle UI-tekst
+4. **Mobile-first** altijd
+5. **Sanity** is single source of truth voor show data
+6. **Geen credentials** in code of CLAUDE.md (repo is public!)
+7. Alle env vars via Vercel dashboard
 
 ## Relatie met Andere Projecten
 
