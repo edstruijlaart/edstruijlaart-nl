@@ -3,6 +3,7 @@ title: "DWDD, Evers Staat Op en TROS Muziekcafe terugkijken/luisteren"
 slug: "dwdd-en-evers-staat-op-terugkijken"
 date: "2016-10-20"
 originalUrl: "/news/dwdd-en-evers-staat-op-terugkijken/"
+featuredImage: "/images/news/12031_DWDD_afbeelding.jpg"
 ---
 
 Ha! We zijn lekker bezig deze week en het leek me wel even handig om alle optredens voor je op een rijtje te zetten, zodat je het makkelijk terug kan kijken. Dus, alle optredens bij DWDD en bij Evers Staat Op vind je hieronder :).

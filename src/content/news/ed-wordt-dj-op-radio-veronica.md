@@ -4,6 +4,7 @@ slug: "ed-wordt-dj-op-radio-veronica"
 date: "2021-06-21"
 excerpt: "Ed Struijlaart wordt DJ bij Radio Veronica. Onder leiding van zendermanager Rob Stenders krijgt Ed een vast programma op de zaterdagochtend."
 originalUrl: "/news/ed-wordt-dj-op-radio-veronica/"
+featuredImage: "/images/news/Ed-Struijlaart-klein.png"
 ---
 
 NEWSFLASH! Ik word DJ bij Radio Veronica!

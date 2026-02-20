@@ -3,6 +3,7 @@ title: "Nieuwe single: Voor Jou"
 slug: "nieuwe-single-voor-jou"
 date: "2020-08-15"
 originalUrl: "/news/nieuwe-single-voor-jou/"
+featuredImage: "/images/news/Ed-Struijlaart-Voor-Jou-artwork.png"
 ---
 
 ✨VOOR JOU! ✨

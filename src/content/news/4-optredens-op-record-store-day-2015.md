@@ -3,6 +3,7 @@ title: "4 optredens op Record Store Day 2015"
 slug: "4-optredens-op-record-store-day-2015"
 date: "2015-04-10"
 originalUrl: "/news/4-optredens-op-record-store-day-2015/"
+featuredImage: "/images/news/Schermafbeelding-2015-03-30-om-22.32.52.png"
 ---
 
 In 2012 heb ik er al een keer aan deelgenomen: Record Store Day! (Niet zonder succes trouwens, dat lees je hier: KLIK)

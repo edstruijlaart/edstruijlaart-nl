@@ -3,6 +3,7 @@ title: "Alles op Rood! Vanaf het najaar in het theater"
 slug: "alles-op-rood-vanaf-het-najaar-in-het-theater"
 date: "2020-07-01"
 originalUrl: "/news/alles-op-rood-vanaf-het-najaar-in-het-theater/"
+featuredImage: "/images/news/20200309-DSC_9181naamloos.jpg"
 ---
 
 2020. Het had alles in zich om een speciaal jaar te worden. Dat werd het ook…maar helaas anders dan gedacht. Wat doe je in een tijd dat het tegenzit? Blijf je je droom volgen? Of kies je voor zekerheid? In deze vreemde tijd sta ik ineens weer voor die keus. Net als 10 jaar geleden: alle theaters dicht. Geen optredens meer. Wat ga ik doen? En wat is die droom eigenlijk? Waarom doe ik wat ik doe? Waarom koos ik er 10 jaar geleden voor om al mijn zekerheden aan de kant te schuiven.

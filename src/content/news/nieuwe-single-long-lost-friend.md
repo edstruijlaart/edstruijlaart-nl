@@ -3,6 +3,7 @@ title: "Nieuwe single: Long Lost Friend"
 slug: "nieuwe-single-long-lost-friend"
 date: "2022-10-15"
 originalUrl: "/news/nieuwe-single-long-lost-friend/"
+featuredImage: "/images/news/yt-thumbnail-long-lost-friend.png"
 ---
 
 𝙄𝙩’𝙨 𝙗𝙚𝙚𝙣 𝙖 𝙬𝙝𝙞𝙡𝙚 𝙢𝙮 𝙛𝙧𝙞𝙚𝙣𝙙…

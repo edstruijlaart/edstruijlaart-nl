@@ -3,6 +3,7 @@ title: "Gitaarmannen, de podcast"
 slug: "gitaarmannen-de-podcast"
 date: "2018-09-01"
 originalUrl: "/news/gitaarmannen-de-podcast/"
+featuredImage: "/images/news/COVER-GITAARMANNEN-DE-PODCAST.png"
 ---
 
 Toen ik mijn theatertour aan het schrijven was, kwam ik erachter dat de gitaar mijn leven wel zo'n beetje bepaald heeft. Of, laat ik het zo zeggen: de gitaar én gitaarmuziek was er altijd op de meest belangrijke momenten in mijn leven en zijn geluid vormt mijn soundtrack. Ik bedacht me dat andere gitaristen ook wel eens dit soort ervaringen zouden kunnen hebben, hoe leuk zou het zijn om lekker een uurtje te bomen over dit magische stuk hout met de 6 snaren? Uiteindelijk ben ik het maar gewoon gaan doen…zonder enige vorm van interview ervaring…dus ik vind het spannend…dat mag je gerust weten.

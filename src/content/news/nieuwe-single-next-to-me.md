@@ -3,6 +3,7 @@ title: "Nieuwe single: Next to Me"
 slug: "nieuwe-single-next-to-me"
 date: "2020-02-15"
 originalUrl: "/news/nieuwe-single-next-to-me/"
+featuredImage: "/images/news/ED-STRUIJLAART-NEXT-TO-ME-ALBUM-COVER.png"
 ---
 
 Mijn Gitaarmannen tour is achter de rug, in totaal hebben we 70x met deze voorstelling op de planken gestaan. Het was een groot feest, maar nu is het weer tijd voor nieuwe muziek: Next to Me! Zo heet mijn nieuwe single. Het is een liedje die je hopelijk laat verlangen naar de lente, want ik moet je zeggen dat ik daar wel aan toe ben ;). Wat ik zelf erg bijzonder vind is dat ik op drums niemand minder dan Aaron Sterling heb. Aaron is de drummer van John Mayer, maar ook van Taylor Swift, Harry Styles en vele andere grootheden uit het hedendaagse popwereldje. Een eer dat hij mijn single in wilde drummen! Daarnaast heb ik op basgitaar mijn goede vriend Peter Slager van BLØF. Met zo'n ritmesexy kan het bijna niet mis gaan, toch? ;)

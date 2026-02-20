@@ -3,6 +3,7 @@ title: "Veronica Express rijdt door Nederland"
 slug: "op-pad-met-de-veronica-express"
 date: "2017-06-09"
 originalUrl: "/news/op-pad-met-de-veronica-express/"
+featuredImage: "/images/news/NATHANREINDS-RadioVeronicaExpress-2-LR-8.jpg"
 ---
 
 Wow, wat een trip was de Veronica Express! Vrijdag 9 juni reed de Veronica Express door heel Nederland. Pikte onderweg muzikanten en luisteraars op en er werd muziek gemaakt. In spontane samenstellingen, niet gerepeteerd. Gewoon doen, dat was het devies. Als het dan lukt…dat gevoel is het beste ter wereld! Zoals bijvoorbeeld tijdens de ‘Hit The Road Jack’ jam met Sven Figee, Marlon Pichel, Janneke Nijhuis en de onvolprezen Marc Janssen.

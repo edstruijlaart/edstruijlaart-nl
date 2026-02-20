@@ -3,6 +3,7 @@ title: "Huiskamerconcerten Ed Struijlaart 2026"
 slug: "huiskamerconcerten-ed-struijlaart-2026"
 date: "2025-09-15"
 originalUrl: "/news/huiskamerconcerten-ed-struijlaart-2026/"
+featuredImage: "/images/news/DSC_9880.jpg"
 ---
 
 Ik speel weer huiskamerconcerten.

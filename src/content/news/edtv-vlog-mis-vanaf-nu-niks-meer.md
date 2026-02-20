@@ -3,6 +3,7 @@ title: "EDTV, vanaf nu ook mijn persoonlijke VLOG op Youtube"
 slug: "edtv-vlog-mis-vanaf-nu-niks-meer"
 date: "2015-02-15"
 originalUrl: "/news/edtv-vlog-mis-vanaf-nu-niks-meer/"
+featuredImage: "/images/news/Schermafbeelding-2015-03-30-om-22.18.22.png"
 ---
 
 Met mijn vorige bandje Stud Muffins deden we het al toen Youtube nog maar net bestond: Vloggen. We legden onze avonturen vast voor het nageslacht in het legendarische SMTV. Nu, in 2015 is het Vloggen hip & happening en heb ik mijn camera'tje ook onder het stof vandaan gehaald. Mijn EDTV VLOG is geboren. De eerste 2 afleveringen staan reeds online en de bedoeling is om jullie een kijkje te geven in de wereld achter de schijnwerpers. ;)

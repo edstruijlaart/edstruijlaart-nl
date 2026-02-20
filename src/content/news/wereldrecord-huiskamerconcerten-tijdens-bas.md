@@ -3,6 +3,7 @@ title: "Wereldrecord Huiskamerconcerten tijdens BAS"
 slug: "wereldrecord-huiskamerconcerten-tijdens-bas"
 date: "2015-07-15"
 originalUrl: "/news/wereldrecord-huiskamerconcerten-tijdens-bas/"
+featuredImage: "/images/news/Schermafbeelding-2014-11-14-om-12.17.32.png"
 ---
 
 "Is 'ie nou helemaal gek geworden die Struijlaart??" Ik hoor het je denken….Volmondig en vol trots kan ik dat met "JA!" beantwoorden. Want wat is namelijk het geval: Tijdens Back At SEA ga ik het Wereldrecord Huiskamerconcerten vestigen. Het begon als een gebbetje toen ik een paar maanden geleden met BLØF mee mocht doen in het Paard. Na afloop hadden we het over Back At SEA en toen werd er geroepen door de mannen:"Hey Struijlaart, jij doet toch altijd al die huiskamerconcerten? Waarom doe je tijdens Back At SEA niet een wereldrecord poging?? Er zijn daar per slot van rekening voldoende huisjes op het park". Mijn eerste gedachte was: uhm, dat wordt killing…maar uiteraard heb ik zonder verder na te denken uit volle borst 'Ja hoor, dat doe ik wel' geroepen. Nu is het dus zover, vanmorgen werd via de nieuwsbrief van Back At SEA bekend gemaakt dat dit ging gebeuren op de zaterdag en zondag. Mensen konden gelijk reserveren via de site. Wat schetst mijn verbazing: binnen 50 minuten zijn ALLE huisjes volgeboekt!! Dus aan de bak! Mensen bieden me nu al afterparty's aan als het gehaald is en oneindige voorraden bier, maar ik denk eerder dat ik een tank zuurstof nodig heb en nieuwe stembanden. ;)

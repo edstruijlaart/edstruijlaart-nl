@@ -3,6 +3,7 @@ title: "Guitar! Beluister mijn nieuwe single"
 slug: "nieuwe-single-guitar"
 date: "2018-08-20"
 originalUrl: "/news/nieuwe-single-guitar/"
+featuredImage: "/images/news/ED-STRUIJLAART-GUITAR.jpg"
 ---
 
 Vanaf 21 september tour ik door het land met mijn eerste theaterprogramma 'Gitaarmannen: van Clapton tot Sheeran' en ik vond dat een mooi moment om eens een liedje te schrijven over het instrument wat me al zoveel gebracht heeft. Dit is uiteindelijk 'Guitar' geworden. Afgelopen 16 augustus werd ik 39 en ik realiseerde me dat ik precies 30 jaar geleden (op mijn 9e verjaardag) mijn allereerste gitaar kreeg. Het was een super goedkoop modelletje van 75 gulden. Je kan 'm zien op het artwork van de single. Die foto is genomen op diezelfde 9e verjaardag.

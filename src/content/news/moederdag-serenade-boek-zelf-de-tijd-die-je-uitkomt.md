@@ -3,6 +3,7 @@ title: "Moederdag Serenade: Boek zelf je timeslot!"
 slug: "moederdag-serenade-boek-zelf-de-tijd-die-je-uitkomt"
 date: "2021-04-15"
 originalUrl: "/news/moederdag-serenade-boek-zelf-de-tijd-die-je-uitkomt/"
+featuredImage: "/images/news/moederdag-serenades-banner.png"
 ---
 
 Zondag 9 mei is het Moederdag 2021, natuurlijk hét moment om je moeder (of je vrouw ;)) in het zonnetje te zetten. Het is uiteraard goed bedoeld als je met een zelfgekleide asbak aankomt, maar hoe leuk is het om met muziek te zeggen dat je van je moeder houdt (of je vrouw ;))!

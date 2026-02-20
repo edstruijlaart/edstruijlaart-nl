@@ -3,6 +3,7 @@ title: "Ed Sheeran Ziggo Dome, naprogramma!"
 slug: "naprogramma-ed-sheeran-in-de-ziggo-dome"
 date: "2015-06-15"
 originalUrl: "/news/naprogramma-ed-sheeran-in-de-ziggo-dome/"
+featuredImage: "/images/news/Schermafbeelding-2014-10-28-om-20.09.33.png"
 ---
 
 We zitten er lekker in! Vandaag is bekend geworden dat ik volgende week maandag het naprogramma van Ed Sheeran mag verzorgen in de Ziggo Dome. Wacht, Ed Sheeran Ziggo Dome…ja, je hoort het goed. Stijf uitverkocht natuurlijk. Tijdens de afterparty in de memberclub mag ik laten zien wat ik in huis heb. Erg tof natuurlijk en een eer om op dezelfde avond als zo'n internationale grootheid te mogen spelen!

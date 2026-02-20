@@ -3,6 +3,7 @@ title: "15 maart: De 1 jaar in de shit"
 slug: "15-maart-de-1-jaar-in-de-shit-stream"
 date: "2021-03-15"
 originalUrl: "/news/15-maart-de-1-jaar-in-de-shit-stream/"
+featuredImage: "/images/news/1-jaar-in-de-shitstream.png"
 ---
 
 Het is vandaag 15 maart. Precies 1 jaar geleden ging ik voor het eerst 'live'. Met een oud Go-pro camera'tje en een gratis stukje software genaamd OBS. Als ik toen had geweten dat we 1 jaar later nog steeds in de shit hadden gezeten…dan had ik het waarschijnlijk niet geloofd om mezelf vervolgens zachtjes in slaap te huilen.

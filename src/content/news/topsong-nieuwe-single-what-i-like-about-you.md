@@ -3,6 +3,7 @@ title: "TOPSONG: Nieuwe single What I Like About You!"
 slug: "topsong-nieuwe-single-what-i-like-about-you"
 date: "2023-06-15"
 originalUrl: "/news/topsong-nieuwe-single-what-i-like-about-you/"
+featuredImage: "/images/news/Adobe_Post_20190823_103450.png"
 ---
 
 Gisteren verscheen mijn nieuwe single 'What I Like About You'. Een liedje wat ik een kleine maand geleden schreef en gelijk heb opgenomen. Soms zit je als songwriter 'vast'…dan lukt het gewoonweg niet om een liedje te schrijven. Dan wil je het beste liedje ooit schrijven en dat is een verkeerde insteek. Dat had ik nu ook, ik zat al weken vast…er kwam gewoon niks…ik wist niet waar ik over wilde schrijven…maar ineens had ik het: Hoe voelde ik me eigenlijk? Nou, dat was best goed…ik heb een leuke vriendin aan mijn zijde, 2 leuke kindjes…wat wil een mens nog meer. Dus toen dacht ik: ik ga gewoon een vrolijk liedje schrijven. Wat kan mij het schelen! Het hoeft niet altijd maar te gaan over kommer en kwel. Op dat moment daalde 'What I Like About You' bij me in en toen wist ik het: Dit is 'm!

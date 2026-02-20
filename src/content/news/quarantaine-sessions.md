@@ -3,6 +3,7 @@ title: "Quarantaine Sessions"
 slug: "quarantaine-sessions"
 date: "2020-03-22"
 originalUrl: "/news/quarantaine-sessions/"
+featuredImage: "/images/news/Mijn-Post-project.jpg"
 ---
 
 Ook deze zondag (29 maart) zal er een aflevering van de Quarantaine Sessions zijn. Deze keer geen thema, maar gewoon muziek waar ik zin in heb om te spelen. Je kan uiteraard je input geven via de chat of door een whatsapp of voice app te sturen naar 0682112502. Hieronder is de stream te vinden waarop ik uitzend a.s. zondag. Een virtueel kaartje kan je kopen via http://bit.ly/quarantainesessions

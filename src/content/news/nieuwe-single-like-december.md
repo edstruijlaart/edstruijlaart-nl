@@ -3,6 +3,7 @@ title: "Like December, de nieuwe single"
 slug: "nieuwe-single-like-december"
 date: "2016-12-01"
 originalUrl: "/news/nieuwe-single-like-december/"
+featuredImage: "/images/news/Ed-Struijlaart-Like-December2000px.png"
 ---
 
 Ha allemaal! Het jaar zit er bijna op, ik hoop dat jullie jaar net zo bijzonder was als mijn eigen jaar. Op persoonlijk vlak is er het nodige veranderd…in 1 jaar tijd vader geworden en verhuisd. Dat gaat je niet in de koude kleren zitten ;). Over koude kleren gesproken (jezus wat een slecht bruggetje…): Ik heb een nieuwe single opgenomen en uitgebracht. Hij heet Like December en is een winter/kerst liedje!

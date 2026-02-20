@@ -4,6 +4,7 @@ slug: "speeldata-gitaarmannen-van-clapton-tot-sheeran"
 date: "2018-05-16"
 excerpt: "In het najaar ga ik voor het eerst de theaters in met Gitaarmannen: van Clapton tot Sheeran! Alle speeldata op een rij."
 originalUrl: "/news/speeldata-gitaarmannen-van-clapton-tot-sheeran/"
+featuredImage: "/images/news/Speeldata-Gitaarmannen-01.png"
 ---
 
 Op dit moment ben ik voor het eerst in de theaters te zien met Gitaarmannen: van Clapton tot Sheeran! Dit met een ode aan mijn eerste grote liefde: de gitaar! Ik breng samen met mijn band een ode aan het instrument wat mijn leven voorgoed veranderd heeft. Dit aan de hand van liedjes van mijn gitaarhelden en natuurlijk ook mijn eigen liedjes. Verwacht songs van Clapton, Mayer, Santana, Hendrix, Ed Sheeran!

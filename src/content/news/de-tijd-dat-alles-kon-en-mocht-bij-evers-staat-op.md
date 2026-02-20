@@ -3,6 +3,7 @@ title: "De Tijd Dat Alles Kon En Mocht bij Evers Staat Op"
 slug: "de-tijd-dat-alles-kon-en-mocht-bij-evers-staat-op"
 date: "2019-06-15"
 originalUrl: "/news/de-tijd-dat-alles-kon-en-mocht-bij-evers-staat-op/"
+featuredImage: "/images/news/ED-STRUIJLAART-DE-TIJD-DAT-ALLES-KON-EN-MOCHT-ARTWORK.jpg"
 ---
 
 Wat een onwijze eer: in de laatste week dat Edwin Evers op Radio538 te horen is met zijn legendarische ochtendshow 'Evers Staat Op'; mag ik langskomen om mijn nieuwe single te spelen!

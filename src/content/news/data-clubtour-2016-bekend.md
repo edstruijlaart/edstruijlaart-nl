@@ -3,6 +3,7 @@ title: "Clubtour data 2016 bekend!"
 slug: "data-clubtour-2016-bekend"
 date: "2016-08-15"
 originalUrl: "/news/data-clubtour-2016-bekend/"
+featuredImage: "/images/news/10410729_10153921902301808_8137224580803993498_n.png"
 ---
 
 Na het grote succes van mijn clubtour in 2015, ga ik ook dit jaar weer een rondje langs de clubs maken. In totaal doen we 4 zalen aan en zeer zeker niet de minste. Zie hieronder alle data en directe link naar de kaartjes. Ik hoop je er bij 1 (of meerderen) te mogen treffen!

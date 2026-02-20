@@ -77,6 +77,19 @@ const rest = sortedPosts.slice(3);
             ]}
             style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
           >
+            {post.data.featuredImage && (
+              <div class:list={[
+                'overflow-hidden',
+                i === 0 ? 'aspect-[16/9]' : 'aspect-[16/10]',
+              ]}>
+                <img
+                  src={post.data.featuredImage}
+                  alt={post.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                />
+              </div>
+            )}
             <div class="p-6 lg:p-8 flex flex-col h-full">
               {formatDate(post.data.date) && (
                 <time class="text-sm text-[var(--color-gold)] font-medium uppercase tracking-wider">

@@ -3,6 +3,7 @@ title: "Beluister het album nu al op Spotify in Track By Track"
 slug: "beluister-het-album-nu-al-op-spotify-in-track-by-track"
 date: "2014-10-10"
 originalUrl: "/news/beluister-het-album-nu-al-op-spotify-in-track-by-track/"
+featuredImage: "/images/news/b1c1fe90-feab-4d78-9274-ac488fd616c2.png"
 ---
 
 EXCLUSIEF: TRACK BY TRACK VAN CLOSER THAN SKIN OP NU AL SPOTIFY

@@ -3,6 +3,7 @@ title: "EP &#039;Alles op Rood&#039; vanaf nu te bestellen!"
 slug: "ep-alles-op-rood-vanaf-nu-te-bestellen"
 date: "2020-09-21"
 originalUrl: "/news/ep-alles-op-rood-vanaf-nu-te-bestellen/"
+featuredImage: "/images/news/alles-op-rood-artwork-voorkant.png"
 ---
 
 Zondagavond 20/09 heb ik via een Livestream Luistersessie mijn nieuwe EP gepresenteerd aan 'de mensen thuis'. Ik heb een half jaar hard aan deze EP gewerkt. 90% van de instrumenten en partijen heb ik zelf ingespeeld. Het geheel heb ik ook gemixt en gemasterd in mijn eigen studio. Dus ik ben super blij om te kunnen roepen dat je de EP vanaf nu kan bestellen in mijn webshop!

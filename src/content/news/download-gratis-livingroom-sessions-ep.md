@@ -3,6 +3,7 @@ title: "5 jaar solo: Download gratis Livingroom Sessions EP"
 slug: "download-gratis-livingroom-sessions-ep"
 date: "2015-02-01"
 originalUrl: "/news/download-gratis-livingroom-sessions-ep/"
+featuredImage: "/images/news/Cover-LIVINGROOM-SESSIONS-EP.jpg"
 ---
 
 Download gratis Livingroom Sessions EP

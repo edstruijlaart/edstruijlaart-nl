@@ -3,6 +3,7 @@ title: "23 december 2017: Ed&#039;s Pre X"
 slug: "23-december-2017-eds-pre-x-mas-party"
 date: "2017-12-01"
 originalUrl: "/news/23-december-2017-eds-pre-x-mas-party/"
+featuredImage: "/images/news/Schermafbeelding-2017-08-18-om-14.09.33.png"
 ---
 
 Alles goed? Ik hoop dat je een fijne vakantie hebt of hebt gehad. Ik heb ook eventjes de stekker eruit getrokken en mezelf aan de oplader gelegd, heerlijk! Nu het allemaal weer op gang aan het komen is wil ik je even wijzen op het volgende:

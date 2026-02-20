@@ -4,6 +4,7 @@ slug: "nieuwe-single-gold"
 date: "2016-07-01"
 excerpt: "Nieuwe single GOLD van Ed Struijlaart. Lekker rauw en opzwepend!"
 originalUrl: "/news/nieuwe-single-gold/"
+featuredImage: "/images/news/Packshot-Ed-Struijlaart-Gold.jpg"
 ---
 
 Tadaa! Die zag je niet aankomen: hierbij ziet mijn nieuwe single GOLD het levenslicht. Een wat ander liedje dan dat je van me gewend bent misschien. Hij is lekker rauw en opzwepend! Ben benieuwd wat je ervan vindt!

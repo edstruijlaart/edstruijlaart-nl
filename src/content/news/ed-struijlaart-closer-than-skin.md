@@ -3,6 +3,7 @@ title: "Ed Struijlaart"
 slug: "ed-struijlaart-closer-than-skin"
 date: "2014-10-17"
 originalUrl: "/news/ed-struijlaart-closer-than-skin/"
+featuredImage: "/images/news/ed-struijlaart-closer-than-skin-cd-500x500.jpg"
 ---
 
 Ja! Het is eindelijk zover: mijn nieuwe album is uit. Gisteravond hebben we het gevierd in een uitverkochte Paradiso, Amsterdam. Wat een sfeer en wat een fijn publiek! De symbolische eerste CD van 'Ed Struijlaart – Closer Than Skin' werd uitgereikt door 3FM DJ Michiel Veenstra.

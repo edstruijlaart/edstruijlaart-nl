@@ -3,6 +3,7 @@ title: "Nieuwe single: House on Fire!"
 slug: "nieuwe-single-house-on-fire"
 date: "2015-01-15"
 originalUrl: "/news/nieuwe-single-house-on-fire/"
+featuredImage: "/images/news/AAA_CD_single_HoF_1600x1600_2.jpg"
 ---
 
 Hey, mijn nieuwe single is deze week uitgekomen en heet ‘House on Fire’. Het nummer is afkomstig van het album ‘Closer Than Skin’ dat in oktober 2014 is verschenen.

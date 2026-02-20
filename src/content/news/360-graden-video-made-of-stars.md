@@ -3,6 +3,7 @@ title: "360 graden video Made of Stars"
 slug: "360-graden-video-made-of-stars"
 date: "2016-05-15"
 originalUrl: "/news/360-graden-video-made-of-stars/"
+featuredImage: "/images/news/Schermafbeelding-2016-06-15-om-11.30.18.png"
 ---
 
 Afgelopen week zijn Lisa Lois en ik naar Scheveningen gegaan. "Lekker, stelletje luie muzikanten een beetje bakken in de zon zeker?!?1" Het antwoord daarop is: neen. Wij gingen naar Scheveningen met de vrienden van VR Composers om een 360 graden video voor Made of Stars op te nemen . Hoe vet! Maar nu hoor ik je alweer denken: "Sorry Ed, maar wat de hell is een 360 graden video?!!!!?11??11". Welnu, dat is een video waarin je helemaal rondom kan kijken, eigenlijk alsof je er zelf bij bent geweest op het moment dat de video geschoten is. Helemaal top als je bijvoorbeeld een Virtual Reality bril hebt zoals de Samsung Gear VR. Dan lijkt het echt net alsof je bij ons op schoot zit :).

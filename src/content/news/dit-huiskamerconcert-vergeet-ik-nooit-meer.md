@@ -4,6 +4,7 @@ slug: "dit-huiskamerconcert-vergeet-ik-nooit-meer"
 date: "2025-03-15"
 excerpt: "Als deze gitaar kon praten. Dan had hij verteld hoe mooi het is om huiskamerconcerten te doen. Boek een huiskamerconcert met Ed Struijlaart."
 originalUrl: "/news/dit-huiskamerconcert-vergeet-ik-nooit-meer/"
+featuredImage: "/images/news/dummy.jpeg"
 ---
 
 Als deze gitaar kon praten, zou hij niet beginnen over mooie zalen of applaus.

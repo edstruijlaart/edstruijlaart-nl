@@ -3,6 +3,7 @@ title: "Tricks Up My Sleeve live bij Gerard Ekdom op Radio 2"
 slug: "nieuwe-single-live-bij-gerard-ekdom-op-radio-2"
 date: "2016-01-18"
 originalUrl: "/news/nieuwe-single-live-bij-gerard-ekdom-op-radio-2/"
+featuredImage: "/images/news/Schermafbeelding-2016-01-19-om-12.29.07.png"
 ---
 
 ed struijlaart en gerard ekdom

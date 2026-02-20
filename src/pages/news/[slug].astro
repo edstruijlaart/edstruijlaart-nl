@@ -32,7 +32,7 @@ if (dateStr) {
 }
 ---
 
-<BaseLayout title={post.data.title} description={post.data.excerpt || post.data.title} type="article">
+<BaseLayout title={post.data.title} description={post.data.excerpt || post.data.title} type="article" ogImage={post.data.featuredImage || '/og-image.jpg'}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
@@ -53,7 +53,8 @@ if (dateStr) {
         "@type": "WebPage",
         "@id": `https://edstruijlaart.nl/news/${post.data.slug}/`
       },
-      ...(post.data.excerpt ? { "description": post.data.excerpt } : {})
+      ...(post.data.excerpt ? { "description": post.data.excerpt } : {}),
+      ...(post.data.featuredImage ? { "image": `https://edstruijlaart.nl${post.data.featuredImage}` } : {})
     })} />
   </Fragment>
   <article class="py-24">
@@ -69,6 +70,17 @@ if (dateStr) {
         </h1>
         <div class="mt-4 h-1 w-16 rounded-full" style="background-color: var(--color-gold);"></div>
       </header>
+
+      {post.data.featuredImage && (
+        <div class="mb-10 rounded-xl overflow-hidden">
+          <img
+            src={post.data.featuredImage}
+            alt={post.data.title}
+            class="w-full h-auto"
+            loading="eager"
+          />
+        </div>
+      )}
 
       <div class="prose-ed max-w-none text-lg text-[var(--fg-muted)] leading-relaxed [&>p]:mb-6 [&>h2]:font-[var(--font-display)] [&>h2]:text-2xl [&>h2]:text-[var(--fg)] [&>h2]:mt-10 [&>h2]:mb-4 [&>h3]:font-[var(--font-display)] [&>h3]:text-xl [&>h3]:text-[var(--fg)] [&>h3]:mt-8 [&>h3]:mb-3 [&>a]:text-[var(--color-gold)] [&>a]:underline hover:[&>a]:text-[var(--color-gold-light)] [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 [&>blockquote]:border-l-4 [&>blockquote]:border-[var(--color-gold)] [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:my-6">
         <Content />

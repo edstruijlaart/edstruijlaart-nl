@@ -3,6 +3,7 @@ title: "Bestel het nieuwe album vooruit!"
 slug: "bestel-het-nieuwe-album-vooruit"
 date: "2014-09-15"
 originalUrl: "/news/bestel-het-nieuwe-album-vooruit/"
+featuredImage: "/images/news/ed-struijlaart-closer-than-skin-cd-500x500.jpg"
 ---
 
 Op vrijdag 17 oktober komt ie dan eindelijk uit 'Closer Than Skin'.

@@ -3,6 +3,7 @@ title: "Waarom Eric Clapton&#039;s Unplugged Legendarisch Is"
 slug: "waarom-eric-claptons-unplugged-legendarisch-is"
 date: "2023-02-15"
 originalUrl: "/news/waarom-eric-claptons-unplugged-legendarisch-is/"
+featuredImage: "/images/news/unplugged-1.jpeg"
 ---
 
 eric clapton unplugged

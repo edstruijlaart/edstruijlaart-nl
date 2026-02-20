@@ -4,6 +4,7 @@ slug: "dief-met-berouw"
 date: "2019-11-01"
 excerpt: "Een bizar verhaal over gestolen portemonnees in het theater, camerabeelden, en een onverwacht bericht op Instagram van de dief zelf."
 originalUrl: "/news/dief-met-berouw/"
+featuredImage: "/images/news/IMG_20191101_125619__01__01.jpg"
 ---
 
 Ok, hier volgt een bizar verhaal. Ga er maar even voor zitten....

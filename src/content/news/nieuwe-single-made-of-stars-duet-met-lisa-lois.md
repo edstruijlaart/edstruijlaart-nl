@@ -4,6 +4,7 @@ slug: "nieuwe-single-made-of-stars-duet-met-lisa-lois"
 date: "2016-05-20"
 excerpt: "Made of Stars is de nieuwe single van Ed Struijlaart samen met Lisa Lois, bekend van de hit Hallelujah."
 originalUrl: "/news/nieuwe-single-made-of-stars-duet-met-lisa-lois/"
+featuredImage: "/images/news/Facebook_coverphoto.png"
 ---
 
 Ed Struijlaart & Lisa Lois – Made of stars

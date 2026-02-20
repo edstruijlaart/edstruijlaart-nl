@@ -3,6 +3,7 @@ title: "Speel samen met je kind in de video van Make It On Your Own!"
 slug: "speel-samen-met-je-kind-in-de-clip-van-make-it-on-your-own"
 date: "2018-01-10"
 originalUrl: "/news/speel-samen-met-je-kind-in-de-clip-van-make-it-on-your-own/"
+featuredImage: "/images/news/ED-STRUIJLAART-MAKE-IT-ON-YOUR-OWN-ARTWORK-MEESPELEN.png"
 ---
 
 SPEEL JIJ SAMEN MET JE KIND IN DE VIDEO VAN MIJN NIEUWE SINGLE MAKE IT ON YOUR OWN?

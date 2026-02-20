@@ -4,6 +4,7 @@ slug: "moederdag-aktie"
 date: "2020-05-01"
 excerpt: "Verras je moeder met een Corona-proof origineel cadeau: een online huiskamerconcert of een persoonlijke Moederdag serenade van Ed Struijlaart."
 originalUrl: "/news/moederdag-aktie/"
+featuredImage: "/images/news/MOEDERDAG-STREAM.png"
 ---
 
 **MOEDERDAG**

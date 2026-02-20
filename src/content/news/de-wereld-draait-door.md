@@ -3,6 +3,7 @@ title: "De Wereld Draait Door..!"
 slug: "de-wereld-draait-door"
 date: "2016-10-19"
 originalUrl: "/news/de-wereld-draait-door/"
+featuredImage: "/images/news/12031_DWDD_afbeelding.jpg"
 ---
 
 Hoe mooi wil je het hebben, vanavond speel ik met de band bij De Wereld Draait Door! We spelen de nieuwe single 'Heart of Stone'. Erg benieuwd hoe de reacties zullen zijn, wij staan in ieder geval in de startblokken. Kijk zelf hoe we het er vanaf brengen tussen 19:00 en 20:00 uur op NPO1.

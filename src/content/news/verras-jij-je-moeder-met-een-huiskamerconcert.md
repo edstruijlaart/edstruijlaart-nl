@@ -4,6 +4,7 @@ slug: "verras-jij-je-moeder-met-een-huiskamerconcert"
 date: "2015-04-15"
 excerpt: "Een moederdag huiskamerconcert van Ed Struijlaart is natuurlijk de ultieme verrassing voor jouw moeder. Boek snel en verras haar met een uniek cadeau."
 originalUrl: "/news/verras-jij-je-moeder-met-een-huiskamerconcert/"
+featuredImage: "/images/news/huiskamersgezochtmoederdag.png"
 ---
 
 10 mei is het weer moederdag. Jeuh, moeders rule! Natuurlijk denk jij elk jaar weer: wat de *piep* moet ik dit jaar weer geven om moeders mijn waardering te laten blijken?? Het zoveelste Rituals pakket? Of weer die mierzoete High-Tea? Nee joh, dit jaar ga jij met iets origineels voor de dag komen: Een moederdag huiskamerconcert!

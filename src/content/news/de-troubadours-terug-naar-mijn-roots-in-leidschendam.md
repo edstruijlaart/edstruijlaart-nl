@@ -3,6 +3,7 @@ title: "De Troubadours: Terug Naar Mijn Roots"
 slug: "de-troubadours-terug-naar-mijn-roots-in-leidschendam"
 date: "2023-10-15"
 originalUrl: "/news/de-troubadours-terug-naar-mijn-roots-in-leidschendam/"
+featuredImage: "/images/news/maxresdefault.jpeg"
 ---
 
 In het hart van het betoverende Leidschendam, daar waar mijn reis als zanger ooit begon, nam ik deel aan het inspirerende muziekprogramma 'De Troubadours'. Samen met presentator Christon Kloosterboer trok ik door de straten die ik als kind verkende en beleefde ik een dag vol herinneringen, emoties en creatieve uitingen. Het hoogtepunt van deze bijzondere dag was het schrijven en uitvoeren van ons nieuwe nummer 'Mooi Geweest', een eerbetoon aan mijn diepgewortelde band met Leidschendam.

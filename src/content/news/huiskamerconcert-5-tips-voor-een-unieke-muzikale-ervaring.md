@@ -4,6 +4,7 @@ slug: "huiskamerconcert-5-tips-voor-een-unieke-muzikale-ervaring"
 date: "2023-02-14"
 excerpt: "Een huiskamerconcert is een unieke, muzikale ervaring en hier lees je 5 tips om het tot een succes te maken."
 originalUrl: "/news/huiskamerconcert-5-tips-voor-een-unieke-muzikale-ervaring/"
+featuredImage: "/images/news/ed-persfoto-clapton-2022-vierkant.png"
 ---
 
 Een huiskamerconcert van Ed Struijlaart is een unieke manier om van zijn muziek te genieten. In plaats van in een grote concertzaal te zitten, kun je in de intieme setting van een huiskamer genieten van een optreden van deze getalenteerde singer-songwriter. Ed Struijlaart staat bekend om zijn prachtige stem en uitstekende gitaarspel. In dit artikel delen we vijf tips om een huiskamerconcert van Ed Struijlaart te organiseren en te genieten van een onvergetelijke ervaring.

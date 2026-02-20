@@ -4,6 +4,7 @@ slug: "gitaarmannen-3-john-mayer-theatertour"
 date: "2024-06-15"
 excerpt: "John Mayer tribute tijdens Gitaarmannen 3 met Ed Struijlaart. 21 theatervoorstellingen door heel Nederland."
 originalUrl: "/news/gitaarmannen-3-john-mayer-theatertour/"
+featuredImage: "/images/news/24049_EDS_JohnMayer_insta1-1.jpg"
 ---
 
 John Mayer, wat mij betreft de grootste Gitaarman van de afgelopen 20 jaar, verdient het om in het zonnetje gezet te worden. Dat ga ik vanaf dit najaar doen in de theaters. Samen met mijn band spelen we 21 keer door het hele land. We spelen de beste liedjes van John en misschien ook wel wat van zijn inspiratiebronnen, want waar heeft John Mayer de mosterd vandaan gehaald?

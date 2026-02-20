@@ -3,6 +3,7 @@ title: "Move On"
 slug: "move-on-nieuwe-single-ziet-het-daglicht"
 date: "2017-06-22"
 originalUrl: "/news/move-on-nieuwe-single-ziet-het-daglicht/"
+featuredImage: "/images/news/Ed-Struijlaart-Move-On-artwork.png"
 ---
 
 Ik kan niet genoeg benadrukken hoe enthousiast ik ben om mijn nieuwste single "Move On" met jullie te delen! Deze track betekent enorm veel voor me en ik kan niet wachten om te horen wat jullie ervan vinden.

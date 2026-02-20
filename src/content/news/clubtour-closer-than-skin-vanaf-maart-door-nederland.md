@@ -3,6 +3,7 @@ title: "Clubtour &#039; Closer Than Skin&#039; vanaf maart door Nederland"
 slug: "clubtour-closer-than-skin-vanaf-maart-door-nederland"
 date: "2015-01-10"
 originalUrl: "/news/clubtour-closer-than-skin-vanaf-maart-door-nederland/"
+featuredImage: "/images/news/Persfoto-2014-Ed-Struijlaart-foto-Rutger-van-der-Bent.jpg"
 ---
 
 Yes! Erg trots om aan te kondigen dat we in het nieuwe jaar een eigen clubtour doen door het land om het nieuwe album 'Closer Than Skin' te promoten. Ik hoop je te zien op een van onderstaande data!

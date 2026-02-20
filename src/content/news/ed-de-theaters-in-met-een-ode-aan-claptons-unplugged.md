@@ -3,6 +3,7 @@ title: "Ed de theaters in met een ode aan Clapton&#039;s Unplugged"
 slug: "ed-de-theaters-in-met-een-ode-aan-claptons-unplugged"
 date: "2022-06-15"
 originalUrl: "/news/ed-de-theaters-in-met-een-ode-aan-claptons-unplugged/"
+featuredImage: "/images/news/ed-persfoto-clapton-2022-vierkant.png"
 ---
 
 Ter gelegenheid van het 30 jarig jubileum van Eric Clapton’s Unplugged plaat ga ik dit najaar de theaters in met Gitaarmannen 2: een ode aan Clapton’s legendarische Unplugged album.

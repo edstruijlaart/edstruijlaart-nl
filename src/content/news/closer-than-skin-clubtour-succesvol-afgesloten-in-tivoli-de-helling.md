@@ -3,6 +3,7 @@ title: "Ed Struijlaart&#039;s Closer Than Skin tour succesvol afgesloten"
 slug: "closer-than-skin-clubtour-succesvol-afgesloten-in-tivoli-de-helling"
 date: "2015-04-01"
 originalUrl: "/news/closer-than-skin-clubtour-succesvol-afgesloten-in-tivoli-de-helling/"
+featuredImage: "/images/news/Schermafbeelding-2015-03-30-om-22.54.24.png"
 ---
 
 Afgelopen zaterdag kwam de Closer Than Skin clubtour tot een spetterend en gierend eind in Tivoli de Helling. 6 shows in 3 weken met een geweldige band, geweldig publiek en hele fijne zalen. Een blije Struijlaart tikt dit stukje en kan niet anders zeggen dan: Hopelijk komt er een vervolg, want dit smaakt naar meer. Zeer binnenkort EDTV #3, met beelden van de laatste 2 shows van de Closer Than Skin Clubtour, voor nu de foto's en wat filmpjes. Vanaf deze plaats nog even dank aan mijn band: Leon Schmitz (drums), Michel van der Zanden (gitaar/toetsen) en Lars van Starrenburg (basgitaar). En de jongens van de techniek: Arne van der Heijden (Monitors) en Bart Schatteleijn (FOH).

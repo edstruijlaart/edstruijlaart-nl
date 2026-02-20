@@ -3,6 +3,7 @@ title: "Nieuwe single: All We Need"
 slug: "nieuwe-single-all-we-need"
 date: "2024-04-05"
 originalUrl: "/news/nieuwe-single-all-we-need/"
+featuredImage: "/images/news/ED-STRUIJLAART-ALL-WE-NEED-ARTWORK.jpg"
 ---
 
 Op vrijdag 5 april released singer/songwriter Ed Struijlaart zijn nieuwe single ‘All We Need’. De song is een voorbode voor een druk jaar aan voor Struijlaart, waarin toegewerkt wordt naar zijn ‘Gitaarmannen 3: John Mayer’ theatertour.

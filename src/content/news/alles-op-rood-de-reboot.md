@@ -3,6 +3,7 @@ title: "Alles op Rood: de reboot!"
 slug: "alles-op-rood-de-reboot"
 date: "2021-09-01"
 originalUrl: "/news/alles-op-rood-de-reboot/"
+featuredImage: "/images/news/ALLES-OP-ROOD-INSTA.png"
 ---
 
 De wonderen zijn de wereld nog niet uit, maar Corona gelukkig bijna wél uit de onze! ;)

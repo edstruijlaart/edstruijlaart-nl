@@ -4,6 +4,7 @@ slug: "ed-doet-eerste-virtuele-theatertour-ooit-van-huis-uit"
 date: "2020-04-28"
 excerpt: "De eerste virtuele theatertour ooit: Van Huis Uit. Vanaf 30 april speelt Ed Struijlaart gratis in 10 theaters vanuit huis."
 originalUrl: "/news/ed-doet-eerste-virtuele-theatertour-ooit-van-huis-uit/"
+featuredImage: "/images/news/virtuele-theatertour-poster-a5.png"
 ---
 
 Singer/ songwriter Ed Struijlaart probeert creatieve manieren te verzinnen om de Corona-crisis het hoofd te bieden en komt met de eerste virtuele theatertour ‘Van Huis Uit’.
