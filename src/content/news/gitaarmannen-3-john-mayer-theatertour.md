@@ -2,6 +2,7 @@
 title: "Gitaarmannen 3: John Mayer theatertour"
 slug: "gitaarmannen-3-john-mayer-theatertour"
 date: "2024-06-15"
+excerpt: "John Mayer tribute tijdens Gitaarmannen 3 met Ed Struijlaart. 21 theatervoorstellingen door heel Nederland."
 originalUrl: "/news/gitaarmannen-3-john-mayer-theatertour/"
 ---
 

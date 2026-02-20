@@ -2,6 +2,7 @@
 title: "Moederdag huiskamerconcert!? Verrassing!"
 slug: "verras-jij-je-moeder-met-een-huiskamerconcert"
 date: "2015-04-15"
+excerpt: "Een moederdag huiskamerconcert van Ed Struijlaart is natuurlijk de ultieme verrassing voor jouw moeder. Boek snel en verras haar met een uniek cadeau."
 originalUrl: "/news/verras-jij-je-moeder-met-een-huiskamerconcert/"
 ---
 

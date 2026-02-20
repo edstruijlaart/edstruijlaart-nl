@@ -2,6 +2,7 @@
 title: "Ed doet eerste virtuele theatertour ooit: Van Huis Uit"
 slug: "ed-doet-eerste-virtuele-theatertour-ooit-van-huis-uit"
 date: "2020-04-28"
+excerpt: "De eerste virtuele theatertour ooit: Van Huis Uit. Vanaf 30 april speelt Ed Struijlaart gratis in 10 theaters vanuit huis."
 originalUrl: "/news/ed-doet-eerste-virtuele-theatertour-ooit-van-huis-uit/"
 ---
 

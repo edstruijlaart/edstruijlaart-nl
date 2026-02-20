@@ -2,6 +2,7 @@
 title: "14 feb: De Grote Valentijns"
 slug: "14-feb-de-grote-valentijns-stream"
 date: "2021-01-25"
+excerpt: "Kijk samen met je geliefde naar De Grote Valentijns-stream op zondag 14 februari. Een uur lang de beste love songs, live gespeeld door Ed Struijlaart."
 originalUrl: "/news/14-feb-de-grote-valentijns-stream/"
 ---
 

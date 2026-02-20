@@ -2,6 +2,7 @@
 title: "☕ Goedemorgen Nederland en hallo John Mayer"
 slug: "☕-goedemorgen-nederland-en-hallo-john-mayer"
 date: "2025-01-20"
+excerpt: "Ed Struijlaart vertelt bij Goedemorgen Nederland over zijn liefde voor de gitaar en theatershow Gitaarmannen 3: John Mayer."
 originalUrl: "/news/%e2%98%95-goedemorgen-nederland-en-hallo-john-mayer/"
 ---
 

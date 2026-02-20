@@ -2,6 +2,7 @@
 title: "🎸 Gitaarmannen 3: John Mayer"
 slug: "gitaarmannen-3-john-mayer"
 date: "2025-01-15"
+excerpt: "Ed Struijlaart brengt met Gitaarmannen 3: John Mayer een ode aan de gitarist. Na uitverkochte eerste reeks terug in de theaters!"
 originalUrl: "/news/gitaarmannen-3-john-mayer/"
 ---
 

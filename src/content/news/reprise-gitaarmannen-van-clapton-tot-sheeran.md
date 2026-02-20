@@ -2,6 +2,7 @@
 title: "Reprise Gitaarmannen: van Clapton tot Sheeran!"
 slug: "reprise-gitaarmannen-van-clapton-tot-sheeran"
 date: "2019-01-15"
+excerpt: "Ook in 2019 gaat Ed Struijlaart op tour met de reprise van Gitaarmannen: van Clapton tot Sheeran. Nu 44 shows door het hele land!"
 originalUrl: "/news/reprise-gitaarmannen-van-clapton-tot-sheeran/"
 ---
 

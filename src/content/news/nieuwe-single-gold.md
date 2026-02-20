@@ -2,6 +2,7 @@
 title: "Nieuwe single: GOLD"
 slug: "nieuwe-single-gold"
 date: "2016-07-01"
+excerpt: "Nieuwe single GOLD van Ed Struijlaart. Lekker rauw en opzwepend!"
 originalUrl: "/news/nieuwe-single-gold/"
 ---
 
