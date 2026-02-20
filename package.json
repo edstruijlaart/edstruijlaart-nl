@@ -12,6 +12,8 @@
     "@astrojs/react": "^4.4.2",
     "@astrojs/sitemap": "^3.7.0",
     "@astrojs/vercel": "^9.0.4",
+    "@fontsource/barlow": "^5.2.8",
+    "@fontsource/barlow-condensed": "^5.2.8",
     "@fontsource/dm-sans": "^5.2.8",
     "@fontsource/dm-serif-display": "^5.2.8",
     "@lucide/astro": "^0.563.0",

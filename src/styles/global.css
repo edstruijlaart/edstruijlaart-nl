@@ -23,8 +23,8 @@
   --color-youtube: #FF0000;
 
   /* --- Fonts --- */
-  --font-display: "DM Serif Display", Georgia, serif;
-  --font-body: "DM Sans", -apple-system, sans-serif;
+  --font-display: "Barlow Condensed", sans-serif;
+  --font-body: "Barlow", -apple-system, sans-serif;
 
   /* --- Spacing --- */
   --spacing-section: 6rem;
@@ -90,13 +90,15 @@
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    line-height: 1.2;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
     color: var(--fg);
   }
 
-  h1 { font-size: 3rem; }
-  h2 { font-size: 2.25rem; }
-  h3 { font-size: 1.5rem; }
+  h1 { font-size: 3.5rem; }
+  h2 { font-size: 2.5rem; }
+  h3 { font-size: 1.75rem; }
 
   a {
     transition: color var(--transition-default);
