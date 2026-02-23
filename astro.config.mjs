@@ -30,9 +30,4 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  redirects: {
-    '/photo': '/about',
-    '/news': '/blog',
-    '/huiskamerconcert': '/huiskamerconcerten',
-  },
 });
