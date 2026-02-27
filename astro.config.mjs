@@ -5,6 +5,8 @@ import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 import react from '@astrojs/react';
 
+const BUILD_DATE = new Date();
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://edstruijlaart.nl',
@@ -18,8 +20,13 @@ export default defineConfig({
 
   integrations: [
     sitemap({
+      filter(page) {
+        // Sluit redirect- en SSR-only routes uit
+        return !page.includes('/shows/') && !page.includes('/live') && !page.includes('/api/');
+      },
       serialize(item) {
-        item.lastmod = new Date();
+        // Gebruik een vaste datum per build (niet new Date() per pagina zodat het stabiel is)
+        item.lastmod = BUILD_DATE;
         return item;
       },
     }),

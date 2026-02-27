@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /live
+Disallow: /live/
+Disallow: /shows/
+Disallow: /api/
 
 Sitemap: https://edstruijlaart.nl/sitemap-index.xml
