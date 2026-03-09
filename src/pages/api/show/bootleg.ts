@@ -1,7 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { sanityWriteClient, sanityClient } from '../../../lib/sanity';
+import { sanityWriteClient } from '../../../lib/sanity';
 
 // OPTIONS handler voor CORS preflight (iOS Shortcuts, externe clients)
 export const OPTIONS: APIRoute = async () => {
@@ -29,8 +29,9 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Vind de actieve show (starttijd < nu, status = live)
+    // Gebruikt sanityWriteClient (geen CDN) zodat recent aangemaakte shows altijd gevonden worden
     const now = new Date().toISOString();
-    const show = await sanityClient.fetch(`
+    const show = await sanityWriteClient.fetch(`
       *[_type == "show" && status == "live" && startDateTime < $now]
       | order(startDateTime desc) [0] {
         _id, city, startDateTime, slug
