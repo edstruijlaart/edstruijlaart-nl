@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
-import manleyImage from '../assets/photos/vo/manley-studio.jpg';
 import portraitImage from '../assets/photos/ed-struijlaart-recent-2025.jpg';
 ---
 
@@ -88,64 +87,80 @@ import portraitImage from '../assets/photos/ed-struijlaart-recent-2025.jpg';
   </Fragment>
 
   <!-- ============================================
-       HERO
+       HERO — video background
        ============================================ -->
-  <section class="relative overflow-hidden pt-24 lg:pt-32 pb-20 md:pb-28">
-    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <!-- Text -->
-        <div>
-          <p class="text-sm font-medium uppercase tracking-widest mb-4" style="color: var(--color-gold);">
-            Voice-over &amp; Stemacteur
-          </p>
-          <h1 class="font-[var(--font-display)] text-4xl sm:text-5xl lg:text-6xl leading-[1.05]">
-            Een stem die<br />
-            <span style="color: var(--color-gold);">opvalt</span> en<br />
-            blijft hangen
-          </h1>
-          <p class="mt-6 text-lg leading-relaxed max-w-lg" style="color: var(--fg-muted);">
-            Nederlandse mannelijke voice-over. De stem achter Corendon, Danerolles, Fitzroy, MORE en Locally Made.
-            Eigen thuisstudio, dezelfde dag geleverd.
-          </p>
-          <div class="mt-8 flex flex-wrap gap-4">
-            <a
-              href="#boeken"
-              class="inline-flex items-center justify-center font-medium rounded-full transition-all duration-300 active:scale-[0.97] btn-primary bg-[var(--color-gold)] text-white hover:bg-[var(--color-gold-light)] active:bg-[var(--color-gold-dark)] px-8 py-4 text-base"
-            >
-              Direct boeken
-            </a>
-            <a
-              href="#portfolio"
-              class="inline-flex items-center justify-center font-medium rounded-full transition-all duration-300 active:scale-[0.97] border-2 border-[var(--color-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-white px-8 py-4 text-base"
-            >
-              Beluister voorbeelden
-            </a>
-          </div>
+  <section class="relative overflow-hidden min-h-[85vh] flex items-center">
+    <!-- Video background -->
+    <video
+      id="hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="/images/vo/manley-studio.jpg"
+      class="absolute inset-0 w-full h-full object-cover"
+    >
+      <source src="/audio/vo/ed-struijlaart-fiverr-intro.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Dark overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 py-32 lg:py-40">
+      <div class="max-w-2xl">
+        <p class="text-sm font-medium uppercase tracking-widest mb-4" style="color: var(--color-gold);">
+          Voice-over &amp; Stemacteur
+        </p>
+        <h1 class="font-[var(--font-display)] text-4xl sm:text-5xl lg:text-6xl leading-[1.05] text-white">
+          Een stem die<br />
+          <span style="color: var(--color-gold);">opvalt</span> en<br />
+          blijft hangen
+        </h1>
+        <p class="mt-6 text-lg leading-relaxed max-w-lg text-white/80">
+          Nederlandse mannelijke voice-over. De stem achter Corendon, Danerolles, Fitzroy, MORE en Locally Made.
+          Eigen thuisstudio, dezelfde dag geleverd.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            href="#boeken"
+            class="inline-flex items-center justify-center font-medium rounded-full transition-all duration-300 active:scale-[0.97] btn-primary bg-[var(--color-gold)] text-white hover:bg-[var(--color-gold-light)] active:bg-[var(--color-gold-dark)] px-8 py-4 text-base"
+          >
+            Direct boeken
+          </a>
+          <a
+            href="#portfolio"
+            class="inline-flex items-center justify-center font-medium rounded-full transition-all duration-300 active:scale-[0.97] border-2 border-white/40 text-white hover:bg-white/10 px-8 py-4 text-base"
+          >
+            Beluister voorbeelden
+          </a>
         </div>
 
-        <!-- Studio foto -->
-        <div class="relative">
-          <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
-            <Image
-              src={manleyImage}
-              alt="Professionele voice-over thuisstudio van Ed Struijlaart met Manley Reference Cardioid microfoon"
-              widths={[400, 600, 800]}
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              class="w-full h-auto"
-              loading="eager"
-            />
-          </div>
-          <!-- Floating badge -->
-          <div
-            class="absolute -bottom-4 -left-4 lg:-left-8 rounded-xl px-5 py-3 text-sm font-medium"
-            style="background-color: var(--bg); box-shadow: var(--shadow-card); color: var(--fg);"
-          >
-            <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
-            Vandaag beschikbaar
-          </div>
+        <!-- Beschikbaar badge -->
+        <div class="mt-8 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium bg-white/10 backdrop-blur-sm text-white/90 border border-white/10">
+          <span class="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+          Vandaag beschikbaar
         </div>
       </div>
     </div>
+
+    <!-- Unmute knop -->
+    <button
+      id="hero-unmute"
+      class="absolute bottom-6 right-6 z-10 flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium bg-white/10 backdrop-blur-sm text-white/80 border border-white/10 hover:bg-white/20 transition-all duration-300 cursor-pointer"
+      aria-label="Geluid aan/uit"
+    >
+      <svg id="icon-muted" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+      </svg>
+      <svg id="icon-unmuted" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+      </svg>
+      <span id="mute-label">Geluid aan</span>
+    </button>
   </section>
 
   <!-- ============================================
@@ -840,6 +855,31 @@ import portraitImage from '../assets/photos/ed-struijlaart-recent-2025.jpg';
 </BaseLayout>
 
 <script>
+  function initHeroVideo() {
+    const video = document.getElementById('hero-video') as HTMLVideoElement;
+    const btn = document.getElementById('hero-unmute');
+    const iconMuted = document.getElementById('icon-muted');
+    const iconUnmuted = document.getElementById('icon-unmuted');
+    const label = document.getElementById('mute-label');
+    if (!video || !btn) return;
+
+    btn.addEventListener('click', () => {
+      video.muted = !video.muted;
+      if (video.muted) {
+        iconMuted!.classList.remove('hidden');
+        iconUnmuted!.classList.add('hidden');
+        label!.textContent = 'Geluid aan';
+      } else {
+        iconMuted!.classList.add('hidden');
+        iconUnmuted!.classList.remove('hidden');
+        label!.textContent = 'Geluid uit';
+      }
+    });
+  }
+
+  initHeroVideo();
+  document.addEventListener('astro:after-swap', initHeroVideo);
+
   function initVoForm() {
     const form = document.getElementById('vo-form') as HTMLFormElement;
     if (!form || form.dataset.init) return;
