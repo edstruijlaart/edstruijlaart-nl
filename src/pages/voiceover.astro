@@ -1,0 +1,673 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import manleyImage from '../assets/photos/vo/manley-studio.jpg';
+import portraitImage from '../assets/photos/ed-struijlaart-recent-2025.jpg';
+---
+
+<BaseLayout
+  title="Voice-over"
+  description="Voice-over Ed Struijlaart. De stem achter Corendon, Danerolles, Smeerkees en Locally Made. Eigen thuisstudio, dezelfde dag geleverd. Boek nu."
+  ogImage="/images/vo/og-voiceover.jpg"
+>
+  <!-- JSON-LD: Service schema -->
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Voice-over Ed Struijlaart",
+      "provider": {
+        "@type": "Person",
+        "name": "Ed Struijlaart",
+        "url": "https://edstruijlaart.nl"
+      },
+      "serviceType": "Voice-over",
+      "description": "Professionele Nederlandse voice-over voor commercials, bedrijfsfilms, e-learning en luisterboeken. Eigen thuisstudio, snelle levering.",
+      "areaServed": "NL",
+      "url": "https://edstruijlaart.nl/voiceover/"
+    })} />
+  </Fragment>
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="relative overflow-hidden pt-24 lg:pt-32 pb-20 md:pb-28">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Text -->
+        <div>
+          <p class="text-sm font-medium uppercase tracking-widest mb-4" style="color: var(--color-gold);">
+            Voice-over &amp; Stemacteur
+          </p>
+          <h1 class="font-[var(--font-display)] text-4xl sm:text-5xl lg:text-6xl leading-[1.05]">
+            Een stem die<br />
+            <span style="color: var(--color-gold);">opvalt</span> en<br />
+            blijft hangen
+          </h1>
+          <p class="mt-6 text-lg leading-relaxed max-w-lg" style="color: var(--fg-muted);">
+            De stem achter Corendon, Danerolles, Smeerkees en Locally Made.
+            Eigen thuisstudio. Dezelfde dag geleverd.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a
+              href="#boeken"
+              class="inline-flex items-center justify-center font-medium rounded-full transition-all duration-300 active:scale-[0.97] btn-primary bg-[var(--color-gold)] text-white hover:bg-[var(--color-gold-light)] active:bg-[var(--color-gold-dark)] px-8 py-4 text-base"
+            >
+              Direct boeken
+            </a>
+            <a
+              href="#portfolio"
+              class="inline-flex items-center justify-center font-medium rounded-full transition-all duration-300 active:scale-[0.97] border-2 border-[var(--color-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-white px-8 py-4 text-base"
+            >
+              Beluister voorbeelden
+            </a>
+          </div>
+        </div>
+
+        <!-- Studio foto -->
+        <div class="relative">
+          <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+            <Image
+              src={manleyImage}
+              alt="Manley Reference Cardioid microfoon in de thuisstudio van Ed Struijlaart"
+              widths={[400, 600, 800]}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              class="w-full h-auto"
+              loading="eager"
+            />
+          </div>
+          <!-- Floating badge -->
+          <div
+            class="absolute -bottom-4 -left-4 lg:-left-8 rounded-xl px-5 py-3 text-sm font-medium"
+            style="background-color: var(--bg); box-shadow: var(--shadow-card); color: var(--fg);"
+          >
+            <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
+            Vandaag beschikbaar
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       CLIENT LOGOS
+       ============================================ -->
+  <section class="py-12 border-y" style="border-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <p class="text-center text-sm uppercase tracking-widest mb-8" style="color: var(--fg-muted);">
+        Vertrouwd door
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16">
+        <img
+          src="/images/vo/corendon.png"
+          alt="Corendon"
+          class="h-10 md:h-12 w-auto object-contain grayscale opacity-60 hover:opacity-80 transition-all duration-300 dark:invert dark:brightness-200"
+          loading="lazy"
+        />
+        <img
+          src="/images/vo/danerolles.png"
+          alt="Danerolles"
+          class="h-10 md:h-12 w-auto object-contain grayscale opacity-60 hover:opacity-80 transition-all duration-300 dark:invert dark:brightness-200"
+          loading="lazy"
+        />
+        <img
+          src="/images/vo/smeerkees.png"
+          alt="Smeerkees"
+          class="h-10 md:h-12 w-auto object-contain grayscale opacity-60 hover:opacity-80 transition-all duration-300 dark:invert dark:brightness-200"
+          loading="lazy"
+        />
+        <img
+          src="/images/vo/locally-made.png"
+          alt="Locally Made"
+          class="h-10 md:h-12 w-auto object-contain grayscale opacity-60 hover:opacity-80 transition-all duration-300 dark:invert dark:brightness-200"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       USPs
+       ============================================ -->
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <!-- USP 1 -->
+        <div class="text-center md:text-left">
+          <div
+            class="inline-flex items-center justify-center w-14 h-14 rounded-xl mb-5"
+            style="background-color: rgba(184, 134, 11, 0.1);"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" style="color: var(--color-gold);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+          </div>
+          <h3 class="font-[var(--font-display)] text-2xl mb-3">Snel geleverd</h3>
+          <p class="text-base leading-relaxed" style="color: var(--fg-muted);">
+            Eigen thuisstudio, altijd stand-by. Briefing 's ochtends, audio 's middags.
+            Geen wachttijden, geen studio huren. Dezelfde dag in je inbox.
+          </p>
+        </div>
+
+        <!-- USP 2 -->
+        <div class="text-center md:text-left">
+          <div
+            class="inline-flex items-center justify-center w-14 h-14 rounded-xl mb-5"
+            style="background-color: rgba(184, 134, 11, 0.1);"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" style="color: var(--color-gold);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+            </svg>
+          </div>
+          <h3 class="font-[var(--font-display)] text-2xl mb-3">Karakter</h3>
+          <p class="text-base leading-relaxed" style="color: var(--fg-muted);">
+            Niet de zoveelste inwisselbare stem. Warm, eigengereid, met een achtergrond
+            in radio, theater en muziek. Een stem die iets te vertellen heeft.
+          </p>
+        </div>
+
+        <!-- USP 3 -->
+        <div class="text-center md:text-left">
+          <div
+            class="inline-flex items-center justify-center w-14 h-14 rounded-xl mb-5"
+            style="background-color: rgba(184, 134, 11, 0.1);"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" style="color: var(--color-gold);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+            </svg>
+          </div>
+          <h3 class="font-[var(--font-display)] text-2xl mb-3">Veelzijdig</h3>
+          <p class="text-base leading-relaxed" style="color: var(--fg-muted);">
+            Commercials, bedrijfsfilms, e-learning, luisterboeken, stemacteur.
+            Van speels en energiek tot warm en vertrouwd. Altijd op maat.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       PORTFOLIO
+       ============================================ -->
+  <section id="portfolio" class="py-20 md:py-28" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="font-[var(--font-display)] text-4xl">Bekijk &amp; beluister</h2>
+        <div class="mt-4 h-1 w-12 rounded-full mx-auto" style="background: linear-gradient(90deg, var(--color-gold-dark), var(--color-gold), var(--color-gold-light));"></div>
+        <p class="mt-4 text-lg max-w-2xl mx-auto" style="color: var(--fg-muted);">
+          Van TV-commercials tot online campagnes. Hier een greep uit recent werk.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Corendon -->
+        <div class="rounded-xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <div class="relative w-full" style="padding-bottom: 56.25%;">
+            <iframe
+              class="absolute inset-0 w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/iX3_I3ns1x8"
+              title="Voice-over Corendon commercial"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="px-5 py-4" style="background-color: var(--bg);">
+            <p class="font-medium">Corendon</p>
+            <p class="text-sm" style="color: var(--fg-muted);">TV Commercial</p>
+          </div>
+        </div>
+
+        <!-- Danerolles -->
+        <div class="rounded-xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <div class="relative w-full" style="padding-bottom: 56.25%;">
+            <iframe
+              class="absolute inset-0 w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/te3sgGdAS5w"
+              title="Voice-over Danerolles commercial"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="px-5 py-4" style="background-color: var(--bg);">
+            <p class="font-medium">Danerolles</p>
+            <p class="text-sm" style="color: var(--fg-muted);">TV Commercial</p>
+          </div>
+        </div>
+
+        <!-- Smeerkees -->
+        <div class="rounded-xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <div class="relative w-full" style="padding-bottom: 56.25%;">
+            <iframe
+              class="absolute inset-0 w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/hw-vY-XSpOg"
+              title="Voice-over Smeerkees"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="px-5 py-4" style="background-color: var(--bg);">
+            <p class="font-medium">Smeerkees</p>
+            <p class="text-sm" style="color: var(--fg-muted);">Commercial</p>
+          </div>
+        </div>
+
+        <!-- Locally Made -->
+        <div class="rounded-xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <div class="relative w-full" style="padding-bottom: 56.25%;">
+            <iframe
+              class="absolute inset-0 w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/JL3BAPSzLVM"
+              title="Voice-over Locally Made"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="px-5 py-4" style="background-color: var(--bg);">
+            <p class="font-medium">Locally Made</p>
+            <p class="text-sm" style="color: var(--fg-muted);">Online campagne</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extra video -->
+      <div class="mt-6 max-w-[calc(50%-0.75rem)] mx-auto hidden md:block">
+        <div class="rounded-xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <div class="relative w-full" style="padding-bottom: 56.25%;">
+            <iframe
+              class="absolute inset-0 w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/CR6etJfaiq0"
+              title="Voice-over voorbeeld"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="px-5 py-4" style="background-color: var(--bg);">
+            <p class="font-medium">Commercial</p>
+            <p class="text-sm" style="color: var(--fg-muted);">TV &amp; Online</p>
+          </div>
+        </div>
+      </div>
+      <!-- Mobile: 5th video shown inline -->
+      <div class="mt-6 md:hidden">
+        <div class="rounded-xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <div class="relative w-full" style="padding-bottom: 56.25%;">
+            <iframe
+              class="absolute inset-0 w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/CR6etJfaiq0"
+              title="Voice-over voorbeeld"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="px-5 py-4" style="background-color: var(--bg);">
+            <p class="font-medium">Commercial</p>
+            <p class="text-sm" style="color: var(--fg-muted);">TV &amp; Online</p>
+          </div>
+        </div>
+      </div>
+      <!-- CTA na portfolio -->
+      <div class="mt-12 text-center">
+        <a
+          href="#boeken"
+          class="inline-flex items-center gap-2 px-8 py-4 rounded-full text-lg font-semibold text-white transition-all duration-300 hover:scale-[1.03]"
+          style="background-color: var(--color-gold);"
+        >
+          Klinkt goed? Boek direct
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       WERKWIJZE + STUDIO
+       ============================================ -->
+  <section class="py-20 md:py-28">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Werkwijze -->
+        <div>
+          <h2 class="font-[var(--font-display)] text-4xl">Zo werkt het</h2>
+          <div class="mt-4 h-1 w-12 rounded-full" style="background: linear-gradient(90deg, var(--color-gold-dark), var(--color-gold), var(--color-gold-light));"></div>
+
+          <div class="mt-10 space-y-8">
+            <!-- Stap 1 -->
+            <div class="flex gap-5">
+              <div
+                class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-[var(--font-display)] text-lg font-bold text-white"
+                style="background-color: var(--color-gold);"
+              >1</div>
+              <div>
+                <h4 class="font-[var(--font-display)] text-xl mb-1">Briefing</h4>
+                <p class="text-base" style="color: var(--fg-muted);">
+                  Stuur je script of briefing via het formulier. Ik reageer binnen 2 uur op werkdagen.
+                </p>
+              </div>
+            </div>
+
+            <!-- Stap 2 -->
+            <div class="flex gap-5">
+              <div
+                class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-[var(--font-display)] text-lg font-bold text-white"
+                style="background-color: var(--color-gold);"
+              >2</div>
+              <div>
+                <h4 class="font-[var(--font-display)] text-xl mb-1">Inspreken</h4>
+                <p class="text-base" style="color: var(--fg-muted);">
+                  Ik spreek in vanuit mijn eigen studio. Professionele kwaliteit, snelle turnaround.
+                </p>
+              </div>
+            </div>
+
+            <!-- Stap 3 -->
+            <div class="flex gap-5">
+              <div
+                class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-[var(--font-display)] text-lg font-bold text-white"
+                style="background-color: var(--color-gold);"
+              >3</div>
+              <div>
+                <h4 class="font-[var(--font-display)] text-xl mb-1">Levering</h4>
+                <p class="text-base" style="color: var(--fg-muted);">
+                  WAV of MP3, in het format dat jij nodig hebt. Inclusief één revisieronde. Extra revisies in overleg.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Studio info -->
+        <div
+          class="rounded-2xl overflow-hidden"
+          style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
+        >
+          <!-- Studio hero image -->
+          <div class="relative h-48 lg:h-56 overflow-hidden">
+            <img
+              src="/images/vo/la610.jpg"
+              alt="Universal Audio LA-610 MkII pre-amp met VU-meter in Ed's studio"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+            <h3 class="absolute bottom-4 left-6 lg:left-8 font-[var(--font-display)] text-2xl text-white">De studio</h3>
+          </div>
+
+          <div class="p-8 lg:p-10">
+            <p class="text-base leading-relaxed mb-6" style="color: var(--fg-muted);">
+              Professionele thuisstudio met akoestisch behandelde ruimte en
+              broadcast-grade apparatuur. Dezelfde kwaliteit als een externe studio,
+              maar dan sneller en zonder reiskosten.
+            </p>
+
+            <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+              <div>
+                <h4 class="text-sm font-medium uppercase tracking-wider mb-2" style="color: var(--color-gold);">
+                  Microfoons
+                </h4>
+                <ul class="space-y-1 text-base" style="color: var(--fg-muted);">
+                  <li>Manley Reference Cardioid</li>
+                  <li>Shure SM7B</li>
+                  <li>AKG C414</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium uppercase tracking-wider mb-2" style="color: var(--color-gold);">
+                  Pre-amps &amp; processing
+                </h4>
+                <ul class="space-y-1 text-base" style="color: var(--fg-muted);">
+                  <li>Universal Audio LA-610 MkII</li>
+                  <li>Focusrite ISA One</li>
+                  <li>dbx 286s</li>
+                </ul>
+              </div>
+              <div class="col-span-2 pt-2">
+                <h4 class="text-sm font-medium uppercase tracking-wider mb-2" style="color: var(--color-gold);">
+                  Software
+                </h4>
+                <ul class="flex gap-x-6 text-base" style="color: var(--fg-muted);">
+                  <li>Logic Pro X</li>
+                  <li>Ableton Live</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       OVER ED (kort)
+       ============================================ -->
+  <section class="py-20 md:py-28" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
+        <!-- Foto -->
+        <div class="lg:col-span-2">
+          <div class="rounded-2xl overflow-hidden max-w-sm mx-auto lg:max-w-none" style="box-shadow: var(--shadow-card);">
+            <Image
+              src={portraitImage}
+              alt="Ed Struijlaart"
+              widths={[300, 500]}
+              sizes="(max-width: 1024px) 300px, 400px"
+              class="w-full h-auto"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <!-- Tekst -->
+        <div class="lg:col-span-3">
+          <h2 class="font-[var(--font-display)] text-4xl">Over Ed</h2>
+          <div class="mt-4 h-1 w-12 rounded-full" style="background: linear-gradient(90deg, var(--color-gold-dark), var(--color-gold), var(--color-gold-light));"></div>
+          <div class="mt-6 space-y-4 text-lg leading-relaxed" style="color: var(--fg-muted);">
+            <p>
+              Voormalig radio-dj bij Radio Veronica, singer-songwriter met een platina plaat,
+              theatermaker met 25+ theaters en podcastmaker met 20.000 YouTube-abonnees.
+              Stemwerk is geen bijzaak, het is onderdeel van alles wat ik doe.
+            </p>
+            <p>
+              Mijn achtergrond in radio, theater en muziek geeft mijn stem iets wat
+              je niet uit een catalogus pikt. Timing, gevoel, karakter. En het
+              belangrijkste: ik snap wat een opdrachtgever nodig heeft.
+            </p>
+          </div>
+          <a
+            href="/about/"
+            class="inline-flex items-center mt-6 text-base font-medium transition-colors duration-300"
+            style="color: var(--color-gold);"
+          >
+            Meer over Ed
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       BOOKING FORM
+       ============================================ -->
+  <section id="boeken" class="py-20 md:py-28">
+    <div class="mx-auto max-w-[700px] px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <h2 class="font-[var(--font-display)] text-4xl">Boek een voice-over</h2>
+        <div class="mt-4 h-1 w-12 rounded-full mx-auto" style="background: linear-gradient(90deg, var(--color-gold-dark), var(--color-gold), var(--color-gold-light));"></div>
+        <p class="mt-4 text-lg" style="color: var(--fg-muted);">
+          Stuur je briefing en ik reageer binnen 2 uur op werkdagen. Je ontvangt een prijsindicatie bij mijn reactie.
+        </p>
+      </div>
+
+      <div
+        class="p-6 lg:p-8 rounded-2xl"
+        style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);"
+      >
+        <form id="vo-form" class="space-y-5" action="https://formspree.io/f/mzdabblp" method="POST">
+          <!-- Hidden field om VO aanvragen te onderscheiden -->
+          <input type="hidden" name="_subject" value="Voice-over aanvraag via website" />
+          <input type="hidden" name="type" value="voiceover" />
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label for="vo-name" class="block text-sm font-medium mb-1">Naam *</label>
+              <input
+                type="text"
+                id="vo-name"
+                name="name"
+                required
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);"
+              />
+            </div>
+            <div>
+              <label for="vo-company" class="block text-sm font-medium mb-1">Bedrijf</label>
+              <input
+                type="text"
+                id="vo-company"
+                name="company"
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="vo-email" class="block text-sm font-medium mb-1">E-mail *</label>
+            <input
+              type="email"
+              id="vo-email"
+              name="email"
+              required
+              class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+              style="background-color: var(--bg); color: var(--fg);"
+            />
+          </div>
+
+          <div>
+            <label for="vo-project" class="block text-sm font-medium mb-1">Type project *</label>
+            <select
+              id="vo-project"
+              name="project_type"
+              required
+              class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+              style="background-color: var(--bg); color: var(--fg);"
+            >
+              <option value="">Kies een type...</option>
+              <option value="commercial">Commercial (TV / radio / online)</option>
+              <option value="bedrijfsfilm">Bedrijfsfilm / corporate video</option>
+              <option value="elearning">E-learning / instructievideo</option>
+              <option value="luisterboek">Luisterboek / audioboek</option>
+              <option value="stemacteur">Stemacteur / karakter</option>
+              <option value="anders">Anders</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="vo-message" class="block text-sm font-medium mb-1">Briefing / omschrijving *</label>
+            <textarea
+              id="vo-message"
+              name="message"
+              rows="5"
+              required
+              placeholder="Vertel kort over je project, gewenste stijl en deadline..."
+              class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none resize-y"
+              style="background-color: var(--bg); color: var(--fg);"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full sm:w-auto px-8 py-3 rounded-full font-medium text-base text-white transition-all duration-300 bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] active:bg-[var(--color-gold-dark)] active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed btn-primary"
+          >
+            Verstuur aanvraag
+          </button>
+          <p id="vo-message-status" class="text-sm min-h-[1.25rem]" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <!-- Direct contact fallback -->
+      <p class="text-center mt-6 text-base" style="color: var(--fg-muted);">
+        Liever direct mailen?
+        <a
+          href="mailto:ed@earswantmusic.nl?subject=Voice-over%20aanvraag"
+          class="font-medium transition-colors duration-300"
+          style="color: var(--color-gold);"
+        >
+          ed@earswantmusic.nl
+        </a>
+      </p>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<script>
+  function initVoForm() {
+    const form = document.getElementById('vo-form') as HTMLFormElement;
+    if (!form || form.dataset.init) return;
+    form.dataset.init = '1';
+
+    const messageEl = document.getElementById('vo-message-status')!;
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Bezig met versturen...';
+      submitBtn.disabled = true;
+      messageEl.textContent = '';
+      messageEl.className = 'text-sm min-h-[1.25rem]';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' },
+        });
+
+        if (response.ok) {
+          messageEl.textContent = 'Bedankt! Je aanvraag is ontvangen. Ik reageer binnen 2 uur op werkdagen.';
+          messageEl.classList.add('text-[var(--color-gold)]');
+          form.reset();
+        } else {
+          messageEl.textContent = 'Er ging iets mis. Probeer het opnieuw of mail direct naar ed@earswantmusic.nl.';
+          messageEl.classList.add('text-red-500');
+        }
+      } catch {
+        messageEl.textContent = 'Geen verbinding. Mail naar ed@earswantmusic.nl.';
+        messageEl.classList.add('text-red-500');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  initVoForm();
+  document.addEventListener('astro:after-swap', initVoForm);
+</script>
+
+<style>
+  .btn-primary {
+    box-shadow: 0 2px 8px rgba(184, 134, 11, 0.2);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 4px 16px rgba(184, 134, 11, 0.35);
+  }
+</style>
