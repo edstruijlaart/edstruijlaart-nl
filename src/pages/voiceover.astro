@@ -426,7 +426,7 @@ import portraitImage from '../assets/photos/ed-struijlaart-recent-2025.jpg';
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background-color: var(--color-gold);">K</div>
             <div>
-              <p class="font-medium text-sm">Kim Nguyen</p>
+              <p class="font-medium text-sm">Kim</p>
               <p class="text-sm" style="color: var(--fg-muted);">Danerolles · Repeat Client</p>
             </div>
           </div>
@@ -447,7 +447,7 @@ import portraitImage from '../assets/photos/ed-struijlaart-recent-2025.jpg';
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background-color: var(--color-gold);">A</div>
             <div>
-              <p class="font-medium text-sm">Arthur de Weerdt</p>
+              <p class="font-medium text-sm">Arthur</p>
               <p class="text-sm" style="color: var(--fg-muted);">Locally Made · Repeat Client</p>
             </div>
           </div>
@@ -792,6 +792,27 @@ import portraitImage from '../assets/photos/ed-struijlaart-recent-2025.jpg';
             ></textarea>
           </div>
 
+          <div>
+            <label for="vo-script" class="block text-sm font-medium mb-1">Script bijvoegen</label>
+            <label
+              for="vo-script"
+              class="flex items-center gap-3 w-full px-4 py-3 rounded-lg border border-dashed border-[var(--fg-muted)]/30 cursor-pointer transition-colors duration-300 hover:border-[var(--color-gold)]"
+              style="background-color: var(--bg);"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" style="color: var(--fg-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+              </svg>
+              <span id="vo-script-label" class="text-sm truncate" style="color: var(--fg-muted);">PDF, Word of tekstbestand (max 10 MB)</span>
+            </label>
+            <input
+              type="file"
+              id="vo-script"
+              name="script"
+              accept=".pdf,.doc,.docx,.txt,.rtf"
+              class="sr-only"
+            />
+          </div>
+
           <button
             type="submit"
             class="w-full sm:w-auto px-8 py-3 rounded-full font-medium text-base text-white transition-all duration-300 bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] active:bg-[var(--color-gold-dark)] active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed btn-primary"
@@ -827,6 +848,27 @@ import portraitImage from '../assets/photos/ed-struijlaart-recent-2025.jpg';
     const messageEl = document.getElementById('vo-message-status')!;
     const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
 
+    const scriptInput = document.getElementById('vo-script') as HTMLInputElement;
+    const scriptLabel = document.getElementById('vo-script-label')!;
+    const defaultLabel = 'PDF, Word of tekstbestand (max 10 MB)';
+
+    scriptInput.addEventListener('change', () => {
+      if (scriptInput.files?.length) {
+        const file = scriptInput.files[0];
+        if (file.size > 10 * 1024 * 1024) {
+          scriptLabel.textContent = 'Bestand te groot (max 10 MB)';
+          scriptLabel.style.color = 'var(--color-red, #ef4444)';
+          scriptInput.value = '';
+          return;
+        }
+        scriptLabel.textContent = file.name;
+        scriptLabel.style.color = 'var(--fg)';
+      } else {
+        scriptLabel.textContent = defaultLabel;
+        scriptLabel.style.color = 'var(--fg-muted)';
+      }
+    });
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const originalText = submitBtn.textContent;
@@ -846,6 +888,8 @@ import portraitImage from '../assets/photos/ed-struijlaart-recent-2025.jpg';
           messageEl.textContent = 'Bedankt! Je aanvraag is ontvangen. Ik reageer binnen 2 uur op werkdagen.';
           messageEl.classList.add('text-[var(--color-gold)]');
           form.reset();
+          scriptLabel.textContent = defaultLabel;
+          scriptLabel.style.color = 'var(--fg-muted)';
         } else {
           messageEl.textContent = 'Er ging iets mis. Probeer het opnieuw of mail direct naar ed@earswantmusic.nl.';
           messageEl.classList.add('text-red-500');
