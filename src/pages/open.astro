@@ -1,0 +1,64 @@
+---
+// Obsidian redirect page
+// Converts https://edstruijlaart.nl/open?file=Dagboek/2026-03-10
+// → obsidian://open?vault=Obsidian&file=Dagboek/2026-03-10
+//
+// Used in dagstart email because Gmail strips obsidian:// protocol links.
+// Only https:// links work in Gmail, so we redirect via this page.
+---
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Openen in Obsidian...</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e0e0e0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .card { text-align: center; padding: 40px; max-width: 400px; }
+    .icon { font-size: 48px; margin-bottom: 16px; }
+    h1 { font-size: 20px; margin-bottom: 8px; color: #7c3aed; }
+    p { font-size: 14px; color: #888; margin-bottom: 20px; }
+    a { color: #7c3aed; text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
+    .fallback { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">📓</div>
+    <h1>Openen in Obsidian...</h1>
+    <p>Je wordt doorgestuurd naar Obsidian.</p>
+    <div class="fallback" id="fallback">
+      <p>Niet automatisch geopend? <a id="manual-link" href="#">Klik hier om handmatig te openen</a></p>
+    </div>
+  </div>
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const file = params.get('file');
+      const vault = params.get('vault') || 'Obsidian';
+
+      if (!file) {
+        document.querySelector('h1').textContent = 'Geen bestand opgegeven';
+        document.querySelector('p').textContent = 'Gebruik: /open?file=Dagboek/2026-03-10';
+        return;
+      }
+
+      const obsidianUrl = 'obsidian://open?vault=' + encodeURIComponent(vault) + '&file=' + encodeURIComponent(file);
+
+      // Set manual link
+      document.getElementById('manual-link').href = obsidianUrl;
+
+      // Try to open
+      window.location.href = obsidianUrl;
+
+      // Show fallback after 2 seconds if still on this page
+      setTimeout(function() {
+        document.getElementById('fallback').style.display = 'block';
+      }, 2000);
+    })();
+  </script>
+</body>
+</html>
