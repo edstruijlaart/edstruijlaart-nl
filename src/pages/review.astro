@@ -1,0 +1,242 @@
+---
+export const prerender = false;
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const API_BASE = 'https://boeken.edstruijlaart.nl';
+---
+
+<BaseLayout
+  title="Laat een review achter"
+  description="Hoe heb je het huiskamerconcert van Ed Struijlaart ervaren? Laat een review achter."
+>
+  <section class="py-16 sm:py-24" style="background-color: var(--bg);">
+    <div class="mx-auto max-w-[600px] px-4 sm:px-6">
+
+      <!-- Intro -->
+      <div class="text-center mb-10">
+        <h1 class="font-[var(--font-display)] text-3xl sm:text-4xl text-[var(--fg)] mb-4">
+          Hoe was het huiskamerconcert?
+        </h1>
+        <p class="text-[var(--fg-muted)] text-lg leading-relaxed">
+          Ik ben benieuwd hoe je het hebt ervaren. Jouw review helpt andere mensen
+          om ook een huiskamerconcert te boeken. Alvast bedankt!
+        </p>
+      </div>
+
+      <!-- Review form -->
+      <div id="review-form-container" class="rounded-xl p-6 sm:p-8" style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);">
+        <form id="review-form" class="space-y-5">
+
+          {/* Star rating */}
+          <div>
+            <label class="block text-sm font-medium text-[var(--fg)] mb-2">
+              Hoe beoordeel je het concert?
+            </label>
+            <div id="star-rating" class="flex gap-1">
+              {[1, 2, 3, 4, 5].map(n => (
+                <button
+                  type="button"
+                  data-value={n}
+                  class="star-btn text-3xl transition-colors duration-150 text-gray-300 hover:text-[var(--color-gold)]"
+                  aria-label={`${n} ster${n > 1 ? 'ren' : ''}`}
+                >
+                  &#9733;
+                </button>
+              ))}
+            </div>
+            <input type="hidden" name="rating" id="rating-input" value="" />
+          </div>
+
+          {/* Name */}
+          <div>
+            <label for="reviewer-name" class="block text-sm font-medium text-[var(--fg)] mb-1">
+              Je naam
+            </label>
+            <input
+              type="text"
+              id="reviewer-name"
+              name="reviewer_name"
+              required
+              placeholder="Voornaam"
+              class="w-full px-4 py-3 rounded-lg border text-[var(--fg)]"
+              style="background-color: var(--bg); border-color: var(--fg-muted);"
+            />
+          </div>
+
+          {/* City */}
+          <div>
+            <label for="reviewer-city" class="block text-sm font-medium text-[var(--fg)] mb-1">
+              Woonplaats <span class="text-[var(--fg-muted)] font-normal">(optioneel)</span>
+            </label>
+            <input
+              type="text"
+              id="reviewer-city"
+              name="reviewer_city"
+              placeholder="bijv. Amsterdam"
+              class="w-full px-4 py-3 rounded-lg border text-[var(--fg)]"
+              style="background-color: var(--bg); border-color: var(--fg-muted);"
+            />
+          </div>
+
+          {/* Review text */}
+          <div>
+            <label for="review-text" class="block text-sm font-medium text-[var(--fg)] mb-1">
+              Je review
+            </label>
+            <textarea
+              id="review-text"
+              name="review_text"
+              rows="4"
+              maxlength="500"
+              placeholder="Vertel hoe je het concert hebt ervaren..."
+              class="w-full px-4 py-3 rounded-lg border text-[var(--fg)]"
+              style="background-color: var(--bg); border-color: var(--fg-muted);"
+            ></textarea>
+          </div>
+
+          {/* Error / submit */}
+          <p id="review-error" class="text-red-500 text-sm hidden"></p>
+
+          <button
+            type="submit"
+            id="review-submit"
+            class="w-full px-6 py-3 rounded-full text-white font-medium transition-colors duration-300"
+            style="background-color: var(--color-gold);"
+          >
+            Verstuur review
+          </button>
+        </form>
+      </div>
+
+      {/* Success state */}
+      <div id="review-success" class="text-center py-8 hidden">
+        <p class="text-lg text-[var(--fg)] mb-2">Bedankt voor je review!</p>
+        <p class="text-[var(--fg-muted)] mb-6">Je review wordt binnenkort zichtbaar na goedkeuring.</p>
+        <div class="mt-4 p-5 rounded-xl border" style="border-color: var(--fg-muted); background-color: var(--bg-surface);">
+          <p class="text-sm text-[var(--fg)] mb-3">
+            Wil je anderen ook helpen? Laat dezelfde review achter op Google — dat helpt enorm!
+          </p>
+          <a
+            href="https://g.page/r/edstruijlaart/review"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-white transition-colors duration-300"
+            style="background-color: var(--color-gold);"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Review op Google
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ API_BASE }}>
+  // Star rating logic
+  const starBtns = document.querySelectorAll('.star-btn');
+  const ratingInput = document.getElementById('rating-input');
+  let selectedRating = 0;
+
+  starBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedRating = parseInt(btn.dataset.value);
+      ratingInput.value = selectedRating;
+      starBtns.forEach(s => {
+        const val = parseInt(s.dataset.value);
+        s.style.color = val <= selectedRating ? 'var(--color-gold)' : '';
+        s.classList.toggle('text-gray-300', val > selectedRating);
+      });
+    });
+
+    btn.addEventListener('mouseenter', () => {
+      const hoverVal = parseInt(btn.dataset.value);
+      starBtns.forEach(s => {
+        const val = parseInt(s.dataset.value);
+        s.style.color = val <= hoverVal ? 'var(--color-gold)' : '';
+      });
+    });
+  });
+
+  const starContainer = document.getElementById('star-rating');
+  if (starContainer) {
+    starContainer.addEventListener('mouseleave', () => {
+      starBtns.forEach(s => {
+        const val = parseInt(s.dataset.value);
+        s.style.color = val <= selectedRating ? 'var(--color-gold)' : '';
+        s.classList.toggle('text-gray-300', val > selectedRating);
+      });
+    });
+  }
+
+  // Form submit
+  const form = document.getElementById('review-form');
+  const errorEl = document.getElementById('review-error');
+  const successEl = document.getElementById('review-success');
+  const formContainer = document.getElementById('review-form-container');
+
+  // Check if already submitted
+  const submitted = localStorage.getItem('review-submitted-algemeen');
+  if (submitted && formContainer && successEl) {
+    formContainer.classList.add('hidden');
+    successEl.classList.remove('hidden');
+  }
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.classList.add('hidden');
+
+      if (!selectedRating) {
+        errorEl.textContent = 'Geef een beoordeling met sterren';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      const name = form.querySelector('[name="reviewer_name"]').value.trim();
+      if (!name) {
+        errorEl.textContent = 'Vul je naam in';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      const btn = document.getElementById('review-submit');
+      btn.disabled = true;
+      btn.textContent = 'Even geduld...';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/review/submit-by-slug/algemeen`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            reviewer_name: name,
+            reviewer_city: form.querySelector('[name="reviewer_city"]').value.trim() || null,
+            rating: selectedRating,
+            review_text: form.querySelector('[name="review_text"]').value.trim() || null,
+            concert_date: null
+          })
+        });
+
+        if (!res.ok) {
+          const result = await res.json();
+          throw new Error(result.detail || 'Er ging iets mis');
+        }
+
+        localStorage.setItem('review-submitted-algemeen', 'true');
+        formContainer.classList.add('hidden');
+        successEl.classList.remove('hidden');
+      } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Verstuur review';
+      }
+    });
+  }
+</script>
