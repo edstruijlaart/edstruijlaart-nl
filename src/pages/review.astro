@@ -5,24 +5,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const API_BASE = 'https://boeken.edstruijlaart.nl';
 const type = Astro.url.searchParams.get('type') || 'algemeen';
 
-const typeConfig: Record<string, { title: string; subtitle: string; slug: string; storageKey: string }> = {
+const typeConfig: Record<string, { title: string; subtitle: string; slug: string; storageKey: string; ogImage: string }> = {
   gitaarmannen: {
     title: 'Hoe was Gitaarmannen?',
     subtitle: 'Ik ben benieuwd hoe je de theatershow hebt ervaren. Jouw review helpt andere mensen om ook een kaartje te kopen!',
     slug: 'gitaarmannen',
-    storageKey: 'review-submitted-gitaarmannen'
+    storageKey: 'review-submitted-gitaarmannen',
+    ogImage: '/images/review/og-review-gitaarmannen.jpg'
   },
   huiskamerconcert: {
     title: 'Hoe was het huiskamerconcert?',
     subtitle: 'Ik ben benieuwd hoe je het hebt ervaren. Jouw review helpt andere mensen om ook een huiskamerconcert te boeken. Alvast bedankt!',
     slug: 'huiskamerconcert',
-    storageKey: 'review-submitted-huiskamerconcert'
+    storageKey: 'review-submitted-huiskamerconcert',
+    ogImage: '/images/review/og-review-huiskamerconcert.jpg'
   },
   algemeen: {
     title: 'Hoe was het concert?',
     subtitle: 'Ik ben benieuwd hoe je het hebt ervaren. Jouw review helpt andere mensen om ook te komen. Alvast bedankt!',
     slug: 'algemeen',
-    storageKey: 'review-submitted-algemeen'
+    storageKey: 'review-submitted-algemeen',
+    ogImage: '/images/review/og-review.jpg'
   }
 };
 
@@ -32,6 +35,7 @@ const config = typeConfig[type] || typeConfig.algemeen;
 <BaseLayout
   title="Laat een review achter"
   description={`${config.title} Laat een review achter voor Ed Struijlaart.`}
+  ogImage={config.ogImage}
 >
   <section class="py-16 sm:py-24" style="background-color: var(--bg);">
     <div class="mx-auto max-w-[600px] px-4 sm:px-6">
