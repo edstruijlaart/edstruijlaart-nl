@@ -4,7 +4,7 @@ import Button from '../components/ui/Button.astro';
 import FilmStrip from '../components/sections/FilmStrip.astro';
 import { Image } from 'astro:assets';
 
-import heroImg from '../assets/photos/ed-struijlaart-persfoto-liggend.jpg';
+import heroImg from '../assets/photos/huiskamer/hk-esther-noordergraaf.jpg'; // Foto: Esther Noordergraaf Fotografie
 import sfeerImg from '../assets/photos/ed-struijlaart-lachend-gitaar.jpg';
 import portretImg from '../assets/photos/ed-struijlaart-raam.jpg';
 
@@ -96,10 +96,10 @@ import hkGroep02 from '../assets/photos/huiskamer/hk-groep-02.jpg';
   <section class="relative min-h-[60vh] flex items-end overflow-hidden">
     <Image
       src={heroImg}
-      alt="Ed Struijlaart speelt een huiskamerconcert"
+      alt="Ed Struijlaart speelt een huiskamerconcert — foto Esther Noordergraaf Fotografie"
       widths={[640, 1024, 1920]}
       sizes="100vw"
-      class="absolute inset-0 w-full h-full object-cover object-[center_20%]"
+      class="absolute inset-0 w-full h-full object-cover object-[center_40%]"
       loading="eager"
     />
     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
@@ -407,6 +407,47 @@ import hkGroep02 from '../assets/photos/huiskamer/hk-groep-02.jpg';
       <blockquote class="mt-8 text-xl md:text-2xl text-white/80 italic font-[var(--font-display)]">
         &ldquo;Alsof je een avond bij een vriend zit die toevallig prachtig kan zingen.&rdquo;
       </blockquote>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="py-16 md:py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="font-[var(--font-display)] text-3xl md:text-4xl">Wat gasten zeggen</h2>
+        <p class="mt-3 text-lg" style="color: var(--fg-muted);">Ervaringen van eerdere huiskamerconcerten</p>
+      </div>
+      <div class="columns-1 md:columns-2 gap-6 space-y-6">
+        {[
+          { name: "Dennis", city: "Buren", text: "Wat een onvergetelijke avond! Ed wist met zijn eigen songs en prachtige klassiekers uit zijn Gitaarmannen-tours de hele kamer te betoveren. Tussen de liedjes door trakteerde hij ons op persoonlijke anekdotes en een gezonde dosis humor, waardoor het voelde alsof er een goede vriend op bezoek was die toevallig ook nog eens fantastisch gitaar speelt." },
+          { name: "Sylvia", city: "Emmer-Compascuum", text: "Op Ed kun je bouwen, hij is op tijd, zingt mooie luisterliedjes met prachtige anekdotes en verhaaltjes tussendoor. Zijn stemgeluid is uniek, zijn gitaarspel is uitzonderlijk en zijn liedjes zijn prachtig. Het is altijd een feestje om Ed te verwelkomen." },
+          { name: "Dick", city: "Lisse", text: "Ed kwam in ons tuinhuis spelen, een stormachtige avond, regen, tentzeilen enzo. Geweldig leuke verteller en topmuzikant! Hij vereerde onze eigen band die als voorprogramma had gespeeld met een gezamenlijke uitvoering van Crossroads!" },
+          { name: "Fabienne", city: "Kessel (België)", text: "TOPavond met een TOPmuzikant, zanger en verteller. We hingen van de eerste tot de laatste seconde aan zijn lippen." },
+          { name: "Laura", city: "Den Haag", text: "Veel mensen kennen Ed omdat de meeste uit zijn geboorteplaats komen, dus zijn liedjes waren voor ons een feest der herkenning. Ook de covers waren erg leuk! Wij hebben genoten en zouden het zo weer doen. Echt een aanrader." },
+          { name: "Ellen van Reenen", city: "De Meern", text: "Geweldig optreden, mooie liedjes en Ed kan leuk verhalen vertellen. Publiek was enthousiast. 2 keer gedaan en de 3e keer gaat zeker volgen!" },
+          { name: "Roel", city: "", text: "Vijftien jaar geleden een huiskamerconcert van Ed bijgewoond. Dat ik mij dat na al die jaren nog herinner is een groot compliment. Wat nog goed in mijn geheugen staat is de pure muziek — alleen de gitaar en de stem — maar ook de verhalen die Ed tussendoor vertelde." },
+        ].map((review) => (
+          <div class="break-inside-avoid rounded-xl p-6 border" style="background-color: var(--bg-card); border-color: var(--border-subtle);">
+            <div class="flex gap-0.5 mb-3">
+              {Array.from({length: 5}).map(() => (
+                <svg class="w-4 h-4 text-[var(--color-gold)]" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+            <p class="text-[15px] leading-relaxed" style="color: var(--fg-base);">&ldquo;{review.text}&rdquo;</p>
+            <p class="mt-4 text-sm font-medium">
+              <span style="color: var(--color-gold);">{review.name}</span>
+              {review.city && <span style="color: var(--fg-muted);"> — {review.city}</span>}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div class="mt-12 text-center">
+        <Button href="https://boeken.edstruijlaart.nl" variant="primary" size="lg">
+          Boek jouw huiskamerconcert
+        </Button>
+      </div>
     </div>
   </section>
 
