@@ -119,6 +119,8 @@ export const GET: APIRoute = async ({ request }) => {
           showId: show._id,
           youtubeVideoId,
           heroImageUrl,
+          email: signup.email,
+          cronSecret,
         });
 
         // Retry logica: max 3 pogingen per mail

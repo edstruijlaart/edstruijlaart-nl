@@ -108,6 +108,7 @@ async function sendLateSignupReminder(firstName: string, email: string, show: an
       ? `${show.heroImageUrl}?w=600&q=80`
       : undefined;
 
+    const cronSecret = import.meta.env.CRON_SECRET;
     const { subject, html } = buildReminderEmail({
       firstName,
       city: show.city,
@@ -118,6 +119,8 @@ async function sendLateSignupReminder(firstName: string, email: string, show: an
       showId: show._id,
       youtubeVideoId,
       heroImageUrl,
+      email,
+      cronSecret,
     });
 
     await resend.emails.send({

@@ -3,6 +3,8 @@
  * Wordt automatisch verstuurd de ochtend na een concert.
  */
 
+import crypto from 'crypto';
+
 interface ReminderMailData {
   firstName: string;
   city: string;
@@ -13,6 +15,16 @@ interface ReminderMailData {
   showId?: string;
   youtubeVideoId?: string;
   heroImageUrl?: string;
+  email?: string;
+  cronSecret?: string;
+}
+
+/**
+ * Genereer HMAC token voor rating deduplicatie.
+ * Voorkomt dat dezelfde persoon meerdere keren een rating achterlaat.
+ */
+export function generateRatingToken(slug: string, email: string, secret: string): string {
+  return crypto.createHmac('sha256', secret).update(`${slug}:${email}`).digest('hex').slice(0, 16);
 }
 
 const DEFAULT_YOUTUBE_VIDEO = 'GBx2WfYluWE';
@@ -116,8 +128,13 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
       </td>
     </tr>`;
 
-  // Rating sectie
-  const ratingUrl = `${SITE_URL}/api/show/rate?show=${showSlug}`;
+  // Rating sectie — met optioneel HMAC token voor dedup
+  const ratingToken = data.email && data.cronSecret
+    ? generateRatingToken(showSlug, data.email, data.cronSecret)
+    : '';
+  const ratingUrl = ratingToken
+    ? `${SITE_URL}/api/show/rate?show=${showSlug}&t=${ratingToken}`
+    : `${SITE_URL}/api/show/rate?show=${showSlug}`;
   const ratingSection = `
     <tr>
       <td style="padding: 0 32px 32px;">
