@@ -17,6 +17,7 @@ interface ReminderMailData {
   heroImageUrl?: string;
   email?: string;
   cronSecret?: string;
+  isHost?: boolean;
 }
 
 /**
@@ -132,9 +133,10 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
   const ratingToken = data.email && data.cronSecret
     ? generateRatingToken(showSlug, data.email, data.cronSecret)
     : '';
+  const roleParam = data.isHost ? '&role=host' : '';
   const ratingUrl = ratingToken
-    ? `${SITE_URL}/api/show/rate?show=${showSlug}&t=${ratingToken}`
-    : `${SITE_URL}/api/show/rate?show=${showSlug}`;
+    ? `${SITE_URL}/api/show/rate?show=${showSlug}&t=${ratingToken}${roleParam}`
+    : `${SITE_URL}/api/show/rate?show=${showSlug}${roleParam}`;
   const ratingSection = `
     <tr>
       <td style="padding: 0 32px 32px;">

@@ -32,7 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Check of show bestaat (haal extra velden op voor eventuele late-signup mail)
     const show = await sanityClient.fetch(
       `*[_type == "show" && _id == $id][0]{
-        _id, startDateTime, status, slug, city, hostName,
+        _id, startDateTime, status, slug, city, hostName, hostEmail,
         bootlegUrl, bootlegExpiresAt, reminderSent,
         youtubeVideos[0] { url },
         "heroImageUrl": heroImage.asset->url
@@ -109,6 +109,10 @@ async function sendLateSignupReminder(firstName: string, email: string, show: an
       : undefined;
 
     const cronSecret = import.meta.env.CRON_SECRET;
+
+    // Detecteer of deze subscriber de host is
+    const isHost = !!(show.hostEmail && email.toLowerCase() === show.hostEmail.toLowerCase());
+
     const { subject, html } = buildReminderEmail({
       firstName,
       city: show.city,
@@ -121,6 +125,7 @@ async function sendLateSignupReminder(firstName: string, email: string, show: an
       heroImageUrl,
       email,
       cronSecret,
+      isHost,
     });
 
     await resend.emails.send({

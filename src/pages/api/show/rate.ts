@@ -7,16 +7,21 @@ import { sanityClient, sanityWriteClient } from '../../../lib/sanity';
  * Post-show rating endpoint.
  * Ontvangt een rating (1-5) via een link in de herinneringsmail.
  *
- * GET /api/show/rate?show={slug}&r={1-5}&t={token}
+ * GET /api/show/rate?show={slug}&r={1-5}&t={token}&role={host|guest}
  *
  * Token is optioneel (backwards-compatible met oude emails).
  * Met token: rating met verified=true, dedup actief.
  * Zonder token: rating met verified=false, geen dedup.
+ *
+ * Role bepaalt welke CTA's op de bedankpagina worden getoond:
+ * - host: "Volgend jaar weer?" + "Tip iemand anders"
+ * - guest (default): "Zelf organiseren?" + "Laat een review achter"
  */
 export const GET: APIRoute = async ({ url }) => {
   const showSlug = url.searchParams.get('show');
   const rating = parseInt(url.searchParams.get('r') || '0', 10);
   const token = url.searchParams.get('t') || '';
+  const role = url.searchParams.get('role') || '';
 
   if (!showSlug || rating < 1 || rating > 5) {
     return new Response('Ongeldige beoordeling', { status: 400 });
@@ -37,7 +42,7 @@ export const GET: APIRoute = async ({ url }) => {
         const existingRating = show.ratings?.find((r: any) => r.token === token);
         if (existingRating) {
           // Al gestemd — toon gewoon bedankpagina zonder dubbele opslag
-          return buildThankYouPage(ratingEmoji);
+          return buildThankYouPage(ratingEmoji, role);
         }
       }
 
@@ -54,14 +59,24 @@ export const GET: APIRoute = async ({ url }) => {
         .commit();
     }
 
-    return buildThankYouPage(ratingEmoji);
+    return buildThankYouPage(ratingEmoji, role);
   } catch (error) {
     console.error('Rating error:', error);
     return new Response('Er ging iets mis', { status: 500 });
   }
 };
 
-function buildThankYouPage(emoji: string): Response {
+function buildThankYouPage(emoji: string, role: string): Response {
+  const isHost = role === 'host';
+
+  const primaryCta = isHost
+    ? `<a href="https://boeken.edstruijlaart.nl/boeken" style="display:inline-block;background:#B8860B;color:#fff;padding:14px 32px;border-radius:9999px;text-decoration:none;font-weight:600;font-size:16px;">Volgend jaar weer organiseren?</a>`
+    : `<a href="https://boeken.edstruijlaart.nl/boeken" style="display:inline-block;background:#B8860B;color:#fff;padding:14px 32px;border-radius:9999px;text-decoration:none;font-weight:600;font-size:16px;">Zelf een huiskamerconcert organiseren?</a>`;
+
+  const secondaryCta = isHost
+    ? `<a href="https://edstruijlaart.nl/huiskamerconcerten/" style="display:inline-block;border:1px solid #B8860B;color:#B8860B;padding:12px 28px;border-radius:9999px;text-decoration:none;font-weight:600;font-size:15px;">Tip iemand anders</a>`
+    : `<a href="https://edstruijlaart.nl/review?type=huiskamerconcert" style="display:inline-block;border:1px solid #B8860B;color:#B8860B;padding:12px 28px;border-radius:9999px;text-decoration:none;font-weight:600;font-size:15px;">Laat een review achter</a>`;
+
   return new Response(`<!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -76,7 +91,13 @@ function buildThankYouPage(emoji: string): Response {
     <p style="font-size:16px;line-height:1.6;color:#9B9B9B;margin:0 0 32px;">
       Fijn dat je even de tijd hebt genomen. Dit helpt mij om de huiskamerconcerten nog leuker te maken.
     </p>
-    <a href="https://edstruijlaart.nl" style="display:inline-block;background:#B8860B;color:#fff;padding:12px 28px;border-radius:9999px;text-decoration:none;font-weight:600;font-size:15px;">Naar edstruijlaart.nl</a>
+    <div style="margin:0 0 16px;">
+      ${primaryCta}
+    </div>
+    <p style="font-size:13px;color:#9B9B9B;margin:0 0 24px;">Kortingscode: <strong style="color:#D4A843;">GITAARMANNEN</strong></p>
+    <div>
+      ${secondaryCta}
+    </div>
   </div>
 </body>
 </html>`, {

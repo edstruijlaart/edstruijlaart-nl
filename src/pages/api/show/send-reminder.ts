@@ -47,6 +47,7 @@ export const GET: APIRoute = async ({ request }) => {
         title,
         city,
         hostName,
+        hostEmail,
         startDateTime,
         slug,
         bootlegUrl,
@@ -110,6 +111,9 @@ export const GET: APIRoute = async ({ request }) => {
           ? `${show.heroImageUrl}?w=600&q=80`
           : undefined;
 
+        // Detecteer of deze subscriber de host is
+        const isHost = !!(show.hostEmail && signup.email.toLowerCase() === show.hostEmail.toLowerCase());
+
         const { subject, html } = buildReminderEmail({
           firstName: signup.firstName,
           city: show.city,
@@ -122,6 +126,7 @@ export const GET: APIRoute = async ({ request }) => {
           heroImageUrl,
           email: signup.email,
           cronSecret,
+          isHost,
         });
 
         // Retry logica: max 3 pogingen per mail
