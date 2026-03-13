@@ -7,6 +7,7 @@ import { Image } from 'astro:assets';
 import heroImg from '../assets/photos/huiskamer/hk-esther-noordergraaf.jpg'; // Foto: Esther Noordergraaf Fotografie
 import sfeerImg from '../assets/photos/ed-struijlaart-lachend-gitaar.jpg';
 import portretImg from '../assets/photos/ed-struijlaart-raam.jpg';
+import bruiloftImg from '../assets/photos/huiskamer/hk-bruiloft.jpg';
 
 // Sfeer foto's huiskamerconcerten
 import hkSfeer01 from '../assets/photos/huiskamer/hk-sfeer-01.jpg';
@@ -99,10 +100,10 @@ import hkGroep02 from '../assets/photos/huiskamer/hk-groep-02.jpg';
       alt="Ed Struijlaart speelt een huiskamerconcert — foto Esther Noordergraaf Fotografie"
       widths={[640, 1024, 1920]}
       sizes="100vw"
-      class="absolute inset-0 w-full h-full object-cover object-[center_40%]"
+      class="absolute inset-0 w-full h-full object-cover object-[center_55%]"
       loading="eager"
     />
-    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20" />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/40" />
     <div class="relative z-10 w-full px-4 sm:px-6 lg:px-8 pb-16 md:pb-20 max-w-[1200px] mx-auto">
       <span class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/20 text-[var(--color-gold)] mb-4">
         Huiskamerconcert
@@ -447,6 +448,39 @@ import hkGroep02 from '../assets/photos/huiskamer/hk-groep-02.jpg';
         <Button href="https://boeken.edstruijlaart.nl" variant="primary" size="lg">
           Boek jouw huiskamerconcert
         </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bruiloften -->
+  <section class="py-16 md:py-24" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <Image
+            src={bruiloftImg}
+            alt="Ed Struijlaart speelt op een bruiloft"
+            widths={[400, 800]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            class="w-full h-auto object-cover"
+            loading="lazy"
+          />
+        </div>
+        <div>
+          <p class="text-sm font-medium uppercase tracking-wider text-[var(--color-gold)] mb-2">Ook voor speciale gelegenheden</p>
+          <h2 class="font-[var(--font-display)] text-3xl md:text-4xl">Muziek op je bruiloft</h2>
+          <p class="mt-4 text-lg leading-relaxed" style="color: var(--fg-muted);">
+            Ik speel geregeld als speciale gast op bruiloften. Tijdens de ceremonie, maar soms ook tijdens de borrel na afloop. Of allebei. Alles is mogelijk.
+          </p>
+          <p class="mt-4 text-lg leading-relaxed" style="color: var(--fg-muted);">
+            Stuur vooral een bericht om samen de opties te bespreken. Ik denk graag mee over wat past bij jullie dag.
+          </p>
+          <div class="mt-8">
+            <Button href="mailto:ed@earswantmusic.nl?subject=Muziek%20op%20onze%20bruiloft" variant="primary" size="lg">
+              Neem contact op
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
