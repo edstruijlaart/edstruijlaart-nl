@@ -7,7 +7,7 @@ import { buildReminderEmail } from '../../../lib/email-templates';
 
 /**
  * Vercel Cron endpoint: verstuurt herinneringsmails voor shows
- * die 12-48 uur geleden zijn begonnen en nog geen mail hebben gekregen.
+ * die 12-96 uur geleden zijn begonnen en nog geen mail hebben gekregen.
  *
  * Wordt elke ochtend om 10:00 getriggerd door Vercel Cron.
  * Kan ook handmatig getriggerd worden met de juiste auth header.
@@ -31,16 +31,17 @@ export const GET: APIRoute = async ({ request }) => {
   try {
     const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
-    // Zoek shows die 12-48u geleden begonnen EN nog geen reminder hebben gestuurd
+    // Zoek shows die 12-96u geleden begonnen EN nog geen reminder hebben gestuurd
+    // Window van 96u (4 dagen) geeft voldoende marge voor Vercel free tier (cron 1x/dag)
     const now = new Date();
     const twelveHoursAgo = new Date(now.getTime() - 12 * 60 * 60 * 1000).toISOString();
-    const fortyEightHoursAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000).toISOString();
+    const ninetySixHoursAgo = new Date(now.getTime() - 96 * 60 * 60 * 1000).toISOString();
 
     const shows = await sanityClient.fetch(`
       *[_type == "show"
         && reminderSent != true
         && startDateTime < $twelveHoursAgo
-        && startDateTime > $fortyEightHoursAgo
+        && startDateTime > $ninetySixHoursAgo
       ] {
         _id,
         title,
@@ -53,7 +54,7 @@ export const GET: APIRoute = async ({ request }) => {
         youtubeVideos[0] { url },
         "heroImageUrl": heroImage.asset->url
       }
-    `, { twelveHoursAgo, fortyEightHoursAgo });
+    `, { twelveHoursAgo, ninetySixHoursAgo });
 
     if (!shows || shows.length === 0) {
       return new Response(JSON.stringify({
@@ -166,11 +167,13 @@ export const GET: APIRoute = async ({ request }) => {
         }
       }
 
-      // Markeer show als verstuurd, zet status op "past", en sla emailsSent op
-      // (voorkomt dat deze show nog als "live" wordt gevonden door de bootleg endpoint)
+      // Markeer show als verstuurd, zet status op "past", en tel emailsSent op
+      // Gebruikt .inc() i.p.v. .set() om race condition met late-signup emails te voorkomen
       await sanityWriteClient
         .patch(show._id)
-        .set({ reminderSent: true, status: 'past', emailsSent: sentCount })
+        .set({ reminderSent: true, status: 'past' })
+        .setIfMissing({ emailsSent: 0 })
+        .inc({ emailsSent: sentCount })
         .commit();
 
       results.push({
