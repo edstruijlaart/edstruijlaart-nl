@@ -295,8 +295,8 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
     </section>
   )}
 
-  {/* CTA: boek zelf een huiskamerconcert (fase 1 only) */}
-  {!isPhase2 && <ShowCTA />}
+  {/* CTA: boek zelf een huiskamerconcert */}
+  <ShowCTA />
 
   {/* Client-side: email-gate form handler + fase check */}
   <script define:vars={{ startDateTime: show.startDateTime, showId: show._id }}>
