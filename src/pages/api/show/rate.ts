@@ -94,7 +94,7 @@ function buildThankYouPage(emoji: string, role: string): Response {
     <div style="margin:0 0 16px;">
       ${primaryCta}
     </div>
-    <p style="font-size:13px;color:#9B9B9B;margin:0 0 24px;">Kortingscode: <strong style="color:#D4A843;">GITAARMANNEN</strong></p>
+    <p style="font-size:13px;color:#9B9B9B;margin:0 0 24px;">Gebruik code <strong style="color:#D4A843;">NOGEENKEERTJE</strong> voor 10% korting</p>
     <div>
       ${secondaryCta}
     </div>
