@@ -93,6 +93,8 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
     {/* Formulier — bericht + foto in één */}
     <div class="max-w-xl mx-auto mb-14">
       <form id="guestbook-combined-form" class="space-y-4" data-show-id={showId}>
+        {/* Honeypot — onzichtbaar voor gebruikers, bots vullen dit in */}
+        <input type="text" name="honeypot" style="display:none" tabindex="-1" autocomplete="off" />
         <input
           type="text"
           name="name"
@@ -259,6 +261,7 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
       const fd = new FormData(form);
       const name = (fd.get('name') as string)?.trim();
       const message = (fd.get('message') as string)?.trim();
+      const honeypot = (fd.get('honeypot') as string) || '';
       const photo = photoInput.files?.[0];
 
       if (!name) { showStatus('Vul je naam in', 'error'); return; }
@@ -276,6 +279,7 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
           photoData.append('uploadedBy', name);
           photoData.append('photo', photo);
           if (message) photoData.append('message', message);
+          if (honeypot) photoData.append('honeypot', honeypot);
 
           const res = await fetch('/api/show/photo', {
             method: 'POST',
@@ -287,7 +291,7 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
           const res = await fetch('/api/show/guestbook', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ showId, name, message }),
+            body: JSON.stringify({ showId, name, message, honeypot }),
           });
           if (!res.ok) throw new Error('Bericht plaatsen mislukt');
         }

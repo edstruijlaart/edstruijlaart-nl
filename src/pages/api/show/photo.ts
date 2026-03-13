@@ -11,9 +11,24 @@ export const POST: APIRoute = async ({ request }) => {
     const uploadedBy = (formData.get('uploadedBy') as string) || 'Anoniem';
     const message = (formData.get('message') as string)?.trim() || '';
     const photo = formData.get('photo') as File;
+    const honeypot = formData.get('honeypot') as string;
+
+    // Honeypot check — bots vullen dit in, echte gebruikers niet
+    if (honeypot) {
+      return new Response(JSON.stringify({ success: true }), { status: 200 });
+    }
 
     if (!showId || !photo) {
       return new Response(JSON.stringify({ error: 'Verplichte velden ontbreken' }), { status: 400 });
+    }
+
+    // Valideer dat show bestaat
+    const show = await sanityClient.fetch(
+      `*[_type == "show" && _id == $id][0]{_id}`,
+      { id: showId }
+    );
+    if (!show) {
+      return new Response(JSON.stringify({ error: 'Show niet gevonden' }), { status: 404 });
     }
 
     // Check bestandsgrootte (max 10MB)

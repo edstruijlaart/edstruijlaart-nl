@@ -1,22 +1,36 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { sanityWriteClient } from '../../../lib/sanity';
+import { sanityWriteClient, sanityClient } from '../../../lib/sanity';
 
 /**
  * Voegt een gastenboek-bericht toe aan een show.
  * Kan gebruikt worden door gasten die al door de email-gate zijn.
  *
  * POST /api/show/guestbook
- * Body: { showId, name, message }
+ * Body: { showId, name, message, honeypot? }
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { showId, name, message } = body;
+    const { showId, name, message, honeypot } = body;
+
+    // Honeypot check — bots vullen dit in, echte gebruikers niet
+    if (honeypot) {
+      return new Response(JSON.stringify({ success: true }), { status: 200 });
+    }
 
     if (!showId || !name || !message) {
       return new Response(JSON.stringify({ error: 'Naam en bericht zijn verplicht' }), { status: 400 });
+    }
+
+    // Valideer dat show bestaat
+    const show = await sanityClient.fetch(
+      `*[_type == "show" && _id == $id][0]{_id}`,
+      { id: showId }
+    );
+    if (!show) {
+      return new Response(JSON.stringify({ error: 'Show niet gevonden' }), { status: 404 });
     }
 
     if (message.length > 280) {
