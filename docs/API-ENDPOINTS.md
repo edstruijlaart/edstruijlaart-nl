@@ -106,12 +106,13 @@ Alle endpoints draaien als Vercel Serverless Functions via Astro (`export const 
 **Cron**: Elke dag 09:00 UTC (`vercel.json`)
 
 **Logica**:
-1. Zoekt shows met `reminderSent != true` EN `startDateTime` 12-48 uur geleden
+1. Zoekt shows met `reminderSent != true` EN `startDateTime` 12-96 uur geleden
 2. Haalt emailSignups op per show
 3. Stuurt per subscriber een herinneringsmail via Resend
    - Met retry (3 pogingen, exponential backoff 1s→2s→4s, max 5s)
    - Rate limit detection
-4. Zet show op `reminderSent: true`, `status: "past"`, `emailsSent: {count}`
+   - Rating HMAC token per subscriber (voor deduplicatie)
+4. Zet show op `reminderSent: true`, `status: "past"`, incrementeert `emailsSent` via `.inc()`
 5. Stuurt samenvattingsmail naar Ed met resultaten
 
 **Email bevat** (via `buildReminderEmail()`):
@@ -130,13 +131,16 @@ Alle endpoints draaien als Vercel Serverless Functions via Astro (`export const 
 
 **Doel**: Post-show rating via link in herinneringsmail.
 
-**Query params**: `?show={slug}&r={1-5}`
+**Query params**: `?show={slug}&r={1-5}&t={token}`
+
+**Token**: Optioneel HMAC token voor deduplicatie. Gegenereerd per subscriber in herinneringsmail (`generateRatingToken(slug, email, CRON_SECRET)`).
 
 **Logica**:
 1. Valideert slug en rating (1-5)
 2. Zoekt show op slug
-3. Append rating object aan `show.ratings[]` array in Sanity
-4. Toont branded bedankpagina met emoji
+3. **Met token**: checkt of rating met dit token al bestaat → skip (dedup). Slaat op met `verified: true`.
+4. **Zonder token**: altijd opslaan met `verified: false` (backwards-compatibel met oude emails)
+5. Toont branded bedankpagina met emoji (altijd, ook bij dedup)
 
 **Emoji mapping**: 1=😐, 2=🙂, 3=😊, 4=😍, 5=🤩
 
@@ -153,9 +157,15 @@ Alle endpoints draaien als Vercel Serverless Functions via Astro (`export const 
 {
   "showId": "Sanity _id",
   "name": "Naam",
-  "message": "Bericht (max 280 tekens)"
+  "message": "Bericht (max 280 tekens)",
+  "honeypot": "" // moet leeg zijn, anti-spam
 }
 ```
+
+**Logica**:
+1. Honeypot check (gevuld = silent 200, geen data)
+2. Valideert showId tegen bestaande show in Sanity
+3. Append gastenboek-entry aan show
 
 **Bestand**: `src/pages/api/show/guestbook.ts`
 
@@ -172,10 +182,12 @@ Alle endpoints draaien als Vercel Serverless Functions via Astro (`export const 
 - `photo` — Afbeelding (max 10MB, alleen image/*)
 
 **Wat het doet**:
-1. Valideert bestandsgrootte en type
-2. Upload naar Sanity assets
-3. Voegt toe aan `show.guestPhotos[]`
-4. Stuurt notificatie-email naar Ed (fire-and-forget) met foto preview
+1. Honeypot check (gevuld = silent 200, geen data)
+2. Valideert showId tegen bestaande show in Sanity
+3. Valideert bestandsgrootte en type
+4. Upload naar Sanity assets
+5. Voegt toe aan `show.guestPhotos[]`
+6. Stuurt notificatie-email naar Ed (fire-and-forget) met foto preview
 
 **Bestand**: `src/pages/api/show/photo.ts`
 
@@ -192,11 +204,39 @@ Alle endpoints draaien als Vercel Serverless Functions via Astro (`export const 
 {
   "showId": "Sanity _id",
   "type": "guestbook | photo",
-  "key": "_key van het item"
+  "key": "_key van het item (alfanumeriek, max 10 chars)"
 }
 ```
 
+**Validatie**: `key` moet matchen `/^[a-z0-9]{1,10}$/`, `showId` moet matchen `/^[a-zA-Z0-9._-]+$/` (voorkomt GROQ injection).
+
 **Bestand**: `src/pages/api/show/manage.ts`
+
+---
+
+## GET /api/health
+
+**Doel**: Health check voor monitoring (bijv. UptimeRobot). Geen auth nodig.
+
+**Checkt**:
+1. Sanity CMS bereikbaar (tel shows)
+2. Resend API key aanwezig
+3. CRON_SECRET aanwezig
+
+**Response**: `200` (alles ok) of `503` (iets mis)
+```json
+{
+  "status": "healthy",
+  "timestamp": "2026-03-13T10:00:00.000Z",
+  "checks": {
+    "sanity": { "ok": true, "message": "12 shows" },
+    "resend": { "ok": true, "message": "Key present" },
+    "cronSecret": { "ok": true, "message": "Key present" }
+  }
+}
+```
+
+**Bestand**: `src/pages/api/health.ts`
 
 ---
 
@@ -248,7 +288,7 @@ show {
   // Gasten
   guestbookEntries?: [{ _key, name, email, message, approved, submittedAt }]
   guestPhotos?: [{ _key, image, uploadedBy, message, approved, uploadedAt }]
-  ratings?: [{ _key, rating: 1-5, ratedAt }]
+  ratings?: [{ _key, rating: 1-5, ratedAt, token?: string, verified: boolean }]
 }
 ```
 

@@ -25,6 +25,16 @@ export const DELETE: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'showId, type en key zijn verplicht' }), { status: 400 });
     }
 
+    // Valideer key format (voorkom GROQ injection via string interpolatie)
+    if (!/^[a-z0-9]{1,10}$/.test(key)) {
+      return new Response(JSON.stringify({ error: 'Ongeldige key' }), { status: 400 });
+    }
+
+    // Valideer showId format (Sanity document IDs zijn alfanumeriek met hyphens)
+    if (!/^[a-zA-Z0-9._-]+$/.test(showId)) {
+      return new Response(JSON.stringify({ error: 'Ongeldig showId' }), { status: 400 });
+    }
+
     if (type === 'guestbook') {
       await sanityWriteClient
         .patch(showId)
