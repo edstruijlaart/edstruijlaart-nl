@@ -135,3 +135,103 @@ export const allSingles: Single[] = [
 ];
 
 export const spotifyPlaylistId = '5ZoRiQK1FP8OXrKRuPp56J';
+
+export const songwriterPlaylistId = '4BJj31oVnMjPy61iK82tVP';
+
+export type MilestoneType = 'album' | 'single' | 'theater' | 'media' | 'award' | 'podcast' | 'milestone';
+
+export interface TimelineMilestone {
+  year: number;
+  title: string;
+  description: string;
+  type: MilestoneType;
+  highlight?: boolean;
+}
+
+export const timeline: TimelineMilestone[] = [
+  {
+    year: 2010,
+    title: 'Alles opgegeven voor muziek',
+    description: 'Baan opgezegd, fulltime muzikant geworden.',
+    type: 'milestone',
+  },
+  {
+    year: 2012,
+    title: 'Head, Heart & Hands',
+    description: 'Debuutalbum met producer Huub Reijnders. Twaalf songs over alles loslaten.',
+    type: 'album',
+    highlight: true,
+  },
+  {
+    year: 2014,
+    title: 'Closer Than Skin',
+    description: 'Tweede album, opgenomen in Londen met Carey Willetts. #19 Album Top 100.',
+    type: 'album',
+    highlight: true,
+  },
+  {
+    year: 2015,
+    title: 'Wereldrecord huiskamerconcerten',
+    description: '44 huiskamerconcerten in 2 dagen tijdens Back At SEA festival.',
+    type: 'milestone',
+    highlight: true,
+  },
+  {
+    year: 2016,
+    title: 'Radio 2 Topsong & De Wereld Draait Door',
+    description: 'Tricks Up My Sleeve wordt NPO Radio 2 Topsong. Optreden bij DWDD en duet met Lisa Lois.',
+    type: 'media',
+    highlight: true,
+  },
+  {
+    year: 2018,
+    title: 'Make It On Your Own wordt platina',
+    description: 'Geschreven voor dochter Lizzy. Op de playlist van NPO Radio 1, 2 en 5. Groeit uit tot 26M+ streams.',
+    type: 'award',
+    highlight: true,
+  },
+  {
+    year: 2018,
+    title: 'Gitaarmannen 1: Van Clapton tot Sheeran',
+    description: 'Eerste theatershow en lancering van de Gitaarmannen podcast.',
+    type: 'theater',
+  },
+  {
+    year: 2020,
+    title: 'Eerste virtuele theatertour van Nederland',
+    description: 'Wilhelmus vanaf het balkon op Koningsdag. Van Huis Uit tour: 10 theaters, gratis toegang.',
+    type: 'theater',
+    highlight: true,
+  },
+  {
+    year: 2021,
+    title: 'DJ op Radio Veronica',
+    description: 'Vast zaterdagochtendprogramma op Radio Veronica.',
+    type: 'media',
+  },
+  {
+    year: 2022,
+    title: 'Gitaarmannen 2: Eric Clapton Unplugged',
+    description: '25 theaters door het hele land. 30 jaar Unplugged herleven.',
+    type: 'theater',
+  },
+  {
+    year: 2023,
+    title: 'Veronica Express & 4e Radio 2 Topsong',
+    description: 'What I Like About You wordt 4e NPO Radio 2 Topsong. Mee op de Veronica Express tour.',
+    type: 'media',
+  },
+  {
+    year: 2024,
+    title: 'Gitaarmannen 3: John Mayer',
+    description: '25 theaters. De meest persoonlijke Gitaarmannen tot nu toe.',
+    type: 'theater',
+    highlight: true,
+  },
+  {
+    year: 2025,
+    title: 'Same Heart & I Could Be Wrong',
+    description: 'Twee nieuwe singles. Het verhaal gaat door.',
+    type: 'single',
+  },
+];

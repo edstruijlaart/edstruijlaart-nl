@@ -1,0 +1,154 @@
+---
+import type { TimelineMilestone } from '../../../data/music';
+
+interface Props {
+  milestones: TimelineMilestone[];
+}
+
+const { milestones } = Astro.props;
+
+const typeIcons: Record<string, string> = {
+  album: '\u{1F4BF}',
+  single: '\u{1F3B5}',
+  theater: '\u{1F3AD}',
+  media: '\u{1F4FB}',
+  award: '\u{1F3C6}',
+  podcast: '\u{1F399}\u{FE0F}',
+  milestone: '\u{2B50}',
+};
+
+const typeLabels: Record<string, string> = {
+  album: 'Album',
+  single: 'Single',
+  theater: 'Theater',
+  media: 'Media',
+  award: 'Mijlpaal',
+  podcast: 'Podcast',
+  milestone: 'Keerpunt',
+};
+---
+
+<div class="timeline-container relative max-w-3xl mx-auto">
+  <!-- Verticale lijn -->
+  <div class="absolute left-6 md:left-8 top-0 bottom-0 w-px" style="background: linear-gradient(180deg, transparent 0%, var(--color-gold) 5%, var(--color-gold) 95%, transparent 100%);"></div>
+
+  <div class="space-y-0">
+    {milestones.map((milestone, i) => {
+      const showYear = i === 0 || milestones[i - 1].year !== milestone.year;
+
+      return (
+        <div class="timeline-item relative" data-index={i}>
+          {/* Year marker */}
+          {showYear && (
+            <div class="relative z-10 flex items-center mb-4 pt-8">
+              <div
+                class="year-marker px-5 py-2 rounded-full font-[var(--font-display)] text-xl md:text-2xl font-bold tracking-wide"
+                style="background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold)); color: white; box-shadow: 0 4px 20px rgba(184, 134, 11, 0.3);"
+              >
+                {milestone.year}
+              </div>
+            </div>
+          )}
+
+          {/* Card met dot */}
+          <div class="relative pl-14 md:pl-20 pb-2">
+            {/* Dot op de lijn */}
+            <div class="absolute left-6 md:left-8 top-6 -translate-x-1/2 z-10">
+              <div
+                class:list={[
+                  'timeline-dot rounded-full border-2',
+                  milestone.highlight ? 'w-4 h-4' : 'w-3 h-3',
+                ]}
+                style={milestone.highlight
+                  ? 'background-color: var(--color-gold); border-color: var(--color-gold); box-shadow: 0 0 12px rgba(184, 134, 11, 0.5);'
+                  : 'background-color: var(--bg-surface); border-color: var(--color-gold);'}
+              ></div>
+            </div>
+
+            {/* Content card */}
+            <div
+              class="timeline-card p-5 rounded-xl"
+              style={`background-color: var(--bg-surface); box-shadow: var(--shadow-card);${milestone.highlight ? ' border-left: 3px solid var(--color-gold);' : ''}`}
+            >
+              <div class="flex items-start gap-3">
+                <span class="text-2xl flex-shrink-0 mt-0.5" aria-hidden="true">{typeIcons[milestone.type]}</span>
+                <div>
+                  <span class="text-xs uppercase tracking-widest font-medium" style="color: var(--color-gold);">{typeLabels[milestone.type]}</span>
+                  <h3 class="font-[var(--font-display)] text-lg md:text-xl mt-1">{milestone.title}</h3>
+                  <p class="mt-2 text-sm leading-relaxed" style="color: var(--fg-muted);">{milestone.description}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
+<style>
+  .timeline-card {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .timeline-item.revealed .timeline-card {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .year-marker {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .timeline-item.revealed .year-marker {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .timeline-dot {
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .timeline-item.revealed .timeline-dot {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .timeline-card:hover {
+    transform: translateX(4px) !important;
+    transition: transform 0.2s ease;
+  }
+</style>
+
+<script>
+  function initTimelineReveal() {
+    const items = document.querySelectorAll('.timeline-item');
+    if (!items.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = Number((entry.target as HTMLElement).dataset.index ?? 0);
+            setTimeout(() => {
+              entry.target.classList.add('revealed');
+            }, Math.min(index, 3) * 100);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -30px 0px' },
+    );
+
+    items.forEach((item) => observer.observe(item));
+  }
+
+  initTimelineReveal();
+  document.addEventListener('astro:after-swap', initTimelineReveal);
+</script>

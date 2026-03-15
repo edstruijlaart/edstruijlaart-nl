@@ -8,8 +8,9 @@ import PlatinumSpotlight from '../../components/sections/music/PlatinumSpotlight
 import FeaturedSingle from '../../components/sections/music/FeaturedSingle.astro';
 import AlbumSection from '../../components/sections/music/AlbumSection.astro';
 import SinglesGrid from '../../components/sections/music/SinglesGrid.astro';
+import Timeline from '../../components/sections/music/Timeline.astro';
 
-import { platinumSingle, featuredSingles, albums, allSingles, spotifyPlaylistId } from '../../data/music';
+import { platinumSingle, featuredSingles, albums, allSingles, spotifyPlaylistId, songwriterPlaylistId, timeline } from '../../data/music';
 import { getMultipleTrackArtworks } from '../../lib/spotify';
 
 // Local artwork imports
@@ -103,7 +104,23 @@ const artworkMap = await getMultipleTrackArtworks(trackIds);
     </div>
   </section>
 
-  <!-- 7. Spotify Playlist -->
+  <!-- 7. Tijdlijn -->
+  <section class="py-20 md:py-28 reveal-section">
+    <div class="mx-auto max-w-[1000px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title="De reis" subtitle="Van alles opgeven tot platina. 15 jaar muziek in vogelvlucht." />
+      <Timeline milestones={timeline} />
+    </div>
+  </section>
+
+  <!-- 8. Geschreven voor anderen -->
+  <section class="py-20 md:py-28 reveal-section" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title="Geschreven & geproduceerd" subtitle="Liedjes die Ed schreef en produceerde voor andere artiesten" />
+      <SpotifyEmbed uri={songwriterPlaylistId} type="playlist" height={480} />
+    </div>
+  </section>
+
+  <!-- 9. Spotify Playlist -->
   <section class="py-20 md:py-28 reveal-section">
     <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
       <SectionHeading title="Luister alles" subtitle="De complete playlist op Spotify" />
