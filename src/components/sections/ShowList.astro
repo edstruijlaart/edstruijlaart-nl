@@ -86,18 +86,24 @@ function formatDate(dateStr: string) {
 ) : (
   <div class="rounded-xl p-8 text-center border border-[var(--color-gold)]/30" style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);">
     <p class="text-xs uppercase tracking-widest text-[var(--color-gold)] font-medium mb-3">Binnenkort</p>
-    <h3 class="text-xl font-semibold mb-2">Gitaarmannen 4: Continuum</h3>
+    <h3 class="text-xl font-semibold mb-2">Gitaarmannen 4</h3>
     <p class="text-[var(--fg-muted)] mb-5">
-      Nieuwe data worden binnenkort bekendgemaakt. Schrijf je in voor de nieuwsbrief en wees als eerste op de hoogte.
+      We gaan binnenkort bekendmaken wat Gitaarmannen 4 wordt. Wil je als eerste weten wat het is? Schrijf je in voor de nieuwsbrief.
     </p>
-    <a
-      href="https://chat.whatsapp.com/HJBvOduZdwtGyGb1MG92yI"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-[var(--color-gold)]/60 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black transition-all duration-200"
-    >
-      Blijf op de hoogte
-    </a>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+      <a
+        href="#nieuwsbrief"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[var(--color-gold)] text-black hover:bg-[var(--color-gold)]/80 transition-all duration-200"
+      >
+        Schrijf je in
+      </a>
+      <a
+        href="/huiskamerconcerten/"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-[var(--color-gold)]/60 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black transition-all duration-200"
+      >
+        Boek een huiskamerconcert
+      </a>
+    </div>
   </div>
 )}
 
