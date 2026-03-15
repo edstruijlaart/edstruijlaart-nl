@@ -34,7 +34,7 @@ export const featuredSingles: Single[] = [
   {
     title: 'Same Heart',
     spotifyId: '0eSP9vw73vQzohA5tIOyOf',
-    year: 2024,
+    year: 2025,
     featured: true,
     localArtwork: 'same-heart.png',
     story:
@@ -43,7 +43,7 @@ export const featuredSingles: Single[] = [
   {
     title: 'I Could Be Wrong',
     spotifyId: '1PkvInIcaxRagzStMGVAi5',
-    year: 2024,
+    year: 2025,
     featured: true,
     story:
       'Soms weet je het even niet meer. Dit nummer gaat over twijfel, kwetsbaarheid, en toch doorgaan.',
@@ -103,20 +103,20 @@ export const albums: Album[] = [
 
 // Alle singles, chronologisch van nieuw naar oud (volgorde playlist)
 export const allSingles: Single[] = [
-  { title: 'Same Heart', spotifyId: '0eSP9vw73vQzohA5tIOyOf', year: 2024 },
-  { title: 'I Could Be Wrong', spotifyId: '1PkvInIcaxRagzStMGVAi5', year: 2024 },
+  { title: 'Same Heart', spotifyId: '0eSP9vw73vQzohA5tIOyOf', year: 2025 },
+  { title: 'I Could Be Wrong', spotifyId: '1PkvInIcaxRagzStMGVAi5', year: 2025 },
   { title: 'All We Need', spotifyId: '6M7IyHyAWnRIVIjqcnjhAO', year: 2024 },
-  { title: 'Move On', spotifyId: '5rSlV6fa4MoMC5SW9GD7sk', year: 2024 },
-  { title: 'Long Lost Friend', spotifyId: '24T46JXfdsD3prLYBMGp8p', year: 2023 },
+  { title: 'Move On', spotifyId: '5rSlV6fa4MoMC5SW9GD7sk', year: 2023 },
+  { title: 'Long Lost Friend', spotifyId: '24T46JXfdsD3prLYBMGp8p', year: 2022 },
   { title: 'Mooi Geweest', spotifyId: '5o2faEX74VH3rc1gKB6nx1', year: 2023, featuring: 'De Troubadours' },
-  { title: 'Alles Op Rood', spotifyId: '640Tv4ivHkJFITjTxy30tl', year: 2023 },
-  { title: 'Voor Jou', spotifyId: '5JYgVBXWzZGIL28gts9WxV', year: 2023 },
-  { title: 'Alles Komt Weer Goed', spotifyId: '2ypLSKiaBw8ahLM6iRdugA', year: 2022 },
-  { title: 'Next to Me', spotifyId: '3ouwgDCOXNorYiPg1JkMzv', year: 2022 },
-  { title: 'What I Like About You', spotifyId: '6u1Y6oD4yR4cczJQXVq6xd', year: 2023 },
-  { title: 'De Tijd Dat Alles Kon en Mocht', spotifyId: '2TAVf0KuusUEo4r8j7QU9z', year: 2021 },
+  { title: 'Alles Op Rood', spotifyId: '640Tv4ivHkJFITjTxy30tl', year: 2020 },
+  { title: 'Voor Jou', spotifyId: '5JYgVBXWzZGIL28gts9WxV', year: 2020 },
+  { title: 'Alles Komt Weer Goed', spotifyId: '2ypLSKiaBw8ahLM6iRdugA', year: 2020 },
+  { title: 'Next to Me', spotifyId: '3ouwgDCOXNorYiPg1JkMzv', year: 2020 },
+  { title: 'What I Like About You', spotifyId: '6u1Y6oD4yR4cczJQXVq6xd', year: 2019 },
+  { title: 'De Tijd Dat Alles Kon en Mocht', spotifyId: '2TAVf0KuusUEo4r8j7QU9z', year: 2018 },
   { title: 'Guitar', spotifyId: '0ft0sUVi6HTWQ8kcx5xrsd', year: 2018 },
-  { title: 'Top Of The World', spotifyId: '53scBCTmHWDMVPDawdr2Qh', year: 2019, featuring: 'Giraff' },
+  { title: 'Top Of The World', spotifyId: '53scBCTmHWDMVPDawdr2Qh', year: 2018, featuring: 'Giraff' },
   { title: 'Make It On Your Own (Giraff Remix)', spotifyId: '49e19YXr4Zn1RbUnFw9nJ4', year: 2019, featuring: 'Giraff' },
   { title: 'Make It On Your Own', spotifyId: '6g3h5Me9cAPMZVlGWZbXlN', year: 2018 },
   { title: 'Like December (Xmas Edit)', spotifyId: '6hNVQv4zDLjgvlKdZlOk4S', year: 2017 },
