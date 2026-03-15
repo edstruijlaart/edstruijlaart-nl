@@ -1,20 +1,146 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHeading from '../../components/ui/SectionHeading.astro';
-import MusicPlayer from '../../components/sections/MusicPlayer.astro';
+import SpotifyEmbed from '../../components/ui/SpotifyEmbed.astro';
+
+import MusicHero from '../../components/sections/music/MusicHero.astro';
+import PlatinumSpotlight from '../../components/sections/music/PlatinumSpotlight.astro';
+import FeaturedSingle from '../../components/sections/music/FeaturedSingle.astro';
+import AlbumSection from '../../components/sections/music/AlbumSection.astro';
+import SinglesGrid from '../../components/sections/music/SinglesGrid.astro';
+
+import { platinumSingle, featuredSingles, albums, allSingles, spotifyPlaylistId } from '../../data/music';
+import { getMultipleTrackArtworks } from '../../lib/spotify';
+
+// Local artwork imports
+import makeItOnYourOwn from '../../assets/albums/make-it-on-your-own.png';
+import sameHeart from '../../assets/albums/same-heart.png';
+import headHeartHands from '../../assets/albums/head-heart-hands.jpg';
+import closerThanSkin from '../../assets/albums/closer-than-skin.jpg';
+import platinaPlaat from '../../assets/albums/platina-plaat.jpg';
+
+// Fetch all single artwork from Spotify oEmbed at build time
+const trackIds = allSingles.map((s) => s.spotifyId);
+const artworkMap = await getMultipleTrackArtworks(trackIds);
 ---
 
 <BaseLayout
   title="Muziek"
-  description="Luister naar de muziek van Ed Struijlaart. Van platina hit Make It On Your Own tot albums Closer Than Skin en Head, Heart & Hands. Stream op Spotify, Apple Music en YouTube."
+  description="Alle muziek van Ed Struijlaart. Van platina hit Make It On Your Own (26M+ streams) tot albums Head, Heart & Hands en Closer Than Skin. 29 singles, 2 albums."
 >
-  <section class="py-24">
+  {/* JSON-LD: MusicGroup structured data */}
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Ed Struijlaart",
+    "url": "https://edstruijlaart.nl/music/",
+    "genre": ["Singer-songwriter", "Pop", "Acoustic"],
+    "album": albums.map(a => ({
+      "@type": "MusicAlbum",
+      "name": a.title,
+      "datePublished": String(a.year),
+      "numTracks": a.tracks.length,
+      "url": `https://edstruijlaart.nl/music/#${a.slug}`,
+    })),
+    "track": allSingles.slice(0, 10).map(s => ({
+      "@type": "MusicRecording",
+      "name": s.title,
+      "url": `https://open.spotify.com/track/${s.spotifyId}`,
+    })),
+  })} />
+
+  <!-- 1. Hero -->
+  <MusicHero />
+
+  <!-- 2. Platina Spotlight: Make It On Your Own -->
+  <div class="reveal-section">
+    <PlatinumSpotlight
+      artwork={makeItOnYourOwn}
+      platinaPhoto={platinaPlaat}
+      streams={platinumSingle.streams}
+      story={platinumSingle.story}
+      spotifyId={platinumSingle.spotifyId}
+    />
+  </div>
+
+  <!-- 3. Featured Singles -->
+  <section class="py-20 md:py-28 reveal-section">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-      <SectionHeading
-        title="Muziek"
-        subtitle="Albums, singles en meer"
-      />
-      <MusicPlayer />
+      <SectionHeading title="Uitgelicht" subtitle="Recente singles" />
+      <div class="space-y-16 md:space-y-24">
+        <FeaturedSingle
+          single={featuredSingles[0]}
+          artwork={sameHeart}
+        />
+        <FeaturedSingle
+          single={featuredSingles[1]}
+          artworkUrl={artworkMap.get(featuredSingles[1].spotifyId)}
+          reverse
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Album: Head, Heart & Hands -->
+  <section class="py-20 md:py-28 reveal-section" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <AlbumSection album={albums[0]} artwork={headHeartHands} />
+    </div>
+  </section>
+
+  <!-- 5. Album: Closer Than Skin -->
+  <section class="py-20 md:py-28 reveal-section">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <AlbumSection album={albums[1]} artwork={closerThanSkin} reverse />
+    </div>
+  </section>
+
+  <!-- 6. Singles Discografie -->
+  <section class="py-20 md:py-28 reveal-section" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title="Discografie" subtitle="Alle singles" />
+      <SinglesGrid singles={allSingles} artworkMap={artworkMap} />
+    </div>
+  </section>
+
+  <!-- 7. Spotify Playlist -->
+  <section class="py-20 md:py-28 reveal-section">
+    <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title="Luister alles" subtitle="De complete playlist op Spotify" />
+      <SpotifyEmbed uri={spotifyPlaylistId} type="playlist" height={480} />
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .reveal-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal-section.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  function initScrollReveal() {
+    const sections = document.querySelectorAll('.reveal-section');
+    if (!sections.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' },
+    );
+    sections.forEach((section) => observer.observe(section));
+  }
+  initScrollReveal();
+  document.addEventListener('astro:after-swap', initScrollReveal);
+</script>

@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import SpotifyEmbed from '../../ui/SpotifyEmbed.astro';
+
+interface Props {
+  artwork: ImageMetadata;
+  platinaPhoto: ImageMetadata;
+  streams: string;
+  story: string;
+  spotifyId: string;
+}
+
+const { artwork, platinaPhoto, streams, story, spotifyId } = Astro.props;
+---
+
+<section class="py-20 md:py-28 relative overflow-hidden" style="background-color: var(--color-dark-bg);">
+  <!-- Subtle gold glow -->
+  <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-5" style="background-color: var(--color-gold);"></div>
+  <div class="absolute top-0 left-0 w-64 h-64 rounded-full blur-3xl opacity-3" style="background-color: var(--color-gold);"></div>
+
+  <div class="relative mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <!-- Artwork met platina badge -->
+      <div class="relative max-w-md mx-auto lg:mx-0">
+        <div class="rounded-2xl overflow-hidden" style="box-shadow: 0 8px 40px rgba(0,0,0,0.4);">
+          <Image
+            src={artwork}
+            alt="Make It On Your Own single artwork"
+            widths={[400, 600]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            class="w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+        <!-- Platina badge -->
+        <div class="absolute -bottom-4 -right-4 md:bottom-4 md:right-4 bg-[var(--color-gold)] text-white rounded-2xl px-5 py-3 text-center" style="box-shadow: 0 8px 30px rgba(184, 134, 11, 0.3);">
+          <span class="block text-2xl font-bold font-[var(--font-display)]">Platina</span>
+          <span class="block text-xs opacity-90 uppercase tracking-wide">{streams} streams</span>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div>
+        <span class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/20 text-[var(--color-gold)] mb-6">
+          Platina Single
+        </span>
+        <h2 class="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl text-white">
+          Make It On Your Own
+        </h2>
+        <p class="mt-2 text-lg text-[var(--color-gold)] font-[var(--font-display)]">
+          {streams} Streams op Spotify
+        </p>
+        <div class="mt-4 h-1 w-16 rounded-full" style="background: linear-gradient(90deg, var(--color-gold-dark), var(--color-gold), var(--color-gold-light));"></div>
+        <p class="mt-6 text-base md:text-lg text-white/70 leading-relaxed">
+          {story}
+        </p>
+
+        <!-- Platina plaat foto -->
+        <div class="mt-8 rounded-xl overflow-hidden max-w-xs" style="box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+          <Image
+            src={platinaPhoto}
+            alt="Ed Struijlaart met zijn platina plaat voor Make It On Your Own"
+            widths={[300, 400]}
+            sizes="300px"
+            class="w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+
+        <!-- Spotify embed -->
+        <div class="mt-8">
+          <SpotifyEmbed uri={spotifyId} type="track" compact />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

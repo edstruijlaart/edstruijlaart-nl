@@ -1,0 +1,58 @@
+---
+import type { Single } from '../../../data/music';
+import { spotifyTrackUrl } from '../../../lib/spotify';
+
+interface Props {
+  singles: Single[];
+  artworkMap: Map<string, string>;
+}
+
+const { singles, artworkMap } = Astro.props;
+---
+
+<div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+  {singles.map((single) => {
+    const artworkUrl = artworkMap.get(single.spotifyId);
+    const spotifyUrl = spotifyTrackUrl(single.spotifyId);
+
+    return (
+      <a
+        href={spotifyUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group block"
+      >
+        <div class="rounded-lg overflow-hidden relative aspect-square" style="box-shadow: var(--shadow-card);">
+          {artworkUrl ? (
+            <img
+              src={artworkUrl}
+              alt={`${single.title} artwork`}
+              width="300"
+              height="300"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          ) : (
+            <div class="w-full h-full flex items-center justify-center p-2 text-center" style="background-color: var(--color-dark-surface);">
+              <span class="text-xs font-medium" style="color: var(--color-gold);">{single.title}</span>
+            </div>
+          )}
+          <!-- Hover overlay met play icon -->
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+            <svg class="w-10 h-10 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mt-2">
+          <p class="text-xs sm:text-sm font-medium line-clamp-1 group-hover:text-[var(--color-gold)] transition-colors duration-300">
+            {single.title}
+          </p>
+          <p class="text-xs" style="color: var(--fg-muted);">
+            {single.year}{single.featuring ? ` · ft. ${single.featuring}` : ''}
+          </p>
+        </div>
+      </a>
+    );
+  })}
+</div>

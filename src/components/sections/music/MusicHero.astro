@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import heroImg from '../../../assets/photos/ed-struijlaart-studio-breed.jpg';
+---
+
+<section class="relative flex items-end overflow-hidden min-h-[60vh] md:min-h-[70vh]">
+  <div class="absolute inset-0 w-full h-full">
+    <Image
+      src={heroImg}
+      alt="Ed Struijlaart in de studio"
+      widths={[640, 1024, 1920]}
+      sizes="100vw"
+      class="w-full h-full object-cover"
+      style="object-position: center 40%"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+
+  <!-- Gradient overlay -->
+  <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
+
+  <!-- Content -->
+  <div class="relative z-10 w-full px-4 sm:px-6 lg:px-8 pb-16 md:pb-20 lg:pb-24 max-w-[1200px] mx-auto">
+    <p class="text-[var(--color-gold)] text-sm font-medium uppercase tracking-[0.2em] mb-4">
+      Muziek
+    </p>
+    <h1 class="font-[var(--font-display)] text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight max-w-3xl">
+      Elke noot vertelt een verhaal
+    </h1>
+    <div class="mt-8 flex flex-wrap gap-8 text-white/70">
+      <div>
+        <span class="block text-2xl md:text-3xl font-bold text-white font-[var(--font-display)]">26M+</span>
+        <span class="text-sm uppercase tracking-wide">streams</span>
+      </div>
+      <div class="w-px bg-white/20 hidden sm:block"></div>
+      <div>
+        <span class="block text-2xl md:text-3xl font-bold text-white font-[var(--font-display)]">2</span>
+        <span class="text-sm uppercase tracking-wide">albums</span>
+      </div>
+      <div class="w-px bg-white/20 hidden sm:block"></div>
+      <div>
+        <span class="block text-2xl md:text-3xl font-bold text-white font-[var(--font-display)]">29</span>
+        <span class="text-sm uppercase tracking-wide">singles</span>
+      </div>
+    </div>
+  </div>
+</section>
