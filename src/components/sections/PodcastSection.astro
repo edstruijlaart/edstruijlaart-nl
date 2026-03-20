@@ -1,20 +1,24 @@
 ---
 import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 import gitaarmannenImg from '../../assets/podcasts/gitaarmannen.jpg';
 import liedjesmensen from '../../assets/podcasts/liedjesmensen.jpeg';
 
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
 const podcasts = [
   {
-    title: 'Gitaarmannen',
-    description: 'Ik interview nationale en internationale topgitaristen. Over hun instrument, hun muziek en het leven als muzikant.',
+    title: t.podcastHome.gitaarmannenTitle,
+    description: t.podcastHome.gitaarmannenDesc,
     image: gitaarmannenImg,
     spotifyUrl: 'https://open.spotify.com/show/3JVaQZej1Jx48kdCeXLNNH',
     youtubeUrl: 'https://www.youtube.com/playlist?list=PLTdnmnE9bQhNDajmR3JPsEaYoIBOpM5hV',
   },
   {
-    title: 'Liedjesmensen',
-    description: 'De podcast over het maken van liedjes. Ik praat met songwriters over hun mooiste nummers, het schrijfproces en de verhalen achter de songs.',
+    title: t.podcastHome.liedjesmenenTitle,
+    description: t.podcastHome.liedjesmenenDesc,
     image: liedjesmensen,
     spotifyUrl: 'https://open.spotify.com/show/4hA8IKMoPjiUqsarulFPuG',
     youtubeUrl: 'https://www.youtube.com/playlist?list=PLTdnmnE9bQhO4nYyPJ6wkCkPFTzt-7aUh',

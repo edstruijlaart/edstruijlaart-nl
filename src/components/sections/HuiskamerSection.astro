@@ -5,7 +5,11 @@
  */
 import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 import huiskamerImg from '../../assets/photos/ed-struijlaart-lachend-gitaar.jpg';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
 ---
 
 <section class="py-20 md:py-28 relative overflow-hidden" style="background-color: var(--color-dark-bg);">
@@ -19,7 +23,7 @@ import huiskamerImg from '../../assets/photos/ed-struijlaart-lachend-gitaar.jpg'
         <div class="rounded-2xl overflow-hidden">
           <Image
             src={huiskamerImg}
-            alt="Ed Struijlaart tijdens een huiskamerconcert"
+            alt={t.huiskamerHome.imageAlt}
             widths={[400, 600]}
             sizes="(max-width: 1024px) 100vw, 50vw"
             class="w-full h-auto"
@@ -28,34 +32,34 @@ import huiskamerImg from '../../assets/photos/ed-struijlaart-lachend-gitaar.jpg'
         </div>
         {/* Stat badge */}
         <div class="absolute -bottom-4 -right-4 md:bottom-4 md:right-4 bg-[var(--color-gold)] text-white rounded-2xl px-6 py-4 text-center" style="box-shadow: 0 8px 30px rgba(184, 134, 11, 0.3);">
-          <span class="block text-3xl font-bold">600+</span>
-          <span class="block text-sm opacity-90">huiskamerconcerten</span>
+          <span class="block text-3xl font-bold">{t.huiskamerHome.stat}</span>
+          <span class="block text-sm opacity-90">{t.huiskamerHome.statLabel}</span>
         </div>
       </div>
 
       {/* Content */}
       <div>
         <span class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/20 text-[var(--color-gold)] mb-6">
-          Huiskamerconcert
+          {t.huiskamerHome.badge}
         </span>
         <h2 class="font-[var(--font-display)] text-3xl md:text-4xl lg:text-5xl text-white">
-          Een concert bij jou thuis
+          {t.huiskamerHome.title}
         </h2>
         <blockquote class="mt-6 text-lg text-white/70 italic border-l-4 border-[var(--color-gold)] pl-6">
-          &ldquo;Iedereen was stil. En dat in een huiskamer met 50 man. Dat vergeet je niet meer.&rdquo;
+          &ldquo;{t.huiskamerHome.quote}&rdquo;
         </blockquote>
         <p class="mt-6 text-base text-white/60">
-          Geschikt voor 10 tot 50 personen. Een intieme avond vol eigen songs, covers en verhalen. Ik neem mijn gitaar mee en doe de rest.
+          {t.huiskamerHome.text}
         </p>
         <div class="mt-8 flex flex-wrap gap-4">
           <Button href="https://boeken.edstruijlaart.nl" variant="primary" size="lg">
-            Boek een huiskamerconcert
+            {t.huiskamerHome.bookCta}
           </Button>
           <a
             href="/huiskamerconcerten/"
             class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-base border-2 border-white/30 text-white hover:border-white/60 hover:bg-white/5 transition-all duration-300"
           >
-            Meer informatie
+            {t.huiskamerHome.moreInfo}
           </a>
         </div>
       </div>

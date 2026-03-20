@@ -3,6 +3,11 @@
  * SpotifyStrip — dark accent banner highlighting a featured track.
  * Inspired by the prototype design.
  */
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
 interface Props {
   trackName?: string;
   stat?: string;
@@ -11,7 +16,7 @@ interface Props {
 
 const {
   trackName = 'Make It On Your Own',
-  stat = '26M+ Streams op Spotify',
+  stat = t.spotifyStrip.stat,
   spotifyUrl = 'https://open.spotify.com/track/2qVkAYvJhDGhRNJzCAYfnX',
 } = Astro.props;
 ---
@@ -30,7 +35,7 @@ const {
           </svg>
         </div>
         <div>
-          <p class="text-white/60 text-sm uppercase tracking-wider">Meest gestreamd</p>
+          <p class="text-white/60 text-sm uppercase tracking-wider">{t.spotifyStrip.label}</p>
           <p class="text-white text-lg md:text-xl font-medium">{trackName}</p>
         </div>
       </div>
@@ -47,7 +52,7 @@ const {
         rel="noopener noreferrer"
         class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-white border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-300"
       >
-        Luister op Spotify
+        {t.spotifyStrip.listenOn}
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
         </svg>

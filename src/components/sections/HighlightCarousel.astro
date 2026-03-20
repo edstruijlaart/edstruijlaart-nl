@@ -1,6 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
 
 // Slide images
 import concertfilmThumb from '../../assets/theater/gitaarmannen-3-concertfilm-thumbnail.jpg';
@@ -21,31 +25,31 @@ interface Slide {
 
 const slides: Slide[] = [
   {
-    badge: 'Nieuw',
-    title: 'Gitaarmannen 3: John Mayer',
-    subtitle: 'De Concertfilm',
-    description: 'Beleef de theatervoorstelling thuis. De volledige show in Full HD audio en video — een concertfilm waarin de muziek van een gitarist die een generatie inspireert wordt geëerd.',
-    ctaPrimary: { label: 'Bestel de concertfilm', href: 'https://payhip.com/b/QZ7Fi', external: true },
+    badge: t.carousel.newBadge,
+    title: t.carousel.concertFilmTitle,
+    subtitle: t.carousel.concertFilmSubtitle,
+    description: t.carousel.concertFilmDesc,
+    ctaPrimary: { label: t.carousel.concertFilmCta, href: 'https://payhip.com/b/QZ7Fi', external: true },
     image: concertfilmThumb,
     imageAlt: 'Gitaarmannen 3: John Mayer concertfilm',
     youtubeId: 'Jl7qoEpe9xk',
   },
   {
-    badge: 'Nu in het theater',
-    title: 'Gitaarmannen 3',
-    subtitle: 'John Mayer',
-    description: 'In de derde editie van Gitaarmannen duik ik in het universum van John Mayer. Van de eerste blueslicks tot de inmiddels iconische songs — een avondvullend eerbetoon aan een van de grootste gitaristen van deze generatie.',
-    ctaPrimary: { label: 'Bekijk alle data', href: '/tour/' },
-    ctaSecondary: { label: 'Meer theater', href: '/tour/' },
+    badge: t.carousel.theaterBadge,
+    title: t.carousel.theaterTitle,
+    subtitle: t.carousel.theaterSubtitle,
+    description: t.carousel.theaterDesc,
+    ctaPrimary: { label: t.carousel.theaterCtaDates, href: '/tour/' },
+    ctaSecondary: { label: t.carousel.theaterCtaMore, href: '/tour/' },
     image: posterImage,
     imageAlt: 'Gitaarmannen 3: John Mayer theaterposter',
   },
   {
-    badge: 'Nu boeken',
-    title: 'Huiskamerconcert',
-    subtitle: 'Bij jou thuis',
-    description: 'Een intieme avond bij jou thuis, in de tuin of op locatie. Al meer dan 600 keer eerder gedaan — en iedere keer weer bijzonder. Eigen repertoire, covers en verhalen in een setting waar iedereen stil wordt.',
-    ctaPrimary: { label: 'Boek een huiskamerconcert', href: 'https://boeken.edstruijlaart.nl', external: true },
+    badge: t.carousel.bookBadge,
+    title: t.carousel.houseTitle,
+    subtitle: t.carousel.houseSubtitle,
+    description: t.carousel.houseDesc,
+    ctaPrimary: { label: t.carousel.houseCta, href: 'https://boeken.edstruijlaart.nl', external: true },
     image: huiskamerImage,
     imageAlt: 'Ed Struijlaart speelt een huiskamerconcert',
     youtubeId: 'luQq4YDNJ_c',
@@ -57,7 +61,9 @@ const slides: Slide[] = [
   class="highlight-carousel"
   role="region"
   aria-roledescription="carousel"
-  aria-label="Highlights"
+  aria-label={t.carousel.highlights}
+  data-slide-text={t.carousel.goToSlide}
+  data-of-text={t.carousel.slideOf}
   tabindex="0"
 >
   {/* Slides wrapper */}
@@ -70,7 +76,7 @@ const slides: Slide[] = [
         ]}
         role="group"
         aria-roledescription="slide"
-        aria-label={`Slide ${i + 1} van ${slides.length}`}
+        aria-label={`${t.carousel.goToSlide} ${i + 1} ${t.carousel.slideOf} ${slides.length}`}
         aria-hidden={i !== 0 ? 'true' : 'false'}
       >
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -82,7 +88,7 @@ const slides: Slide[] = [
                 data-youtube-id={slide.youtubeId}
                 data-youtube-title={slide.imageAlt}
                 role="button"
-                aria-label="Speel video af"
+                aria-label={t.carousel.playVideo}
               >
                 <Image
                   src={slide.image}
@@ -155,7 +161,7 @@ const slides: Slide[] = [
   </div>
 
   {/* Dot navigatie */}
-  <div class="flex justify-center gap-2 mt-8" role="tablist" aria-label="Slide navigatie">
+  <div class="flex justify-center gap-2 mt-8" role="tablist" aria-label={t.carousel.slideNav}>
     {slides.map((_, i) => (
       <button
         class:list={[
@@ -164,14 +170,14 @@ const slides: Slide[] = [
         ]}
         role="tab"
         aria-selected={i === 0 ? 'true' : 'false'}
-        aria-label={`Ga naar slide ${i + 1}`}
+        aria-label={`${t.carousel.goToSlide} ${i + 1}`}
       />
     ))}
   </div>
 
   {/* Screen reader live regio */}
   <div class="sr-only highlight-live" aria-live="polite" aria-atomic="true">
-    Slide 1 van {slides.length}
+    {t.carousel.goToSlide} 1 {t.carousel.slideOf} {slides.length}
   </div>
 </div>
 
@@ -246,7 +252,9 @@ const slides: Slide[] = [
       // Update live regio
       const liveRegion = container.querySelector('.highlight-live');
       if (liveRegion) {
-        liveRegion.textContent = `Slide ${current + 1} van ${total}`;
+        const slideText = container.getAttribute('data-slide-text') || 'Ga naar slide';
+        const ofText = container.getAttribute('data-of-text') || 'van';
+        liveRegion.textContent = `${slideText} ${current + 1} ${ofText} ${total}`;
       }
     }
 

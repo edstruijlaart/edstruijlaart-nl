@@ -198,6 +198,74 @@ const es: TranslationKeys = {
     ctaMail: 'Enviar un correo',
     ctaOrContact: 'O llama/escribe:',
   },
+  // ── Homepage Sections ──
+  carousel: {
+    highlights: 'Destacados',
+    slideNav: 'Navegación de diapositivas',
+    goToSlide: 'Ir a diapositiva',
+    slideOf: 'de',
+    playVideo: 'Reproducir video',
+    newBadge: 'Nuevo',
+    theaterBadge: 'Ahora en teatros',
+    bookBadge: 'Reservar ahora',
+    concertFilmTitle: 'Gitaarmannen 3: John Mayer',
+    concertFilmSubtitle: 'La Película del Concierto',
+    concertFilmDesc: 'Vive el espectáculo de teatro en casa. La actuación completa en audio y video Full HD — una película de concierto que rinde homenaje a la música de un guitarrista que inspiró a toda una generación.',
+    concertFilmCta: 'Pedir la película',
+    theaterTitle: 'Gitaarmannen 3',
+    theaterSubtitle: 'John Mayer',
+    theaterDesc: 'En la tercera edición de Gitaarmannen, me sumerjo en el universo de John Mayer. Desde los primeros licks de blues hasta las canciones ya icónicas — un homenaje de una noche completa a uno de los más grandes guitarristas de esta generación.',
+    theaterCtaDates: 'Ver todas las fechas',
+    theaterCtaMore: 'Más teatro',
+    houseTitle: 'Concierto en Casa',
+    houseSubtitle: 'En tu hogar',
+    houseDesc: 'Una velada íntima en tu hogar, en el jardín o en un lugar especial. Más de 600 veces — y cada vez es especial. Repertorio propio, versiones e historias en un ambiente donde todos guardan silencio.',
+    houseCta: 'Reserva un concierto en casa',
+  },
+
+  huiskamerHome: {
+    badge: 'Concierto en Casa',
+    title: 'Un concierto en tu hogar',
+    quote: 'Todos estaban en silencio. En un salón con 50 personas. Eso no se olvida.',
+    text: 'Para 10 a 50 personas. Una velada íntima de canciones propias, versiones e historias. Llevo mi guitarra y me encargo del resto.',
+    bookCta: 'Reserva un concierto en casa',
+    moreInfo: 'Más información',
+    stat: '600+',
+    statLabel: 'conciertos en casa',
+    imageAlt: 'Ed Struijlaart durante un concierto en casa',
+  },
+
+  spotifyStrip: {
+    label: 'Más escuchado',
+    listenOn: 'Escuchar en Spotify',
+    stat: '26M+ reproducciones en Spotify',
+  },
+
+  showList: {
+    soldOut: 'Agotado',
+    comingSoon: 'Próximamente',
+    gm4Title: 'Gitaarmannen 4',
+    gm4Text: 'Pronto anunciaremos qué será Gitaarmannen 4. ¿Quieres ser el primero en saberlo? Suscríbete al boletín.',
+    subscribe: 'Suscribirse',
+    bookHouseConcert: 'Reserva un concierto en casa',
+    newsletterTitle: 'Boletín',
+    newsletterText: 'Sé el primero en enterarte de Gitaarmannen 4, espectáculos y nueva música.',
+    viewAll: 'Ver todos los shows →',
+    houseConcert: 'Concierto en casa',
+  },
+
+  podcastHome: {
+    gitaarmannenTitle: 'Gitaarmannen',
+    gitaarmannenDesc: 'Entrevisto a los mejores guitarristas nacionales e internacionales. Sobre su instrumento, su música y la vida como músico.',
+    liedjesmenenTitle: 'Liedjesmensen',
+    liedjesmenenDesc: 'El podcast sobre composición. Hablo con compositores sobre sus mejores canciones, el proceso creativo y las historias detrás de la música.',
+  },
+
+  blogGrid: {
+    tag: 'Noticias',
+    viewAll: 'Todos los artículos →',
+  },
+
   common: {
     readMore: 'Leer más',
     enlargePhoto: 'Ampliar foto',

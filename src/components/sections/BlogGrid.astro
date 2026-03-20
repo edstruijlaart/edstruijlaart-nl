@@ -2,6 +2,7 @@
 import Card from '../ui/Card.astro';
 import Button from '../ui/Button.astro';
 import { getCollection } from 'astro:content';
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 
 interface Props {
   limit?: number;
@@ -9,6 +10,9 @@ interface Props {
 }
 
 const { limit = 3, showMore = true } = Astro.props;
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
 
 // Get all news posts from markdown content collection
 const allPosts = await getCollection('news');
@@ -46,7 +50,7 @@ function formatDate(dateStr?: string): string {
       description={post.data.excerpt || ''}
       date={formatDate(post.data.date)}
       href={`/news/${post.data.slug}/`}
-      tag="Nieuws"
+      tag={t.blogGrid.tag}
     />
   ))}
 </div>
@@ -54,7 +58,7 @@ function formatDate(dateStr?: string): string {
 {showMore && (
   <div class="mt-8 text-center">
     <Button href="/blog/" variant="ghost">
-      Alle berichten →
+      {t.blogGrid.viewAll}
     </Button>
   </div>
 )}

@@ -224,6 +224,74 @@ const en: TranslationKeys = {
     ctaOrContact: 'Or call/email:',
   },
 
+  // ── Homepage Sections ──
+  carousel: {
+    highlights: 'Highlights',
+    slideNav: 'Slide navigation',
+    goToSlide: 'Go to slide',
+    slideOf: 'of',
+    playVideo: 'Play video',
+    newBadge: 'New',
+    theaterBadge: 'Now in theaters',
+    bookBadge: 'Book now',
+    concertFilmTitle: 'Gitaarmannen 3: John Mayer',
+    concertFilmSubtitle: 'The Concert Film',
+    concertFilmDesc: 'Experience the theater show at home. The full performance in Full HD audio and video — a concert film honoring the music of a guitarist who inspired a generation.',
+    concertFilmCta: 'Order the concert film',
+    theaterTitle: 'Gitaarmannen 3',
+    theaterSubtitle: 'John Mayer',
+    theaterDesc: 'In the third edition of Gitaarmannen, I dive into the universe of John Mayer. From the first blues licks to the now iconic songs — a full evening tribute to one of the greatest guitarists of this generation.',
+    theaterCtaDates: 'View all dates',
+    theaterCtaMore: 'More theater',
+    houseTitle: 'House Concert',
+    houseSubtitle: 'At your place',
+    houseDesc: 'An intimate evening at your home, in the garden or at a venue. Done over 600 times — and every single time it\'s special. Original repertoire, covers and stories in a setting where everyone goes quiet.',
+    houseCta: 'Book a house concert',
+  },
+
+  huiskamerHome: {
+    badge: 'House Concert',
+    title: 'A concert at your place',
+    quote: 'Everyone was silent. In a living room with 50 people. You don\'t forget that.',
+    text: 'Suitable for 10 to 50 people. An intimate evening of original songs, covers and stories. I bring my guitar and do the rest.',
+    bookCta: 'Book a house concert',
+    moreInfo: 'More information',
+    stat: '600+',
+    statLabel: 'house concerts',
+    imageAlt: 'Ed Struijlaart during a house concert',
+  },
+
+  spotifyStrip: {
+    label: 'Most streamed',
+    listenOn: 'Listen on Spotify',
+    stat: '26M+ Streams on Spotify',
+  },
+
+  showList: {
+    soldOut: 'Sold out',
+    comingSoon: 'Coming soon',
+    gm4Title: 'Gitaarmannen 4',
+    gm4Text: 'We\'ll be announcing what Gitaarmannen 4 will be very soon. Want to be the first to know? Sign up for the newsletter.',
+    subscribe: 'Sign up',
+    bookHouseConcert: 'Book a house concert',
+    newsletterTitle: 'Newsletter',
+    newsletterText: 'Be the first to know about Gitaarmannen 4, shows and new music.',
+    viewAll: 'View all shows →',
+    houseConcert: 'House concert',
+  },
+
+  podcastHome: {
+    gitaarmannenTitle: 'Gitaarmannen',
+    gitaarmannenDesc: 'I interview national and international top guitarists. About their instrument, their music and life as a musician.',
+    liedjesmenenTitle: 'Liedjesmensen',
+    liedjesmenenDesc: 'The podcast about songwriting. I talk with songwriters about their best songs, the writing process and the stories behind the music.',
+  },
+
+  blogGrid: {
+    tag: 'News',
+    viewAll: 'All posts →',
+  },
+
   // ── Common ──
   common: {
     readMore: 'Read more',

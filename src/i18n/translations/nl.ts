@@ -223,6 +223,74 @@ const nl = {
     ctaOrContact: 'Of bel/mail:',
   },
 
+  // ── Homepage Sections ──
+  carousel: {
+    highlights: 'Highlights',
+    slideNav: 'Slide navigatie',
+    goToSlide: 'Ga naar slide',
+    slideOf: 'van',
+    playVideo: 'Speel video af',
+    newBadge: 'Nieuw',
+    theaterBadge: 'Nu in het theater',
+    bookBadge: 'Nu boeken',
+    concertFilmTitle: 'Gitaarmannen 3: John Mayer',
+    concertFilmSubtitle: 'De Concertfilm',
+    concertFilmDesc: 'Beleef de theatervoorstelling thuis. De volledige show in Full HD audio en video — een concertfilm waarin de muziek van een gitarist die een generatie inspireert wordt geëerd.',
+    concertFilmCta: 'Bestel de concertfilm',
+    theaterTitle: 'Gitaarmannen 3',
+    theaterSubtitle: 'John Mayer',
+    theaterDesc: 'In de derde editie van Gitaarmannen duik ik in het universum van John Mayer. Van de eerste blueslicks tot de inmiddels iconische songs — een avondvullend eerbetoon aan een van de grootste gitaristen van deze generatie.',
+    theaterCtaDates: 'Bekijk alle data',
+    theaterCtaMore: 'Meer theater',
+    houseTitle: 'Huiskamerconcert',
+    houseSubtitle: 'Bij jou thuis',
+    houseDesc: 'Een intieme avond bij jou thuis, in de tuin of op locatie. Al meer dan 600 keer eerder gedaan — en iedere keer weer bijzonder. Eigen repertoire, covers en verhalen in een setting waar iedereen stil wordt.',
+    houseCta: 'Boek een huiskamerconcert',
+  },
+
+  huiskamerHome: {
+    badge: 'Huiskamerconcert',
+    title: 'Een concert bij jou thuis',
+    quote: 'Iedereen was stil. En dat in een huiskamer met 50 man. Dat vergeet je niet meer.',
+    text: 'Geschikt voor 10 tot 50 personen. Een intieme avond vol eigen songs, covers en verhalen. Ik neem mijn gitaar mee en doe de rest.',
+    bookCta: 'Boek een huiskamerconcert',
+    moreInfo: 'Meer informatie',
+    stat: '600+',
+    statLabel: 'huiskamerconcerten',
+    imageAlt: 'Ed Struijlaart tijdens een huiskamerconcert',
+  },
+
+  spotifyStrip: {
+    label: 'Meest gestreamd',
+    listenOn: 'Luister op Spotify',
+    stat: '26M+ Streams op Spotify',
+  },
+
+  showList: {
+    soldOut: 'Uitverkocht',
+    comingSoon: 'Binnenkort',
+    gm4Title: 'Gitaarmannen 4',
+    gm4Text: 'We gaan binnenkort bekendmaken wat Gitaarmannen 4 wordt. Wil je als eerste weten wat het is? Schrijf je in voor de nieuwsbrief.',
+    subscribe: 'Schrijf je in',
+    bookHouseConcert: 'Boek een huiskamerconcert',
+    newsletterTitle: 'Nieuwsbrief',
+    newsletterText: 'Wees als eerste op de hoogte van Gitaarmannen 4, shows en nieuwe muziek.',
+    viewAll: 'Bekijk alle shows →',
+    houseConcert: 'Huiskamerconcert',
+  },
+
+  podcastHome: {
+    gitaarmannenTitle: 'Gitaarmannen',
+    gitaarmannenDesc: 'Ik interview nationale en internationale topgitaristen. Over hun instrument, hun muziek en het leven als muzikant.',
+    liedjesmenenTitle: 'Liedjesmensen',
+    liedjesmenenDesc: 'De podcast over het maken van liedjes. Ik praat met songwriters over hun mooiste nummers, het schrijfproces en de verhalen achter de songs.',
+  },
+
+  blogGrid: {
+    tag: 'Nieuws',
+    viewAll: 'Alle berichten →',
+  },
+
   // ── Common ──
   common: {
     readMore: 'Lees meer',

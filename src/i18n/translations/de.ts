@@ -198,6 +198,74 @@ const de: TranslationKeys = {
     ctaMail: 'E-Mail senden',
     ctaOrContact: 'Oder anrufen/mailen:',
   },
+  // ── Homepage Sections ──
+  carousel: {
+    highlights: 'Highlights',
+    slideNav: 'Slide-Navigation',
+    goToSlide: 'Gehe zu Slide',
+    slideOf: 'von',
+    playVideo: 'Video abspielen',
+    newBadge: 'Neu',
+    theaterBadge: 'Jetzt im Theater',
+    bookBadge: 'Jetzt buchen',
+    concertFilmTitle: 'Gitaarmannen 3: John Mayer',
+    concertFilmSubtitle: 'Der Konzertfilm',
+    concertFilmDesc: 'Erlebe die Theatervorstellung zu Hause. Die komplette Show in Full HD Audio und Video — ein Konzertfilm, der die Musik eines Gitarristen ehrt, der eine Generation inspirierte.',
+    concertFilmCta: 'Konzertfilm bestellen',
+    theaterTitle: 'Gitaarmannen 3',
+    theaterSubtitle: 'John Mayer',
+    theaterDesc: 'In der dritten Ausgabe von Gitaarmannen tauche ich in das Universum von John Mayer ein. Von den ersten Blues-Licks bis zu den mittlerweile ikonischen Songs — ein abendfüllender Tribut an einen der größten Gitarristen dieser Generation.',
+    theaterCtaDates: 'Alle Termine ansehen',
+    theaterCtaMore: 'Mehr Theater',
+    houseTitle: 'Wohnzimmerkonzert',
+    houseSubtitle: 'Bei dir zu Hause',
+    houseDesc: 'Ein intimer Abend bei dir zu Hause, im Garten oder an einem besonderen Ort. Über 600 Mal gemacht — und jedes Mal wieder besonders. Eigenes Repertoire, Covers und Geschichten in einer Atmosphäre, in der alle still werden.',
+    houseCta: 'Wohnzimmerkonzert buchen',
+  },
+
+  huiskamerHome: {
+    badge: 'Wohnzimmerkonzert',
+    title: 'Ein Konzert bei dir zu Hause',
+    quote: 'Alle waren still. In einem Wohnzimmer mit 50 Leuten. Das vergisst du nicht.',
+    text: 'Für 10 bis 50 Personen. Ein intimer Abend mit eigenen Songs, Covers und Geschichten. Ich bringe meine Gitarre mit und mache den Rest.',
+    bookCta: 'Wohnzimmerkonzert buchen',
+    moreInfo: 'Mehr Informationen',
+    stat: '600+',
+    statLabel: 'Wohnzimmerkonzerte',
+    imageAlt: 'Ed Struijlaart während eines Wohnzimmerkonzerts',
+  },
+
+  spotifyStrip: {
+    label: 'Meistgestreamt',
+    listenOn: 'Auf Spotify hören',
+    stat: '26M+ Streams auf Spotify',
+  },
+
+  showList: {
+    soldOut: 'Ausverkauft',
+    comingSoon: 'Demnächst',
+    gm4Title: 'Gitaarmannen 4',
+    gm4Text: 'Wir werden bald bekanntgeben, was Gitaarmannen 4 wird. Willst du als Erster davon erfahren? Melde dich für den Newsletter an.',
+    subscribe: 'Anmelden',
+    bookHouseConcert: 'Wohnzimmerkonzert buchen',
+    newsletterTitle: 'Newsletter',
+    newsletterText: 'Erfahre als Erster von Gitaarmannen 4, Shows und neuer Musik.',
+    viewAll: 'Alle Shows ansehen →',
+    houseConcert: 'Wohnzimmerkonzert',
+  },
+
+  podcastHome: {
+    gitaarmannenTitle: 'Gitaarmannen',
+    gitaarmannenDesc: 'Ich interviewe nationale und internationale Top-Gitarristen. Über ihr Instrument, ihre Musik und das Leben als Musiker.',
+    liedjesmenenTitle: 'Liedjesmensen',
+    liedjesmenenDesc: 'Der Podcast übers Songschreiben. Ich spreche mit Songwritern über ihre schönsten Songs, den Schreibprozess und die Geschichten hinter der Musik.',
+  },
+
+  blogGrid: {
+    tag: 'Neuigkeiten',
+    viewAll: 'Alle Beiträge →',
+  },
+
   common: {
     readMore: 'Weiterlesen',
     enlargePhoto: 'Foto vergrößern',

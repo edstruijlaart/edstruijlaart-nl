@@ -198,6 +198,74 @@ const fr: TranslationKeys = {
     ctaMail: 'Envoyer un e-mail',
     ctaOrContact: 'Ou appelez/écrivez :',
   },
+  // ── Homepage Sections ──
+  carousel: {
+    highlights: 'En vedette',
+    slideNav: 'Navigation des diapositives',
+    goToSlide: 'Aller à la diapositive',
+    slideOf: 'sur',
+    playVideo: 'Lire la vidéo',
+    newBadge: 'Nouveau',
+    theaterBadge: 'Actuellement au théâtre',
+    bookBadge: 'Réserver maintenant',
+    concertFilmTitle: 'Gitaarmannen 3: John Mayer',
+    concertFilmSubtitle: 'Le Film Concert',
+    concertFilmDesc: 'Vivez le spectacle de théâtre chez vous. La performance complète en audio et vidéo Full HD — un film concert rendant hommage à la musique d\'un guitariste qui a inspiré toute une génération.',
+    concertFilmCta: 'Commander le film',
+    theaterTitle: 'Gitaarmannen 3',
+    theaterSubtitle: 'John Mayer',
+    theaterDesc: 'Dans la troisième édition de Gitaarmannen, je plonge dans l\'univers de John Mayer. Des premiers licks de blues aux chansons désormais iconiques — un hommage d\'une soirée entière à l\'un des plus grands guitaristes de cette génération.',
+    theaterCtaDates: 'Voir toutes les dates',
+    theaterCtaMore: 'Plus de théâtre',
+    houseTitle: 'Concert Privé',
+    houseSubtitle: 'Chez vous',
+    houseDesc: 'Une soirée intime chez vous, dans le jardin ou dans un lieu spécial. Plus de 600 fois — et à chaque fois c\'est spécial. Répertoire original, reprises et histoires dans une atmosphère où tout le monde se tait.',
+    houseCta: 'Réserver un concert privé',
+  },
+
+  huiskamerHome: {
+    badge: 'Concert Privé',
+    title: 'Un concert chez vous',
+    quote: 'Tout le monde était silencieux. Dans un salon avec 50 personnes. Ça ne s\'oublie pas.',
+    text: 'Pour 10 à 50 personnes. Une soirée intime de chansons originales, reprises et histoires. J\'apporte ma guitare et je m\'occupe du reste.',
+    bookCta: 'Réserver un concert privé',
+    moreInfo: 'Plus d\'informations',
+    stat: '600+',
+    statLabel: 'concerts privés',
+    imageAlt: 'Ed Struijlaart lors d\'un concert privé',
+  },
+
+  spotifyStrip: {
+    label: 'Le plus écouté',
+    listenOn: 'Écouter sur Spotify',
+    stat: '26M+ streams sur Spotify',
+  },
+
+  showList: {
+    soldOut: 'Complet',
+    comingSoon: 'Bientôt',
+    gm4Title: 'Gitaarmannen 4',
+    gm4Text: 'Nous annoncerons bientôt ce que sera Gitaarmannen 4. Vous voulez être le premier informé ? Inscrivez-vous à la newsletter.',
+    subscribe: 'S\'inscrire',
+    bookHouseConcert: 'Réserver un concert privé',
+    newsletterTitle: 'Newsletter',
+    newsletterText: 'Soyez le premier informé de Gitaarmannen 4, des spectacles et de la nouvelle musique.',
+    viewAll: 'Voir tous les spectacles →',
+    houseConcert: 'Concert privé',
+  },
+
+  podcastHome: {
+    gitaarmannenTitle: 'Gitaarmannen',
+    gitaarmannenDesc: 'J\'interviewe les meilleurs guitaristes nationaux et internationaux. Sur leur instrument, leur musique et la vie de musicien.',
+    liedjesmenenTitle: 'Liedjesmensen',
+    liedjesmenenDesc: 'Le podcast sur l\'écriture de chansons. Je parle avec des auteurs-compositeurs de leurs plus belles chansons, du processus créatif et des histoires derrière la musique.',
+  },
+
+  blogGrid: {
+    tag: 'Actualités',
+    viewAll: 'Tous les articles →',
+  },
+
   common: {
     readMore: 'Lire la suite',
     enlargePhoto: 'Agrandir la photo',
