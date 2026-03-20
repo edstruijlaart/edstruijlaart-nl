@@ -1,0 +1,126 @@
+---
+/**
+ * Language picker dropdown — shows current language flag + name,
+ * opens dropdown with all available languages.
+ * Sets a `lang` cookie on selection to persist choice.
+ */
+import { locales, localeNames, defaultLocale, type Locale } from '../../i18n/config';
+import { getLocaleFromUrl, getPathWithoutLocale } from '../../i18n/utils';
+
+const currentLocale = getLocaleFromUrl(Astro.url);
+const currentPath = getPathWithoutLocale(Astro.url.pathname);
+
+// Flag emoji per locale
+const flags: Record<Locale, string> = {
+  nl: '🇳🇱',
+  en: '🇬🇧',
+  es: '🇪🇸',
+  de: '🇩🇪',
+  fr: '🇫🇷',
+};
+
+// Build href for each locale
+function getLocaleHref(locale: Locale): string {
+  if (locale === defaultLocale) return currentPath || '/';
+  return `/${locale}${currentPath}`;
+}
+---
+
+<div class="lang-picker relative" data-current-locale={currentLocale}>
+  <button
+    type="button"
+    class="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-sm transition-colors duration-300 hover:bg-[var(--bg-surface)]"
+    aria-label={`Taal: ${localeNames[currentLocale]}`}
+    aria-expanded="false"
+    aria-haspopup="true"
+  >
+    <span class="text-base leading-none">{flags[currentLocale]}</span>
+    <span class="hidden sm:inline text-xs font-medium uppercase tracking-wider text-[var(--fg-muted)]">
+      {currentLocale.toUpperCase()}
+    </span>
+    <svg class="w-3 h-3 text-[var(--fg-muted)] transition-transform duration-200 lang-picker-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 4.5L6 7.5L9 4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <div
+    class="lang-picker-dropdown absolute right-0 top-full mt-1 py-1 rounded-lg shadow-lg border hidden min-w-[140px]"
+    style="background-color: var(--bg); border-color: var(--bg-surface); z-index: 9990;"
+    role="menu"
+  >
+    {locales.map(locale => (
+      <a
+        href={getLocaleHref(locale)}
+        class:list={[
+          'flex items-center gap-2 px-3 py-2 text-sm transition-colors duration-200 hover:bg-[var(--bg-surface)]',
+          locale === currentLocale ? 'text-[var(--color-gold)] font-medium' : 'text-[var(--fg-muted)]',
+        ]}
+        role="menuitem"
+        data-locale={locale}
+      >
+        <span class="text-base leading-none">{flags[locale]}</span>
+        <span>{localeNames[locale]}</span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<script>
+  function initLangPicker() {
+    document.querySelectorAll('.lang-picker').forEach(picker => {
+      if ((picker as HTMLElement).dataset.init) return;
+      (picker as HTMLElement).dataset.init = '1';
+
+      const btn = picker.querySelector('button')!;
+      const dropdown = picker.querySelector('.lang-picker-dropdown')!;
+      const chevron = picker.querySelector('.lang-picker-chevron')!;
+
+      function toggle() {
+        const isOpen = !dropdown.classList.contains('hidden');
+        if (isOpen) {
+          close();
+        } else {
+          dropdown.classList.remove('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+          chevron.classList.add('rotate-180');
+        }
+      }
+
+      function close() {
+        dropdown.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        chevron.classList.remove('rotate-180');
+      }
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggle();
+      });
+
+      // Set cookie on language selection
+      dropdown.querySelectorAll('a[data-locale]').forEach(link => {
+        link.addEventListener('click', () => {
+          const locale = (link as HTMLElement).dataset.locale;
+          if (locale) {
+            document.cookie = `lang=${locale}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+          }
+        });
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!picker.contains(e.target as Node)) {
+          close();
+        }
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
+    });
+  }
+
+  initLangPicker();
+  document.addEventListener('astro:after-swap', initLangPicker);
+</script>

@@ -1,4 +1,6 @@
 ---
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+
 interface Props {
   variant?: 'default' | 'compact' | 'dark';
 }
@@ -6,6 +8,9 @@ interface Props {
 const { variant = 'default' } = Astro.props;
 const isDark = variant === 'dark';
 const isCompact = variant === 'compact';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
 ---
 
 <div
@@ -19,14 +24,14 @@ const isCompact = variant === 'compact';
       'font-[var(--font-display)] text-2xl lg:text-3xl',
       isDark ? 'text-[var(--color-dark-text)]' : '',
     ]}>
-      Nieuwsbrief
+      {t.newsletterForm.title}
     </h3>
     <p class:list={[
       'mt-2 text-base max-w-lg',
       isDark ? 'text-[var(--color-dark-muted)]' : 'text-[var(--fg-muted)]',
       !isCompact ? 'mx-auto' : '',
     ]}>
-      Blijf op de hoogte van shows, nieuwe muziek en meer. Geen spam, alleen het goede nieuws.
+      {t.newsletterForm.description}
     </p>
   )}
 
@@ -35,12 +40,15 @@ const isCompact = variant === 'compact';
       'newsletter-form flex gap-3',
       isCompact ? 'flex-col' : 'flex-col sm:flex-row mt-6 max-w-lg mx-auto',
     ]}
+    data-submitting={t.newsletterForm.submitting}
+    data-success={t.newsletterForm.success}
+    data-error={t.newsletterForm.error}
   >
     {!isCompact && (
       <input
         type="text"
         name="name"
-        placeholder="Je naam"
+        placeholder={t.newsletterForm.namePlaceholder}
         autocomplete="name"
         class:list={[
           'flex-1 min-w-0 px-4 py-3 rounded-full text-base border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:border-transparent',
@@ -53,7 +61,7 @@ const isCompact = variant === 'compact';
     <input
       type="email"
       name="email"
-      placeholder="Je emailadres"
+      placeholder={t.newsletterForm.emailPlaceholder}
       required
       autocomplete="email"
       class:list={[
@@ -67,7 +75,7 @@ const isCompact = variant === 'compact';
       type="submit"
       class="flex-shrink-0 px-6 py-3 rounded-full font-medium text-base text-white transition-colors duration-300 bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:ring-offset-2"
     >
-      Inschrijven
+      {t.newsletterForm.submit}
     </button>
   </form>
 
@@ -82,9 +90,6 @@ const isCompact = variant === 'compact';
 </div>
 
 <script>
-  const LISTMONK_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
-  const LIST_UUID = '681b5ef7-29cc-4be5-a0c7-6d8453f26cc8';
-
   function initNewsletterForms() {
     document.querySelectorAll<HTMLFormElement>('.newsletter-form').forEach(form => {
       if (form.dataset.init) return;
@@ -92,6 +97,11 @@ const isCompact = variant === 'compact';
 
       const widget = form.closest('.newsletter-widget')!;
       const messageEl = widget.querySelector('.newsletter-message') as HTMLElement;
+
+      // Read translated strings from data attributes
+      const submittingText = form.dataset.submitting || 'Bezig...';
+      const successText = form.dataset.success || 'Welkom! Je staat op de lijst.';
+      const errorText = form.dataset.error || 'Er ging iets mis. Probeer het later opnieuw.';
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -101,38 +111,29 @@ const isCompact = variant === 'compact';
 
         const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
         const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Bezig...';
+        submitBtn.textContent = submittingText;
         submitBtn.disabled = true;
         messageEl.textContent = '';
         messageEl.classList.remove('text-[var(--color-gold)]', 'text-red-500');
 
         try {
-          let response: Response;
-          try {
-            response = await fetch(LISTMONK_URL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, name, list_uuids: [LIST_UUID] }),
-            });
-          } catch {
-            response = await fetch('/api/newsletter', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, name }),
-            });
-          }
+          const response = await fetch('/api/newsletter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, name }),
+          });
 
           if (response.ok) {
-            messageEl.textContent = 'Welkom! Je staat op de lijst.';
+            messageEl.textContent = successText;
             messageEl.classList.add('text-[var(--color-gold)]');
             form.reset();
           } else {
             const data = await response.json().catch(() => ({}));
-            messageEl.textContent = (data as Record<string, string>).error || (data as Record<string, string>).message || 'Er ging iets mis. Probeer het later opnieuw.';
+            messageEl.textContent = (data as Record<string, string>).error || (data as Record<string, string>).message || errorText;
             messageEl.classList.add('text-red-500');
           }
         } catch {
-          messageEl.textContent = 'Er ging iets mis. Probeer het later opnieuw.';
+          messageEl.textContent = errorText;
           messageEl.classList.add('text-red-500');
         } finally {
           submitBtn.textContent = originalText;

@@ -8,6 +8,8 @@ import '../styles/global.css';
 
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import { getLocaleFromUrl, useTranslations, getPathWithoutLocale } from '../i18n/utils';
+import { localeHtmlLang, localeOgTag, getAlternateUrls, defaultLocale } from '../i18n/config';
 
 interface Props {
   title: string;
@@ -17,23 +19,30 @@ interface Props {
   noIndex?: boolean;
 }
 
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
 const {
   title,
-  description = 'Ed Struijlaart — singer-songwriter, theatermaker en podcastmaker. Bekend van Gitaarmannen, NPO Radio 2 en Make It On Your Own.',
+  description = t.meta.siteDescription,
   ogImage = '/og-image.jpg',
   type = 'website',
   noIndex = false,
 } = Astro.props;
 
 const siteTitle = title === 'Home'
-  ? 'Ed Struijlaart | Singer-songwriter, Theatermaker & Podcastmaker'
-  : `${title} | Ed Struijlaart`;
+  ? t.meta.homeTitle
+  : `${title} | ${t.meta.titleSuffix}`;
 
 const canonicalUrl = Astro.url.href;
+const htmlLang = localeHtmlLang[locale];
+const ogLocale = localeOgTag[locale];
+const pathWithoutLocale = getPathWithoutLocale(Astro.url.pathname);
+const alternates = getAlternateUrls(pathWithoutLocale, Astro.site?.toString() || 'https://edstruijlaart.nl');
 ---
 
 <!DOCTYPE html>
-<html lang="nl">
+<html lang={htmlLang}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,6 +53,12 @@ const canonicalUrl = Astro.url.href;
   {noIndex && <meta name="robots" content="noindex, nofollow" />}
   <link rel="canonical" href={canonicalUrl} />
 
+  <!-- hreflang: tell search engines about all language versions -->
+  {alternates.map(alt => (
+    <link rel="alternate" hreflang={alt.locale === defaultLocale ? 'nl' : alt.locale} href={alt.href} />
+  ))}
+  <link rel="alternate" hreflang="x-default" href={alternates.find(a => a.locale === 'en')?.href} />
+
   <!-- Open Graph -->
   <meta property="og:title" content={siteTitle} />
   <meta property="og:description" content={description} />
@@ -52,7 +67,7 @@ const canonicalUrl = Astro.url.href;
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:type" content={type} />
-  <meta property="og:locale" content="nl_NL" />
+  <meta property="og:locale" content={ogLocale} />
   <meta property="og:site_name" content="Ed Struijlaart" />
 
   <!-- Twitter Card -->
@@ -114,7 +129,7 @@ const canonicalUrl = Astro.url.href;
   <slot name="head" />
 </head>
 <body class="min-h-screen flex flex-col">
-  <a href="#main-content" class="skip-link">Ga naar inhoud</a>
+  <a href="#main-content" class="skip-link">{t.layout.skipToContent}</a>
   <Header />
   <main id="main-content" class="flex-1">
     <slot />

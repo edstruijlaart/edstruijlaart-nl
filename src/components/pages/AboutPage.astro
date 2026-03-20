@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+import { localePath } from '../../i18n/config';
+import portraitImage from '../../assets/photos/ed-struijlaart-portrait.jpg';
+import krukGitaarImage from '../../assets/photos/ed-struijlaart-kruk-gitaar.jpg';
+import raamImage from '../../assets/photos/ed-struijlaart-raam.jpg';
+import warmImage from '../../assets/photos/ed-struijlaart-warm-interieur.jpg';
+import recentImage from '../../assets/photos/ed-struijlaart-recent-2025.jpg';
+import staandGitaarImage from '../../assets/photos/ed-struijlaart-staand-gitaar.jpg';
+import lachendGitaarImage from '../../assets/photos/ed-struijlaart-lachend-gitaar.jpg';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+---
+
+<BaseLayout
+  title={t.about.title}
+  description={t.about.description}
+>
+  <!-- Hero bio -->
+  <section class="pt-24 lg:pt-32 pb-20">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <!-- Foto -->
+        <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <Image
+            src={portraitImage}
+            alt="Ed Struijlaart persfoto"
+            widths={[400, 600]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            class="w-full h-auto"
+            loading="eager"
+          />
+        </div>
+
+        <!-- Bio -->
+        <div>
+          <h1 class="font-[var(--font-display)] text-4xl lg:text-5xl">{t.about.title}</h1>
+          <div class="mt-4 h-1 w-16 rounded-full" style="background-color: var(--color-gold);"></div>
+
+          <div class="mt-8 space-y-4 text-lg text-[var(--fg-muted)] leading-relaxed">
+            <p>{t.about.bio1}</p>
+            <p>{t.about.bio2}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pull quote -->
+  <section class="py-16" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8 text-center">
+      <blockquote class="text-xl md:text-2xl font-[var(--font-display)] italic" style="color: var(--fg);">
+        &ldquo;{t.about.quote}&rdquo;
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- Vervolg bio + foto -->
+  <section class="py-20">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-4 text-lg text-[var(--fg-muted)] leading-relaxed">
+          <p>{t.about.bio3}</p>
+          <p>{t.about.bio4}</p>
+        </div>
+        <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <Image
+            src={krukGitaarImage}
+            alt="Ed Struijlaart op kruk met gitaar"
+            widths={[400, 560]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            class="w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Foto galerij -->
+  <section class="py-20" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <h2 class="font-[var(--font-display)] text-3xl mb-8">{t.about.gallery}</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="rounded-xl overflow-hidden aspect-[4/5]" style="box-shadow: var(--shadow-card);">
+          <Image src={raamImage} alt="Ed Struijlaart bij het raam" widths={[200, 400]} sizes="(max-width: 768px) 50vw, 33vw" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/5]" style="box-shadow: var(--shadow-card);">
+          <Image src={staandGitaarImage} alt="Ed Struijlaart staand met gitaar" widths={[200, 400]} sizes="(max-width: 768px) 50vw, 33vw" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/5]" style="box-shadow: var(--shadow-card);">
+          <Image src={recentImage} alt="Ed Struijlaart 2025" widths={[200, 400]} sizes="(max-width: 768px) 50vw, 33vw" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/5] md:col-span-2" style="box-shadow: var(--shadow-card);">
+          <Image src={warmImage} alt="Ed Struijlaart in warm interieur" widths={[400, 800]} sizes="(max-width: 768px) 50vw, 66vw" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="rounded-xl overflow-hidden aspect-[4/5]" style="box-shadow: var(--shadow-card);">
+          <Image src={lachendGitaarImage} alt="Ed Struijlaart lachend met gitaar" widths={[200, 400]} sizes="(max-width: 768px) 50vw, 33vw" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-[var(--fg-muted)]">
+        Foto's: <a href="https://www.vanessahofstra.nl" target="_blank" rel="noopener noreferrer" class="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors duration-300">{t.about.photoCredit}</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Afsluiting -->
+  <section class="py-20">
+    <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
+      <p class="text-lg text-[var(--fg-muted)] leading-relaxed">
+        {t.about.closing}
+      </p>
+      <div class="mt-8">
+        <a href={localePath('/contact/', locale)} class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-base bg-[var(--color-gold)] text-white hover:bg-[var(--color-gold-light)] transition-colors duration-300">
+          {t.about.cta}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

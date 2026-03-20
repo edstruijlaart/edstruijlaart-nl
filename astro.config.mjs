@@ -13,6 +13,10 @@ export default defineConfig({
   output: 'static',
   adapter: vercel(),
 
+  // i18n: we handelen meertalige routing zelf af via middleware + translation files.
+  // Geen Astro i18n config nodig — dat genereert ongewenste redirects.
+  // Locale pages leven in src/pages/en/, src/pages/es/, etc.
+
   // CSRF uitschakelen voor externe API calls (iOS Shortcuts bootleg upload, webhooks)
   security: {
     checkOrigin: false,

@@ -1,8 +1,14 @@
 ---
-import { mainNav } from '../../data/navigation';
 import DarkModeToggle from '../ui/DarkModeToggle.astro';
+import LanguagePicker from './LanguagePicker.astro';
+import { getLocaleFromUrl, useTranslations, getLocalizedNav } from '../../i18n/utils';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+const { mainNav } = getLocalizedNav(locale);
 
 const currentPath = Astro.url.pathname;
+const homeHref = locale === 'nl' ? '/' : `/${locale}/`;
 ---
 
 <header
@@ -12,7 +18,7 @@ const currentPath = Astro.url.pathname;
   <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between lg:h-20">
       <!-- Logo -->
-      <a href="/" class="font-[var(--font-display)] text-xl lg:text-2xl text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors duration-300">
+      <a href={homeHref} class="font-[var(--font-display)] text-xl lg:text-2xl text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors duration-300">
         Ed Struijlaart
       </a>
 
@@ -23,7 +29,7 @@ const currentPath = Astro.url.pathname;
             href={item.href}
             class:list={[
               'text-sm font-[var(--font-body)] font-medium uppercase tracking-wider transition-colors duration-300',
-              currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href))
+              currentPath === item.href || (item.href !== homeHref && currentPath.startsWith(item.href))
                 ? 'text-[var(--color-gold)]'
                 : 'text-[var(--fg-muted)] hover:text-[var(--color-gold)]',
             ]}
@@ -32,17 +38,19 @@ const currentPath = Astro.url.pathname;
             {item.label}
           </a>
         ))}
+        <LanguagePicker />
         <DarkModeToggle />
       </nav>
 
       <!-- Mobile hamburger -->
       <div class="flex items-center gap-2 lg:hidden">
+        <LanguagePicker />
         <DarkModeToggle />
         <button
           id="mobile-menu-btn"
           type="button"
           class="p-2 rounded-lg transition-colors duration-300 hover:bg-[var(--bg-surface)]"
-          aria-label="Menu openen"
+          aria-label={t.layout.openMenu}
           aria-expanded="false"
           aria-controls="mobile-menu"
         >
@@ -73,12 +81,12 @@ const currentPath = Astro.url.pathname;
 >
   <!-- Header bar -->
   <div class="flex items-center justify-between p-4 border-b" style="background: #FAF8F5; border-color: #F0EDE8;">
-    <span class="font-[var(--font-display)] text-lg" style="color: #B8860B;">Menu</span>
+    <span class="font-[var(--font-display)] text-lg" style="color: #B8860B;">{t.layout.menu}</span>
     <button
       id="mobile-menu-close"
       type="button"
       class="p-2 rounded-lg"
-      aria-label="Menu sluiten"
+      aria-label={t.layout.closeMenu}
     >
       <svg class="w-6 h-6" style="color: #1A1A1A;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"/>
@@ -91,7 +99,7 @@ const currentPath = Astro.url.pathname;
   <nav class="p-6 pt-8" style="background: #FAF8F5;" aria-label="Mobiele navigatie">
     <ul class="space-y-2">
       {mainNav.map(item => {
-        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        const isActive = currentPath === item.href || (item.href !== homeHref && currentPath.startsWith(item.href));
         return (
           <li>
             <a
