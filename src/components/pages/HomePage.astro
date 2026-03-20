@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../ui/Hero.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import HighlightCarousel from '../sections/HighlightCarousel.astro';
+import ShowList from '../sections/ShowList.astro';
+import PodcastSection from '../sections/PodcastSection.astro';
+import SpotifyStrip from '../sections/SpotifyStrip.astro';
+import HuiskamerSection from '../sections/HuiskamerSection.astro';
+import BlogGrid from '../sections/BlogGrid.astro';
+import NewsletterForm from '../sections/NewsletterForm.astro';
+import { Image } from 'astro:assets';
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+import { localePath } from '../../i18n/config';
+
+// Hero images
+import heroStudio from '../../assets/photos/ed-struijlaart-studio-breed.jpg';
+import heroKruk from '../../assets/photos/ed-struijlaart-kruk-gitaar.jpg';
+import heroPersfoto from '../../assets/photos/ed-struijlaart-persfoto-liggend.jpg';
+import heroKlokken from '../../assets/photos/ed-struijlaart-klokkenmaker.jpg';
+import aboutPhoto from '../../assets/photos/ed-struijlaart-spelend.jpg';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+// ISR: herrender deze pagina elk uur (voor actuele Bandsintown data)
+Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
+---
+
+<BaseLayout title="Home" description={t.meta.siteDescription}>
+  <Hero
+    title={t.home.heroTitle}
+    subtitle={t.home.heroSubtitle}
+    images={[heroStudio, heroKruk, heroPersfoto, heroKlokken]}
+    imagePositions={['center 40%', '30% center', '30% center', 'center center']}
+    imageAlt="Ed Struijlaart"
+    height="full"
+    ctaPrimary={{ label: t.home.ctaAgenda, href: localePath('/tour/', locale) }}
+    ctaSecondary={{ label: t.home.ctaBook, href: "https://boeken.edstruijlaart.nl" }}
+  />
+
+  <section class="py-20 md:py-28 reveal-section">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <HighlightCarousel />
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28 reveal-section" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title={t.home.agendaTitle} subtitle={t.home.agendaSubtitle} />
+      <ShowList limit={4} />
+    </div>
+  </section>
+
+  <div class="reveal-section">
+    <HuiskamerSection />
+  </div>
+
+  <SpotifyStrip />
+
+  <section class="py-20 md:py-28 reveal-section">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title={t.home.podcastsTitle} subtitle={t.home.podcastsSubtitle} />
+      <PodcastSection />
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28 reveal-section" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-[var(--color-gold)]/10 text-[var(--color-gold)] mb-4">
+            {t.home.aboutTag}
+          </span>
+          <h2 class="font-[var(--font-display)] text-3xl md:text-4xl">
+            {t.home.aboutTitle}
+          </h2>
+          <blockquote class="mt-6 text-lg italic border-l-4 border-[var(--color-gold)] pl-6" style="color: var(--fg-muted);">
+            &ldquo;{t.home.aboutQuote}&rdquo;
+          </blockquote>
+          <p class="mt-6 text-base" style="color: var(--fg-muted);">
+            {t.home.aboutText}
+          </p>
+          <a
+            href={localePath('/about/', locale)}
+            class="inline-flex items-center gap-2 mt-6 text-[var(--color-gold)] font-medium hover:gap-3 transition-all duration-300"
+          >
+            {t.home.aboutLink}
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card);">
+          <Image
+            src={aboutPhoto}
+            alt="Ed Struijlaart portret"
+            width={560}
+            class="w-full h-auto"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28 reveal-section">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title={t.home.newsTitle} subtitle={t.home.newsSubtitle} />
+      <BlogGrid limit={3} />
+    </div>
+  </section>
+
+  <section id="nieuwsbrief" class="py-20 md:py-28" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <NewsletterForm />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .reveal-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal-section.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  function initScrollReveal() {
+    const sections = document.querySelectorAll('.reveal-section');
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  initScrollReveal();
+  document.addEventListener('astro:after-swap', initScrollReveal);
+</script>
