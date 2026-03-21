@@ -266,6 +266,15 @@ const fr: TranslationKeys = {
     viewAll: 'Tous les articles →',
   },
 
+  // -- 404 --
+  notFound: {
+    title: 'Page non trouvée',
+    description: 'La page que tu cherches n\'existe plus ou a été déplacée. Tu trouveras peut-être ce que tu cherches via l\'un des liens ci-dessous.',
+    goHome: 'Aller à la page d\'accueil',
+    viewShows: 'Voir l\'agenda',
+    contact: 'Contact',
+  },
+
   common: {
     readMore: 'Lire la suite',
     enlargePhoto: 'Agrandir la photo',

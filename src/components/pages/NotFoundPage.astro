@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../ui/Button.astro';
+import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
+import { localePath } from '../../i18n/config';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+---
+
+<BaseLayout title={t.notFound.title} description={t.notFound.description}>
+  <section class="py-24 lg:py-32">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-8xl md:text-9xl font-[var(--font-display)] text-[var(--color-gold)] opacity-20 select-none">
+        404
+      </p>
+      <h1 class="mt-4 font-[var(--font-display)] text-3xl md:text-4xl">
+        {t.notFound.title}
+      </h1>
+      <p class="mt-4 text-lg text-[var(--fg-muted)] max-w-md mx-auto">
+        {t.notFound.description}
+      </p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <Button href={localePath('/', locale)} variant="primary">
+          {t.notFound.goHome}
+        </Button>
+        <Button href={localePath('/tour/', locale)} variant="outline">
+          {t.notFound.viewShows}
+        </Button>
+        <Button href={localePath('/contact/', locale)} variant="outline">
+          {t.notFound.contact}
+        </Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

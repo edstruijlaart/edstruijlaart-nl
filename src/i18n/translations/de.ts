@@ -266,6 +266,15 @@ const de: TranslationKeys = {
     viewAll: 'Alle Beiträge →',
   },
 
+  // -- 404 --
+  notFound: {
+    title: 'Seite nicht gefunden',
+    description: 'Die gesuchte Seite existiert nicht mehr oder wurde verschoben. Möglicherweise findest du das, was du suchst, über einen der folgenden Links.',
+    goHome: 'Zur Homepage',
+    viewShows: 'Kalender ansehen',
+    contact: 'Kontakt',
+  },
+
   common: {
     readMore: 'Weiterlesen',
     enlargePhoto: 'Foto vergrößern',

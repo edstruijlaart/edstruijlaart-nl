@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Button from '../../../components/ui/Button.astro';
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { useTranslations, formatDate } from '../../../i18n/utils';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('news-en');
+  return posts.map(post => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+};
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const t = useTranslations('en');
+const formattedDate = formatDate(post.data.date, 'en');
+---
+
+<BaseLayout title={post.data.title} description={post.data.excerpt || post.data.title} type="article" ogImage={post.data.featuredImage || '/og-image.jpg'}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.data.title,
+      ...(post.data.date ? { "datePublished": new Date(post.data.date).toISOString() } : {}),
+      "author": {
+        "@type": "Person",
+        "name": "Ed Struijlaart",
+        "url": "https://edstruijlaart.nl"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Ed Struijlaart",
+        "url": "https://edstruijlaart.nl"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://edstruijlaart.nl/en/news/${post.data.slug}/`
+      },
+      ...(post.data.excerpt ? { "description": post.data.excerpt } : {}),
+      ...(post.data.featuredImage ? { "image": `https://edstruijlaart.nl${post.data.featuredImage}` } : {})
+    })} />
+  </Fragment>
+  <article class="py-24">
+    <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
+      <header class="mb-12">
+        {formattedDate && (
+          <time class="text-sm text-[var(--fg-muted)] uppercase tracking-wide">
+            {formattedDate}
+          </time>
+        )}
+        <h1 class="font-[var(--font-display)] text-4xl lg:text-5xl mt-2">
+          {post.data.title}
+        </h1>
+        <div class="mt-4 h-1 w-16 rounded-full" style="background-color: var(--color-gold);"></div>
+      </header>
+
+      {post.data.featuredImage && (
+        <div class="mb-10 rounded-xl overflow-hidden">
+          <img
+            src={post.data.featuredImage}
+            alt={post.data.title}
+            class="w-full h-auto"
+            loading="eager"
+          />
+        </div>
+      )}
+
+      <div class="prose-ed max-w-none text-lg text-[var(--fg-muted)] leading-relaxed [&>p]:mb-6 [&>h2]:font-[var(--font-display)] [&>h2]:text-2xl [&>h2]:text-[var(--fg)] [&>h2]:mt-10 [&>h2]:mb-4 [&>h3]:font-[var(--font-display)] [&>h3]:text-xl [&>h3]:text-[var(--fg)] [&>h3]:mt-8 [&>h3]:mb-3 [&>a]:text-[var(--color-gold)] [&>a]:underline hover:[&>a]:text-[var(--color-gold-light)] [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 [&>blockquote]:border-l-4 [&>blockquote]:border-[var(--color-gold)] [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:my-6">
+        <Content />
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-[var(--bg-surface)]">
+        <Button href="/en/blog/" variant="ghost">
+          {t.blog.backToNews}
+        </Button>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

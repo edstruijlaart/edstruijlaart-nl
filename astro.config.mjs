@@ -24,6 +24,16 @@ export default defineConfig({
 
   integrations: [
     sitemap({
+      i18n: {
+        defaultLocale: 'nl',
+        locales: {
+          nl: 'nl',
+          en: 'en',
+          es: 'es',
+          de: 'de',
+          fr: 'fr',
+        },
+      },
       filter(page) {
         // Sluit redirect- en SSR-only routes uit
         return !page.includes('/shows/') && !page.includes('/live') && !page.includes('/api/');

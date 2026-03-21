@@ -266,6 +266,15 @@ const es: TranslationKeys = {
     viewAll: 'Todos los artículos →',
   },
 
+  // -- 404 --
+  notFound: {
+    title: 'Página no encontrada',
+    description: 'La página que buscas ya no existe o se ha movido. Quizás encuentres lo que buscas a través de uno de los siguientes enlaces.',
+    goHome: 'Ir a la página principal',
+    viewShows: 'Ver agenda',
+    contact: 'Contacto',
+  },
+
   common: {
     readMore: 'Leer más',
     enlargePhoto: 'Ampliar foto',

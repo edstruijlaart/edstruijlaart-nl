@@ -291,6 +291,15 @@ const nl = {
     viewAll: 'Alle berichten →',
   },
 
+  // -- 404 --
+  notFound: {
+    title: 'Pagina niet gevonden',
+    description: 'De pagina die je zoekt bestaat niet meer of is verplaatst. Misschien vind je wat je zoekt via een van onderstaande links.',
+    goHome: 'Naar de homepage',
+    viewShows: 'Bekijk agenda',
+    contact: 'Contact',
+  },
+
   // ── Common ──
   common: {
     readMore: 'Lees meer',

@@ -292,6 +292,15 @@ const en: TranslationKeys = {
     viewAll: 'All posts →',
   },
 
+  // -- 404 --
+  notFound: {
+    title: 'Page not found',
+    description: 'The page you are looking for no longer exists or has been moved. You might find what you are looking for through one of the links below.',
+    goHome: 'Go to homepage',
+    viewShows: 'View agenda',
+    contact: 'Contact',
+  },
+
   // ── Common ──
   common: {
     readMore: 'Read more',
