@@ -21,7 +21,7 @@ const timeline: TimelineItem[] = [];
 const photoTimestamps = new Map<string, string[]>();
 for (const photo of photos) {
   if (photo.message && photo.uploadedBy) {
-    // Foto heeft een bericht erbij — wordt combo
+    // Foto heeft een bericht erbij - wordt combo
     const key = `${photo.uploadedBy}|${photo.message}`;
     if (!photoTimestamps.has(key)) photoTimestamps.set(key, []);
     photoTimestamps.get(key)!.push(photo.uploadedAt || '');
@@ -34,7 +34,7 @@ for (const entry of entries) {
   const comboKey = `${entry.name}|${entry.message}`;
   const matchingPhotoTimes = photoTimestamps.get(comboKey);
   if (matchingPhotoTimes && matchingPhotoTimes.length > 0) {
-    // Dit bericht hoort bij een foto — skip, wordt combo
+    // Dit bericht hoort bij een foto - skip, wordt combo
     matchingPhotoTimes.shift(); // verbruik één match
     continue;
   }
@@ -90,10 +90,10 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
       </p>
     </div>
 
-    {/* Formulier — bericht + foto in één */}
+    {/* Formulier - bericht + foto in een */}
     <div class="max-w-xl mx-auto mb-14">
       <form id="guestbook-combined-form" class="space-y-4" data-show-id={showId}>
-        {/* Honeypot — onzichtbaar voor gebruikers, bots vullen dit in */}
+        {/* Honeypot - onzichtbaar voor gebruikers, bots vullen dit in */}
         <input type="text" name="honeypot" style="display:none" tabindex="-1" autocomplete="off" />
         <input
           type="text"
@@ -112,7 +112,7 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
           style="background-color: var(--bg); border-color: color-mix(in srgb, var(--fg-muted) 30%, transparent);"
         ></textarea>
 
-        {/* Foto toevoegen — compact inline */}
+        {/* Foto toevoegen - compact inline */}
         <div class="flex items-center gap-3">
           <label
             class="flex items-center gap-2 px-4 py-2.5 rounded-full border cursor-pointer transition-all duration-200 hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
@@ -146,7 +146,7 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
       </form>
     </div>
 
-    {/* Tijdlijn — berichten, foto's en combo's gemixed */}
+    {/* Tijdlijn - berichten, foto's en combo's gemixed */}
     {timeline.length > 0 && (
       <div class="max-w-3xl mx-auto space-y-4" id="timeline">
         {timeline.map(item => (
@@ -273,7 +273,7 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
 
       try {
         if (photo) {
-          // Foto (optioneel met bericht) — alles in één call
+          // Foto (optioneel met bericht) - alles in een call
           const photoData = new FormData();
           photoData.append('showId', showId);
           photoData.append('uploadedBy', name);

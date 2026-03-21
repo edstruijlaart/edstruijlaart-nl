@@ -41,7 +41,7 @@ export const localeOgTag: Record<Locale, string> = {
 export const countryToLocale: Record<string, Locale> = {
   // Dutch
   NL: 'nl',
-  BE: 'nl', // Belgium — could be FR, but Ed's audience is mostly Dutch-speaking
+  BE: 'nl', // Belgium - could be FR, but Ed's audience is mostly Dutch-speaking
   CW: 'nl', // Curacao
   SR: 'nl', // Suriname
   SX: 'nl', // Sint Maarten
@@ -51,7 +51,7 @@ export const countryToLocale: Record<string, Locale> = {
   // German
   DE: 'de',
   AT: 'de',
-  CH: 'de', // Switzerland — multilingual, but German is most common
+  CH: 'de', // Switzerland - multilingual, but German is most common
   LI: 'de', // Liechtenstein
 
   // French

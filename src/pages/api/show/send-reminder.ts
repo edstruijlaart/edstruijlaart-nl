@@ -196,7 +196,7 @@ export const GET: APIRoute = async ({ request }) => {
     const allFailed = results.flatMap(r => (r.failedSignups || []).map((s: any) => `${s.firstName} (${s.email})`));
 
     const summaryLines = results.map(r =>
-      `• ${r.show}: ${r.emails} mails verstuurd${r.errors ? ` — ⚠️ ${r.errors} mislukt` : ' ✅'}`
+      `• ${r.show}: ${r.emails} mails verstuurd${r.errors ? `, ${r.errors} mislukt` : ' ✅'}`
     );
 
     const failedSection = allFailed.length > 0

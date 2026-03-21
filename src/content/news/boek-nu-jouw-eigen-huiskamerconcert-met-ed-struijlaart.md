@@ -6,7 +6,7 @@ originalUrl: "/news/boek-nu-jouw-eigen-huiskamerconcert-met-ed-struijlaart/"
 featuredImage: "/images/news/DSC_9880.jpg"
 ---
 
-Sinds 2012 breng ik muziek tot in de huiskamers, en na honderden optredens is het nog steeds een feest om te doen. Een intiem concert, gewoon bij jou thuis, met alleen een gitaar en mijn stem om de ruimte te vullen. Of het nu gaat om een verjaardag, een jubileum of gewoon een bijzondere avond met vrienden en familie—ik maak van elke gelegenheid een unieke muzikale ervaring.
+Sinds 2012 breng ik muziek tot in de huiskamers, en na honderden optredens is het nog steeds een feest om te doen. Een intiem concert, gewoon bij jou thuis, met alleen een gitaar en mijn stem om de ruimte te vullen. Of het nu gaat om een verjaardag, een jubileum of gewoon een bijzondere avond met vrienden en familie. Ik maak van elke gelegenheid een unieke muzikale ervaring.
 
 Benieuwd hoe zo’n huiskamerconcert eruitziet? Check het filmpje hieronder en proef alvast de sfeer!
 

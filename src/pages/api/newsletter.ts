@@ -1,6 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
+import { Resend } from 'resend';
 
 // Listmonk public API via Cloudflare tunnel
 const LISTMONK_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
@@ -30,6 +31,19 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     if (response.ok) {
+      // Notificatie naar Ed (fire-and-forget)
+      try {
+        const resend = new Resend(import.meta.env.RESEND_API_KEY);
+        await resend.emails.send({
+          from: 'Ed Struijlaart <noreply@earswantmusic.nl>',
+          to: 'ed@earswantmusic.nl',
+          subject: `Nieuwsbrief: ${name || 'Iemand'} heeft zich ingeschreven`,
+          text: `Nieuwe nieuwsbrief-inschrijving:\n\nNaam: ${name || '(niet ingevuld)'}\nEmail: ${email}\nTijdstip: ${new Date().toLocaleString('nl-NL', { timeZone: 'Europe/Amsterdam' })}`,
+        });
+      } catch {
+        // Notificatie mag falen zonder de inschrijving te blokkeren
+      }
+
       return new Response(JSON.stringify({ success: true }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },

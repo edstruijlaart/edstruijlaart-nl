@@ -41,7 +41,7 @@ export const GET: APIRoute = async ({ url }) => {
       if (token) {
         const existingRating = show.ratings?.find((r: any) => r.token === token);
         if (existingRating) {
-          // Al gestemd — toon gewoon bedankpagina zonder dubbele opslag
+          // Al gestemd - toon gewoon bedankpagina zonder dubbele opslag
           return buildThankYouPage(ratingEmoji, role);
         }
       }

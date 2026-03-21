@@ -5,7 +5,7 @@ import { sanityClient } from '../../lib/sanity';
 
 /**
  * Health check endpoint voor monitoring (bijv. UptimeRobot).
- * Geen auth nodig — checkt alleen of services bereikbaar zijn.
+ * Geen auth nodig - checkt alleen of services bereikbaar zijn.
  *
  * GET /api/health → 200 (alles ok) of 503 (iets mis)
  */

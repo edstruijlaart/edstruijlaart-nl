@@ -99,7 +99,7 @@ export const GET: APIRoute = async ({ url, request }) => {
       });
     }
 
-    // Increment download counter (fire and forget — redirect niet vertragen)
+    // Increment download counter (fire and forget - redirect niet vertragen)
     sanityWriteClient
       .patch(show._id)
       .setIfMissing({ bootlegDownloads: 0 })

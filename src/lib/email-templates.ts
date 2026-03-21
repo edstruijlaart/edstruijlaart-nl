@@ -60,8 +60,8 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
       : undefined;
 
   const subject = bootlegUrl
-    ? `De opname van ${city} — jouw herinneringspakket 🎵`
-    : `Wat een avond in ${city} — jouw herinneringspakket 🎵`;
+    ? `De opname van ${city}, jouw herinneringspakket 🎵`
+    : `Wat een avond in ${city}, jouw herinneringspakket 🎵`;
 
   // Bootleg sectie (alleen als er een opname is)
   const bootlegSection = bootlegUrl
@@ -73,7 +73,7 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
             <td style="padding: 24px 28px;">
               <p style="color: #D4A843; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 12px;">🎵 De opname van jouw avond</p>
               <p style="color: #F0EDE8; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                Download de live-opname van het huiskamerconcert. Bewaar hem goed — deze link is 30 dagen geldig.
+                Download de live-opname van het huiskamerconcert. Bewaar hem goed, deze link is 30 dagen geldig.
               </p>
               <table cellpadding="0" cellspacing="0">
                 <tr>
@@ -98,7 +98,7 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
       <td style="padding: 0 32px 32px;">
         <p style="color: #D4A843; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 12px;">🎧 Luister naar mijn muziek</p>
         <p style="color: #F0EDE8; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-          Luister naar mijn muziek op Spotify — van eigen nummers tot covers die je vanavond hebt gehoord.
+          Luister naar mijn muziek op Spotify. Van eigen nummers tot covers die je vanavond hebt gehoord.
         </p>
         <table cellpadding="0" cellspacing="0">
           <tr>
@@ -129,7 +129,7 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
       </td>
     </tr>`;
 
-  // Rating sectie — met optioneel HMAC token voor dedup
+  // Rating sectie - met optioneel HMAC token voor dedup
   const ratingToken = data.email && data.cronSecret
     ? generateRatingToken(showSlug, data.email, data.cronSecret)
     : '';
@@ -145,7 +145,7 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
             <td style="padding: 24px 28px; text-align: center;">
               <p style="color: #D4A843; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 12px;">⭐ Hoe was de avond?</p>
               <p style="color: #F0EDE8; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                Laat weten wat je ervan vond — het helpt mij enorm!
+                Laat weten wat je ervan vond, het helpt mij enorm!
               </p>
               <table cellpadding="0" cellspacing="0" align="center">
                 <tr>

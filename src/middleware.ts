@@ -1,5 +1,5 @@
 /**
- * Astro Middleware — Locale detection & redirect.
+ * Astro Middleware - Locale detection & redirect.
  *
  * Logic:
  * 1. Skip API routes, static assets, and bot requests (Googlebot must see ALL locales)
@@ -13,7 +13,7 @@ import { defineMiddleware } from 'astro:middleware';
 import { getLocaleForCountry, isValidLocale, defaultLocale, type Locale } from './i18n/config';
 import { getLocaleFromUrl } from './i18n/utils';
 
-/** User-Agent patterns for search engine bots — never redirect these */
+/** User-Agent patterns for search engine bots - never redirect these */
 const BOT_PATTERNS = /bot|crawl|spider|slurp|googlebot|bingbot|yandex|baidu|duckduck|semrush|ahrefs|mj12bot|dotbot|petalbot|bytespider/i;
 
 /** Paths that should never be redirected */
@@ -23,7 +23,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const { url, request } = context;
   const pathname = url.pathname;
 
-  // 0. Skip during prerendering/build — no geo headers available
+  // 0. Skip during prerendering/build - no geo headers available
   if (context.isPrerendered || !request.headers.get('user-agent')) {
     return next();
   }
@@ -33,7 +33,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  // 2. Skip bots — they must be able to crawl ALL language versions
+  // 2. Skip bots - they must be able to crawl ALL language versions
   const userAgent = request.headers.get('user-agent') || '';
   if (BOT_PATTERNS.test(userAgent)) {
     return next();
@@ -42,7 +42,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   // 3. If URL already has a valid locale prefix, just continue
   const currentLocale = getLocaleFromUrl(url);
   if (currentLocale !== defaultLocale) {
-    // User is on /en/, /es/, etc. — serve normally
+    // User is on /en/, /es/, etc. - serve normally
     return next();
   }
 
@@ -54,14 +54,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (cookieLang && isValidLocale(cookieLang)) {
     if (cookieLang !== defaultLocale) {
-      // User previously chose a different language — redirect
+      // User previously chose a different language - redirect
       return redirectToLocale(url, cookieLang);
     }
-    // Cookie says Dutch — serve default, no redirect
+    // Cookie says Dutch - serve default, no redirect
     return next();
   }
 
-  // 5. No cookie — detect from geo (Vercel's x-vercel-ip-country header)
+  // 5. No cookie - detect from geo (Vercel's x-vercel-ip-country header)
   const country = request.headers.get('x-vercel-ip-country') || '';
   const detectedLocale = getLocaleForCountry(country);
 

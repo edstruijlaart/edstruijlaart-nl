@@ -15,7 +15,7 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { showId, name, message, honeypot } = body;
 
-    // Honeypot check — bots vullen dit in, echte gebruikers niet
+    // Honeypot check - bots vullen dit in, echte gebruikers niet
     if (honeypot) {
       return new Response(JSON.stringify({ success: true }), { status: 200 });
     }

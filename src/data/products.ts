@@ -28,7 +28,7 @@ export const products: Product[] = [
   // ─── Video registraties ───
   {
     slug: 'gitaarmannen-3-video',
-    name: 'Gitaarmannen 3: John Mayer — Video registratie',
+    name: 'Gitaarmannen 3: John Mayer (Video registratie)',
     description: 'De volledige video-opname van de theatershow Gitaarmannen 3: John Mayer. Professioneel opgenomen met meerdere camera\'s.',
     price: 9.99,
     category: 'video',
@@ -49,7 +49,7 @@ export const products: Product[] = [
   // ─── Audio ───
   {
     slug: 'clapton-unplugged-audio',
-    name: 'Gitaarmannen 2: Clapton Unplugged — Audio',
+    name: 'Gitaarmannen 2: Clapton Unplugged (Audio)',
     description: 'De live audio-opname van de theatershow Gitaarmannen 2: Eric Clapton Unplugged.',
     price: 9.99,
     category: 'audio',
@@ -68,7 +68,7 @@ export const products: Product[] = [
   // ─── CD + Video bundel ───
   {
     slug: 'gitaarmannen-3-cd',
-    name: 'Gitaarmannen 3: John Mayer — CD',
+    name: 'Gitaarmannen 3: John Mayer (CD)',
     description: 'De live-opname van Gitaarmannen 3: John Mayer op CD. Inclusief gratis toegang tot de video registratie.',
     price: 14.99,
     category: 'bundle',
@@ -91,7 +91,7 @@ export const products: Product[] = [
   // ─── Merchandise ───
   {
     slug: 'gitaarmannen-plectrums-088',
-    name: 'Gitaarmannen Plectrums — 0.88mm (10 stuks)',
+    name: 'Gitaarmannen Plectrums 0.88mm (10 stuks)',
     description: 'Set van 10 Dunlop plectrums met het Gitaarmannen de Podcast logo. Dikte: 0.88mm.',
     price: 10.00,
     category: 'merchandise',
@@ -108,7 +108,7 @@ export const products: Product[] = [
   },
   {
     slug: 'gitaarmannen-plectrums-100',
-    name: 'Gitaarmannen Plectrums — 1.0mm (10 stuks)',
+    name: 'Gitaarmannen Plectrums 1.0mm (10 stuks)',
     description: 'Set van 10 Dunlop plectrums met het Gitaarmannen de Podcast logo. Dikte: 1.0mm.',
     price: 10.00,
     category: 'merchandise',

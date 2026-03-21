@@ -6,7 +6,7 @@ import type { TranslationKeys } from './nl';
 const en: TranslationKeys = {
   // ── Meta & SEO ──
   meta: {
-    siteDescription: 'Ed Struijlaart — singer-songwriter, theater maker and podcast host. Known for Gitaarmannen, Dutch national radio (NPO Radio 2) and Make It On Your Own.',
+    siteDescription: 'Ed Struijlaart, singer-songwriter, theater maker and podcast host. Known for Gitaarmannen, Dutch national radio (NPO Radio 2) and Make It On Your Own.',
     homeTitle: 'Ed Struijlaart | Singer-songwriter, Theater Maker & Podcast Host',
     titleSuffix: 'Ed Struijlaart',
   },
@@ -122,8 +122,8 @@ const en: TranslationKeys = {
   // ── Blog page ──
   blog: {
     title: 'News',
-    description: 'News, stories and updates from Ed Struijlaart — singer-songwriter, theater maker and podcast host.',
-    subtitle: 'Stories, updates and announcements — from new music to theater adventures.',
+    description: 'News, stories and updates from Ed Struijlaart. Singer-songwriter, theater maker and podcast host.',
+    subtitle: 'Stories, updates and announcements. From new music to theater adventures.',
     readMore: 'Read more',
     post: 'post',
     posts: 'posts',
@@ -135,7 +135,7 @@ const en: TranslationKeys = {
   podcasts: {
     title: 'Podcasts',
     description: 'Gitaarmannen and Liedjesmensen: two podcasts by Ed Struijlaart about guitarists, songwriters and musicians. Featuring guests like Tommy Emmanuel, Matteo Mancuso and Mark Lettieri. Listen on Spotify, Apple Podcasts and YouTube.',
-    subtitle: 'Gitaarmannen & Liedjesmensen — listen now on Spotify, Apple Podcasts and YouTube',
+    subtitle: 'Gitaarmannen & Liedjesmensen. Listen now on Spotify, Apple Podcasts and YouTube',
     youtubeTitle: 'Watch on YouTube',
     youtubeSubtitle: 'All episodes on video',
   },
@@ -145,7 +145,7 @@ const en: TranslationKeys = {
     title: 'Shop',
     description: 'Ed Struijlaart\'s shop. Video recordings, music, CDs and Gitaarmannen merchandise.',
     subtitle: 'Video recordings, music and merchandise',
-    intro: 'From live recordings to Gitaarmannen picks — order directly and receive digital products by email. Secure payment via credit card and more.',
+    intro: 'From live recordings to Gitaarmannen picks. Order directly and receive digital products by email. Secure payment via credit card and more.',
     digitalProducts: 'Digital products',
     cdVideo: 'CD + Video',
     merchandise: 'Merchandise',
@@ -193,7 +193,7 @@ const en: TranslationKeys = {
     privateTitle: 'Private concert',
     privateText: 'You book the concert for a fixed price and invite your own guests. Ideal for birthdays, anniversaries or an evening with friends. You decide who comes.',
     ticketTitle: 'With ticket sales',
-    ticketText: 'You sell tickets to your guests and (partially) recoup the costs — or even make a profit. I handle the ticketing and provide everything needed to make it a success.',
+    ticketText: 'You sell tickets to your guests and (partially) recoup the costs, or even make a profit. I handle the ticketing and provide everything needed to make it a success.',
     popular: 'Popular',
     extrasLabel: 'What you get',
     extrasTitle: 'More than just a concert',
@@ -236,16 +236,16 @@ const en: TranslationKeys = {
     bookBadge: 'Book now',
     concertFilmTitle: 'Gitaarmannen 3: John Mayer',
     concertFilmSubtitle: 'The Concert Film',
-    concertFilmDesc: 'Experience the theater show at home. The full performance in Full HD audio and video — a concert film honoring the music of a guitarist who inspired a generation.',
+    concertFilmDesc: 'Experience the theater show at home. The full performance in Full HD audio and video. A concert film honoring the music of a guitarist who inspired a generation.',
     concertFilmCta: 'Order the concert film',
     theaterTitle: 'Gitaarmannen 3',
     theaterSubtitle: 'John Mayer',
-    theaterDesc: 'In the third edition of Gitaarmannen, I dive into the universe of John Mayer. From the first blues licks to the now iconic songs — a full evening tribute to one of the greatest guitarists of this generation.',
+    theaterDesc: 'In the third edition of Gitaarmannen, I dive into the universe of John Mayer. From the first blues licks to the now iconic songs. A full evening tribute to one of the greatest guitarists of this generation.',
     theaterCtaDates: 'View all dates',
     theaterCtaMore: 'More theater',
     houseTitle: 'House Concert',
     houseSubtitle: 'At your place',
-    houseDesc: 'An intimate evening at your home, in the garden or at a venue. Done over 600 times — and every single time it\'s special. Original repertoire, covers and stories in a setting where everyone goes quiet.',
+    houseDesc: 'An intimate evening at your home, in the garden or at a venue. Done over 600 times, and every single time it\'s special. Original repertoire, covers and stories in a setting where everyone goes quiet.',
     houseCta: 'Book a house concert',
   },
 

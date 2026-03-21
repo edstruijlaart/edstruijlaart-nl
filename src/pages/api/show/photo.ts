@@ -13,7 +13,7 @@ export const POST: APIRoute = async ({ request }) => {
     const photo = formData.get('photo') as File;
     const honeypot = formData.get('honeypot') as string;
 
-    // Honeypot check — bots vullen dit in, echte gebruikers niet
+    // Honeypot check - bots vullen dit in, echte gebruikers niet
     if (honeypot) {
       return new Response(JSON.stringify({ success: true }), { status: 200 });
     }
@@ -97,7 +97,7 @@ async function notifyPhotoUpload(showId: string, uploadedBy: string, message: st
     await resend.emails.send({
       from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
       to: 'edstruijlaart@gmail.com',
-      subject: `📸 Nieuwe foto van ${uploadedBy} — ${city}`,
+      subject: `📸 Nieuwe foto van ${uploadedBy}, ${city}`,
       html: `
         <div style="font-family:-apple-system,sans-serif;max-width:500px;margin:0 auto;background:#0F0F0F;color:#F0EDE8;padding:32px;border-radius:12px;">
           <p style="color:#D4A843;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 12px;">📸 Nieuwe gastenfoto</p>

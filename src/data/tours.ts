@@ -18,7 +18,7 @@ export const tours: Tour[] = [
     slug: 'gitaarmannen-3-john-mayer',
     title: 'Gitaarmannen 3',
     subtitle: 'John Mayer',
-    year: '2024 — 2026',
+    year: '2024 - 2026',
     shortDescription: 'Gitaarmannen 3: John Mayer is een muzikale ode aan een van de meest invloedrijke gitaristen en songwriters van deze generatie.',
     description: [
       'Gitaarmannen 3: John Mayer is een theatervoorstelling waarin Ed Struijlaart samen met zijn band een eerbetoon brengt aan een van de meest invloedrijke gitaristen en songwriters van de afgelopen decennia.',
@@ -37,7 +37,7 @@ export const tours: Tour[] = [
     slug: 'gitaarmannen-2-clapton',
     title: 'Gitaarmannen 2',
     subtitle: 'Eric Clapton Unplugged',
-    year: '2022 — 2024',
+    year: '2022 - 2024',
     shortDescription: 'Gitaarmannen 2: Eric Clapton Unplugged was een ode aan het legendarische livealbum dat wereldwijd wordt gezien als een van de meest invloedrijke akoestische gitaarplaten ooit.',
     description: [
       'Gitaarmannen 2: Eric Clapton Unplugged was een muzikale en persoonlijke ode aan het iconische livealbum dat in 1992 verscheen en uitgroeide tot een van de best verkochte en meest invloedrijke liveplaten aller tijden.',
@@ -53,7 +53,7 @@ export const tours: Tour[] = [
   {
     slug: 'alles-op-rood',
     title: 'Alles op Rood',
-    year: '2020 — 2022',
+    year: '2020 - 2022',
     shortDescription: 'Alles op Rood is een persoonlijke theatervoorstelling over durven kiezen voor wat je het meest lief is.',
     description: [
       'Alles op Rood is een persoonlijke en muzikale theatervoorstelling waarin Ed Struijlaart het publiek meeneemt in de keuzes die hem hebben gevormd als artiest en mens.',
@@ -71,7 +71,7 @@ export const tours: Tour[] = [
     slug: 'gitaarmannen-1',
     title: 'Gitaarmannen 1',
     subtitle: 'van Clapton tot Sheeran',
-    year: '2018 — 2020',
+    year: '2018 - 2020',
     shortDescription: 'Gitaarmannen 1: Van Clapton tot Sheeran was de eerste theatervoorstelling binnen het Gitaarmannen-concept.',
     description: [
       'Gitaarmannen 1: Van Clapton tot Sheeran vormde het startpunt van het succesvolle Gitaarmannen-concept en markeerde het begin van een nieuwe theatervorm waarin livemuziek, storytelling en liefde voor het gitaarspel samenkomen.',

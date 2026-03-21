@@ -95,7 +95,7 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
     "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode"
   })} />
 
-  {/* Fase 1: altijd zichtbaar — promo content */}
+  {/* Fase 1: altijd zichtbaar - promo content */}
   <ShowHero
     title={pageTitle}
     city={show.city}
@@ -104,7 +104,7 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
     heroImage={show.heroImage}
   />
 
-  {/* Fase 2: na starttijd — email-gate direct na hero */}
+  {/* Fase 2: na starttijd - email-gate direct na hero */}
   {isPhase2 && !isArchived && (
     <ShowIntro introText={show.introText} />
   )}
@@ -234,7 +234,7 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
                 <div class="flex-1">
                   <span class="font-medium text-[var(--fg)]">{song.title}</span>
                   <span class="text-sm text-[var(--fg-muted)] ml-2">
-                    {song.isOriginal ? '(eigen)' : `— ${song.artist}`}
+                    {song.isOriginal ? '(eigen)' : `- ${song.artist}`}
                   </span>
                 </div>
                 {song.spotifyUrl && (

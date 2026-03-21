@@ -1,11 +1,11 @@
 /**
  * Dutch translations (default locale)
- * This is the source of truth — all keys must exist here.
+ * This is the source of truth. All keys must exist here.
  */
 const nl = {
   // ── Meta & SEO ──
   meta: {
-    siteDescription: 'Ed Struijlaart — singer-songwriter, theatermaker en podcastmaker. Bekend van Gitaarmannen, NPO Radio 2 en Make It On Your Own.',
+    siteDescription: 'Ed Struijlaart, singer-songwriter, theatermaker en podcastmaker. Bekend van Gitaarmannen, NPO Radio 2 en Make It On Your Own.',
     homeTitle: 'Ed Struijlaart | Singer-songwriter, Theatermaker & Podcastmaker',
     titleSuffix: 'Ed Struijlaart',
   },
@@ -121,8 +121,8 @@ const nl = {
   // ── Blog page ──
   blog: {
     title: 'Nieuws',
-    description: 'Nieuws, verhalen en updates van Ed Struijlaart — singer-songwriter, theatermaker en podcastmaker.',
-    subtitle: 'Verhalen, updates en aankondigingen — van nieuwe muziek tot theateravonturen.',
+    description: 'Nieuws, verhalen en updates van Ed Struijlaart. Singer-songwriter, theatermaker en podcastmaker.',
+    subtitle: 'Verhalen, updates en aankondigingen. Van nieuwe muziek tot theateravonturen.',
     readMore: 'Lees meer',
     post: 'bericht',
     posts: 'berichten',
@@ -134,7 +134,7 @@ const nl = {
   podcasts: {
     title: 'Podcasts',
     description: 'Gitaarmannen en Liedjesmensen: twee podcasts van Ed Struijlaart over gitaristen, songwriters en muzikanten. Met gasten als Tommy Emmanuel, Matteo Mancuso en Mark Lettieri. Luister op Spotify, Apple Podcasts en YouTube.',
-    subtitle: 'Gitaarmannen & Liedjesmensen — luister nu op Spotify, Apple Podcasts en YouTube',
+    subtitle: 'Gitaarmannen & Liedjesmensen. Luister nu op Spotify, Apple Podcasts en YouTube',
     youtubeTitle: 'Bekijk op YouTube',
     youtubeSubtitle: 'Alle afleveringen op video',
   },
@@ -144,7 +144,7 @@ const nl = {
     title: 'Shop',
     description: 'Shop van Ed Struijlaart. Video-opnames, muziek, CD\'s en Gitaarmannen merchandise.',
     subtitle: 'Video-opnames, muziek en merchandise',
-    intro: 'Van live-opnames tot Gitaarmannen plectrums — bestel direct en ontvang digitale producten per email. Veilig betalen via iDEAL, creditcard en meer.',
+    intro: 'Van live-opnames tot Gitaarmannen plectrums. Bestel direct en ontvang digitale producten per email. Veilig betalen via iDEAL, creditcard en meer.',
     digitalProducts: 'Digitale producten',
     cdVideo: 'CD + Video',
     merchandise: 'Merchandise',
@@ -192,7 +192,7 @@ const nl = {
     privateTitle: 'Privéconcert',
     privateText: 'Je boekt het concert voor een vaste prijs en nodigt je eigen gasten uit. Ideaal voor verjaardagen, jubilea of een avond met vrienden. Jij bepaalt wie er komt.',
     ticketTitle: 'Met ticketverkoop',
-    ticketText: 'Je verkoopt tickets aan je gasten en verdient zo het bedrag (deels) terug — of houdt er zelfs wat aan over. De ticketing loopt via mij en ik lever alles aan wat nodig is om het tot een succes te maken.',
+    ticketText: 'Je verkoopt tickets aan je gasten en verdient zo het bedrag (deels) terug, of houdt er zelfs wat aan over. De ticketing loopt via mij en ik lever alles aan wat nodig is om het tot een succes te maken.',
     popular: 'Populair',
     extrasLabel: 'Wat je erbij krijgt',
     extrasTitle: 'Meer dan alleen een concert',
@@ -235,16 +235,16 @@ const nl = {
     bookBadge: 'Nu boeken',
     concertFilmTitle: 'Gitaarmannen 3: John Mayer',
     concertFilmSubtitle: 'De Concertfilm',
-    concertFilmDesc: 'Beleef de theatervoorstelling thuis. De volledige show in Full HD audio en video — een concertfilm waarin de muziek van een gitarist die een generatie inspireert wordt geëerd.',
+    concertFilmDesc: 'Beleef de theatervoorstelling thuis. De volledige show in Full HD audio en video. Een concertfilm waarin de muziek van een gitarist die een generatie inspireert wordt geëerd.',
     concertFilmCta: 'Bestel de concertfilm',
     theaterTitle: 'Gitaarmannen 3',
     theaterSubtitle: 'John Mayer',
-    theaterDesc: 'In de derde editie van Gitaarmannen duik ik in het universum van John Mayer. Van de eerste blueslicks tot de inmiddels iconische songs — een avondvullend eerbetoon aan een van de grootste gitaristen van deze generatie.',
+    theaterDesc: 'In de derde editie van Gitaarmannen duik ik in het universum van John Mayer. Van de eerste blueslicks tot de inmiddels iconische songs. Een avondvullend eerbetoon aan een van de grootste gitaristen van deze generatie.',
     theaterCtaDates: 'Bekijk alle data',
     theaterCtaMore: 'Meer theater',
     houseTitle: 'Huiskamerconcert',
     houseSubtitle: 'Bij jou thuis',
-    houseDesc: 'Een intieme avond bij jou thuis, in de tuin of op locatie. Al meer dan 600 keer eerder gedaan — en iedere keer weer bijzonder. Eigen repertoire, covers en verhalen in een setting waar iedereen stil wordt.',
+    houseDesc: 'Een intieme avond bij jou thuis, in de tuin of op locatie. Al meer dan 600 keer eerder gedaan, en iedere keer weer bijzonder. Eigen repertoire, covers en verhalen in een setting waar iedereen stil wordt.',
     houseCta: 'Boek een huiskamerconcert',
   },
 

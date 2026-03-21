@@ -55,11 +55,11 @@ export const POST: APIRoute = async ({ request }) => {
     const isLinked = !!(recentShow?.bootlegUrl);
 
     if (isLinked) {
-      // Bootleg is gekoppeld — stuur bevestiging
+      // Bootleg is gekoppeld - stuur bevestiging
       await resend.emails.send({
         from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
         to: 'edstruijlaart@gmail.com',
-        subject: `✅ Bootleg geüpload — ${city}`,
+        subject: `✅ Bootleg geüpload, ${city}`,
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
             <h2 style="color: #B8860B; margin-bottom: 8px;">Bootleg ontvangen!</h2>
@@ -90,7 +90,7 @@ export const POST: APIRoute = async ({ request }) => {
         `,
       });
     } else {
-      // Bootleg NIET gekoppeld — stuur waarschuwing
+      // Bootleg NIET gekoppeld - stuur waarschuwing
       const showInfo = recentShow
         ? `Show gevonden (${recentShow.city}), maar bootlegUrl is leeg.`
         : 'Geen actieve show gevonden in Sanity.';
@@ -98,7 +98,7 @@ export const POST: APIRoute = async ({ request }) => {
       await resend.emails.send({
         from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
         to: 'edstruijlaart@gmail.com',
-        subject: `⚠️ Bootleg NIET gekoppeld — ${city}`,
+        subject: `⚠️ Bootleg NIET gekoppeld, ${city}`,
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
             <h2 style="color: #cc0000; margin-bottom: 8px;">⚠️ Bootleg niet gekoppeld!</h2>

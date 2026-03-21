@@ -133,7 +133,7 @@
     height: auto;
   }
 
-  /* Selection — gold branded */
+  /* Selection - gold branded */
   ::selection {
     background-color: rgba(184, 134, 11, 0.2);
     color: inherit;

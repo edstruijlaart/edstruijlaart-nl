@@ -5,7 +5,7 @@ import type { TranslationKeys } from './nl';
 
 const es: TranslationKeys = {
   meta: {
-    siteDescription: 'Ed Struijlaart — cantautor, creador de teatro y presentador de podcasts. Conocido por Gitaarmannen, la radio nacional holandesa (NPO Radio 2) y Make It On Your Own.',
+    siteDescription: 'Ed Struijlaart, cantautor, creador de teatro y presentador de podcasts. Conocido por Gitaarmannen, la radio nacional holandesa (NPO Radio 2) y Make It On Your Own.',
     homeTitle: 'Ed Struijlaart | Cantautor, Creador de Teatro y Presentador de Podcasts',
     titleSuffix: 'Ed Struijlaart',
   },
@@ -103,8 +103,8 @@ const es: TranslationKeys = {
   },
   blog: {
     title: 'Noticias',
-    description: 'Noticias, historias y novedades de Ed Struijlaart — cantautor, creador de teatro y presentador de podcasts.',
-    subtitle: 'Historias, novedades y anuncios — desde nueva música hasta aventuras teatrales.',
+    description: 'Noticias, historias y novedades de Ed Struijlaart. Cantautor, creador de teatro y presentador de podcasts.',
+    subtitle: 'Historias, novedades y anuncios. Desde nueva música hasta aventuras teatrales.',
     readMore: 'Leer más',
     post: 'publicación',
     posts: 'publicaciones',
@@ -114,7 +114,7 @@ const es: TranslationKeys = {
   podcasts: {
     title: 'Podcasts',
     description: 'Gitaarmannen y Liedjesmensen: dos podcasts de Ed Struijlaart sobre guitarristas, compositores y músicos. Con invitados como Tommy Emmanuel, Matteo Mancuso y Mark Lettieri. Escucha en Spotify, Apple Podcasts y YouTube.',
-    subtitle: 'Gitaarmannen & Liedjesmensen — escucha ahora en Spotify, Apple Podcasts y YouTube',
+    subtitle: 'Gitaarmannen & Liedjesmensen. Escucha ahora en Spotify, Apple Podcasts y YouTube',
     youtubeTitle: 'Ver en YouTube',
     youtubeSubtitle: 'Todos los episodios en video',
   },
@@ -122,7 +122,7 @@ const es: TranslationKeys = {
     title: 'Tienda',
     description: 'Tienda de Ed Struijlaart. Grabaciones de video, música, CDs y merchandising de Gitaarmannen.',
     subtitle: 'Grabaciones de video, música y merchandising',
-    intro: 'Desde grabaciones en vivo hasta púas de Gitaarmannen — pide directamente y recibe productos digitales por correo electrónico. Pago seguro con tarjeta de crédito y más.',
+    intro: 'Desde grabaciones en vivo hasta púas de Gitaarmannen. Pide directamente y recibe productos digitales por correo electrónico. Pago seguro con tarjeta de crédito y más.',
     digitalProducts: 'Productos digitales',
     cdVideo: 'CD + Video',
     merchandise: 'Merchandising',
@@ -210,16 +210,16 @@ const es: TranslationKeys = {
     bookBadge: 'Reservar ahora',
     concertFilmTitle: 'Gitaarmannen 3: John Mayer',
     concertFilmSubtitle: 'La Película del Concierto',
-    concertFilmDesc: 'Vive el espectáculo de teatro en casa. La actuación completa en audio y video Full HD — una película de concierto que rinde homenaje a la música de un guitarrista que inspiró a toda una generación.',
+    concertFilmDesc: 'Vive el espectáculo de teatro en casa. La actuación completa en audio y video Full HD. Una película de concierto que rinde homenaje a la música de un guitarrista que inspiró a toda una generación.',
     concertFilmCta: 'Pedir la película',
     theaterTitle: 'Gitaarmannen 3',
     theaterSubtitle: 'John Mayer',
-    theaterDesc: 'En la tercera edición de Gitaarmannen, me sumerjo en el universo de John Mayer. Desde los primeros licks de blues hasta las canciones ya icónicas — un homenaje de una noche completa a uno de los más grandes guitarristas de esta generación.',
+    theaterDesc: 'En la tercera edición de Gitaarmannen, me sumerjo en el universo de John Mayer. Desde los primeros licks de blues hasta las canciones ya icónicas. Un homenaje de una noche completa a uno de los más grandes guitarristas de esta generación.',
     theaterCtaDates: 'Ver todas las fechas',
     theaterCtaMore: 'Más teatro',
     houseTitle: 'Concierto en Casa',
     houseSubtitle: 'En tu hogar',
-    houseDesc: 'Una velada íntima en tu hogar, en el jardín o en un lugar especial. Más de 600 veces — y cada vez es especial. Repertorio propio, versiones e historias en un ambiente donde todos guardan silencio.',
+    houseDesc: 'Una velada íntima en tu hogar, en el jardín o en un lugar especial. Más de 600 veces, y cada vez es especial. Repertorio propio, versiones e historias en un ambiente donde todos guardan silencio.',
     houseCta: 'Reserva un concierto en casa',
   },
 

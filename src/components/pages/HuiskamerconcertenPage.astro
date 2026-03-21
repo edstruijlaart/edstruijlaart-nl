@@ -101,7 +101,7 @@ const t = useTranslations(locale);
   <section class="relative min-h-[60vh] flex items-end overflow-hidden">
     <Image
       src={heroImg}
-      alt="Ed Struijlaart speelt een huiskamerconcert — foto Esther Noordergraaf Fotografie"
+      alt="Ed Struijlaart speelt een huiskamerconcert, foto Esther Noordergraaf Fotografie"
       widths={[640, 1024, 1920]}
       sizes="100vw"
       class="absolute inset-0 w-full h-full object-cover object-[center_55%]"
@@ -153,7 +153,7 @@ const t = useTranslations(locale);
       <div class="relative rounded-2xl overflow-hidden" style="box-shadow: var(--shadow-card); aspect-ratio: 16/9;">
         <iframe
           src="https://www.youtube-nocookie.com/embed/luQq4YDNJ_c"
-          title="Hoe gaat een huiskamerconcert eraan toe? — Ed Struijlaart"
+          title="Hoe gaat een huiskamerconcert eraan toe? - Ed Struijlaart"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
           loading="lazy"
@@ -177,7 +177,7 @@ const t = useTranslations(locale);
         <button type="button" class="col-span-2 row-span-1 rounded-xl overflow-hidden cursor-pointer" data-lightbox="0" aria-label={t.common.enlargePhoto}>
           <Image
             src={hkSfeer02}
-            alt="Huiskamerconcert vanuit het publiek — warme sfeerverlichting, iedereen luistert aandachtig"
+            alt="Huiskamerconcert vanuit het publiek, warme sfeerverlichting, iedereen luistert aandachtig"
             widths={[400, 800, 1200]}
             sizes="(max-width: 768px) 100vw, 66vw"
             class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
@@ -188,7 +188,7 @@ const t = useTranslations(locale);
         <button type="button" class="col-span-1 row-span-2 rounded-xl overflow-hidden hidden md:block cursor-pointer" data-lightbox="1" aria-label={t.common.enlargePhoto}>
           <Image
             src={hkSfeer04}
-            alt="Ed Struijlaart speelt gitaar in een huiskamer — staand portret met publiek op de voorgrond"
+            alt="Ed Struijlaart speelt gitaar in een huiskamer, staand portret met publiek op de voorgrond"
             widths={[400, 800, 1200]}
             sizes="33vw"
             class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
@@ -224,7 +224,7 @@ const t = useTranslations(locale);
         <button type="button" class="col-span-1 md:col-span-2 rounded-xl overflow-hidden cursor-pointer" data-lightbox="4" aria-label={t.common.enlargePhoto}>
           <Image
             src={hkGroep01}
-            alt="Groepsfoto na een huiskamerconcert — publiek poseert samen met Ed"
+            alt="Groepsfoto na een huiskamerconcert, publiek poseert samen met Ed"
             widths={[400, 800, 1200]}
             sizes="(max-width: 768px) 50vw, 66vw"
             class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
@@ -235,7 +235,7 @@ const t = useTranslations(locale);
         <button type="button" class="col-span-1 rounded-xl overflow-hidden cursor-pointer" data-lightbox="5" aria-label={t.common.enlargePhoto}>
           <Image
             src={hkGroep02}
-            alt="Groepsfoto na een huiskamerconcert — gezellige groep in de huiskamer"
+            alt="Groepsfoto na een huiskamerconcert, gezellige groep in de huiskamer"
             widths={[400, 800, 1200]}
             sizes="(max-width: 768px) 50vw, 33vw"
             class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
@@ -433,7 +433,7 @@ const t = useTranslations(locale);
           { name: "Fabienne", city: "Kessel (België)", text: "TOPavond met een TOPmuzikant, zanger en verteller. We hingen van de eerste tot de laatste seconde aan zijn lippen." },
           { name: "Laura", city: "Den Haag", text: "Veel mensen kennen Ed omdat de meeste uit zijn geboorteplaats komen, dus zijn liedjes waren voor ons een feest der herkenning. Ook de covers waren erg leuk! Wij hebben genoten en zouden het zo weer doen. Echt een aanrader." },
           { name: "Ellen van Reenen", city: "De Meern", text: "Geweldig optreden, mooie liedjes en Ed kan leuk verhalen vertellen. Publiek was enthousiast. 2 keer gedaan en de 3e keer gaat zeker volgen!" },
-          { name: "Roel", city: "", text: "Vijftien jaar geleden een huiskamerconcert van Ed bijgewoond. Dat ik mij dat na al die jaren nog herinner is een groot compliment. Wat nog goed in mijn geheugen staat is de pure muziek — alleen de gitaar en de stem — maar ook de verhalen die Ed tussendoor vertelde." },
+          { name: "Roel", city: "", text: "Vijftien jaar geleden een huiskamerconcert van Ed bijgewoond. Dat ik mij dat na al die jaren nog herinner is een groot compliment. Wat nog goed in mijn geheugen staat is de pure muziek, alleen de gitaar en de stem, maar ook de verhalen die Ed tussendoor vertelde." },
         ].map((review) => (
           <div class="break-inside-avoid rounded-xl p-6 border" style="background-color: var(--bg-card); border-color: var(--border-subtle);">
             <div class="flex gap-0.5 mb-3">
@@ -446,7 +446,7 @@ const t = useTranslations(locale);
             <p class="text-[15px] leading-relaxed" style="color: var(--fg-base);">&ldquo;{review.text}&rdquo;</p>
             <p class="mt-4 text-sm font-medium">
               <span style="color: var(--color-gold);">{review.name}</span>
-              {review.city && <span style="color: var(--fg-muted);"> — {review.city}</span>}
+              {review.city && <span style="color: var(--fg-muted);"> - {review.city}</span>}
             </p>
           </div>
         ))}
