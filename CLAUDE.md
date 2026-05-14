@@ -100,7 +100,7 @@ Na WordPress → Astro migratie is de SEO volledig opgezet:
 2. **NOOIT** redirects in `vercel.json` verwijderen — Google indexeert oude URLs
 3. **Nederlands** voor alle UI-tekst
 4. **Mobile-first** altijd
-5. **Sanity** is single source of truth voor show data
+5. **`src/data/shows.ts`** is single source of truth voor de agenda (theatershows). Bandsintown/Songkick zijn syndicatie-kanalen, geen bron.
 6. **Geen credentials** in code of CLAUDE.md (repo is public!)
 7. Alle env vars via Vercel dashboard
 

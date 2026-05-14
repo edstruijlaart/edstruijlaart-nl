@@ -1,6 +1,5 @@
 ---
 import { shows as staticShows } from '../../data/shows';
-import { fetchBandsintownEvents } from '../../lib/bandsintown';
 import Button from '../ui/Button.astro';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 
@@ -13,14 +12,13 @@ interface Props {
 
 const { limit } = Astro.props;
 
-// Fetch live theater/festival shows, fall back to static data
-const bandsintownShows = await fetchBandsintownEvents();
+// Single source of truth: src/data/shows.ts
+// Geen externe afhankelijkheden (Bandsintown is alleen voor syndicatie naar Spotify/On Tour)
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
-let theaterShows = bandsintownShows.length > 0 ? bandsintownShows : staticShows;
-
-// Huiskamerconcerten zijn niet publiek zichtbaar in de agenda
-// (wel bereikbaar via directe link en edstruijlaart.nl/live)
-const shows = [...theaterShows]
+const shows = [...staticShows]
+  .filter(show => new Date(show.date) >= today)
   .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
 const displayShows = limit ? shows.slice(0, limit) : shows;
