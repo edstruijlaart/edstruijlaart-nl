@@ -1,7 +1,7 @@
 ---
-title: "Gitaarmannen 4: Continuum — vanaf september 2026 in het theater"
+title: "Gitaarmannen 4: Continuum, vanaf september 2026 in het theater"
 slug: "gitaarmannen-4-continuum-aangekondigd"
-date: "2026-05-16"
+date: "2026-05-15"
 excerpt: "In Gitaarmannen 4 pak ik het album dat een hele generatie gitaristen en muziekliefhebbers diep heeft beinvloed: Continuum. 20 jaar na het meesterwerk van John Mayer. 27 shows door heel Nederland, vanaf september 2026."
 featuredImage: "/images/news/gitaarmannen-4-continuum-aankondiging.jpg"
 ---
