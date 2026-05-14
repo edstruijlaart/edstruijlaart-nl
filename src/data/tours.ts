@@ -22,9 +22,10 @@ export const tours: Tour[] = [
     shortDescription: 'In Gitaarmannen 4 pakt Ed Struijlaart het album dat een hele generatie gitaristen en muziekliefhebbers diep heeft beinvloed: Continuum. 20 jaar na het meesterwerk van John Mayer.',
     description: [
       'In Gitaarmannen 4 pakt Ed Struijlaart het album dat een generatie gitaristen en muziekliefhebbers diep heeft beinvloed: Continuum. 20 jaar na het meesterwerk van John Mayer.',
-      'Het verhaal over het niet kunnen stoppen van de tijd. Over een mid-twintiger die erachter komt dat het leven hard is en je jeugd langzaam in de achteruitkijkspiegel verdwijnt. Het verhaal van een songwriter die ook gitarist is en met dit album eindelijk dat juk van mooiboy van zich afgooit en laat zien zoveel meer in huis te hebben.',
+      'Het verhaal over het niet kunnen stoppen van de tijd. Over een eind twintiger die erachter komt dat het leven hard is en je jeugd langzaam in de achteruitkijkspiegel verdwijnt. Het verhaal van een songwriter die ook gitarist is en met dit album eindelijk dat juk van mooiboy van zich afgooit en laat zien zoveel meer in huis te hebben.',
       'Een album dat tot op de dag van vandaag generaties gitaristen inspireert. Loop nu op een zaterdag een willekeurige gitaarwinkel binnen en je hoort geen Stairway to Heaven meer, maar Slow Dancing in a Burning Room.',
       'Dames en heren: Gitaarmannen 4: Continuum. 20 jaar John Mayers meesterwerk.',
+      'Geen tributeshow. Ed neemt de muziek van Continuum als uitgangspunt voor het verhaal achter de plaat. Wie waren de mensen die hem maakten? Wat dreef Mayer om afscheid te nemen van alles wat hem groot had gemaakt? En waarom klinken de vragen die hij in 2006 stelde vandaag nog net zo hard? Stop this train. Een avond die je anders laat kijken naar een album dat je dacht te kennen, met uniek beeldmateriaal en gesprekken met de mensen die er écht bij waren.',
     ],
     credits: 'Regie: Erris van Ginkel',
     posterImage: 'gitaarmannen-4-continuum-poster.png',
