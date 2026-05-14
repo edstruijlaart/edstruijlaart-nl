@@ -20,10 +20,8 @@ import heroPersfoto from '../../assets/photos/ed-struijlaart-persfoto-liggend.jp
 import heroKlokken from '../../assets/photos/ed-struijlaart-klokkenmaker.jpg';
 import aboutPhoto from '../../assets/photos/ed-struijlaart-spelend.jpg';
 
-// GM4 Continuum tour hero images
+// GM4 Continuum tour hero
 import gm4Backdrop from '../../assets/theater/gm4-hero/backdrop.jpg';
-import gm4Persfoto1 from '../../assets/theater/gm4-hero/persfoto-1.jpg';
-import gm4Persfoto2 from '../../assets/theater/gm4-hero/persfoto-2.jpg';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
@@ -34,27 +32,51 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=
 
 <BaseLayout title="Home" description={t.meta.siteDescription}>
   <Hero
-    title={t.home.heroTitle}
-    subtitle={t.home.heroSubtitle}
-    images={[heroStudio, heroKruk, heroPersfoto, heroKlokken]}
-    imagePositions={['center 40%', '30% center', '30% center', 'center center']}
     imageAlt="Ed Struijlaart"
     height="full"
-    ctaPrimary={{ label: t.home.ctaAgenda, href: localePath('/tour/', locale) }}
-    ctaSecondary={{ label: t.home.ctaBook, href: "https://boeken.edstruijlaart.nl" }}
-  />
-
-  {/* GM4 Continuum tour aankondiging */}
-  <Hero
-    tagline="Nieuwe theatertour"
-    title="Gitaarmannen 4: Continuum"
-    subtitle="20 jaar John Mayer's meesterwerk. 27 shows door heel Nederland, vanaf 24 september 2026."
-    images={[gm4Backdrop, gm4Persfoto1, gm4Persfoto2]}
-    imagePositions={['center 30%', 'center top', 'center 20%']}
-    imageAlt="Gitaarmannen 4: Continuum"
-    height="large"
-    ctaPrimary={{ label: "Alle data en tickets", href: "https://www.gitaarmannen.nl/continuum/" }}
-    ctaSecondary={{ label: "Lees het verhaal", href: localePath('/tour/gitaarmannen-4-continuum/', locale) }}
+    slides={[
+      {
+        image: gm4Backdrop,
+        imagePosition: 'center 30%',
+        tagline: 'Nieuwe theatertour',
+        title: 'Gitaarmannen 4: Continuum',
+        subtitle: "20 jaar John Mayer's meesterwerk. 27 shows door heel Nederland, vanaf 24 september 2026.",
+        ctaPrimary: { label: 'Alle data en tickets', href: 'https://www.gitaarmannen.nl/continuum/' },
+        ctaSecondary: { label: 'Lees het verhaal', href: localePath('/tour/gitaarmannen-4-continuum/', locale) },
+      },
+      {
+        image: heroStudio,
+        imagePosition: 'center 40%',
+        title: t.home.heroTitle,
+        subtitle: t.home.heroSubtitle,
+        ctaPrimary: { label: t.home.ctaAgenda, href: localePath('/tour/', locale) },
+        ctaSecondary: { label: t.home.ctaBook, href: 'https://boeken.edstruijlaart.nl' },
+      },
+      {
+        image: heroKruk,
+        imagePosition: '30% center',
+        title: t.home.heroTitle,
+        subtitle: t.home.heroSubtitle,
+        ctaPrimary: { label: t.home.ctaAgenda, href: localePath('/tour/', locale) },
+        ctaSecondary: { label: t.home.ctaBook, href: 'https://boeken.edstruijlaart.nl' },
+      },
+      {
+        image: heroPersfoto,
+        imagePosition: '30% center',
+        title: t.home.heroTitle,
+        subtitle: t.home.heroSubtitle,
+        ctaPrimary: { label: t.home.ctaAgenda, href: localePath('/tour/', locale) },
+        ctaSecondary: { label: t.home.ctaBook, href: 'https://boeken.edstruijlaart.nl' },
+      },
+      {
+        image: heroKlokken,
+        imagePosition: 'center center',
+        title: t.home.heroTitle,
+        subtitle: t.home.heroSubtitle,
+        ctaPrimary: { label: t.home.ctaAgenda, href: localePath('/tour/', locale) },
+        ctaSecondary: { label: t.home.ctaBook, href: 'https://boeken.edstruijlaart.nl' },
+      },
+    ]}
   />
 
   <section class="py-20 md:py-28 reveal-section">
