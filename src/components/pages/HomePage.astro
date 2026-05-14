@@ -15,9 +15,6 @@ import { localePath } from '../../i18n/config';
 
 // Hero images
 import heroStudio from '../../assets/photos/ed-struijlaart-studio-breed.jpg';
-import heroKruk from '../../assets/photos/ed-struijlaart-kruk-gitaar.jpg';
-import heroPersfoto from '../../assets/photos/ed-struijlaart-persfoto-liggend.jpg';
-import heroKlokken from '../../assets/photos/ed-struijlaart-klokkenmaker.jpg';
 import aboutPhoto from '../../assets/photos/ed-struijlaart-spelend.jpg';
 
 // GM4 Continuum tour hero
@@ -47,30 +44,6 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=
       {
         image: heroStudio,
         imagePosition: 'center 40%',
-        title: t.home.heroTitle,
-        subtitle: t.home.heroSubtitle,
-        ctaPrimary: { label: t.home.ctaAgenda, href: localePath('/tour/', locale) },
-        ctaSecondary: { label: t.home.ctaBook, href: 'https://boeken.edstruijlaart.nl' },
-      },
-      {
-        image: heroKruk,
-        imagePosition: '30% center',
-        title: t.home.heroTitle,
-        subtitle: t.home.heroSubtitle,
-        ctaPrimary: { label: t.home.ctaAgenda, href: localePath('/tour/', locale) },
-        ctaSecondary: { label: t.home.ctaBook, href: 'https://boeken.edstruijlaart.nl' },
-      },
-      {
-        image: heroPersfoto,
-        imagePosition: '30% center',
-        title: t.home.heroTitle,
-        subtitle: t.home.heroSubtitle,
-        ctaPrimary: { label: t.home.ctaAgenda, href: localePath('/tour/', locale) },
-        ctaSecondary: { label: t.home.ctaBook, href: 'https://boeken.edstruijlaart.nl' },
-      },
-      {
-        image: heroKlokken,
-        imagePosition: 'center center',
         title: t.home.heroTitle,
         subtitle: t.home.heroSubtitle,
         ctaPrimary: { label: t.home.ctaAgenda, href: localePath('/tour/', locale) },
