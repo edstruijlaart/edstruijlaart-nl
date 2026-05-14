@@ -105,7 +105,7 @@ const hasMultipleSlides = effectiveSlides.length > 1;
     <div
       class:list={[
         'hero-content absolute inset-0 z-10 flex items-end transition-opacity duration-1000',
-        i === 0 ? 'opacity-100' : 'opacity-0',
+        i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none',
       ]}
       data-content-index={i}
     >
@@ -183,7 +183,7 @@ const hasMultipleSlides = effectiveSlides.length > 1;
         slides[current].classList.remove('opacity-100');
         slides[current].classList.add('opacity-0');
         contents[current]?.classList.remove('opacity-100');
-        contents[current]?.classList.add('opacity-0');
+        contents[current]?.classList.add('opacity-0', 'pointer-events-none');
         dots[current].classList.remove('bg-white', 'w-6');
         dots[current].classList.add('bg-white/50');
 
@@ -191,7 +191,7 @@ const hasMultipleSlides = effectiveSlides.length > 1;
 
         slides[current].classList.remove('opacity-0');
         slides[current].classList.add('opacity-100');
-        contents[current]?.classList.remove('opacity-0');
+        contents[current]?.classList.remove('opacity-0', 'pointer-events-none');
         contents[current]?.classList.add('opacity-100');
         dots[current].classList.remove('bg-white/50');
         dots[current].classList.add('bg-white', 'w-6');
