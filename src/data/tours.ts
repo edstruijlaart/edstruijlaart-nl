@@ -15,6 +15,24 @@ export interface Tour {
 
 export const tours: Tour[] = [
   {
+    slug: 'gitaarmannen-4-continuum',
+    title: 'Gitaarmannen 4',
+    subtitle: 'Continuum',
+    year: '2026 - 2027',
+    shortDescription: 'In Gitaarmannen 4 pakt Ed Struijlaart het album dat een hele generatie gitaristen en muziekliefhebbers diep heeft beinvloed: Continuum. 20 jaar na het meesterwerk van John Mayer.',
+    description: [
+      'In Gitaarmannen 4 pakt Ed Struijlaart het album dat een generatie gitaristen en muziekliefhebbers diep heeft beinvloed: Continuum. 20 jaar na het meesterwerk van John Mayer.',
+      'Het verhaal over het niet kunnen stoppen van de tijd. Over een mid-twintiger die erachter komt dat het leven hard is en je jeugd langzaam in de achteruitkijkspiegel verdwijnt. Het verhaal van een songwriter die ook gitarist is en met dit album eindelijk dat juk van mooiboy van zich afgooit en laat zien zoveel meer in huis te hebben.',
+      'Een album dat tot op de dag van vandaag generaties gitaristen inspireert. Loop nu op een zaterdag een willekeurige gitaarwinkel binnen en je hoort geen Stairway to Heaven meer, maar Slow Dancing in a Burning Room.',
+      'Dames en heren: Gitaarmannen 4: Continuum. 20 jaar John Mayers meesterwerk.',
+    ],
+    credits: 'Regie: Erris van Ginkel',
+    posterImage: 'gitaarmannen-4-continuum-poster.png',
+    current: true,
+    setlist: [],
+    shopCta: { label: 'Alle data en tickets', href: 'https://www.gitaarmannen.nl/continuum/' },
+  },
+  {
     slug: 'gitaarmannen-3-john-mayer',
     title: 'Gitaarmannen 3',
     subtitle: 'John Mayer',
@@ -28,7 +46,7 @@ export const tours: Tour[] = [
     ],
     credits: 'Regie: Erris van Ginkel',
     posterImage: 'gitaarmannen-3-poster.png',
-    current: true,
+    current: false,
     setlist: [],
     spotifyPlaylistUri: '0XALcsmURQkFcLasrfOQZm',
     shopCta: { label: 'Bestel de concertfilm', href: '/shop/' },
