@@ -16,9 +16,11 @@ Continuum is een album dat tot op de dag van vandaag generaties gitaristen inspi
 
 Dames en heren: **Gitaarmannen 4: Continuum. 20 jaar John Mayers meesterwerk.**
 
-## Geen tributeshow
+## Geen standaard tribute
 
-Dit wordt geen tribute. Ik neem de muziek van Continuum als uitgangspunt voor het verhaal achter de plaat. Wie waren de mensen die hem maakten? Wat dreef Mayer om afscheid te nemen van alles wat hem groot had gemaakt? En waarom klinken de vragen die hij in 2006 stelde vandaag nog net zo hard? Stop this train. Een avond die je anders laat kijken naar een album dat je dacht te kennen, met uniek beeldmateriaal en gesprekken met de mensen die er écht bij waren.
+Het is een tribute, daar ben ik eerlijk in. Maar als je Gitaarmannen 1, 2 of 3 hebt gezien, weet je hoeveel werk we erin steken om je een echte muzikale ervaring te bieden. Geen coverband-avond. Een voorstelling.
+
+Ik neem de muziek van Continuum als uitgangspunt voor het verhaal achter de plaat. Wie waren de mensen die hem maakten? Wat dreef Mayer om afscheid te nemen van alles wat hem groot had gemaakt? En waarom klinken de vragen die hij in 2006 stelde vandaag nog net zo hard? Stop this train. Een avond die je anders laat kijken naar een album dat je dacht te kennen, met uniek beeldmateriaal en gesprekken met de mensen die er écht bij waren.
 
 ## 27 shows door heel Nederland
 
