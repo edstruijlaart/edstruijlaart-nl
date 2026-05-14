@@ -29,6 +29,8 @@ function formatDate(dateStr: string) {
   const month = date.toLocaleDateString('nl-NL', { month: 'short' }).toUpperCase();
   return { day, month };
 }
+
+const LISTMONK_FORM_URL = 'https://newsletter.earswantmusic.nl/subscription/form';
 ---
 
 {displayShows.length > 0 ? (
@@ -36,6 +38,7 @@ function formatDate(dateStr: string) {
     {displayShows.map(show => {
       const { day, month } = formatDate(show.date);
       const showUrl = show.isHuiskamerconcert && show.showPageUrl ? show.showPageUrl : undefined;
+      const hasInterestForm = !!show.listmonkUuid && !show.ticketUrl && !show.soldOut && !show.isHuiskamerconcert;
       return (
         <div
           class="show-item flex items-center gap-4 sm:gap-6 p-4 rounded-xl border-l-4 border-transparent hover:border-[var(--color-gold)] transition-all duration-300 hover:-translate-y-0.5"
@@ -79,6 +82,19 @@ function formatDate(dateStr: string) {
               <Button href={showUrl} variant="outline" size="sm">
                 Info
               </Button>
+            ) : hasInterestForm ? (
+              <button
+                type="button"
+                class="show-interest-btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border border-[var(--color-gold)]/60 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-white transition-all duration-200 cursor-pointer"
+                data-show-uuid={show.listmonkUuid}
+                data-show-venue={show.venue}
+                data-show-city={show.city}
+                data-show-date={show.date}
+                data-show-time={show.time || ''}
+              >
+                Hou me op de hoogte
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
             ) : null}
           </div>
         </div>
@@ -93,40 +109,12 @@ function formatDate(dateStr: string) {
       {t.showList.gm4Text}
     </p>
     <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-      <button
-        type="button"
-        id="open-newsletter-modal"
-        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-[var(--color-gold)] text-black hover:bg-[var(--color-gold)]/80 transition-all duration-200 cursor-pointer"
-      >
-        {t.showList.subscribe}
-      </button>
       <a
         href="/huiskamerconcerten/"
         class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-[var(--color-gold)]/60 text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-black transition-all duration-200"
       >
         {t.showList.bookHouseConcert}
       </a>
-    </div>
-
-    {/* Newsletter modal */}
-    <div id="newsletter-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background-color: rgba(0,0,0,0.7);">
-      <div class="relative w-full max-w-md rounded-2xl p-8" style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);">
-        <button type="button" id="close-newsletter-modal" class="absolute top-4 right-4 text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors text-xl leading-none cursor-pointer" aria-label="Sluiten">&times;</button>
-        <div class="newsletter-widget text-center">
-          <h3 class="font-[var(--font-display)] text-2xl">{t.showList.newsletterTitle}</h3>
-          <p class="mt-2 text-base text-[var(--fg-muted)]">
-            {t.showList.newsletterText}
-          </p>
-          <form class="newsletter-form flex flex-col sm:flex-row gap-3 mt-6 max-w-lg mx-auto">
-            <input type="text" name="name" placeholder="Je naam" autocomplete="name" class="flex-1 min-w-0 px-4 py-3 rounded-full text-base border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:border-transparent bg-[var(--bg)] border-[var(--bg-surface)] text-[var(--fg)] placeholder:text-[var(--fg-muted)]" />
-            <input type="email" name="email" placeholder="Je emailadres" required autocomplete="email" class="flex-1 min-w-0 px-4 py-3 rounded-full text-base border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:border-transparent bg-[var(--bg)] border-[var(--bg-surface)] text-[var(--fg)] placeholder:text-[var(--fg-muted)]" />
-            <button type="submit" class="flex-shrink-0 px-6 py-3 rounded-full font-medium text-base text-white transition-colors duration-300 bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:ring-offset-2">
-              Inschrijven
-            </button>
-          </form>
-          <p class="newsletter-message mt-3 text-sm min-h-[1.25rem] text-[var(--fg-muted)] text-center" aria-live="polite"></p>
-        </div>
-      </div>
     </div>
   </div>
 )}
@@ -138,6 +126,51 @@ function formatDate(dateStr: string) {
     </Button>
   </div>
 )}
+
+{/* Per-show interest modal (één modal, dynamisch gevuld) */}
+<div id="show-interest-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background-color: rgba(0,0,0,0.7);">
+  <div class="relative w-full max-w-md rounded-2xl p-8" style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);">
+    <button type="button" id="close-show-modal" class="absolute top-4 right-4 text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors text-xl leading-none cursor-pointer" aria-label="Sluiten">&times;</button>
+    <div id="show-modal-content" class="text-center">
+      <p class="text-xs uppercase tracking-widest text-[var(--color-gold)] font-medium mb-2" id="show-modal-eyebrow">Krijg een herinnering</p>
+      <h3 class="font-[var(--font-display)] text-2xl mb-1" id="show-modal-title"></h3>
+      <p class="text-sm text-[var(--fg-muted)] mb-1" id="show-modal-subtitle"></p>
+      <p class="text-base text-[var(--fg-muted)] mt-4 mb-6">
+        Laat je e-mailadres achter en je hoort het persoonlijk zodra de kaartverkoop voor deze show start, plus updates van Ed.
+      </p>
+      <form id="show-interest-form" class="flex flex-col gap-3" action={LISTMONK_FORM_URL} method="POST">
+        <input type="hidden" name="nonce" value="" />
+        <input type="hidden" name="l" id="show-modal-list" value="" />
+        <input
+          type="text"
+          name="name"
+          placeholder="Je naam"
+          autocomplete="name"
+          class="px-4 py-3 rounded-full text-base border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:border-transparent bg-[var(--bg)] border-[var(--bg-surface)] text-[var(--fg)] placeholder:text-[var(--fg-muted)]"
+        />
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="Je e-mailadres"
+          autocomplete="email"
+          class="px-4 py-3 rounded-full text-base border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:border-transparent bg-[var(--bg)] border-[var(--bg-surface)] text-[var(--fg)] placeholder:text-[var(--fg-muted)]"
+        />
+        <button type="submit" class="px-6 py-3 rounded-full font-medium text-base text-white transition-colors duration-300 bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:ring-offset-2">
+          Hou me op de hoogte
+        </button>
+        <p class="text-xs text-[var(--fg-muted)] mt-1">Geen spam. Alleen updates rond deze show.</p>
+      </form>
+      <div id="show-modal-success" class="hidden mt-2">
+        <div class="mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-3" style="background-color: var(--color-gold);">
+          <svg width="24" height="24" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <p class="font-medium">Je staat op de lijst</p>
+        <p class="text-sm text-[var(--fg-muted)] mt-1">Je hoort het zodra de kaartverkoop voor deze show start.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 {/* Event structured data voor SEO */}
 {shows.length > 0 && (
@@ -183,32 +216,79 @@ function formatDate(dateStr: string) {
 </style>
 
 <script>
-  function initNewsletterModal() {
-    const openBtn = document.getElementById('open-newsletter-modal');
-    const modal = document.getElementById('newsletter-modal');
-    const closeBtn = document.getElementById('close-newsletter-modal');
-    if (!openBtn || !modal || !closeBtn) return;
+  function initShowInterestModal() {
+    const modal = document.getElementById('show-interest-modal');
+    const closeBtn = document.getElementById('close-show-modal');
+    const titleEl = document.getElementById('show-modal-title');
+    const subtitleEl = document.getElementById('show-modal-subtitle');
+    const listInput = document.getElementById('show-modal-list') as HTMLInputElement | null;
+    const form = document.getElementById('show-interest-form') as HTMLFormElement | null;
+    const successEl = document.getElementById('show-modal-success');
+    if (!modal || !closeBtn || !titleEl || !subtitleEl || !listInput || !form || !successEl) return;
 
-    openBtn.addEventListener('click', () => {
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      modal.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
-    });
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.show-interest-btn');
+
+    function open(btn: HTMLButtonElement) {
+      const uuid = btn.dataset.showUuid || '';
+      const venue = btn.dataset.showVenue || '';
+      const city = btn.dataset.showCity || '';
+      const date = btn.dataset.showDate || '';
+      const time = btn.dataset.showTime || '';
+
+      const d = new Date(date);
+      const formatted = d.toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+      titleEl!.textContent = `${venue}, ${city}`;
+      subtitleEl!.textContent = time ? `${formatted} — ${time}` : formatted;
+      listInput!.value = uuid;
+
+      // reset states
+      form!.classList.remove('hidden');
+      successEl!.classList.add('hidden');
+
+      modal!.classList.remove('hidden');
+      modal!.classList.add('flex');
+      modal!.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
+    }
 
     function close() {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+      modal!.classList.add('hidden');
+      modal!.classList.remove('flex');
     }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => open(btn));
+    });
 
     closeBtn.addEventListener('click', close);
     modal.addEventListener('click', (e) => {
       if (e.target === modal) close();
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+      if (e.key === 'Escape' && !modal!.classList.contains('hidden')) close();
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = form!.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const fd = new FormData(form!);
+        await fetch(form!.action, { method: 'POST', body: fd, mode: 'no-cors' });
+        // Show success
+        form!.classList.add('hidden');
+        successEl!.classList.remove('hidden');
+        form!.reset();
+      } catch {
+        // Fallback: native submit
+        form!.submit();
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
     });
   }
 
-  initNewsletterModal();
-  document.addEventListener('astro:after-swap', initNewsletterModal);
+  initShowInterestModal();
+  document.addEventListener('astro:after-swap', initShowInterestModal);
 </script>
