@@ -1,0 +1,311 @@
+---
+export const prerender = false
+
+import BaseLayout from '../../layouts/BaseLayout.astro'
+
+const { editie } = Astro.params
+const SERENADE_API_URL = import.meta.env.SERENADE_API_URL
+
+let edition: any = null
+try {
+  const res = await fetch(`${SERENADE_API_URL}/api/editions/slug/${editie}`)
+  if (res.ok) edition = await res.json()
+} catch {}
+
+if (!edition || edition.status !== 'open') {
+  return Astro.redirect('/404')
+}
+
+const occasion_labels: Record<string, string> = {
+  moederdag: 'Moederdag',
+  vaderdag: 'Vaderdag',
+  valentijn: 'Valentijnsdag',
+  anders: 'Serenade',
+}
+const occasionLabel = occasion_labels[edition.occasion] ?? 'Serenade'
+const eventDate = new Date(edition.event_date).toLocaleDateString('nl-NL', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+})
+const mapsKey = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY
+---
+<BaseLayout
+  title={`Aanmelding ${edition.name}`}
+  description={`Meld je aan voor een serenade op ${occasionLabel}. Ed Struijlaart bezoekt jouw geliefde op ${eventDate}.`}
+>
+  <Fragment slot="head">
+    <script is:inline>window.initSerenadePlaces = function(){}</script>
+    {mapsKey && (
+      <script
+        is:inline
+        src={`https://maps.googleapis.com/maps/api/js?key=${mapsKey}&libraries=places&callback=initSerenadePlaces`}
+        async
+        defer
+      ></script>
+    )}
+  </Fragment>
+
+  <section class="py-24">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <p class="text-sm font-medium uppercase tracking-widest mb-3" style="color: var(--color-gold);">
+          Serenade · {occasionLabel}
+        </p>
+        <h1 class="text-4xl sm:text-5xl font-bold mb-4" style="font-family: var(--font-heading);">
+          {edition.name}
+        </h1>
+        <p class="text-lg" style="color: var(--fg-muted);">
+          Ed bezoekt jouw geliefde op <strong>{eventDate}</strong>
+        </p>
+      </div>
+
+      <div class="max-w-2xl mx-auto rounded-2xl p-8" style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);">
+        <form id="serenade-form" class="space-y-6" novalidate>
+          <input type="hidden" name="edition_id" value={edition.id} />
+
+          <!-- Over jou -->
+          <fieldset class="space-y-4">
+            <legend class="text-base font-semibold mb-3">Over jou</legend>
+            <div>
+              <label for="requester_name" class="block text-sm font-medium mb-1">Jouw naam</label>
+              <input id="requester_name" name="requester_name" type="text" required
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);" />
+            </div>
+            <div>
+              <label for="requester_email" class="block text-sm font-medium mb-1">E-mailadres</label>
+              <input id="requester_email" name="requester_email" type="email" required
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);" />
+            </div>
+            <div>
+              <label for="requester_phone" class="block text-sm font-medium mb-1">Telefoonnummer</label>
+              <input id="requester_phone" name="requester_phone" type="tel" required
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);" />
+            </div>
+          </fieldset>
+
+          <!-- Voor wie -->
+          <fieldset class="space-y-4">
+            <legend class="text-base font-semibold mb-3">Voor wie is de serenade?</legend>
+            <div>
+              <label for="recipient_name" class="block text-sm font-medium mb-1">Naam ontvanger</label>
+              <input id="recipient_name" name="recipient_name" type="text" required
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);" />
+            </div>
+            <div>
+              <label for="recipient_relation" class="block text-sm font-medium mb-1">
+                Relatie <span class="text-sm font-normal" style="color: var(--fg-muted);">(bijv. "mijn moeder")</span>
+              </label>
+              <input id="recipient_relation" name="recipient_relation" type="text" required
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);" />
+            </div>
+          </fieldset>
+
+          <!-- Adres -->
+          <fieldset class="space-y-4">
+            <legend class="text-base font-semibold mb-3">Adres</legend>
+            <div>
+              <label for="address-input" class="block text-sm font-medium mb-1">Adres</label>
+              <input id="address-input" name="address" type="text" required
+                placeholder="Begin te typen voor suggesties…"
+                autocomplete="off"
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);" />
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="postal-code" class="block text-sm font-medium mb-1">Postcode</label>
+                <input id="postal-code" name="postal_code" type="text" readonly required
+                  class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base"
+                  style="background-color: var(--bg); color: var(--fg); opacity: 0.7; cursor: default;" />
+              </div>
+              <div>
+                <label for="city" class="block text-sm font-medium mb-1">Plaats</label>
+                <input id="city" name="city" type="text" readonly required
+                  class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base"
+                  style="background-color: var(--bg); color: var(--fg); opacity: 0.7; cursor: default;" />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Wensen -->
+          <fieldset class="space-y-4">
+            <legend class="text-base font-semibold mb-3">
+              Wensen <span class="text-sm font-normal" style="color: var(--fg-muted);">(optioneel)</span>
+            </legend>
+            <div>
+              <label for="song_request" class="block text-sm font-medium mb-1">Liedverzoek</label>
+              <input id="song_request" name="song_request" type="text"
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);" />
+            </div>
+            <div>
+              <label for="personal_message" class="block text-sm font-medium mb-1">Persoonlijk bericht aan Ed</label>
+              <textarea id="personal_message" name="personal_message" rows="4"
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none resize-none"
+                style="background-color: var(--bg); color: var(--fg);"></textarea>
+            </div>
+            <div>
+              <label for="preferred_time_slot" class="block text-sm font-medium mb-1">Voorkeurstijdstip</label>
+              <select id="preferred_time_slot" name="preferred_time_slot"
+                class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                style="background-color: var(--bg); color: var(--fg);">
+                <option value="">Geen voorkeur</option>
+                <option value="ochtend">Ochtend</option>
+                <option value="middag">Middag</option>
+                <option value="avond">Avond</option>
+              </select>
+            </div>
+          </fieldset>
+
+          <!-- Zakelijk -->
+          <fieldset class="space-y-4">
+            <div class="flex items-center gap-3">
+              <input id="is-zakelijk" name="is_zakelijk" type="checkbox"
+                class="w-5 h-5 rounded accent-[var(--color-gold)]" />
+              <label for="is-zakelijk" class="text-sm font-medium">Zakelijke factuur gewenst</label>
+            </div>
+            <div id="zakelijk-fields" class="hidden space-y-4 pl-8">
+              <div>
+                <label for="bedrijfsnaam" class="block text-sm font-medium mb-1">Bedrijfsnaam</label>
+                <input id="bedrijfsnaam" name="bedrijfsnaam" type="text"
+                  class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                  style="background-color: var(--bg); color: var(--fg);" />
+              </div>
+              <div>
+                <label for="factuur_omschrijving" class="block text-sm font-medium mb-1">Omschrijving voor op factuur</label>
+                <input id="factuur_omschrijving" name="factuur_omschrijving" type="text"
+                  class="w-full px-4 py-3 rounded-lg border border-[var(--bg-surface)] text-base transition-colors duration-300 focus:border-[var(--color-gold)] focus:outline-none"
+                  style="background-color: var(--bg); color: var(--fg);" />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Voorwaarden -->
+          <div class="flex items-start gap-3">
+            <input id="terms" type="checkbox" required
+              class="w-5 h-5 mt-0.5 rounded accent-[var(--color-gold)]" />
+            <label for="terms" class="text-sm" style="color: var(--fg-muted);">
+              Ik ga akkoord met de voorwaarden. Ed bevestigt de serenade zodra de route is vastgesteld. Betaling volgt daarna.
+            </label>
+          </div>
+
+          <button type="submit"
+            class="w-full px-8 py-3 rounded-full font-medium text-base text-white transition-colors duration-300 bg-[var(--color-gold)] hover:bg-[var(--color-gold-light)] disabled:opacity-50 disabled:cursor-not-allowed">
+            Aanmelden voor de serenade →
+          </button>
+        </form>
+
+        <div id="serenade-success" class="hidden text-center py-8">
+          <p class="text-2xl font-bold mb-3" style="font-family: var(--font-heading);">Aanmelding ontvangen!</p>
+          <p style="color: var(--fg-muted);">Je ontvangt een bevestigingsmail. Ed neemt contact op zodra de route is vastgesteld.</p>
+        </div>
+        <div id="serenade-error" class="hidden mt-4 px-4 py-3 rounded-lg border"
+          style="background-color: color-mix(in srgb, var(--color-gold) 10%, var(--bg-surface)); border-color: var(--color-gold);">
+          <p id="serenade-error-msg" class="text-sm"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function() {
+      window.initSerenadePlaces = function() {
+        var input = document.getElementById('address-input');
+        if (!input || typeof google === 'undefined') return;
+        var autocomplete = new google.maps.places.Autocomplete(input, {
+          componentRestrictions: { country: 'nl' },
+          fields: ['formatted_address', 'address_components']
+        });
+        autocomplete.addListener('place_changed', function() {
+          var place = autocomplete.getPlace();
+          var postalCode = '', city = '';
+          (place.address_components || []).forEach(function(comp) {
+            if (comp.types.indexOf('postal_code') !== -1) postalCode = comp.long_name;
+            if (comp.types.indexOf('locality') !== -1) city = comp.long_name;
+          });
+          document.getElementById('postal-code').value = postalCode;
+          document.getElementById('city').value = city;
+          input.value = place.formatted_address || input.value;
+        });
+      };
+
+      if (typeof google !== 'undefined' && google.maps) window.initSerenadePlaces();
+
+      var form = document.getElementById('serenade-form');
+      if (!form || form.dataset.init) return;
+      form.dataset.init = '1';
+
+      var zakelijkCheck = document.getElementById('is-zakelijk');
+      var zakelijkFields = document.getElementById('zakelijk-fields');
+      if (zakelijkCheck && zakelijkFields) {
+        zakelijkCheck.addEventListener('change', function() {
+          zakelijkFields.classList.toggle('hidden', !zakelijkCheck.checked);
+        });
+      }
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        var btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Versturen…';
+
+        var fd = new FormData(form);
+        var body = {
+          edition_id: parseInt(fd.get('edition_id')),
+          requester_name: fd.get('requester_name'),
+          requester_email: fd.get('requester_email'),
+          requester_phone: fd.get('requester_phone'),
+          recipient_name: fd.get('recipient_name'),
+          recipient_relation: fd.get('recipient_relation'),
+          address: fd.get('address'),
+          city: fd.get('city'),
+          postal_code: fd.get('postal_code'),
+          song_request: fd.get('song_request') || null,
+          personal_message: fd.get('personal_message') || null,
+          preferred_time_slot: fd.get('preferred_time_slot') || null,
+          is_zakelijk: zakelijkCheck ? zakelijkCheck.checked : false,
+          bedrijfsnaam: fd.get('bedrijfsnaam') || null,
+          factuur_omschrijving: fd.get('factuur_omschrijving') || null,
+        };
+
+        if (!body.postal_code || !body.city) {
+          document.getElementById('serenade-error-msg').textContent =
+            'Selecteer een adres uit de lijst van suggesties.';
+          document.getElementById('serenade-error').classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = 'Aanmelden voor de serenade →';
+          return;
+        }
+
+        document.getElementById('serenade-error').classList.add('hidden');
+        try {
+          var res = await fetch('/api/serenade-register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+          if (res.ok) {
+            form.classList.add('hidden');
+            document.getElementById('serenade-success').classList.remove('hidden');
+          } else {
+            var data = await res.json();
+            document.getElementById('serenade-error-msg').textContent =
+              (data && data.detail) ? data.detail : 'Er is iets misgegaan.';
+            document.getElementById('serenade-error').classList.remove('hidden');
+            btn.disabled = false;
+            btn.textContent = 'Aanmelden voor de serenade →';
+          }
+        } catch {
+          document.getElementById('serenade-error-msg').textContent = 'Verbindingsfout.';
+          document.getElementById('serenade-error').classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = 'Aanmelden voor de serenade →';
+        }
+      });
+    })();
+  </script>
+</BaseLayout>

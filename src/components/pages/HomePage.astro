@@ -4,6 +4,7 @@ import Hero from '../ui/Hero.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 import HighlightCarousel from '../sections/HighlightCarousel.astro';
 import ShowList from '../sections/ShowList.astro';
+import TheaterProducties from '../sections/TheaterProducties.astro';
 import PodcastSection from '../sections/PodcastSection.astro';
 import SpotifyStrip from '../sections/SpotifyStrip.astro';
 import HuiskamerSection from '../sections/HuiskamerSection.astro';
@@ -62,6 +63,16 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
       <SectionHeading title={t.home.agendaTitle} subtitle={t.home.agendaSubtitle} />
       <ShowList limit={4} />
+    </div>
+  </section>
+
+  <section class="py-20 md:py-28 reveal-section">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading
+        title="Theaterproducties"
+        subtitle="Vier producties, meer dan 180 voorstellingen door heel Nederland"
+      />
+      <TheaterProducties />
     </div>
   </section>
 

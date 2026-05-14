@@ -15,7 +15,7 @@ const nl = {
     home: 'Home',
     about: 'Over Ed',
     podcasts: 'Podcasts',
-    theater: 'Theater',
+    theater: 'Agenda',
     houseConcerts: 'Huiskamerconcerten',
     voiceover: 'Voice-over',
     music: 'Muziek',
