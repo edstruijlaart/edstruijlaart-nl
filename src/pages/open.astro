@@ -14,18 +14,19 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Openen in Obsidian...</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e0e0e0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .redirect-wrapper { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e0e0e0; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 0; box-sizing: border-box; }
+    .redirect-wrapper *, .redirect-wrapper *::before, .redirect-wrapper *::after { margin: 0; padding: 0; box-sizing: border-box; }
     .card { text-align: center; padding: 40px; max-width: 400px; }
     .icon { font-size: 48px; margin-bottom: 16px; }
-    h1 { font-size: 20px; margin-bottom: 8px; color: #7c3aed; }
-    p { font-size: 14px; color: #888; margin-bottom: 20px; }
-    a { color: #7c3aed; text-decoration: none; font-weight: 600; }
-    a:hover { text-decoration: underline; }
+    .redirect-wrapper h1 { font-size: 20px; margin-bottom: 8px; color: #7c3aed; }
+    .redirect-wrapper p { font-size: 14px; color: #888; margin-bottom: 20px; }
+    .redirect-wrapper a { color: #7c3aed; text-decoration: none; font-weight: 600; }
+    .redirect-wrapper a:hover { text-decoration: underline; }
     .fallback { display: none; }
   </style>
 </head>
 <body>
+  <div class="redirect-wrapper">
   <div class="card">
     <div class="icon">📓</div>
     <h1>Openen in Obsidian...</h1>
@@ -60,5 +61,6 @@
       }, 2000);
     })();
   </script>
+  </div>
 </body>
 </html>
