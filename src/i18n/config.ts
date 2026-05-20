@@ -121,12 +121,71 @@ export function localePath(path: string, locale: Locale): string {
   return `${prefix}${cleanPath}`;
 }
 
-/** Get all alternate URLs for a path (for hreflang tags) */
+/**
+ * Build a registry of which routes exist per locale.
+ * Used by hreflang generation so we don't advertise pages that 404.
+ * Scanned at build time via import.meta.glob.
+ */
+const pageModules = import.meta.glob('/src/pages/**/*.astro');
+
+const localeRoutes: Record<Locale, Set<string>> = {
+  nl: new Set(),
+  en: new Set(),
+  es: new Set(),
+  de: new Set(),
+  fr: new Set(),
+};
+
+for (const fullPath of Object.keys(pageModules)) {
+  const m = fullPath.match(/^\/src\/pages\/(?:(en|es|de|fr)\/)?(.+)\.astro$/);
+  if (!m) continue;
+  const locale: Locale = (m[1] as Locale) || 'nl';
+  let route = '/' + m[2];
+  route = route.replace(/\/index$/, '');
+  if (!route) route = '/';
+  if (!route.endsWith('/')) route += '/';
+  localeRoutes[locale].add(route);
+}
+
+/**
+ * Check whether a canonical path (without locale prefix) has a page in `locale`.
+ * Supports dynamic routes: /news/my-post/ matches /news/[slug]/.
+ */
+export function pageExistsForLocale(canonicalPath: string, locale: Locale): boolean {
+  let path = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
+  if (!path.endsWith('/')) path += '/';
+
+  if (localeRoutes[locale].has(path)) return true;
+
+  // Try dynamic-route patterns by replacing each segment with [slug]
+  const segments = path.split('/').filter(Boolean);
+  for (let i = 0; i < segments.length; i++) {
+    const wildcard = '/' + [...segments.slice(0, i), '[slug]', ...segments.slice(i + 1)].join('/') + '/';
+    if (localeRoutes[locale].has(wildcard)) return true;
+  }
+
+  return false;
+}
+
+/**
+ * Build a user-facing href for `path` in `locale`. Falls back to the default
+ * locale's URL if the page does not exist in `locale` — prevents in-app links
+ * from leading to 404s for pages that are not (yet) translated.
+ */
+export function localizedHref(path: string, locale: Locale): string {
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  const target = pageExistsForLocale(cleanPath, locale) ? locale : defaultLocale;
+  return localePath(cleanPath, target);
+}
+
+/** Get alternate URLs for a path — only for locales where the page actually exists. */
 export function getAlternateUrls(path: string, site: string): { locale: Locale; href: string }[] {
   const base = site.endsWith('/') ? site.slice(0, -1) : site;
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return locales.map(locale => ({
-    locale,
-    href: `${base}${localePath(cleanPath, locale)}`,
-  }));
+  return locales
+    .filter(locale => pageExistsForLocale(cleanPath, locale))
+    .map(locale => ({
+      locale,
+      href: `${base}${localePath(cleanPath, locale)}`,
+    }));
 }

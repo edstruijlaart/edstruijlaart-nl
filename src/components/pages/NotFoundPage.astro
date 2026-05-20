@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../ui/Button.astro';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
-import { localePath } from '../../i18n/config';
+import { localizedHref } from '../../i18n/config';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
@@ -21,13 +21,13 @@ const t = useTranslations(locale);
         {t.notFound.description}
       </p>
       <div class="mt-10 flex flex-wrap justify-center gap-4">
-        <Button href={localePath('/', locale)} variant="primary">
+        <Button href={localizedHref('/', locale)} variant="primary">
           {t.notFound.goHome}
         </Button>
-        <Button href={localePath('/tour/', locale)} variant="outline">
+        <Button href={localizedHref('/tour/', locale)} variant="outline">
           {t.notFound.viewShows}
         </Button>
-        <Button href={localePath('/contact/', locale)} variant="outline">
+        <Button href={localizedHref('/contact/', locale)} variant="outline">
           {t.notFound.contact}
         </Button>
       </div>

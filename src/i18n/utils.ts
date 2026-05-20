@@ -2,7 +2,7 @@
  * i18n utility functions.
  * Used by pages and components to get translations and detect locale.
  */
-import { defaultLocale, locales, isValidLocale, type Locale } from './config';
+import { defaultLocale, locales, isValidLocale, localizedHref, type Locale } from './config';
 import { translations } from './translations';
 import type { TranslationKeys } from './translations/nl';
 
@@ -31,7 +31,9 @@ export function getPathWithoutLocale(pathname: string): string {
   const segments = pathname.split('/').filter(Boolean);
   const first = segments[0];
   if (first && isValidLocale(first) && first !== defaultLocale) {
-    return '/' + segments.slice(1).join('/') + (pathname.endsWith('/') ? '/' : '');
+    const rest = segments.slice(1).join('/');
+    if (!rest) return '/';
+    return '/' + rest + (pathname.endsWith('/') ? '/' : '');
   }
   return pathname;
 }
@@ -47,33 +49,35 @@ export function useTranslations(locale: Locale): TranslationKeys {
 
 /**
  * Get navigation items for a locale, with correct hrefs.
+ * Falls back to the default-locale URL for pages that are not translated,
+ * so nav links never lead to a 404.
  */
 export function getLocalizedNav(locale: Locale) {
   const t = useTranslations(locale);
-  const prefix = locale === defaultLocale ? '' : `/${locale}`;
+  const href = (path: string) => localizedHref(path, locale);
 
   return {
     mainNav: [
-      { label: t.nav.home, href: `${prefix}/` },
-      { label: t.nav.about, href: `${prefix}/about/` },
-      { label: t.nav.podcasts, href: `${prefix}/podcasts/` },
-      { label: t.nav.theater, href: `${prefix}/tour/` },
-      { label: t.nav.houseConcerts, href: `${prefix}/huiskamerconcerten/` },
-      { label: t.nav.voiceover, href: `${prefix}/voiceover/` },
-      { label: t.nav.music, href: `${prefix}/music/` },
-      { label: t.nav.blog, href: `${prefix}/blog/` },
-      { label: t.nav.contact, href: `${prefix}/contact/` },
-      { label: t.nav.shop, href: `${prefix}/shop/` },
+      { label: t.nav.home, href: href('/') },
+      { label: t.nav.about, href: href('/about/') },
+      { label: t.nav.podcasts, href: href('/podcasts/') },
+      { label: t.nav.theater, href: href('/tour/') },
+      { label: t.nav.houseConcerts, href: href('/huiskamerconcerten/') },
+      { label: t.nav.voiceover, href: href('/voiceover/') },
+      { label: t.nav.music, href: href('/music/') },
+      { label: t.nav.blog, href: href('/blog/') },
+      { label: t.nav.contact, href: href('/contact/') },
+      { label: t.nav.shop, href: href('/shop/') },
     ],
     footerNav: [
-      { label: t.nav.about, href: `${prefix}/about/` },
-      { label: t.nav.theater, href: `${prefix}/tour/` },
-      { label: t.nav.houseConcerts, href: `${prefix}/huiskamerconcerten/` },
-      { label: t.nav.music, href: `${prefix}/music/` },
-      { label: t.nav.voiceover, href: `${prefix}/voiceover/` },
-      { label: t.nav.podcasts, href: `${prefix}/podcasts/` },
-      { label: t.nav.blog, href: `${prefix}/blog/` },
-      { label: t.nav.contact, href: `${prefix}/contact/` },
+      { label: t.nav.about, href: href('/about/') },
+      { label: t.nav.theater, href: href('/tour/') },
+      { label: t.nav.houseConcerts, href: href('/huiskamerconcerten/') },
+      { label: t.nav.music, href: href('/music/') },
+      { label: t.nav.voiceover, href: href('/voiceover/') },
+      { label: t.nav.podcasts, href: href('/podcasts/') },
+      { label: t.nav.blog, href: href('/blog/') },
+      { label: t.nav.contact, href: href('/contact/') },
     ],
   };
 }
@@ -111,5 +115,7 @@ export {
   localeOgTag,
   getLocalePrefix,
   localePath,
+  localizedHref,
+  pageExistsForLocale,
   getAlternateUrls,
 } from './config';
