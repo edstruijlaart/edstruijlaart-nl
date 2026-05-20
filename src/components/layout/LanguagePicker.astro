@@ -4,7 +4,7 @@
  * opens dropdown with all available languages.
  * Sets a `lang` cookie on selection to persist choice.
  */
-import { locales, localeNames, defaultLocale, type Locale } from '../../i18n/config';
+import { locales, localeNames, defaultLocale, pageExistsForLocale, type Locale } from '../../i18n/config';
 import { getLocaleFromUrl, getPathWithoutLocale } from '../../i18n/utils';
 
 const currentLocale = getLocaleFromUrl(Astro.url);
@@ -19,8 +19,12 @@ const flags: Record<Locale, string> = {
   fr: '🇫🇷',
 };
 
-// Build href for each locale
+// Build href for each locale. If the current page doesn't exist in `locale`,
+// fall back to that locale's homepage so users don't land on a 404.
 function getLocaleHref(locale: Locale): string {
+  if (!pageExistsForLocale(currentPath, locale)) {
+    return locale === defaultLocale ? '/' : `/${locale}/`;
+  }
   if (locale === defaultLocale) return currentPath || '/';
   return `/${locale}${currentPath}`;
 }
