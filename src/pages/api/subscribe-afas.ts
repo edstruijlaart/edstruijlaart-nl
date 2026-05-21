@@ -83,12 +83,12 @@ export const POST: APIRoute = async ({ request }) => {
     const resend = new Resend(import.meta.env.RESEND_API_KEY);
     const voornaam = name.split(' ')[0] || '';
     await resend.emails.send({
-      from: 'Ed Struijlaart <ed@earswantmusic.nl>',
+      from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
       to: email,
       subject: 'Bedankt — morgen krijg je je cadeau',
       html: WELKOMSTMAIL_HTML(voornaam),
       text: WELKOMSTMAIL_TEXT(voornaam),
-      replyTo: 'ed@earswantmusic.nl',
+      replyTo: 'ed@edstruijlaart.nl',
     });
   } catch (err) {
     console.error('Resend welkomstmail failed', err);
