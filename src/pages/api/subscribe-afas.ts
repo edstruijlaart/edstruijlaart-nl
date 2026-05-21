@@ -7,6 +7,22 @@ const LISTMONK_URL = 'https://newsletter.earswantmusic.nl/api/public/subscriptio
 const LIST_AFAS_UUID = 'a7cfd890-5787-41b2-ae0e-5f91a5b94341';
 const LIST_NIEUWSBRIEF_UUID = '681b5ef7-29cc-4be5-a0c7-6d8453f26cc8';
 
+const SOCIALS = [
+  { name: 'Instagram', handle: '@edstruijlaart', url: 'https://instagram.com/edstruijlaart', icon: 'https://cdn.earswantmusic.nl/icons/instagram.png' },
+  { name: 'YouTube', handle: '@edstruijlaart', url: 'https://youtube.com/@edstruijlaart', icon: 'https://cdn.earswantmusic.nl/icons/youtube.png' },
+  { name: 'Spotify', handle: 'Ed Struijlaart', url: 'https://open.spotify.com/artist/08cpwYrPWo8Xkxl9qdiDP2', icon: 'https://cdn.earswantmusic.nl/icons/spotify.png' },
+];
+
+const SOCIAL_ROWS_HTML = SOCIALS.map(s => `
+            <tr>
+              <td style="padding:6px 0;vertical-align:middle;">
+                <a href="${s.url}" style="display:inline-block;text-decoration:none;color:#1a1a1a;">
+                  <img src="${s.icon}" width="22" height="22" alt="${s.name}" style="vertical-align:middle;margin-right:12px;border:0;" />
+                  <span style="vertical-align:middle;font-size:15px;color:#1a1a1a;">${s.handle}</span>
+                </a>
+              </td>
+            </tr>`).join('');
+
 const WELKOMSTMAIL_HTML = (voornaam: string) => `<!doctype html>
 <html lang="nl">
 <body style="margin:0;padding:0;background:#f5f5f3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#1a1a1a;">
@@ -16,10 +32,14 @@ const WELKOMSTMAIL_HTML = (voornaam: string) => `<!doctype html>
         <tr><td>
           <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Hé${voornaam ? ' ' + voornaam : ''},</p>
           <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Top dat je vanavond in de AFAS Live was, en bedankt voor het scannen.</p>
-          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Morgen (zondag) stuur ik je de link naar mijn complete theatershow <strong>Gitaarmannen 2: Eric Clapton Unplugged</strong>. Anderhalf uur Eric Clapton's Unplugged-album in mijn versie, live opgenomen in het theater.</p>
-          <p style="margin:0 0 32px;font-size:16px;line-height:1.6;">Tot dan!</p>
-          <p style="margin:0 0 32px;font-size:16px;line-height:1.6;">Ed</p>
-          <hr style="border:none;border-top:1px solid #e5e5e3;margin:24px 0;" />
+          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Morgen (zondag) stuur ik je de exclusieve download.</p>
+          <p style="margin:0 0 12px;font-size:16px;line-height:1.6;">In de tussentijd kan je me alvast volgen op mijn socials:</p>
+          <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
+${SOCIAL_ROWS_HTML}
+          </table>
+          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Tot morgen!</p>
+          <p style="margin:0;font-size:16px;line-height:1.6;">Ed</p>
+          <hr style="border:none;border-top:1px solid #e5e5e3;margin:32px 0 24px;" />
           <p style="margin:0;font-size:14px;line-height:1.5;color:#666;">PS — In oktober ga ik op tour met <strong>Gitaarmannen 4: Continuum</strong>, een avond over John Mayer's gelijknamige album. Speelt 'ie ook bij jou in de buurt? <a href="https://gitaarmannen.nl/continuum" style="color:#00aacc;text-decoration:none;">Bekijk de tourdata →</a></p>
         </td></tr>
       </table>
@@ -33,10 +53,12 @@ const WELKOMSTMAIL_TEXT = (voornaam: string) => `Hé${voornaam ? ' ' + voornaam 
 
 Top dat je vanavond in de AFAS Live was, en bedankt voor het scannen.
 
-Morgen (zondag) stuur ik je de link naar mijn complete theatershow Gitaarmannen 2: Eric Clapton Unplugged. Anderhalf uur Eric Clapton's Unplugged-album in mijn versie, live opgenomen in het theater.
+Morgen (zondag) stuur ik je de exclusieve download.
 
-Tot dan!
+In de tussentijd kan je me alvast volgen op mijn socials:
+${SOCIALS.map(s => `- ${s.name}: ${s.url}`).join('\n')}
 
+Tot morgen!
 Ed
 
 PS — In oktober ga ik op tour met Gitaarmannen 4: Continuum, een avond over John Mayer's gelijknamige album. Speelt 'ie ook bij jou in de buurt? Bekijk de tourdata op https://gitaarmannen.nl/continuum
