@@ -70,6 +70,7 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
   title={pageTitle}
   description={pageDescription}
   type="article"
+  noIndex={true}
 >
   {/* JSON-LD: Event structured data */}
   <script type="application/ld+json" slot="head" set:html={JSON.stringify({
