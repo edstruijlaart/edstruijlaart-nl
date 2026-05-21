@@ -3,12 +3,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../ui/Hero.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 import HighlightCarousel from '../sections/HighlightCarousel.astro';
+import FeaturedNews from '../sections/FeaturedNews.astro';
 import ShowList from '../sections/ShowList.astro';
 import TheaterProducties from '../sections/TheaterProducties.astro';
 import PodcastSection from '../sections/PodcastSection.astro';
 import SpotifyStrip from '../sections/SpotifyStrip.astro';
 import HuiskamerSection from '../sections/HuiskamerSection.astro';
-import BlogGrid from '../sections/BlogGrid.astro';
 import NewsletterForm from '../sections/NewsletterForm.astro';
 import { Image } from 'astro:assets';
 import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
@@ -52,6 +52,21 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=
       },
     ]}
   />
+
+  <section class="py-20 md:py-28 reveal-section" style="background-color: var(--bg-surface);">
+    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+      <SectionHeading title={t.home.newsTitle} subtitle={t.home.newsSubtitle} />
+      <FeaturedNews />
+      <div class="mt-12 text-center">
+        <a
+          href={localizedHref('/blog/', locale)}
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-base border-2 border-[var(--color-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-white transition-all duration-300"
+        >
+          {t.blogGrid.viewAll}
+        </a>
+      </div>
+    </div>
+  </section>
 
   <section class="py-20 md:py-28 reveal-section">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
@@ -123,13 +138,6 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=
           />
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="py-20 md:py-28 reveal-section">
-    <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-      <SectionHeading title={t.home.newsTitle} subtitle={t.home.newsSubtitle} />
-      <BlogGrid limit={3} />
     </div>
   </section>
 

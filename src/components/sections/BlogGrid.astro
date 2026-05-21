@@ -6,10 +6,11 @@ import { getLocaleFromUrl, useTranslations } from '../../i18n/utils';
 
 interface Props {
   limit?: number;
+  skip?: number;
   showMore?: boolean;
 }
 
-const { limit = 3, showMore = true } = Astro.props;
+const { limit = 3, skip = 0, showMore = true } = Astro.props;
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
@@ -24,7 +25,7 @@ const sortedPosts = allPosts.sort((a, b) => {
   return dateB - dateA;
 });
 
-const displayPosts = sortedPosts.slice(0, limit);
+const displayPosts = sortedPosts.slice(skip, skip + limit);
 
 // Format date helper
 function formatDate(dateStr?: string): string {
