@@ -8,6 +8,7 @@ const newsSchema = z.object({
   featuredImage: z.string().optional(),
   excerpt: z.string().optional(),
   originalUrl: z.string().optional(),
+  youtubeId: z.string().optional(),
 });
 
 const news = defineCollection({

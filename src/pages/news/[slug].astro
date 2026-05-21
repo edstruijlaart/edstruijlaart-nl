@@ -44,6 +44,23 @@ const formattedDate = formatDate(post.data.date, 'nl');
       ...(post.data.excerpt ? { "description": post.data.excerpt } : {}),
       ...(post.data.featuredImage ? { "image": `https://edstruijlaart.nl${post.data.featuredImage}` } : {})
     })} />
+    {post.data.youtubeId && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": post.data.title,
+        "description": post.data.excerpt || post.data.title,
+        "thumbnailUrl": `https://i.ytimg.com/vi/${post.data.youtubeId}/maxresdefault.jpg`,
+        ...(post.data.date ? { "uploadDate": new Date(post.data.date).toISOString() } : {}),
+        "contentUrl": `https://www.youtube.com/watch?v=${post.data.youtubeId}`,
+        "embedUrl": `https://www.youtube-nocookie.com/embed/${post.data.youtubeId}`,
+        "publisher": {
+          "@type": "Person",
+          "name": "Ed Struijlaart",
+          "url": "https://edstruijlaart.nl"
+        }
+      })} />
+    )}
   </Fragment>
   <article class="py-24">
     <div class="mx-auto max-w-[800px] px-4 sm:px-6 lg:px-8">
