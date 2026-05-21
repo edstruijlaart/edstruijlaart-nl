@@ -37,11 +37,11 @@ const WELKOMSTMAIL_HTML = (voornaam: string) => `<!doctype html>
           <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
 ${SOCIAL_ROWS_HTML}
           </table>
-          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Heb je vanavond foto's of filmpjes gemaakt? Tag me met <strong>@edstruijlaart</strong> of gebruik <strong>#gitaarmannen</strong> — ik zie ze graag voorbij komen.</p>
+          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Heb je vanavond foto's of filmpjes gemaakt? Tag me met <strong>@edstruijlaart</strong> of gebruik <strong>#gitaarmannen</strong>. Ik zie ze graag voorbij komen.</p>
           <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Tot morgen!</p>
           <p style="margin:0;font-size:16px;line-height:1.6;">Ed</p>
           <hr style="border:none;border-top:1px solid #e5e5e3;margin:32px 0 24px;" />
-          <p style="margin:0;font-size:14px;line-height:1.5;color:#666;">PS — In oktober ga ik op tour met <strong>Gitaarmannen 4: Continuum</strong>, een avond over John Mayer's gelijknamige album. Speelt 'ie ook bij jou in de buurt? <a href="https://gitaarmannen.nl/continuum" style="color:#00aacc;text-decoration:none;">Bekijk de tourdata →</a></p>
+          <p style="margin:0;font-size:14px;line-height:1.5;color:#666;">PS: In oktober ga ik op tour met <strong>Gitaarmannen 4: Continuum</strong>, een avond over John Mayer's gelijknamige album. Speelt 'ie ook bij jou in de buurt? <a href="https://gitaarmannen.nl/continuum" style="color:#00aacc;text-decoration:none;">Bekijk de tourdata →</a></p>
         </td></tr>
       </table>
       <p style="margin:24px 0 0;font-size:12px;color:#999;">Je krijgt deze mail omdat je je hebt aangemeld via edstruijlaart.nl/afas.</p>
@@ -59,12 +59,12 @@ Morgen (zondag) stuur ik je de exclusieve download.
 In de tussentijd kan je me alvast volgen op mijn socials:
 ${SOCIALS.map(s => `- ${s.name}: ${s.url}`).join('\n')}
 
-Heb je vanavond foto's of filmpjes gemaakt? Tag me met @edstruijlaart of gebruik #gitaarmannen — ik zie ze graag voorbij komen.
+Heb je vanavond foto's of filmpjes gemaakt? Tag me met @edstruijlaart of gebruik #gitaarmannen. Ik zie ze graag voorbij komen.
 
 Tot morgen!
 Ed
 
-PS — In oktober ga ik op tour met Gitaarmannen 4: Continuum, een avond over John Mayer's gelijknamige album. Speelt 'ie ook bij jou in de buurt? Bekijk de tourdata op https://gitaarmannen.nl/continuum
+PS: In oktober ga ik op tour met Gitaarmannen 4: Continuum, een avond over John Mayer's gelijknamige album. Speelt 'ie ook bij jou in de buurt? Bekijk de tourdata op https://gitaarmannen.nl/continuum
 `;
 
 export const POST: APIRoute = async ({ request }) => {
@@ -110,7 +110,7 @@ export const POST: APIRoute = async ({ request }) => {
     await resend.emails.send({
       from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
       to: email,
-      subject: 'Bedankt — morgen krijg je je cadeau',
+      subject: 'Bedankt, morgen krijg je je cadeau',
       html: WELKOMSTMAIL_HTML(voornaam),
       text: WELKOMSTMAIL_TEXT(voornaam),
       replyTo: 'ed@edstruijlaart.nl',
