@@ -30,7 +30,7 @@ const WELKOMSTMAIL_HTML = (voornaam: string) => `<!doctype html>
     <tr><td align="center">
       <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:560px;background:#ffffff;border-radius:8px;padding:40px 32px;">
         <tr><td>
-          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Hé${voornaam ? ' ' + voornaam : ''},</p>
+          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Hoi${voornaam ? ' ' + voornaam : ''},</p>
           <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Top dat je vanavond in de AFAS Live was, en bedankt voor het scannen.</p>
           <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Morgen (zondag) stuur ik je de exclusieve download.</p>
           <p style="margin:0 0 12px;font-size:16px;line-height:1.6;">In de tussentijd kan je me alvast volgen op mijn socials:</p>
@@ -50,7 +50,7 @@ ${SOCIAL_ROWS_HTML}
 </body>
 </html>`;
 
-const WELKOMSTMAIL_TEXT = (voornaam: string) => `Hé${voornaam ? ' ' + voornaam : ''},
+const WELKOMSTMAIL_TEXT = (voornaam: string) => `Hoi${voornaam ? ' ' + voornaam : ''},
 
 Top dat je vanavond in de AFAS Live was, en bedankt voor het scannen.
 
