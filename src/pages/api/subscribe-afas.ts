@@ -37,6 +37,7 @@ const WELKOMSTMAIL_HTML = (voornaam: string) => `<!doctype html>
           <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
 ${SOCIAL_ROWS_HTML}
           </table>
+          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Heb je vanavond foto's of filmpjes gemaakt? Tag me met <strong>@edstruijlaart</strong> of gebruik <strong>#gitaarmannen</strong> — ik zie ze graag voorbij komen.</p>
           <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Tot morgen!</p>
           <p style="margin:0;font-size:16px;line-height:1.6;">Ed</p>
           <hr style="border:none;border-top:1px solid #e5e5e3;margin:32px 0 24px;" />
@@ -57,6 +58,8 @@ Morgen (zondag) stuur ik je de exclusieve download.
 
 In de tussentijd kan je me alvast volgen op mijn socials:
 ${SOCIALS.map(s => `- ${s.name}: ${s.url}`).join('\n')}
+
+Heb je vanavond foto's of filmpjes gemaakt? Tag me met @edstruijlaart of gebruik #gitaarmannen — ik zie ze graag voorbij komen.
 
 Tot morgen!
 Ed
