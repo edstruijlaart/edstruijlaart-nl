@@ -40,7 +40,7 @@ export const shows: Show[] = [
   { date: "2027-01-15", time: "20:00", venue: "Ledeltheater", city: "Oostburg", production: "Gitaarmannen 4: Continuum", listmonkUuid: "26c6945a-d7e6-409b-8d71-b64585fc54eb" },
   { date: "2027-01-16", time: "20:30", venue: "BREStheater", city: "Brielle", ticketUrl: "https://brestheater.nl/voorstelling/edstruijlaart/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "fa0c3fb5-49ee-4e0e-bf02-2366a3852b6a" },
   { date: "2027-01-23", time: "20:30", venue: "Theater de Meerpaal", city: "Dronten", ticketUrl: "https://www.meerpaal.nl/agenda/ed-struijlaart-gitaarmannen-4-continuum-20-jaar-john-mayers-meesterwerk", production: "Gitaarmannen 4: Continuum", listmonkUuid: "cf65097d-2c71-44fe-9120-114dc7ae69dc" },
-  { date: "2027-01-29", time: "20:15", venue: "Cultuurcentrum van Beresteyn", city: "Veendam", production: "Gitaarmannen 4: Continuum", listmonkUuid: "1880216e-fcee-43a0-8fcc-f0f5f79bda55" },
+  { date: "2027-01-29", time: "20:15", venue: "Cultuurcentrum van Beresteyn", city: "Veendam", ticketUrl: "https://www.vanberesteyn.nl/programma/ed-struijlaart/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "1880216e-fcee-43a0-8fcc-f0f5f79bda55" },
   { date: "2027-02-05", time: "20:00", venue: "Cultureel Centrum Bullekerk", city: "Zaandam", ticketUrl: "https://bullekerk.nl/agenda/ed-struijlaart-gitaarmannen-4-continuum/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "b6ac3a7d-9d1d-456e-a3de-ed1a346b236b" },
   { date: "2027-03-12", time: "20:00", venue: "Activiteitencentrum Het Punt", city: "Vroomshoop", production: "Gitaarmannen 4: Continuum", listmonkUuid: "e240cbd8-7d37-4e7b-9794-58ddea3934b3" },
 ];
