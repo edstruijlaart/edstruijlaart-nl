@@ -26,7 +26,7 @@ function html(voornaam: string) {
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#f5f5f3;padding:32px 16px;"><tr><td align="center">
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:560px;background:#ffffff;border-radius:8px;padding:40px 32px;"><tr><td>
 <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">${groet}</p>
-<p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Wat fijn dat je vorige week zaterdag in de AFAS Live was bij de Gipsy Kings, en bedankt nog dat je toen mijn QR scande. Hier is je cadeau, in twee smaken:</p>
+<p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Wat fijn dat je zaterdag in de AFAS Live was bij de Gipsy Kings, en bedankt nog dat je toen mijn QR scande. Hier is je cadeau, in twee smaken:</p>
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;">
   <tr><td style="padding:0 0 14px;">
     <a href="${YOUTUBE_URL}" style="display:block;background:#0e0e0d;color:#ffffff;text-decoration:none;padding:18px 22px;border-radius:6px;font-weight:600;font-size:16px;text-align:center;">
@@ -53,7 +53,7 @@ function text(voornaam: string) {
   const groet = voornaam ? `Hoi ${voornaam},` : "Hoi,";
   return `${groet}
 
-Wat fijn dat je vorige week zaterdag in de AFAS Live was bij de Gipsy Kings, en bedankt nog dat je toen mijn QR scande. Hier is je cadeau, in twee smaken:
+Wat fijn dat je zaterdag in de AFAS Live was bij de Gipsy Kings, en bedankt nog dat je toen mijn QR scande. Hier is je cadeau, in twee smaken:
 
 Bekijk het hele concert op YouTube:
 ${YOUTUBE_URL}
