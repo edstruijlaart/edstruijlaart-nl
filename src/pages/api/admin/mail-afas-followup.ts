@@ -28,7 +28,7 @@ function html(voornaam: string) {
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#f5f5f3;padding:32px 16px;"><tr><td align="center">
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:560px;background:#ffffff;border-radius:8px;padding:40px 32px;"><tr><td>
 <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">${groet}</p>
-<p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Wat fijn dat je zaterdag in de AFAS Live was bij de Gipsy Kings, en bedankt nog dat je toen mijn QR scande. Hier is je cadeau, in twee smaken:</p>
+<p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Wat fijn dat je zaterdag in de AFAS Live was bij de Gipsy Kings, en bedankt nog dat je tijdens mijn voorprogramma de QR scande. Hier is je cadeau, in twee smaken:</p>
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;">
   <tr><td style="padding:0 0 14px;">
     <a href="${YOUTUBE_URL}" style="display:block;background:#0e0e0d;color:#ffffff;text-decoration:none;padding:18px 22px;border-radius:6px;font-weight:600;font-size:16px;text-align:center;">
@@ -42,7 +42,7 @@ function html(voornaam: string) {
   </td></tr>
 </table>
 <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#666;">De video staat onzichtbaar (alleen via deze link te vinden), dus voel je vrij om hem te delen met wie er ook bij was. De MP3-zip pakt na downloaden alle 6 nummers uit: van Aint No Sunshine tot Gravity.</p>
-<p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Najaar 2026 ga ik op tour met <strong>Gitaarmannen 4: Continuum</strong>, een avond rond John Mayer's gelijknamige album. Slow Dancing en Gravity zitten beide op die avond. <a href="https://gitaarmannen.nl/continuum" style="color:#00aacc;text-decoration:none;">Bekijk of ik bij jou in de buurt speel</a>.</p>
+<p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Zaterdag speelden we <em>Slow Dancing in a Burning Room</em> en <em>Gravity</em>. Twee nummers van John Mayer's iconische album <em>Continuum</em> uit 2006. Net als <em>Waiting on the World to Change</em> en <em>Stop This Train</em>. Al deze songs en de verhalen erachter komen voorbij tijdens <strong>Gitaarmannen 4: Continuum</strong>, een speciale theater-muziekavond die ik dit najaar door het land breng. <a href="https://gitaarmannen.nl/continuum" style="color:#00aacc;text-decoration:none;">Bekijk of ik bij jou in de buurt speel</a>.</p>
 
 <p style="margin:0 0 14px;font-size:16px;line-height:1.6;">Trouwens, vorige week was ik te gast bij <strong>Jan-Willem Ruimt Op</strong> om over de beste gitaarsolo's te praten en <em>All Along the Watchtower</em> te spelen met Leif de Leeuw:</p>
 <a href="https://www.youtube.com/watch?v=ca1mM9eaPEI" style="display:block;text-decoration:none;margin:0 0 28px;">
@@ -61,7 +61,7 @@ function text(voornaam: string) {
   const groet = voornaam ? `Hoi ${voornaam},` : "Hoi,";
   return `${groet}
 
-Wat fijn dat je zaterdag in de AFAS Live was bij de Gipsy Kings, en bedankt nog dat je toen mijn QR scande. Hier is je cadeau, in twee smaken:
+Wat fijn dat je zaterdag in de AFAS Live was bij de Gipsy Kings, en bedankt nog dat je tijdens mijn voorprogramma de QR scande. Hier is je cadeau, in twee smaken:
 
 Bekijk het hele concert op YouTube:
 ${YOUTUBE_URL}
@@ -71,7 +71,7 @@ ${MP3_URL}
 
 De video staat onzichtbaar (alleen via deze link te vinden), dus voel je vrij om hem te delen met wie er ook bij was. De MP3-zip pakt na downloaden alle 6 nummers uit: van Aint No Sunshine tot Gravity.
 
-Najaar 2026 ga ik op tour met Gitaarmannen 4: Continuum, een avond rond John Mayer's gelijknamige album. Slow Dancing en Gravity zitten beide op die avond. Bekijk of ik bij jou in de buurt speel:
+Zaterdag speelden we Slow Dancing in a Burning Room en Gravity. Twee nummers van John Mayer's iconische album Continuum uit 2006. Net als Waiting on the World to Change en Stop This Train. Al deze songs en de verhalen erachter komen voorbij tijdens Gitaarmannen 4: Continuum, een speciale theater-muziekavond die ik dit najaar door het land breng. Bekijk of ik bij jou in de buurt speel:
 https://gitaarmannen.nl/continuum
 
 Trouwens, vorige week was ik te gast bij Jan-Willem Ruimt Op om over de beste gitaarsolo's te praten en All Along the Watchtower te spelen met Leif de Leeuw:
