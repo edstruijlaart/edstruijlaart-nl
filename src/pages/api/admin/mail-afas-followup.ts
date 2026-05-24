@@ -127,6 +127,33 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
+  if (mode === "preview-thumb") {
+    // Stuurt thumbnail preview naar edstruijlaart@gmail.com
+    const thumbUrl =
+      "https://cdn.earswantmusic.nl/downloads/afas-youtube-thumb-v2.jpg";
+    const previewHtml = `<!doctype html><html><body style="margin:0;padding:24px;background:#f5f5f3;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#1a1a1a;">
+<p style="margin:0 0 16px;font-size:15px;">Thumbnail v2 (popt meer: hogere saturatie, grotere tekst, cyan glow rand):</p>
+<a href="${thumbUrl}" style="display:block;"><img src="${thumbUrl}" alt="thumb v2" width="600" style="display:block;width:100%;max-width:600px;height:auto;border-radius:8px;border:0;" /></a>
+<p style="margin:16px 0 0;font-size:13px;color:#666;">Klik om op volledig formaat te bekijken.</p>
+</body></html>`;
+    const { error } = await resend.emails.send({
+      from: FROM,
+      to: TEST_EMAIL,
+      replyTo: REPLY_TO,
+      subject: "Thumbnail v2 — popt meer",
+      html: previewHtml,
+      text: `Thumbnail v2: ${thumbUrl}`,
+    });
+    return new Response(
+      JSON.stringify(
+        { mode: "preview-thumb", to: TEST_EMAIL, ok: !error, error },
+        null,
+        2
+      ),
+      { headers: { "Content-Type": "application/json" } }
+    );
+  }
+
   if (mode === "live") {
     const confirm = url.searchParams.get("confirm");
     if (confirm !== "yes") {
