@@ -41,7 +41,7 @@ function html(voornaam: string) {
     </a>
   </td></tr>
 </table>
-<p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#666;">De video staat ongelijst (alleen via deze link te vinden), dus voel je vrij om hem te delen met wie er ook bij was. De MP3-zip pakt na downloaden alle 6 nummers uit: van Aint No Sunshine tot Gravity.</p>
+<p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#666;">De video staat onzichtbaar (alleen via deze link te vinden), dus voel je vrij om hem te delen met wie er ook bij was. De MP3-zip pakt na downloaden alle 6 nummers uit: van Aint No Sunshine tot Gravity.</p>
 <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Najaar 2026 ga ik op tour met <strong>Gitaarmannen 4: Continuum</strong>, een avond rond John Mayer's gelijknamige album. Slow Dancing en Gravity zitten beide op die avond. <a href="https://gitaarmannen.nl/continuum" style="color:#00aacc;text-decoration:none;">Bekijk of ik bij jou in de buurt speel</a>.</p>
 
 <p style="margin:0 0 14px;font-size:16px;line-height:1.6;">Trouwens, vorige week was ik te gast bij <strong>Jan-Willem Ruimt Op</strong> om over de beste gitaarsolo's te praten en <em>All Along the Watchtower</em> te spelen met Leif de Leeuw:</p>
@@ -69,7 +69,7 @@ ${YOUTUBE_URL}
 Download alle 6 nummers als MP3:
 ${MP3_URL}
 
-De video staat ongelijst (alleen via deze link te vinden), dus voel je vrij om hem te delen met wie er ook bij was. De MP3-zip pakt na downloaden alle 6 nummers uit: van Aint No Sunshine tot Gravity.
+De video staat onzichtbaar (alleen via deze link te vinden), dus voel je vrij om hem te delen met wie er ook bij was. De MP3-zip pakt na downloaden alle 6 nummers uit: van Aint No Sunshine tot Gravity.
 
 Najaar 2026 ga ik op tour met Gitaarmannen 4: Continuum, een avond rond John Mayer's gelijknamige album. Slow Dancing en Gravity zitten beide op die avond. Bekijk of ik bij jou in de buurt speel:
 https://gitaarmannen.nl/continuum
