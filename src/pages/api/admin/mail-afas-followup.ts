@@ -44,7 +44,7 @@ function html(voornaam: string) {
 <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#666;">De video staat onzichtbaar (alleen via deze link te vinden), dus voel je vrij om hem te delen met wie er ook bij was. De MP3-zip pakt na downloaden alle 6 nummers uit: van Aint No Sunshine tot Gravity.</p>
 <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Zaterdag speelden we <em>Slow Dancing in a Burning Room</em> en <em>Gravity</em>. Twee nummers van John Mayer's iconische album <em>Continuum</em> uit 2006. Net als <em>Waiting on the World to Change</em> en <em>Stop This Train</em>. Al deze songs en de verhalen erachter komen voorbij tijdens <strong>Gitaarmannen 4: Continuum</strong>, een speciale theater-muziekavond die ik dit najaar door het land breng. <a href="https://gitaarmannen.nl/continuum" style="color:#00aacc;text-decoration:none;">Bekijk of ik bij jou in de buurt speel</a>.</p>
 
-<p style="margin:0 0 14px;font-size:16px;line-height:1.6;">Je zag me zaterdag akoestisch. Elektrisch speel ik net zo graag. Vorige week was ik te gast bij <strong>Jan-Willem Ruimt Op</strong> om over de beste gitaarsolo's te praten en <em>All Along the Watchtower</em> te spelen met Leif de Leeuw. Kijk maar:</p>
+<p style="margin:0 0 14px;font-size:16px;line-height:1.6;">Je zag me zaterdag akoestisch. Elektrisch speel ik net zo graag. Vorige week was ik te gast bij <strong>Jan-Willem Ruimt Op</strong> op NPO 1 om over de beste gitaarsolo's te praten en <em>All Along the Watchtower</em> te spelen met Leif de Leeuw. Kijk maar:</p>
 <a href="https://www.youtube.com/watch?v=ca1mM9eaPEI" style="display:block;text-decoration:none;margin:0 0 28px;">
   <img src="https://i.ytimg.com/vi/ca1mM9eaPEI/maxresdefault.jpg" alt="Jan-Willem Ruimt Op met Ed Struijlaart en Leif de Leeuw" width="496" style="display:block;width:100%;max-width:496px;height:auto;border-radius:8px;border:0;" />
 </a>
@@ -75,7 +75,7 @@ De video staat onzichtbaar (alleen via deze link te vinden), dus voel je vrij om
 Zaterdag speelden we Slow Dancing in a Burning Room en Gravity. Twee nummers van John Mayer's iconische album Continuum uit 2006. Net als Waiting on the World to Change en Stop This Train. Al deze songs en de verhalen erachter komen voorbij tijdens Gitaarmannen 4: Continuum, een speciale theater-muziekavond die ik dit najaar door het land breng. Bekijk of ik bij jou in de buurt speel:
 https://gitaarmannen.nl/continuum
 
-Je zag me zaterdag akoestisch. Elektrisch speel ik net zo graag. Vorige week was ik te gast bij Jan-Willem Ruimt Op om over de beste gitaarsolo's te praten en All Along the Watchtower te spelen met Leif de Leeuw. Kijk maar:
+Je zag me zaterdag akoestisch. Elektrisch speel ik net zo graag. Vorige week was ik te gast bij Jan-Willem Ruimt Op op NPO 1 om over de beste gitaarsolo's te praten en All Along the Watchtower te spelen met Leif de Leeuw. Kijk maar:
 https://www.youtube.com/watch?v=ca1mM9eaPEI
 
 Nog een keer dank voor je aandacht in de zaal. Tot snel.
