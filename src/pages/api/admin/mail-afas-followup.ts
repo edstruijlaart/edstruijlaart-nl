@@ -13,7 +13,8 @@ const MP3_URL =
 const FROM = "Ed Struijlaart <ed@edstruijlaart.nl>";
 const REPLY_TO = "ed@edstruijlaart.nl";
 const SUBJECT =
-  "Cadeau van de AFAS Live: complete concertvideo + alle nummers als MP3";
+  "Ook zo genoten van de Gipsy Kings? Hier is je cadeautje";
+const PREHEADER = "Ed Struijlaart hier, het voorprogramma van de avond.";
 
 const TEST_EMAIL = "edstruijlaart@gmail.com";
 
@@ -23,6 +24,7 @@ function html(voornaam: string) {
   const groet = voornaam ? `Hoi ${voornaam},` : "Hoi,";
   return `<!doctype html>
 <html lang="nl"><body style="margin:0;padding:0;background:#f5f5f3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#1a1a1a;">
+<div style="display:none;font-size:1px;color:#f5f5f3;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">${PREHEADER}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#f5f5f3;padding:32px 16px;"><tr><td align="center">
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:560px;background:#ffffff;border-radius:8px;padding:40px 32px;"><tr><td>
 <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">${groet}</p>
