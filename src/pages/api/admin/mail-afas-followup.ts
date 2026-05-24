@@ -139,52 +139,73 @@ export const POST: APIRoute = async ({ request }) => {
     const subsJson: any = await subsRes.json();
     const subs: Array<{ email: string; name: string }> = subsJson.subscribers || [];
 
-    // Stream response so we can see progress
-    const stream = new ReadableStream({
-      async start(controller) {
-        controller.enqueue(
-          new TextEncoder().encode(
-            `Subscribers: ${subs.length}\nStart…\n`
-          )
-        );
+    // Resend batch endpoint: tot 100 mails per call → 3 batches voor 297
+    const BATCH_SIZE = 100;
+    const batches: Array<Array<{ email: string; name: string }>> = [];
+    for (let i = 0; i < subs.length; i += BATCH_SIZE) {
+      batches.push(subs.slice(i, i + BATCH_SIZE));
+    }
+
+    const results: Array<{ batch: number; sent: number; failed: number; errors: string[] }> = [];
+    let totalSent = 0;
+    let totalFailed = 0;
+
+    for (let bi = 0; bi < batches.length; bi++) {
+      const batch = batches[bi];
+      const payload = batch.map((s) => {
+        const fn = firstName(s.name);
+        return {
+          from: FROM,
+          to: [s.email],
+          replyTo: REPLY_TO,
+          subject: SUBJECT,
+          html: html(fn),
+          text: text(fn),
+        };
+      });
+      try {
+        const r = await resend.batch.send(payload as any);
+        const data: any = r as any;
+        const errors: string[] = [];
         let sent = 0;
         let failed = 0;
-        for (let i = 0; i < subs.length; i++) {
-          const s = subs[i];
-          const r = await sendOne(resend, s.email, s.name);
-          if (r.ok) {
-            sent++;
-            controller.enqueue(
-              new TextEncoder().encode(
-                `${i + 1}/${subs.length} OK   ${s.email}\n`
-              )
-            );
-          } else {
-            failed++;
-            controller.enqueue(
-              new TextEncoder().encode(
-                `${i + 1}/${subs.length} FAIL ${s.email}  err=${r.error}\n`
-              )
-            );
-          }
-          if (i < subs.length - 1) {
-            await new Promise((r) => setTimeout(r, 2500));
-          }
+        if (data?.data?.data && Array.isArray(data.data.data)) {
+          // succesvolle response
+          sent = data.data.data.length;
+        } else if (data?.error) {
+          failed = batch.length;
+          errors.push(JSON.stringify(data.error));
+        } else {
+          sent = batch.length;
         }
-        controller.enqueue(
-          new TextEncoder().encode(
-            `\n✓ Klaar: ${sent} verstuurd, ${failed} gefaald\n`
-          )
-        );
-        controller.close();
-      },
-    });
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "X-Content-Type-Options": "nosniff",
-      },
-    });
+        results.push({ batch: bi + 1, sent, failed, errors });
+        totalSent += sent;
+        totalFailed += failed;
+      } catch (e: any) {
+        results.push({
+          batch: bi + 1,
+          sent: 0,
+          failed: batch.length,
+          errors: [String(e?.message || e)],
+        });
+        totalFailed += batch.length;
+      }
+    }
+
+    return new Response(
+      JSON.stringify(
+        {
+          mode: "live",
+          total: subs.length,
+          sent: totalSent,
+          failed: totalFailed,
+          batches: results,
+        },
+        null,
+        2
+      ),
+      { headers: { "Content-Type": "application/json" } }
+    );
   }
 
   return new Response("unknown mode", { status: 400 });
