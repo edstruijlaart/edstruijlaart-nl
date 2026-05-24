@@ -50,7 +50,8 @@ function html(voornaam: string) {
 </a>
 
 <p style="margin:0 0 24px;font-size:16px;line-height:1.6;">Nog een keer dank voor je aandacht in de zaal. Tot snel.</p>
-<p style="margin:0;font-size:16px;line-height:1.6;">Ed</p>
+<p style="margin:0 0 20px;font-size:16px;line-height:1.6;">Ed</p>
+<p style="margin:24px 0 0;font-size:14px;line-height:1.6;color:#666;border-top:1px solid #e5e5e3;padding-top:16px;">PS: ik kom ook bij mensen thuis spelen. Een huiskamerconcert organiseren? <a href="https://edstruijlaart.nl/huiskamerconcert" style="color:#00aacc;text-decoration:none;">Kijk op edstruijlaart.nl/huiskamerconcert</a>.</p>
 </td></tr></table>
 <p style="margin:24px 0 0;font-size:12px;color:#999;">Je krijgt deze mail omdat je je op 23 mei 2026 hebt aangemeld via edstruijlaart.nl/afas.</p>
 </td></tr></table>
@@ -79,7 +80,9 @@ https://www.youtube.com/watch?v=ca1mM9eaPEI
 
 Nog een keer dank voor je aandacht in de zaal. Tot snel.
 
-Ed`;
+Ed
+
+PS: ik kom ook bij mensen thuis spelen. Een huiskamerconcert organiseren? Kijk op edstruijlaart.nl/huiskamerconcert`;
 }
 
 function firstName(name: string): string {
