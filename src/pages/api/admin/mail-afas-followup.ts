@@ -3,7 +3,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { Resend } from "resend";
 
-const SUBSCRIBERS_URL =
+const SUBSCRIBERS_URL_BASE =
   "https://boeken.edstruijlaart.nl/api/list-subscribers/43?token=afas-followup-2026-X9k2";
 
 const YOUTUBE_URL = "https://youtu.be/yD-7deHA9wg";
@@ -170,7 +170,11 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const subsRes = await fetch(SUBSCRIBERS_URL);
+    const since = url.searchParams.get("since");
+    const subsUrl = since
+      ? `${SUBSCRIBERS_URL_BASE}&since=${encodeURIComponent(since)}`
+      : SUBSCRIBERS_URL_BASE;
+    const subsRes = await fetch(subsUrl);
     if (!subsRes.ok) {
       return new Response(
         `Kon subscribers niet ophalen: ${subsRes.status}`,
