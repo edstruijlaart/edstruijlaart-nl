@@ -106,8 +106,9 @@ export const POST: APIRoute = async ({ request }) => {
       text,
     });
     if ((sent as any)?.error) {
-      console.error("Resend welkomstmail fout", (sent as any).error);
-      return json({ error: "Versturen mislukte, probeer het zo nog eens." }, 502);
+      const err = (sent as any).error;
+      console.error("Resend welkomstmail fout", err);
+      return json({ error: "Versturen mislukte, probeer het zo nog eens.", detail: err?.message || String(err) }, 502);
     }
 
     // 3) Notificatie naar Ed (fire-and-forget, mag falen)
