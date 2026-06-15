@@ -93,13 +93,25 @@ export function dichtstbijzijndeShows(provincie: Provincie): Show[] {
   return buur.sort((a, b) => a.date.localeCompare(b.date));
 }
 
-/** Listmonk-lijst-UUIDs voor een aanmelding: funnel-hoofdlijst + shows in de buurt. */
+/** Per provincie een eigen GM3-funnel-lijst (voor segmentatie), naast de hoofdlijst. */
+export const PROVINCIE_LIST_UUID: Record<Provincie, string> = {
+  "Groningen": "dc115f1a-7d3d-4406-8a08-5df45d5e4ffc",
+  "Friesland": "406da8d0-f7a9-4b65-9297-3b3105fb6a61",
+  "Drenthe": "42094d54-f311-4830-b7e5-d6715d30bad2",
+  "Overijssel": "c0797578-af22-47e6-b768-d3d641a413c5",
+  "Flevoland": "9921033f-3251-4010-b521-45b88c79b9ea",
+  "Gelderland": "197753fa-804b-4136-a976-4acff9a39aab",
+  "Utrecht": "762f6a8d-9724-483c-bde9-cf8595a8bdbe",
+  "Noord-Holland": "3a357dde-c21b-4cad-9a07-2ade73e649fd",
+  "Zuid-Holland": "b03b211f-4303-4134-9275-b2e5627f836e",
+  "Zeeland": "4c445b9e-564c-43f0-a976-89794b0313ea",
+  "Noord-Brabant": "14bc58fb-47a5-4305-8a3e-d193cc410dd8",
+  "Limburg": "0b5207c2-edaa-43d0-9280-ffb3a40babfc",
+};
+
+/** Listmonk-lijst-UUIDs voor een aanmelding: funnel-hoofdlijst + de eigen provincie-lijst. */
 export function listUuidsVoorProvincie(provincie: Provincie): string[] {
-  const uuids = new Set<string>([FUNNEL_LIST_UUID]);
-  for (const s of dichtstbijzijndeShows(provincie)) {
-    if (s.listmonkUuid) uuids.add(s.listmonkUuid);
-  }
-  return [...uuids];
+  return [FUNNEL_LIST_UUID, PROVINCIE_LIST_UUID[provincie]];
 }
 
 /** Alle GM4-shows op datum (voor de volledige speellijst in de mail). */
