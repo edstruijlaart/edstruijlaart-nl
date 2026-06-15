@@ -35,7 +35,7 @@ export const POST: APIRoute = async ({ request }) => {
       try {
         const resend = new Resend(import.meta.env.RESEND_API_KEY);
         await resend.emails.send({
-          from: 'Ed Struijlaart <noreply@earswantmusic.nl>',
+          from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
           to: 'ed@earswantmusic.nl',
           subject: `Nieuwsbrief: ${name || 'Iemand'} heeft zich ingeschreven`,
           text: `Nieuwe nieuwsbrief-inschrijving:\n\nNaam: ${name || '(niet ingevuld)'}\nEmail: ${email}\nTijdstip: ${new Date().toLocaleString('nl-NL', { timeZone: 'Europe/Amsterdam' })}`,
