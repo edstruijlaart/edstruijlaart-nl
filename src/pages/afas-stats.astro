@@ -16,20 +16,28 @@ const pageTitle = "AFAS Live stats";
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 
     <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      :root {
+      /* Alles is gescoped onder .afas-page. Astro scopet class- en
+         descendant-selectors, maar laat html/body/:root/* GLOBAAL en hijst
+         die in de gedeelde CSS-bundle die op elke pagina laadt. Daarom hier
+         géén html/body/:root/* gebruiken — anders lekken --bg-card etc. over
+         de hele site. De page-achtergrond staat inline op <body> (deze pagina
+         is een standalone HTML-document, dus dat lekt niet). */
+      .afas-page, .afas-page *, .afas-page *::before, .afas-page *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      .afas-page {
         --bg: #08080A;
         --bg-card: #131316;
         --text: #F5F5F3;
         --muted: #8A8A90;
         --accent: #00AACC;
         --good: #4CD964;
-      }
-      html, body {
+        min-height: 100svh;
         background: var(--bg);
         color: var(--text);
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        min-height: 100svh;
         -webkit-font-smoothing: antialiased;
       }
       .gate, .dashboard {
@@ -116,8 +124,8 @@ const pageTitle = "AFAS Live stats";
     </style>
   </head>
 
-  <body>
-    <main>
+  <body style="margin:0; background:#08080A;">
+    <main class="afas-page">
       <div class="gate" id="gate">
         <p class="eyebrow">AFAS Live Stats</p>
         <label for="token-input">Voer toegangscode in</label>
