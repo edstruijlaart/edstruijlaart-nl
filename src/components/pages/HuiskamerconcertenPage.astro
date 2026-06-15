@@ -435,7 +435,7 @@ const t = useTranslations(locale);
           { name: "Ellen van Reenen", city: "De Meern", text: "Geweldig optreden, mooie liedjes en Ed kan leuk verhalen vertellen. Publiek was enthousiast. 2 keer gedaan en de 3e keer gaat zeker volgen!" },
           { name: "Roel", city: "", text: "Vijftien jaar geleden een huiskamerconcert van Ed bijgewoond. Dat ik mij dat na al die jaren nog herinner is een groot compliment. Wat nog goed in mijn geheugen staat is de pure muziek, alleen de gitaar en de stem, maar ook de verhalen die Ed tussendoor vertelde." },
         ].map((review) => (
-          <div class="break-inside-avoid rounded-xl p-6 border" style="background-color: var(--bg-card); border-color: var(--border-subtle);">
+          <div class="break-inside-avoid rounded-xl p-6" style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);">
             <div class="flex gap-0.5 mb-3">
               {Array.from({length: 5}).map(() => (
                 <svg class="w-4 h-4 text-[var(--color-gold)]" fill="currentColor" viewBox="0 0 20 20">
@@ -443,7 +443,7 @@ const t = useTranslations(locale);
                 </svg>
               ))}
             </div>
-            <p class="text-[15px] leading-relaxed" style="color: var(--fg-base);">&ldquo;{review.text}&rdquo;</p>
+            <p class="text-[15px] leading-relaxed" style="color: var(--fg);">&ldquo;{review.text}&rdquo;</p>
             <p class="mt-4 text-sm font-medium">
               <span style="color: var(--color-gold);">{review.name}</span>
               {review.city && <span style="color: var(--fg-muted);"> - {review.city}</span>}
