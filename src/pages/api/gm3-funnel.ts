@@ -111,17 +111,8 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ error: "Versturen mislukte, probeer het zo nog eens.", detail: err?.message || String(err) }, 502);
     }
 
-    // 3) Notificatie naar Ed (fire-and-forget, mag falen)
-    try {
-      await resend.emails.send({
-        from: "Ed Struijlaart <ed@edstruijlaart.nl>",
-        to: "ed@earswantmusic.nl",
-        subject: `GM3-funnel: ${name || "iemand"} uit ${provincie}`,
-        text: `Nieuwe aanmelding voor de gratis GM3-registratie:\n\nNaam: ${name || "(niet ingevuld)"}\nEmail: ${email}\nProvincie: ${provincie}\nLijsten: ${listUuids.length}\nTijd: ${new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}`,
-      });
-    } catch {
-      // notificatie mag falen
-    }
+    // Geen per-aanmelding notificatie meer naar Ed (was overkill bij volume).
+    // Overzicht loopt via een dagelijkse samenvatting + Listmonk + Umami.
   } catch (e) {
     console.error("Resend onbereikbaar", e);
     return json({ error: "Versturen mislukte, probeer het zo nog eens." }, 502);
