@@ -98,7 +98,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const resend = new Resend(resendKey);
     const sent = await resend.emails.send({
-      from: "Ed Struijlaart <noreply@earswantmusic.nl>",
+      from: "Ed Struijlaart <ed@edstruijlaart.nl>",
       to: email,
       replyTo: "ed@earswantmusic.nl",
       subject,
@@ -114,7 +114,7 @@ export const POST: APIRoute = async ({ request }) => {
     // 3) Notificatie naar Ed (fire-and-forget, mag falen)
     try {
       await resend.emails.send({
-        from: "Ed Struijlaart <noreply@earswantmusic.nl>",
+        from: "Ed Struijlaart <ed@edstruijlaart.nl>",
         to: "ed@earswantmusic.nl",
         subject: `GM3-funnel: ${name || "iemand"} uit ${provincie}`,
         text: `Nieuwe aanmelding voor de gratis GM3-registratie:\n\nNaam: ${name || "(niet ingevuld)"}\nEmail: ${email}\nProvincie: ${provincie}\nLijsten: ${listUuids.length}\nTijd: ${new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}`,
