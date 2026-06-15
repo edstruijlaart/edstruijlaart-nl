@@ -108,7 +108,7 @@ export function buildWelcomeEmail(input: WelcomeEmailInput): {
 
   <tr><td style="background:#faf9f7;padding:18px 28px;border-top:1px solid #ececec;">
     <p style="margin:0;color:#9b9b9b;font-size:12px;line-height:1.5;">
-      Je krijgt deze mail omdat je de gratis Gitaarmannen 3 registratie hebt aangevraagd op gitaarmannen.nl. Liever geen mail meer? Gebruik de afmeldknop in je mailprogramma of reageer met "afmelden", dan haal ik je uit alle lijsten. Ed Struijlaart &middot; Gitaarmannen de Podcast.
+      Je krijgt deze mail omdat je de gratis Gitaarmannen 3 registratie hebt aangevraagd op gitaarmannen.nl. Liever geen mail meer? Stuur me een berichtje terug, dan zorg ik er persoonlijk voor dat je niets meer ontvangt. Ed Struijlaart &middot; Gitaarmannen de Podcast.
     </p>
   </td></tr>
 
