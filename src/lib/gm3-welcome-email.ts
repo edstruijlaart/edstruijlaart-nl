@@ -76,7 +76,7 @@ export function buildWelcomeEmail(input: WelcomeEmailInput): {
   <tr><td style="padding:28px;">
     <p style="margin:0 0 16px;color:#1a1a1a;font-size:16px;line-height:1.6;">${hi}</p>
     <p style="margin:0 0 16px;color:#1a1a1a;font-size:16px;line-height:1.6;">
-      Bedankt. Je staat erbij, en je cadeau staat klaar. Hier is de volledige Gitaarmannen 3 theatershow, twee uur John Mayer met band, opgenomen in 4K. Het bluesy John Mayer Trio, Born and Raised, Gravity, Slow Dancing in a Burning Room, Neon, Stop This Train. Het zit er allemaal in.
+      Bedankt. Je staat erbij, en je cadeau staat klaar. Hier is de volledige Gitaarmannen 3 theatershow, anderhalf uur John Mayer met band, opgenomen in 4K. Het bluesy John Mayer Trio, Born and Raised, Gravity, Slow Dancing in a Burning Room, Neon, Stop This Train. Het zit er allemaal in.
     </p>
 
     <table cellpadding="0" cellspacing="0" style="margin:8px 0 20px;">
@@ -134,7 +134,7 @@ Niet in de buurt? Ik speel ook huiskamerconcerten: https://www.edstruijlaart.nl/
 Groeten, Ed`;
 
   return {
-    subject: "Hier is je Gitaarmannen 3, twee uur John Mayer",
+    subject: "Hier is je Gitaarmannen 3, anderhalf uur John Mayer",
     html,
     text,
   };

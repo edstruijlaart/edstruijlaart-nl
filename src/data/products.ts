@@ -38,7 +38,7 @@ export const products: Product[] = [
     buyUrl: 'https://payhip.com/b/QZ7Fi',
     details: [
       'Full HD video registratie',
-      'Volledige theatershow (~2 uur)',
+      'Volledige theatershow (anderhalf uur)',
       'Direct te bekijken na betaling',
       'Link wordt per email verstuurd',
     ],
