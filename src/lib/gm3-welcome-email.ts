@@ -76,7 +76,7 @@ export function buildWelcomeEmail(input: WelcomeEmailInput): {
   <tr><td style="padding:28px;">
     <p style="margin:0 0 16px;color:#1a1a1a;font-size:16px;line-height:1.6;">${hi}</p>
     <p style="margin:0 0 16px;color:#1a1a1a;font-size:16px;line-height:1.6;">
-      Bedankt. Je staat erbij, en je cadeau staat klaar. Hier is de volledige Gitaarmannen 3 theatershow, twee uur John Mayer met band, opgenomen in 4K. Het bluesy John Mayer Trio, Born and Raised, Gravity, Slow Dancing in a Burning Room, Neon, Stop This Train, en als toegift speel ik er eentje van mezelf.
+      Bedankt. Je staat erbij, en je cadeau staat klaar. Hier is de volledige Gitaarmannen 3 theatershow, twee uur John Mayer met band, opgenomen in 4K. Het bluesy John Mayer Trio, Born and Raised, Gravity, Slow Dancing in a Burning Room, Neon, Stop This Train. Het zit er allemaal in.
     </p>
 
     <table cellpadding="0" cellspacing="0" style="margin:8px 0 20px;">
@@ -86,7 +86,7 @@ export function buildWelcomeEmail(input: WelcomeEmailInput): {
     </table>
 
     <p style="margin:0 0 4px;color:#5a5a55;font-size:14px;line-height:1.6;">
-      Zet hem op de tv, pak je koptelefoon of AirPods erbij als de rest van het huis slaapt, en geef het volume wat het verdient. Bewaar deze mail, dan vind je de link altijd terug.
+      Zet hem op de tv, pak je koptelefoon of AirPods erbij als de rest van het huis slaapt, en draai 'm rustig op standje 11. Bewaar deze mail, dan vind je de link altijd terug.
     </p>
 
     ${dichtbijBlok}
@@ -100,7 +100,7 @@ export function buildWelcomeEmail(input: WelcomeEmailInput): {
     </table>
 
     <p style="margin:20px 0 0;color:#5a5a55;font-size:14px;line-height:1.6;">
-      Woon je niet in de buurt van een van deze datums? Ik speel ook huiskamerconcerten door het hele land. Reageer gewoon op deze mail, dan kijk ik wat er kan.
+      Woon je niet in de buurt van een van deze datums? Ik speel ook huiskamerconcerten door het hele land. Kijk op <a href="https://www.edstruijlaart.nl/huiskamerconcert" style="color:#B8860B;">edstruijlaart.nl/huiskamerconcert</a> voor alle info, of reageer gewoon op deze mail.
     </p>
 
     <p style="margin:24px 0 0;color:#1a1a1a;font-size:16px;">Groeten, Ed</p>
@@ -108,7 +108,7 @@ export function buildWelcomeEmail(input: WelcomeEmailInput): {
 
   <tr><td style="background:#faf9f7;padding:18px 28px;border-top:1px solid #ececec;">
     <p style="margin:0;color:#9b9b9b;font-size:12px;line-height:1.5;">
-      Je krijgt deze mail omdat je de gratis Gitaarmannen 3 registratie hebt aangevraagd op gitaarmannen.nl. Ed Struijlaart &middot; Gitaarmannen de Podcast.
+      Je krijgt deze mail omdat je de gratis Gitaarmannen 3 registratie hebt aangevraagd op gitaarmannen.nl. Liever geen mail meer? Gebruik de afmeldknop in je mailprogramma of reageer met "afmelden", dan haal ik je uit alle lijsten. Ed Struijlaart &middot; Gitaarmannen de Podcast.
     </p>
   </td></tr>
 
@@ -129,7 +129,7 @@ ${dichtbijText}
 Dit najaar speel ik Gitaarmannen 4: Continuum door het hele land:
 ${input.alleShows.map((s) => `- ${nlDatum(s.date)} ${s.venue}, ${s.city}${s.ticketUrl ? ` ${s.ticketUrl}` : ""}`).join("\n")}
 
-Niet in de buurt? Ik speel ook huiskamerconcerten. Reageer op deze mail.
+Niet in de buurt? Ik speel ook huiskamerconcerten: https://www.edstruijlaart.nl/huiskamerconcert (of reageer op deze mail).
 
 Groeten, Ed`;
 

@@ -104,6 +104,9 @@ export const POST: APIRoute = async ({ request }) => {
       subject,
       html,
       text,
+      headers: {
+        "List-Unsubscribe": "<mailto:ed@earswantmusic.nl?subject=Afmelden GM3-cadeau>",
+      },
     });
     if ((sent as any)?.error) {
       const err = (sent as any).error;
