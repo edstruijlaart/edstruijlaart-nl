@@ -6,6 +6,7 @@ import {
   LISTMONK_PUBLIC_API,
   afasListUuids,
   resolveProvincie,
+  isProvincie,
 } from "../../data/afas-funnel";
 import { dichtstbijzijndeShows, alleGM4Shows } from "../../data/gm3-funnel";
 import { buildAfasWelcomeEmail } from "../../lib/afas-welcome-email";
@@ -21,7 +22,7 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json" },
     });
 
-  let body: { email?: string; name?: string; woonplaats?: string };
+  let body: { email?: string; name?: string; woonplaats?: string; provincie?: string };
   try {
     body = await request.json();
   } catch {
@@ -31,13 +32,17 @@ export const POST: APIRoute = async ({ request }) => {
   const email = (body.email || "").trim().toLowerCase();
   const name = (body.name || "").trim();
   const woonplaats = (body.woonplaats || "").trim();
+  const provincieIn = (body.provincie || "").trim();
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return json({ error: "Vul een geldig e-mailadres in." }, 400);
   }
 
-  // Woonplaats -> provincie (statische map, anders PDOK, anders null).
-  const provincie = await resolveProvincie(woonplaats);
+  // Provincie: direct meegegeven (bv. uit geo op /links) heeft voorrang,
+  // anders woonplaats -> provincie (statische map, dan PDOK), anders null.
+  const provincie = isProvincie(provincieIn)
+    ? provincieIn
+    : await resolveProvincie(woonplaats);
   const listUuids = afasListUuids(provincie);
 
   // 1) Inschrijven in Listmonk (public API, single opt-in, geen auth).

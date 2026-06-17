@@ -4,13 +4,23 @@ export const prerender = true;
 import AdPixels from "../components/AdPixels.astro";
 
 // Link-in-bio hub voor edstruijlaart.nl (de "link in bio" van Instagram e.d.).
-// Zelf-gehost i.p.v. Linktree. Vangt bezoekers in de retargeting-pool (AdPixels)
-// en trackt per link welke knop geklikt wordt (Umami events). Alle CSS gescoped
-// onder .links (bare :root/body lekken site-breed in Astro).
+// Zelf-gehost i.p.v. Linktree. Marketing-laag:
+//  - AdPixels (Meta+Google) = retargeting-pool van elke bezoeker
+//  - Umami event per link-klik + Meta custom events (intentie-segmenten)
+//  - per-link UTM (attributie in Tour Insights / continuum-pixel)
+//  - geo-gepersonaliseerde ticketknop (dichtstbijzijnde GM4-show, via /api/geo-show)
+//  - inline e-mailcapture onder de knoppen (lijstgroei + AFAS-funnel, /api/subscribe-afas)
+// Alle CSS gescoped onder .links (bare :root/body lekken site-breed in Astro).
 
 const pageTitle = "Ed Struijlaart — alle links";
 const pageDescription =
   "Tickets voor Gitaarmannen 4: Continuum, mijn gratis AFAS Live concert, huiskamerconcerten, de podcast en mijn muziek. Alles op een plek.";
+
+// Per-link UTM zodat je doorkliks kunt toeschrijven (Umami + continuum-pixel).
+function withUtm(href: string, campaign: string): string {
+  const sep = href.includes("?") ? "&" : "?";
+  return `${href}${sep}utm_source=links&utm_medium=bio&utm_campaign=${campaign}`;
+}
 
 // Volgorde = prioriteit. featured = de grote gouden knop bovenaan.
 const buttons = [
@@ -52,7 +62,6 @@ const buttons = [
     event: "link-muziek",
   },
 ];
-
 ---
 
 <!doctype html>
@@ -168,23 +177,53 @@ const buttons = [
       .links .btn.featured {
         background: var(--gold); border-color: var(--gold);
         box-shadow: 0 8px 24px rgba(184,134,11,0.35);
+        animation: spotlight 2.8s ease-in-out infinite;
       }
       .links .btn.featured:hover { background: var(--gold-light); border-color: var(--gold-light); }
       .links .btn.featured .btn-label,
       .links .btn.featured .btn-sub { color: #1a1407; }
-      .links .btn.featured .btn-sub { opacity: 0.8; }
-
-      .links .socials {
-        display: flex; gap: 1.4rem; margin-top: 2.2rem;
+      .links .btn.featured .btn-sub { opacity: 0.85; }
+      @keyframes spotlight {
+        0%, 100% { box-shadow: 0 8px 24px rgba(184,134,11,0.32); }
+        50% { box-shadow: 0 10px 40px rgba(184,134,11,0.62); }
       }
-      .links .socials a {
-        color: var(--muted); transition: color 0.2s, transform 0.15s;
-        display: inline-flex;
+      @media (prefers-reduced-motion: reduce) {
+        .links .btn.featured { animation: none; }
+        .links .btn { transition: none; }
       }
-      .links .socials a:hover { color: var(--gold-light); transform: translateY(-2px); }
-      .links .socials svg { width: 26px; height: 26px; }
 
-      .links .foot { margin-top: 2.4rem; color: rgba(255,255,255,0.4); font-size: 0.8rem; letter-spacing: 0.04em; }
+      /* Inline e-mailcapture (onder de knoppen, vangt de afhakers) */
+      .links .capture {
+        width: 100%; margin-top: 2rem;
+        background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+        border-radius: 12px; padding: 1.15rem 1.05rem; text-align: center;
+      }
+      .links .capture h2 {
+        font-family: var(--font-display); font-weight: 700; font-size: 1.1rem;
+        text-transform: uppercase; letter-spacing: 0.03em;
+      }
+      .links .capture p.lead { color: var(--muted); font-size: 0.83rem; margin: 0.25rem 0 0.8rem; line-height: 1.45; }
+      .links .capture form { display: flex; gap: 0.5rem; }
+      .links .capture input {
+        flex: 1; min-width: 0; padding: 0.72rem 0.85rem;
+        background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+        border-radius: 8px; color: var(--white); font-size: 0.95rem; font-family: var(--font-body);
+      }
+      .links .capture input::placeholder { color: rgba(255,255,255,0.4); }
+      .links .capture input:focus { outline: none; border-color: var(--gold); }
+      .links .capture button {
+        background: var(--gold); color: #1a1407; border: none; border-radius: 8px;
+        padding: 0 1.05rem; font-family: var(--font-display); font-weight: 800;
+        text-transform: uppercase; font-size: 0.92rem; letter-spacing: 0.03em;
+        cursor: pointer; white-space: nowrap; transition: background 0.2s;
+      }
+      .links .capture button:hover { background: var(--gold-light); }
+      .links .capture button:disabled { opacity: 0.6; cursor: wait; }
+      .links .capture .micro { color: rgba(255,255,255,0.4); font-size: 0.72rem; margin-top: 0.55rem; }
+      .links .capture .err { color: #ff9b9b; font-size: 0.8rem; margin-top: 0.45rem; display: none; }
+      .links .capture.done .lead { color: var(--gold-light); }
+
+      .links .foot { margin-top: 2.2rem; color: rgba(255,255,255,0.4); font-size: 0.8rem; letter-spacing: 0.04em; }
     </style>
   </head>
 
@@ -207,22 +246,110 @@ const buttons = [
         <p class="tagline">Gitarist · Singer-songwriter · Podcast · Theater</p>
 
         <nav class="stack">
-          {buttons.map((b) => (
-            <a
-              class:list={["btn", { featured: b.featured }]}
-              href={b.href}
-              target={b.href.startsWith("/") ? undefined : "_blank"}
-              rel={b.href.startsWith("/") ? undefined : "noopener"}
-              data-umami-event={b.event}
-            >
-              <span class="btn-label">{b.label}</span>
-              {b.sub && <span class="btn-sub">{b.sub}</span>}
-            </a>
-          ))}
+          {buttons.map((b) => {
+            const isExternal = !b.href.startsWith("/");
+            const href = withUtm(b.href, b.event.replace("link-", ""));
+            return (
+              <a
+                class:list={["btn", { featured: b.featured }]}
+                href={href}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener" : undefined}
+                data-umami-event={b.event}
+              >
+                <span class="btn-label">{b.label}</span>
+                {b.sub && <span class="btn-sub">{b.sub}</span>}
+              </a>
+            );
+          })}
         </nav>
+
+        <div class="capture" id="capture">
+          <h2>Niks missen?</h2>
+          <p class="lead">Laat je mail achter, dan stuur ik je gratis mijn hele AFAS Live concert en hoor je als eerste over nieuwe shows.</p>
+          <form id="capture-form">
+            <input type="email" id="capture-email" name="email" placeholder="jij@email.nl" required autocomplete="email" />
+            <button type="submit">Stuur 'm</button>
+          </form>
+          <p class="err" id="capture-error"></p>
+          <p class="micro">Geen spam. Uitschrijven kan altijd met een klik.</p>
+        </div>
 
         <p class="foot">edstruijlaart.nl</p>
       </div>
     </main>
+
+    <script>
+      // Geo-personalisatie + inline capture + scherpere klik-tracking.
+      let geoProvincie = null;
+
+      // 1) Dichtstbijzijnde GM4-show in de featured knop tonen (client-side,
+      //    pagina blijft statisch/cachebaar). Valt stil terug op de generieke knop.
+      (async () => {
+        try {
+          const r = await fetch("/api/geo-show");
+          if (!r.ok) return;
+          const d = await r.json();
+          if (d.provincie) geoProvincie = d.provincie;
+          if (d.show) {
+            const sub = document.querySelector(".links .btn.featured .btn-sub");
+            if (sub) sub.textContent = "Het dichtst bij jou: " + d.show.city + ", " + d.show.dateLabel;
+            const a = document.querySelector(".links .btn.featured");
+            if (a) {
+              try {
+                const u = new URL(a.href);
+                u.searchParams.set("utm_content", d.show.city);
+                a.setAttribute("href", u.toString());
+              } catch (e) {}
+            }
+          }
+        } catch (e) {}
+      })();
+
+      // 2) Meta custom events per klik (Umami doet de data-umami-event vanzelf).
+      document.querySelectorAll(".links .btn").forEach((a) => {
+        a.addEventListener("click", () => {
+          const ev = a.getAttribute("data-umami-event") || "link";
+          try {
+            if (window.fbq) fbq("trackCustom", ev === "link-continuum" ? "ClickTickets" : "LinkClick", { link: ev });
+          } catch (e) {}
+        });
+      });
+
+      // 3) Inline e-mailcapture -> AFAS-funnel (Listmonk + bedankmail).
+      const capForm = document.getElementById("capture-form");
+      const capBox = document.getElementById("capture");
+      const capErr = document.getElementById("capture-error");
+      capForm?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (capErr) capErr.style.display = "none";
+        const email = document.getElementById("capture-email").value.trim();
+        const btn = capForm.querySelector("button");
+        const orig = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = "...";
+        try {
+          const res = await fetch("/api/subscribe-afas", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, provincie: geoProvincie }),
+          });
+          if (res.ok) {
+            capBox.classList.add("done");
+            capBox.innerHTML =
+              "<h2>Top!</h2><p class=\"lead\">Check je mail, het concert komt eraan. Veel kijkplezier.</p>";
+            try { if (window.umami) umami.track("links-capture", { provincie: geoProvincie || "onbekend" }); } catch (e) {}
+            try { if (window.fbq) fbq("track", "Lead", { content_name: "links inline capture" }); } catch (e) {}
+          } else {
+            const d = await res.json().catch(() => ({}));
+            if (capErr) { capErr.textContent = d.error || "Er ging iets mis, probeer het zo nog eens."; capErr.style.display = "block"; }
+            btn.disabled = false; btn.textContent = orig;
+          }
+        } catch (err) {
+          if (capErr) { capErr.textContent = "Geen verbinding, probeer het zo nog eens."; capErr.style.display = "block"; }
+          btn.disabled = false; btn.textContent = orig;
+        }
+      });
+    </script>
   </body>
 </html>
