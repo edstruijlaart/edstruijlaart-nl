@@ -103,15 +103,26 @@ const buttons = [
         font-family: var(--font-body);
         color: var(--white);
         min-height: 100svh;
-        background:
-          radial-gradient(circle at 50% 0%, rgba(184,134,11,0.16), transparent 55%),
-          var(--bg);
+        position: relative;
+        background: var(--bg);
         -webkit-font-smoothing: antialiased;
       }
       .links a { color: inherit; text-decoration: none; }
       .links img { display: block; max-width: 100%; }
 
+      /* Vaste, geblurde persfoto-achtergrond + donkere gradient + gouden gloed */
+      .links .bg { position: fixed; inset: 0; z-index: 0; }
+      .links .bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 28%; }
+      .links .bg::after {
+        content: ""; position: absolute; inset: 0;
+        background:
+          radial-gradient(circle at 50% 2%, rgba(184,134,11,0.22), transparent 52%),
+          linear-gradient(180deg, rgba(14,14,13,0.70) 0%, rgba(14,14,13,0.88) 52%, rgba(14,14,13,0.97) 100%);
+      }
+
       .links .wrap {
+        position: relative;
+        z-index: 1;
         max-width: 520px;
         margin: 0 auto;
         padding: clamp(2.5rem, 8vw, 4rem) 1.25rem 3rem;
@@ -179,6 +190,12 @@ const buttons = [
 
   <body style="margin:0; background:#0e0e0d;">
     <main class="links">
+      <div class="bg" aria-hidden="true">
+        <picture>
+          <source srcset="/images/links/bg.webp" type="image/webp" />
+          <img src="/images/links/bg.jpg" alt="" loading="eager" />
+        </picture>
+      </div>
       <div class="wrap">
         <div class="avatar">
           <picture>
