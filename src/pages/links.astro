@@ -28,37 +28,31 @@ const buttons = [
     event: "link-afas",
   },
   {
+    label: "Gratis: Gitaarmannen 3 — John Mayer",
+    sub: "De hele theatershow, gratis te kijken",
+    href: "https://www.gitaarmannen.nl/john-mayer",
+    event: "link-gm3",
+  },
+  {
     label: "Boek een huiskamerconcert",
     sub: "Ik kom bij je thuis spelen",
     href: "/huiskamerconcerten/",
     event: "link-huiskamer",
   },
   {
-    label: "Gitaarmannen — podcast & theater",
-    sub: "Alles over de show en de podcast",
-    href: "https://www.gitaarmannen.nl",
-    event: "link-gitaarmannen",
+    label: "Gitaarmannen op YouTube",
+    sub: "De podcast met mijn favoriete gitaristen",
+    href: "https://youtube.com/@gitaarmannen",
+    event: "link-gitaarmannen-yt",
   },
   {
-    label: "Luister mijn muziek",
-    sub: "Op Spotify",
+    label: "Mijn muziek op Spotify",
+    sub: "Mijn eigen nummers",
     href: "https://open.spotify.com/artist/08cpwYrPWo8Xkxl9qdiDP2",
     event: "link-muziek",
   },
 ];
 
-const socials = [
-  { name: "Instagram", href: "https://instagram.com/edstruijlaart", event: "social-instagram",
-    path: "M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 01-1.38-.9 3.7 3.7 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.19.41-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.17.42-.36 1.04-.41 2.19-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.41 2.19.21.55.47.94.88 1.35.41.41.8.67 1.35.88.42.17 1.04.36 2.19.41 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.19-.41.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.17-.42.36-1.04.41-2.19.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.41-2.19a3.6 3.6 0 00-.88-1.35 3.6 3.6 0 00-1.35-.88c-.42-.17-1.04-.36-2.19-.41-1.24-.06-1.61-.07-4.76-.07zm0 2.76a5.3 5.3 0 110 10.6 5.3 5.3 0 010-10.6zm0 1.62a3.68 3.68 0 100 7.36 3.68 3.68 0 000-7.36zm5.5-.29a1.24 1.24 0 11-2.48 0 1.24 1.24 0 012.48 0z" },
-  { name: "YouTube", href: "https://youtube.com/@edstruijlaart", event: "social-youtube",
-    path: "M23.5 6.2a3.02 3.02 0 00-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 00.5 6.2C0 8.07 0 12 0 12s0 3.93.5 5.8a3.02 3.02 0 002.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 002.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z" },
-  { name: "Spotify", href: "https://open.spotify.com/artist/08cpwYrPWo8Xkxl9qdiDP2", event: "social-spotify",
-    path: "M12 2a10 10 0 100 20 10 10 0 000-20zm4.59 14.43a.62.62 0 01-.86.21c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 11-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.3.18.39.57.21.85zm1.22-2.72a.78.78 0 01-1.07.26c-2.69-1.66-6.8-2.14-9.98-1.17a.78.78 0 11-.45-1.49c3.64-1.1 8.16-.57 11.25 1.33.36.22.48.7.25 1.07zm.11-2.84C14.8 8.99 9.5 8.8 6.43 9.73a.93.93 0 11-.54-1.78c3.52-1.07 9.37-.86 13.07 1.34a.93.93 0 11-.95 1.6z" },
-  { name: "TikTok", href: "https://tiktok.com/@edstruijlaart_zelf", event: "social-tiktok",
-    path: "M16.6 5.82a4.28 4.28 0 01-1.05-2.82h-3.1v12.4a2.6 2.6 0 11-2.6-2.6c.27 0 .52.04.77.11v-3.2a5.8 5.8 0 00-.77-.05 5.74 5.74 0 105.74 5.74V9.3a7.3 7.3 0 004.27 1.37V7.5a4.28 4.28 0 01-3.26-1.68z" },
-  { name: "Facebook", href: "https://facebook.com/edstruijlaartofficial", event: "social-facebook",
-    path: "M24 12a12 12 0 10-13.88 11.85v-8.38H7.08V12h3.04V9.36c0-3 1.79-4.67 4.53-4.67 1.31 0 2.69.24 2.69.24v2.95h-1.51c-1.49 0-1.96.93-1.96 1.87V12h3.33l-.53 3.47h-2.8v8.38A12 12 0 0024 12z" },
-];
 ---
 
 <!doctype html>
@@ -209,14 +203,6 @@ const socials = [
             </a>
           ))}
         </nav>
-
-        <div class="socials">
-          {socials.map((s) => (
-            <a href={s.href} target="_blank" rel="noopener" aria-label={s.name} data-umami-event={s.event}>
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={s.path} /></svg>
-            </a>
-          ))}
-        </div>
 
         <p class="foot">edstruijlaart.nl</p>
       </div>
