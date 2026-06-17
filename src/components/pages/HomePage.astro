@@ -21,6 +21,9 @@ import aboutPhoto from '../../assets/photos/ed-struijlaart-spelend.jpg';
 // GM4 Continuum tour hero
 import gm4Backdrop from '../../assets/theater/gm4-hero/backdrop.jpg';
 
+// AFAS Live concert weggeef (funnel naar /afas)
+import afasConcertHero from '../../assets/afas/afas-concert-hero.jpg';
+
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
@@ -41,6 +44,14 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=
         subtitle: "20 jaar John Mayer's meesterwerk. 27 shows door heel Nederland, vanaf 24 september 2026.",
         ctaPrimary: { label: 'Alle data en tickets', href: 'https://www.gitaarmannen.nl/continuum/' },
         ctaSecondary: { label: 'Lees het verhaal', href: localizedHref('/tour/gitaarmannen-4-continuum/', locale) },
+      },
+      {
+        image: afasConcertHero,
+        imagePosition: 'center 35%',
+        tagline: 'Gratis cadeau',
+        title: 'Mijn hele AFAS Live concert',
+        subtitle: 'Ik speelde in het voorprogramma van de Gipsy Kings. Kijk het hele concert gratis terug.',
+        ctaPrimary: { label: 'Bekijk het gratis', href: '/afas' },
       },
       {
         image: heroStudio,
