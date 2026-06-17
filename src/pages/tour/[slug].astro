@@ -46,6 +46,7 @@ function formatShortDate(dateStr: string): string {
 <BaseLayout
   title={`${tour.title}${tour.subtitle ? ': ' + tour.subtitle : ''}`}
   description={tour.shortDescription}
+  adPixels
 >
   {/* JSON-LD: Event structured data voor aankomende shows */}
   {futureShows.length > 0 && futureShows.map(show => (

@@ -1,0 +1,28 @@
+---
+// Gedeelde ad-pixels (Meta + Google Ads) voor de conversie-pagina's van
+// edstruijlaart.nl (/tour, /tour/*, /huiskamerconcerten). Alleen PageView +
+// config = bezoekers in de retargeting-pool, zelfde dataset als de funnels
+// (Meta 1675651260382047, Google AW-11309058298). Geen conversie-event, want
+// boekingen lopen off-site (boeken.edstruijlaart.nl).
+//
+// AVG: dit zijn actieve trackingpixels zonder consent-banner. Bewuste keuze,
+// beperkt tot hoge-intentie pagina's (niet site-breed). Inschakelen via de
+// `adPixels` prop op BaseLayout.
+---
+<script is:inline>
+  window.ED_ADS = {
+    metaPixelId: "1675651260382047",
+    googleAdsId: "AW-11309058298"
+  };
+  (function () {
+    var A = window.ED_ADS;
+    if (A.metaPixelId && !window.fbq) {
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', A.metaPixelId); fbq('track', 'PageView');
+    }
+    if (A.googleAdsId && !window.gtag) {
+      var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+A.googleAdsId;document.head.appendChild(g);
+      window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag('js',new Date());gtag('config',A.googleAdsId);
+    }
+  })();
+</script>
