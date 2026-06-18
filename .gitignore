@@ -18,6 +18,8 @@ pnpm-debug.log*
 .env.*
 .env.production
 .env.vercel
+# .env.example mag WEL gecommit worden (alleen namen + placeholders, geen secrets)
+!.env.example
 
 # vercel
 .vercel/

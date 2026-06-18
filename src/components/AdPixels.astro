@@ -1,28 +1,117 @@
 ---
-// Gedeelde ad-pixels (Meta + Google Ads) voor de conversie-pagina's van
-// edstruijlaart.nl (/tour, /tour/*, /huiskamerconcerten). Alleen PageView +
-// config = bezoekers in de retargeting-pool, zelfde dataset als de funnels
-// (Meta 1675651260382047, Google AW-11309058298). Geen conversie-event, want
-// boekingen lopen off-site (boeken.edstruijlaart.nl).
+// AdPixels.astro — Meta + Google Ads pixels MET Google Consent Mode v2.
 //
-// AVG: dit zijn actieve trackingpixels zonder consent-banner. Bewuste keuze,
-// beperkt tot hoge-intentie pagina's (niet site-breed). Inschakelen via de
-// `adPixels` prop op BaseLayout.
+// Default: alle storage 'denied' (AVG-safe). Pixels worden lazy geladen pas
+// na expliciete acceptatie via de banner. Subtiele banner onderaan toont
+// alleen bij ongekozen-state, blijft weg bij returning visitors.
+//
+// Banner: cookie-stripje onderaan, donker/semi-transparant, twee knoppen.
+// Mobiel-friendly (flex-wrap).
+//
+// Google Consent Mode v2: tag laadt direct, verzendt 'cookieless pings' tot
+// consent — zodat Google nog kan optimaliseren binnen AVG-grenzen. Bij accept
+// gaat consent op 'granted' en gaat Meta-pixel pas dan laden.
+//
+// Inschakelen via de `adPixels` prop op BaseLayout. Verschijnt op alle pagina's
+// waar pixels staan: /tour, /tour/[slug], /huiskamerconcerten, /afas, /links.
 ---
+
+<!-- Cookie consent banner (verborgen tenzij geen keuze) -->
+<div id="ed-consent" hidden style="position:fixed;bottom:0;left:0;right:0;background:rgba(24,24,24,0.94);color:#fff;padding:12px 16px;font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;z-index:99999;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,0.08);box-shadow:0 -4px 24px rgba(0,0,0,0.15);">
+  <div style="max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
+    <span style="opacity:0.88;line-height:1.45;">Deze site gebruikt cookies voor advertentiemeting.</span>
+    <span style="display:flex;gap:8px;flex-shrink:0;">
+      <button id="ed-consent-deny" type="button" aria-label="Cookies weigeren" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.25);padding:7px 14px;border-radius:4px;cursor:pointer;font:inherit;font-size:13px;opacity:0.7;">Weigeren</button>
+      <button id="ed-consent-accept" type="button" aria-label="Cookies accepteren" style="background:#00aacc;color:#fff;border:none;padding:7px 16px;border-radius:4px;cursor:pointer;font:inherit;font-size:13px;font-weight:600;">Accepteren</button>
+    </span>
+  </div>
+</div>
+
 <script is:inline>
+(function () {
+  var KEY = 'ed_consent_v1';
+  var META_ID = '1675651260382047';
+  var GA_ID = 'AW-11309058298';
+
+  // Google Consent Mode v2 — default deny voor pixel-init
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function () { dataLayer.push(arguments); };
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+
+  // Google Ads gtag laden (cookieless pings tot consent granted)
+  if (GA_ID && !window.__edGtagLoaded) {
+    window.__edGtagLoaded = true;
+    var g = document.createElement('script');
+    g.async = true;
+    g.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(g);
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+  }
+
+  function loadMeta() {
+    if (window.fbq || !META_ID) return;
+    !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s) }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', META_ID);
+    fbq('track', 'PageView');
+  }
+
+  function apply(decision, persist) {
+    if (persist) {
+      try { localStorage.setItem(KEY, decision); } catch (e) {}
+    }
+    window.__edConsent = decision;
+
+    if (decision === 'granted') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+      loadMeta();
+    }
+
+    window.dispatchEvent(new CustomEvent('ed-consent-decision', { detail: decision }));
+
+    var b = document.getElementById('ed-consent');
+    if (b) b.hidden = true;
+  }
+
+  function showBanner() {
+    var b = document.getElementById('ed-consent');
+    if (!b) return;
+    b.hidden = false;
+    var a = document.getElementById('ed-consent-accept');
+    var d = document.getElementById('ed-consent-deny');
+    if (a) a.addEventListener('click', function () { apply('granted', true); });
+    if (d) d.addEventListener('click', function () { apply('denied', true); });
+  }
+
+  var existing = null;
+  try { existing = localStorage.getItem(KEY); } catch (e) {}
+
+  if (existing === 'granted' || existing === 'denied') {
+    apply(existing, false);
+  } else {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', showBanner);
+    } else {
+      showBanner();
+    }
+  }
+
+  // Expose for external scripts (custom events on continuum.astro etc)
   window.ED_ADS = {
-    metaPixelId: "1675651260382047",
-    googleAdsId: "AW-11309058298"
+    metaPixelId: META_ID,
+    googleAdsId: GA_ID,
+    isConsented: function () { return window.__edConsent === 'granted'; }
   };
-  (function () {
-    var A = window.ED_ADS;
-    if (A.metaPixelId && !window.fbq) {
-      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', A.metaPixelId); fbq('track', 'PageView');
-    }
-    if (A.googleAdsId && !window.gtag) {
-      var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+A.googleAdsId;document.head.appendChild(g);
-      window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag('js',new Date());gtag('config',A.googleAdsId);
-    }
-  })();
+})();
 </script>
