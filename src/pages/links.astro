@@ -103,8 +103,8 @@ const buttons = [
         --bg: #0e0e0d;
         --card: rgba(255,255,255,0.05);
         --border: rgba(255,255,255,0.12);
-        --gold: #b8860b;
-        --gold-light: #d4a836;
+        --gold: #00aacc;
+        --gold-light: #33c6e8;
         --white: #ffffff;
         --muted: rgba(255,255,255,0.62);
         --font-display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
@@ -125,7 +125,7 @@ const buttons = [
       .links .bg::after {
         content: ""; position: absolute; inset: 0;
         background:
-          radial-gradient(circle at 50% 2%, rgba(184,134,11,0.22), transparent 52%),
+          radial-gradient(circle at 50% 2%, rgba(0,170,204,0.22), transparent 52%),
           linear-gradient(180deg, rgba(14,14,13,0.70) 0%, rgba(14,14,13,0.88) 52%, rgba(14,14,13,0.97) 100%);
       }
 
@@ -167,7 +167,7 @@ const buttons = [
         border-radius: 12px; padding: 0.95rem 1rem;
         transition: transform 0.15s, border-color 0.2s, background 0.2s;
       }
-      .links .btn:hover { transform: translateY(-2px); border-color: var(--gold); background: rgba(184,134,11,0.10); }
+      .links .btn:hover { transform: translateY(-2px); border-color: var(--gold); background: rgba(0,170,204,0.10); }
       .links .btn .btn-label {
         font-family: var(--font-display); font-weight: 700;
         font-size: 1.18rem; letter-spacing: 0.02em; text-transform: uppercase;
@@ -176,16 +176,16 @@ const buttons = [
 
       .links .btn.featured {
         background: var(--gold); border-color: var(--gold);
-        box-shadow: 0 8px 24px rgba(184,134,11,0.35);
+        box-shadow: 0 8px 24px rgba(0,170,204,0.35);
         animation: spotlight 2.8s ease-in-out infinite;
       }
       .links .btn.featured:hover { background: var(--gold-light); border-color: var(--gold-light); }
       .links .btn.featured .btn-label,
-      .links .btn.featured .btn-sub { color: #1a1407; }
+      .links .btn.featured .btn-sub { color: #06232b; }
       .links .btn.featured .btn-sub { opacity: 0.85; }
       @keyframes spotlight {
-        0%, 100% { box-shadow: 0 8px 24px rgba(184,134,11,0.32); }
-        50% { box-shadow: 0 10px 40px rgba(184,134,11,0.62); }
+        0%, 100% { box-shadow: 0 8px 24px rgba(0,170,204,0.32); }
+        50% { box-shadow: 0 10px 40px rgba(0,170,204,0.62); }
       }
       @media (prefers-reduced-motion: reduce) {
         .links .btn.featured { animation: none; }
@@ -212,7 +212,7 @@ const buttons = [
       .links .capture input::placeholder { color: rgba(255,255,255,0.4); }
       .links .capture input:focus { outline: none; border-color: var(--gold); }
       .links .capture button {
-        background: var(--gold); color: #1a1407; border: none; border-radius: 8px;
+        background: var(--gold); color: #06232b; border: none; border-radius: 8px;
         padding: 0 1.05rem; font-family: var(--font-display); font-weight: 800;
         text-transform: uppercase; font-size: 0.92rem; letter-spacing: 0.03em;
         cursor: pointer; white-space: nowrap; transition: background 0.2s;
