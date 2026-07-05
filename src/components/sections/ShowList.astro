@@ -57,7 +57,14 @@ const LISTMONK_FORM_URL = 'https://newsletter.earswantmusic.nl/subscription/form
                 <a href={showUrl} class="hover:text-[var(--color-gold)] transition-colors">{show.venue}</a>
               ) : show.venue}
             </h3>
-            <p class="text-sm text-[var(--fg-muted)]">{show.city}</p>
+            <p class="text-sm text-[var(--fg-muted)] flex items-center gap-2 flex-wrap">
+              <span>{show.city}</span>
+              {show.acoustic && (
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider border border-[var(--color-gold)]/50 text-[var(--color-gold)]">
+                  Akoestisch
+                </span>
+              )}
+            </p>
             {show.production && !show.isHuiskamerconcert && (
               <p class="text-sm text-[var(--color-gold)]">{show.production}</p>
             )}
