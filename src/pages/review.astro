@@ -4,6 +4,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const API_BASE = 'https://boeken.edstruijlaart.nl';
 const type = Astro.url.searchParams.get('type') || 'algemeen';
+// Concert-specifieke koppeling uit de follow-up mail (?c=<id>&t=<token>).
+const concertId = Astro.url.searchParams.get('c');
+const reviewToken = Astro.url.searchParams.get('t');
 
 const typeConfig: Record<string, { title: string; subtitle: string; slug: string; storageKey: string; ogImage: string }> = {
   gitaarmannen: {
@@ -173,7 +176,7 @@ const config = typeConfig[type] || typeConfig.algemeen;
   </section>
 </BaseLayout>
 
-<script define:vars={{ API_BASE, slug: config.slug, storageKey: config.storageKey }}>
+<script define:vars={{ API_BASE, slug: config.slug, storageKey: config.storageKey, concertId, reviewToken }}>
   // Star rating logic
   const starBtns = document.querySelectorAll('.star-btn');
   const ratingInput = document.getElementById('rating-input');
@@ -216,8 +219,13 @@ const config = typeConfig[type] || typeConfig.algemeen;
   const successEl = document.getElementById('review-success');
   const formContainer = document.getElementById('review-form-container');
 
+  // Opslag-key per concert wanneer we een concert-koppeling hebben, zodat een gast die
+  // een eerder huiskamerconcert reviewde niet automatisch het formulier verborgen krijgt
+  // voor een volgend concert.
+  const effectiveStorageKey = concertId ? `${storageKey}-${concertId}` : storageKey;
+
   // Check if already submitted
-  const submitted = localStorage.getItem(storageKey);
+  const submitted = localStorage.getItem(effectiveStorageKey);
   if (submitted && formContainer && successEl) {
     formContainer.classList.add('hidden');
     successEl.classList.remove('hidden');
@@ -255,6 +263,8 @@ const config = typeConfig[type] || typeConfig.algemeen;
             rating: selectedRating,
             review_text: form.querySelector('[name="review_text"]').value.trim() || null,
             concert_date: null,
+            concert_id: concertId ? parseInt(concertId, 10) : null,
+            review_token: reviewToken || null,
             email: form.querySelector('[name="reviewer_email"]').value.trim() || null,
             subscribe: form.querySelector('[name="subscribe"]').checked || false
           })
@@ -265,7 +275,7 @@ const config = typeConfig[type] || typeConfig.algemeen;
           throw new Error(result.detail || 'Er ging iets mis');
         }
 
-        localStorage.setItem(storageKey, 'true');
+        localStorage.setItem(effectiveStorageKey, 'true');
         formContainer.classList.add('hidden');
         successEl.classList.remove('hidden');
       } catch (err) {
