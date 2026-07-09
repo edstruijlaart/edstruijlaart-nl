@@ -1,0 +1,87 @@
+---
+export const prerender = false;
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const API_BASE = 'https://boeken.edstruijlaart.nl';
+---
+
+<BaseLayout
+  title="Reviews"
+  description="Wat mensen zeggen over een huiskamerconcert of optreden van Ed Struijlaart."
+>
+  <section class="py-16 sm:py-24" style="background-color: var(--bg);">
+    <div class="mx-auto max-w-[800px] px-4 sm:px-6">
+
+      <div class="text-center mb-12">
+        <h1 class="font-[var(--font-display)] text-3xl sm:text-4xl text-[var(--fg)] mb-4">
+          Reviews
+        </h1>
+        <p class="text-[var(--fg-muted)] text-lg leading-relaxed">
+          Wat mensen zeggen over een huiskamerconcert of optreden.
+        </p>
+      </div>
+
+      <div id="reviews-loading" class="text-center text-[var(--fg-muted)]">
+        Reviews laden...
+      </div>
+
+      <div id="reviews-empty" class="text-center text-[var(--fg-muted)] hidden">
+        Nog geen reviews.
+      </div>
+
+      <div id="reviews-list" class="space-y-4"></div>
+
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ API_BASE }}>
+  const listEl = document.getElementById('reviews-list');
+  const loadingEl = document.getElementById('reviews-loading');
+  const emptyEl = document.getElementById('reviews-empty');
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function stars(rating) {
+    return '&#9733;'.repeat(rating) + '&#9734;'.repeat(5 - rating);
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('nl-NL', { year: 'numeric', month: 'long' });
+  }
+
+  (async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/reviews/public?limit=100&min_rating=1`);
+      if (!res.ok) throw new Error('Kon reviews niet laden');
+      const data = await res.json();
+      const reviews = data.reviews || [];
+
+      loadingEl.classList.add('hidden');
+
+      if (!reviews.length) {
+        emptyEl.classList.remove('hidden');
+        return;
+      }
+
+      listEl.innerHTML = reviews.map(r => `
+        <div class="rounded-xl p-6" style="background-color: var(--bg-surface); box-shadow: var(--shadow-card);">
+          <div class="text-[var(--color-gold)] text-lg mb-2" aria-hidden="true">${stars(r.rating)}</div>
+          ${r.review_text ? `<p class="text-[var(--fg)] leading-relaxed mb-3">&ldquo;${escapeHtml(r.review_text)}&rdquo;</p>` : ''}
+          <p class="text-sm text-[var(--fg-muted)]">
+            <span class="font-medium">${escapeHtml(r.reviewer_name || 'Anoniem')}</span>${r.reviewer_city ? `, ${escapeHtml(r.reviewer_city)}` : ''}${formatDate(r.concert_date || r.created_at) ? ` &middot; ${formatDate(r.concert_date || r.created_at)}` : ''}
+          </p>
+        </div>
+      `).join('');
+    } catch (err) {
+      loadingEl.textContent = 'Reviews konden niet geladen worden.';
+    }
+  })();
+</script>
