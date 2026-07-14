@@ -11,6 +11,8 @@ export interface Tour {
   setlist?: string[];
   spotifyPlaylistUri?: string;
   shopCta?: { label: string; href: string };
+  trailerYoutubeId?: string;
+  trailerPoster?: string;
 }
 
 export const tours: Tour[] = [
@@ -32,6 +34,8 @@ export const tours: Tour[] = [
     current: true,
     setlist: [],
     shopCta: { label: 'Alle data en tickets', href: 'https://www.gitaarmannen.nl/continuum/' },
+    trailerYoutubeId: 'wrsepG3uNg8',
+    trailerPoster: '/images/trailer/gm4-trailer-poster.jpg',
   },
   {
     slug: 'gitaarmannen-3-john-mayer',

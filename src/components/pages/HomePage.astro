@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../ui/Hero.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 import HighlightCarousel from '../sections/HighlightCarousel.astro';
+import TrailerSection from '../sections/TrailerSection.astro';
 import FeaturedNews from '../sections/FeaturedNews.astro';
 import ShowList from '../sections/ShowList.astro';
 import TheaterProducties from '../sections/TheaterProducties.astro';
@@ -43,7 +44,7 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=
         title: 'Gitaarmannen 4: Continuum',
         subtitle: "20 jaar John Mayer's meesterwerk. 27 shows door heel Nederland, vanaf 24 september 2026.",
         ctaPrimary: { label: 'Alle data en tickets', href: 'https://www.gitaarmannen.nl/continuum/' },
-        ctaSecondary: { label: 'Lees het verhaal', href: localizedHref('/tour/gitaarmannen-4-continuum/', locale) },
+        ctaSecondary: { label: 'Bekijk de trailer', href: '#trailer' },
       },
       {
         image: afasConcertHero,
@@ -63,6 +64,20 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=
       },
     ]}
   />
+
+  <div class="reveal-section">
+    <TrailerSection
+      youtubeId="wrsepG3uNg8"
+      poster="/images/trailer/gm4-trailer-poster.jpg"
+      title="Gitaarmannen 4: Continuum - de trailer"
+      subtitle="20 jaar John Mayers meesterwerk, dit najaar in het theater. Anderhalve minuut voorproefje."
+      ctaPrimary={{ label: 'Alle data en tickets', href: 'https://www.gitaarmannen.nl/continuum/' }}
+      ctaSecondary={{ label: 'Lees het verhaal', href: localizedHref('/tour/gitaarmannen-4-continuum/', locale) }}
+      umamiPrefix="trailer-home"
+      videoName="Gitaarmannen 4: Continuum - Trailer"
+      videoDescription="20 jaar na John Mayers meesterwerk Continuum. 27 shows door heel Nederland, seizoen 2026/2027."
+    />
+  </div>
 
   <section class="py-20 md:py-28 reveal-section" style="background-color: var(--bg-surface);">
     <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">

@@ -1,0 +1,141 @@
+---
+interface Props {
+  youtubeId: string;
+  poster: string;
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  ctaPrimary?: { label: string; href: string };
+  ctaSecondary?: { label: string; href: string };
+  umamiPrefix?: string;
+  videoName?: string;
+  videoDescription?: string;
+  uploadDate?: string;
+}
+
+const {
+  youtubeId,
+  poster,
+  title,
+  subtitle,
+  ctaPrimary,
+  ctaSecondary,
+  umamiPrefix = 'trailer',
+  videoName,
+  videoDescription,
+  uploadDate,
+} = Astro.props;
+
+const schema = videoName
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: videoName,
+      description: videoDescription ?? subtitle ?? title,
+      thumbnailUrl: new URL(poster, Astro.site ?? 'https://www.edstruijlaart.nl').href,
+      uploadDate: uploadDate ?? '2026-07-14',
+      embedUrl: `https://www.youtube-nocookie.com/embed/${youtubeId}`,
+    }
+  : null;
+---
+
+<section id="trailer" class="py-20 md:py-28 reveal-section" style="background-color: var(--bg-surface);">
+  {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+    <div class="section-heading mb-12 text-center">
+      <h2 class="font-[var(--font-display)] text-4xl">{title}</h2>
+      <div
+        class="gold-divider mt-4 h-1 rounded-full mx-auto"
+        style="background: linear-gradient(90deg, var(--color-gold-dark), var(--color-gold), var(--color-gold-light)); width: 3rem;"
+      />
+      {subtitle && (
+        <p class="mt-4 text-lg max-w-2xl mx-auto" style="color: var(--fg-muted);">{subtitle}</p>
+      )}
+    </div>
+
+    <div class="trailer-glow mx-auto max-w-[880px]">
+      <div
+        class="trailer-frame relative aspect-video overflow-hidden rounded-xl bg-black"
+        data-youtube-id={youtubeId}
+        style="box-shadow: var(--shadow-card);"
+      >
+        <img src={poster} alt={videoName ?? title} loading="lazy" class="h-full w-full object-cover" />
+        <button
+          type="button"
+          class="trailer-play-btn absolute inset-0 m-auto flex h-20 w-20 items-center justify-center rounded-full bg-[var(--color-gold)] text-white transition-transform duration-200 hover:scale-110 md:h-24 md:w-24"
+          aria-label={`Speel af: ${videoName ?? title}`}
+          data-umami-event={`${umamiPrefix}-play`}
+        >
+          <svg width="36" height="36" fill="currentColor" viewBox="0 0 24 24" class="ml-1"><path d="M8 5v14l11-7z" /></svg>
+        </button>
+        <span
+          class="absolute bottom-4 right-4 rounded-full bg-black/60 px-3 py-1 text-sm text-white backdrop-blur-sm"
+          aria-hidden="true"
+        >90 sec</span>
+      </div>
+    </div>
+
+    {(ctaPrimary || ctaSecondary) && (
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        {ctaPrimary && (
+          <a
+            href={ctaPrimary.href}
+            class="inline-flex items-center justify-center rounded-full bg-[var(--color-gold)] px-8 py-4 text-base font-medium text-white transition-all duration-300 hover:bg-[var(--color-gold-light)] active:scale-[0.97]"
+            data-umami-event={`${umamiPrefix}-cta-primary`}
+          >{ctaPrimary.label}</a>
+        )}
+        {ctaSecondary && (
+          <a
+            href={ctaSecondary.href}
+            class="inline-flex items-center justify-center rounded-full border-2 border-[var(--color-gold)] px-8 py-4 text-base font-medium text-[var(--color-gold)] transition-all duration-300 hover:bg-[var(--color-gold)] hover:text-white active:scale-[0.97]"
+            data-umami-event={`${umamiPrefix}-cta-secondary`}
+          >{ctaSecondary.label}</a>
+        )}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .trailer-glow {
+    position: relative;
+  }
+  .trailer-glow::before {
+    content: '';
+    position: absolute;
+    inset: -18px;
+    border-radius: 1.25rem;
+    background: radial-gradient(ellipse at center, color-mix(in srgb, var(--color-gold) 22%, transparent), transparent 70%);
+    filter: blur(24px);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .trailer-frame {
+    z-index: 1;
+  }
+  .trailer-play-btn {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  }
+</style>
+
+<script>
+  function initTrailerFrames() {
+    document.querySelectorAll<HTMLElement>('.trailer-frame[data-youtube-id]').forEach((frame) => {
+      const btn = frame.querySelector('.trailer-play-btn');
+      if (!btn || frame.dataset.trailerInit) return;
+      frame.dataset.trailerInit = '1';
+      btn.addEventListener('click', () => {
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube-nocookie.com/embed/${frame.dataset.youtubeId}?autoplay=1&rel=0`;
+        iframe.title = btn.getAttribute('aria-label') ?? 'Trailer';
+        iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.className = 'absolute inset-0 h-full w-full border-0';
+        frame.innerHTML = '';
+        frame.appendChild(iframe);
+      });
+    });
+  }
+  initTrailerFrames();
+  document.addEventListener('astro:page-load', initTrailerFrames);
+</script>

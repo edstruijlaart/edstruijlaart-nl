@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Button from '../../components/ui/Button.astro';
 import SectionHeading from '../../components/ui/SectionHeading.astro';
 import ShowList from '../../components/sections/ShowList.astro';
+import TrailerSection from '../../components/sections/TrailerSection.astro';
 import { tours } from '../../data/tours';
 import { tourShowHistory } from '../../data/tourShows';
 import type { GetStaticPaths } from 'astro';
@@ -151,6 +152,20 @@ function formatShortDate(dateStr: string): string {
       </div>
     </div>
   </section>
+
+  <!-- Trailer -->
+  {tour.trailerYoutubeId && tour.trailerPoster && (
+    <TrailerSection
+      youtubeId={tour.trailerYoutubeId}
+      poster={tour.trailerPoster}
+      title="Bekijk de trailer"
+      subtitle="Anderhalve minuut voorproefje. De rest hoor je in het theater."
+      ctaPrimary={tour.shopCta ? { label: tour.shopCta.label, href: tour.shopCta.href } : undefined}
+      umamiPrefix={`trailer-tour-${tour.slug}`}
+      videoName={`${tour.title}${tour.subtitle ? ': ' + tour.subtitle : ''} - Trailer`}
+      videoDescription={tour.shortDescription}
+    />
+  )}
 
   <!-- Speellijst -->
   {tour.setlist && tour.setlist.length > 0 && (
