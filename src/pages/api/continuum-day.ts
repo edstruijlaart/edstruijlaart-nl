@@ -4,6 +4,7 @@ import type { APIRoute } from "astro";
 import { Resend } from "resend";
 import { LISTMONK_PUBLIC_API } from "../../data/gm3-funnel";
 import { buildContinuumDayEmail } from "../../lib/continuum-day-email";
+import { sanityWriteClient } from "../../lib/sanity";
 
 // Aanmelding voor Continuum Day (za 12 sep 2026, Isala Theater Capelle a/d IJssel).
 // Aangeroepen vanaf gitaarmannen.nl/continuum-day (cross-origin, vandaar CORS).
@@ -38,7 +39,7 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json", ...cors },
     });
 
-  let body: { email?: string; name?: string; akkoord?: boolean };
+  let body: { email?: string; name?: string; akkoord?: boolean; leeftijd?: number | string };
   try {
     body = await request.json();
   } catch {
@@ -47,6 +48,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const email = (body.email || "").trim();
   const name = (body.name || "").trim();
+  const leeftijd = Number(body.leeftijd);
 
   if (!name || name.length < 2) {
     return json({ error: "Vul je naam in." }, 400);
@@ -54,8 +56,29 @@ export const POST: APIRoute = async ({ request }) => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return json({ error: "Vul een geldig e-mailadres in." }, 400);
   }
+  if (!Number.isInteger(leeftijd) || leeftijd < 4 || leeftijd > 109) {
+    return json({ error: "Vul je leeftijd in." }, 400);
+  }
   if (body.akkoord !== true) {
     return json({ error: "Ga akkoord met de deelnamevoorwaarden." }, 400);
+  }
+
+  // 0) Aanmelding vastleggen in Sanity: dit is de lotenlijst (naam + leeftijd = lot)
+  //    en de bron voor jongste/oudste deelnemer. createIfNotExists: dubbel
+  //    aanmelden overschrijft niks. Faalt dit, dan gaat de aanmelding gewoon door
+  //    (Listmonk heeft naam + mail als vangnet).
+  try {
+    const emailKey = email.toLowerCase().replace(/[^a-z0-9._-]/g, "-");
+    await sanityWriteClient.createIfNotExists({
+      _id: `continuumDayAanmelding.${emailKey}`,
+      _type: "continuumDayAanmelding",
+      naam: name,
+      email: email.toLowerCase(),
+      leeftijd,
+      aangemeldOp: new Date().toISOString(),
+    });
+  } catch (e) {
+    console.error("Sanity aanmelding wegschrijven faalde (continuum-day)", e);
   }
 
   // 1) Inschrijven in Listmonk (public API, single opt-in)

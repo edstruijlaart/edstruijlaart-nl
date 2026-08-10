@@ -12,10 +12,10 @@ export function buildContinuumDayEmail({ name }: { name: string }) {
   const voornaam = name.split(" ")[0] || "daar";
 
   const verlotingHtml = VERLOTING_IN_MAIL
-    ? `<p><strong>En dan de verloting:</strong> meteen na het spelen verloten we onder de aanwezige deelnemers een PRS SE Silver Sky (de Rosewood in Gold Spark, een limited uitvoering). Er gaat ook een doosje John Mayer signature-snaren weg. Je lotnummer krijg je bij de inloop, en je moet er zijn om te winnen.</p>`
+    ? `<p><strong>En dan de verloting:</strong> meteen na het spelen verloten we onder de aanwezige deelnemers een PRS SE Silver Sky (de Rosewood in Gold Spark, een limited uitvoering). Er gaan ook een Dunlop System 65 setup-kit en een 3-pack John Mayer signature-snaren weg, en iedereen krijgt een speciale Continuum Day-plectrum. Je aanmelding is meteen je lot, en je moet er zijn om te winnen.</p>`
     : "";
   const verlotingText = VERLOTING_IN_MAIL
-    ? `En dan de verloting: meteen na het spelen verloten we onder de aanwezige deelnemers een PRS SE Silver Sky (de Rosewood in Gold Spark, een limited uitvoering). Er gaat ook een doosje John Mayer signature-snaren weg. Je lotnummer krijg je bij de inloop, en je moet er zijn om te winnen.\n\n`
+    ? `En dan de verloting: meteen na het spelen verloten we onder de aanwezige deelnemers een PRS SE Silver Sky (de Rosewood in Gold Spark, een limited uitvoering). Er gaan ook een Dunlop System 65 setup-kit en een 3-pack John Mayer signature-snaren weg, en iedereen krijgt een speciale Continuum Day-plectrum. Je aanmelding is meteen je lot, en je moet er zijn om te winnen.\n\n`
     : "";
   const trekkingLiHtml = VERLOTING_IN_MAIL
     ? `\n<li>12:15 &mdash; de trekking van de verloting, direct na het spelen</li>`
