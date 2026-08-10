@@ -1,0 +1,70 @@
+// Bevestigingsmail voor Continuum Day-aanmeldingen (12 sep 2026, Isala Theater).
+// PRS bevestigd (29 jul, Piers/PRS Europe): SE Silver Sky Rosewood Gold Spark ltd — verloting staat AAN.
+// Programma zonder borrel: Isala heeft die zaterdag geen barpersoneel (vakantie), trekking direct na het spelen.
+
+export const VERLOTING_IN_MAIL = true;
+
+const VOORWAARDEN_URL = "https://www.gitaarmannen.nl/continuum-day#voorwaarden";
+const CONTINUUM_URL =
+  "https://www.gitaarmannen.nl/continuum?utm_source=continuum-day&utm_medium=email&utm_campaign=bevestiging";
+
+export function buildContinuumDayEmail({ name }: { name: string }) {
+  const voornaam = name.split(" ")[0] || "daar";
+
+  const verlotingHtml = VERLOTING_IN_MAIL
+    ? `<p><strong>En dan de verloting:</strong> meteen na het spelen verloten we onder de aanwezige deelnemers een PRS SE Silver Sky (de Rosewood in Gold Spark, een limited uitvoering). Er gaat ook een doosje John Mayer signature-snaren weg. Je lotnummer krijg je bij de inloop, en je moet er zijn om te winnen.</p>`
+    : "";
+  const verlotingText = VERLOTING_IN_MAIL
+    ? `En dan de verloting: meteen na het spelen verloten we onder de aanwezige deelnemers een PRS SE Silver Sky (de Rosewood in Gold Spark, een limited uitvoering). Er gaat ook een doosje John Mayer signature-snaren weg. Je lotnummer krijg je bij de inloop, en je moet er zijn om te winnen.\n\n`
+    : "";
+  const trekkingLiHtml = VERLOTING_IN_MAIL
+    ? `\n<li>12:15 &mdash; de trekking van de verloting, direct na het spelen</li>`
+    : "";
+  const trekkingLiText = VERLOTING_IN_MAIL ? `\n- 12:15 de trekking van de verloting, direct na het spelen` : "";
+
+  const subject = "Je staat op de lijst voor Continuum Day (12 september)";
+
+  const html = `
+<p>Hey ${voornaam},</p>
+<p>Je staat op de lijst. Op zaterdag <strong>12 september</strong> is Continuum exact twintig jaar oud, en dat vieren we samen: om 12:00 spelen we met z'n allen Waiting on the World to Change, op het plein voor het Isala Theater in Capelle aan den IJssel.</p>
+<p><strong>Zo ziet de dag eruit:</strong></p>
+<ul>
+<li>11:00 &mdash; verzamelen op het Stadsplein, voor de deur van het Isala Theater</li>
+<li>11:30 &mdash; welkom, het verhaal van de plaat, en samen het nummer instuderen (vijf akkoorden, iedereen kan mee)</li>
+<li>12:00 &mdash; we spelen, allemaal tegelijk</li>${trekkingLiHtml}
+<li>12:45 &mdash; einde (napraten op het plein mag altijd)</li>
+</ul>
+<p>Het hele programma is buiten, en een Hollandse bui wachten we gewoon even af. Alleen bij echt onwerkbaar weer passen we het plan aan: dat besluiten we uiterlijk vrijdag en dan krijg je een mail. Het gaat dus altijd door.</p>
+<p><strong>Wat neem je mee?</strong> Je eigen gitaar. Akoestisch is het makkelijkst; elektrisch mag ook, maar dan wel met een versterkertje op batterijen (stroom is er buiten niet). Verder niks: deelname is gratis.</p>
+${verlotingHtml}
+<p>Kun je toch niet komen? Stuur me even een berichtje via deze mail, dan maken we je plek vrij voor iemand anders.</p>
+<p>Tot de twaalfde!<br />Ed</p>
+<p style="font-size: 0.85em; color: #888888;">PS: drie weken later, op 2 oktober, ga ik in datzelfde theater in premi&egrave;re met Gitaarmannen 4: Continuum. <a href="${CONTINUUM_URL}">Alle speeldata staan hier</a>.</p>
+<p style="font-size: 0.8em; color: #999999;">Op je deelname zijn de <a href="${VOORWAARDEN_URL}">deelnamevoorwaarden</a> van toepassing. Tijdens het evenement worden foto- en video-opnamen gemaakt voor pers en promotie.</p>
+`;
+
+  const text = `Hey ${voornaam},
+
+Je staat op de lijst. Op zaterdag 12 september is Continuum exact twintig jaar oud, en dat vieren we samen: om 12:00 spelen we met z'n allen Waiting on the World to Change, op het plein voor het Isala Theater in Capelle aan den IJssel.
+
+Zo ziet de dag eruit:
+- 11:00 verzamelen op het Stadsplein, voor de deur van het Isala Theater
+- 11:30 welkom, het verhaal van de plaat, en samen het nummer instuderen (vijf akkoorden, iedereen kan mee)
+- 12:00 we spelen, allemaal tegelijk${trekkingLiText}
+- 12:45 einde (napraten op het plein mag altijd)
+
+Het hele programma is buiten, en een Hollandse bui wachten we gewoon even af. Alleen bij echt onwerkbaar weer passen we het plan aan: dat besluiten we uiterlijk vrijdag en dan krijg je een mail. Het gaat dus altijd door.
+
+Wat neem je mee? Je eigen gitaar. Akoestisch is het makkelijkst; elektrisch mag ook, maar dan met een versterkertje op batterijen. Verder niks: deelname is gratis.
+
+${verlotingText}Kun je toch niet komen? Stuur me even een berichtje via deze mail, dan maken we je plek vrij voor iemand anders.
+
+Tot de twaalfde!
+Ed
+
+PS: drie weken later, op 2 oktober, ga ik in datzelfde theater in premiere met Gitaarmannen 4: Continuum. Alle speeldata: ${CONTINUUM_URL}
+
+Op je deelname zijn de deelnamevoorwaarden van toepassing (${VOORWAARDEN_URL}). Tijdens het evenement worden foto- en video-opnamen gemaakt voor pers en promotie.`;
+
+  return { subject, html, text };
+}
