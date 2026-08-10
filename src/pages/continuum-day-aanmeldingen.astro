@@ -1,0 +1,218 @@
+---
+export const prerender = false;
+
+// Beveiligde inzage in de Continuum Day-aanmeldingen (alleen Ed).
+// Beveiliging is SERVER-SIDE (anders dan afas-stats, waar alleen een teller
+// achter zit): in de repo staat uitsluitend een SHA-256-hash van de
+// toegangscode (repo is public; de code zelf is 80+ bits random en staat
+// nergens in code of env). De code komt binnen via POST (nooit in de URL),
+// wordt na succes in een HttpOnly-cookie bewaard, en de deelnemerdata wordt
+// pas na een geslaagde check server-side uit Sanity gehaald.
+import { createHash, timingSafeEqual } from "node:crypto";
+import { sanityWriteClient } from "../lib/sanity";
+
+const CODE_HASH = "aa197d639aa233182695cc51b205168ce68add6f7362c92d87f3f9685fa5b9ef";
+const COOKIE = "cd_admin";
+const MAX_DEELNEMERS = 150;
+
+function checkCode(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  const code = raw.trim().toUpperCase();
+  if (code.length < 20 || code.length > 40) return null;
+  const h = createHash("sha256").update(code).digest();
+  const expected = Buffer.from(CODE_HASH, "hex");
+  if (h.length === expected.length && timingSafeEqual(h, expected)) return code;
+  return null;
+}
+
+let authorized = false;
+let foutmelding = "";
+
+const cookieCode = Astro.cookies.get(COOKIE)?.value;
+if (checkCode(cookieCode)) authorized = true;
+
+if (!authorized && Astro.request.method === "POST") {
+  const form = await Astro.request.formData().catch(() => null);
+  const code = checkCode(String(form?.get("code") ?? ""));
+  if (code) {
+    authorized = true;
+    Astro.cookies.set(COOKIE, code, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/continuum-day-aanmeldingen",
+      maxAge: 60 * 60 * 24 * 60,
+    });
+  } else {
+    foutmelding = "Onjuiste code.";
+  }
+}
+
+interface Aanmelding {
+  naam: string;
+  leeftijd: number;
+  email: string;
+  aangemeldOp: string;
+}
+
+let aanmeldingen: Aanmelding[] = [];
+let jongste: Aanmelding | null = null;
+let oudste: Aanmelding | null = null;
+
+if (authorized) {
+  aanmeldingen = await sanityWriteClient.fetch(
+    `*[_type == "continuumDayAanmelding"] | order(aangemeldOp desc){naam, leeftijd, email, aangemeldOp}`
+  );
+  for (const a of aanmeldingen) {
+    if (typeof a.leeftijd !== "number") continue;
+    if (!jongste || a.leeftijd < jongste.leeftijd) jongste = a;
+    if (!oudste || a.leeftijd > oudste.leeftijd) oudste = a;
+  }
+}
+
+function fmt(iso: string): string {
+  try {
+    return new Date(iso).toLocaleString("nl-NL", {
+      timeZone: "Europe/Amsterdam",
+      day: "numeric",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch {
+    return iso;
+  }
+}
+
+Astro.response.headers.set("Cache-Control", "no-store");
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Continuum Day · aanmeldingen</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+      /* Gescoped onder .cd-page, zelfde reden als afas-stats: geen html/body/:root
+         selectors gebruiken, anders lekt dit site-breed via de gedeelde bundle. */
+      .cd-page, .cd-page *, .cd-page *::before, .cd-page *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      .cd-page {
+        --bg: #08080A; --card: #131316; --text: #F5F5F3; --muted: #8A8A90;
+        --accent: #00AACC; --border: rgba(255,255,255,0.08);
+        min-height: 100svh; background: var(--bg); color: var(--text);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        display: flex; flex-direction: column; align-items: center;
+        padding: 2.5rem 1.25rem 4rem;
+      }
+      .eyebrow {
+        font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.95rem;
+        letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;
+      }
+      .gate { min-height: 70svh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      .gate label { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
+      .gate input {
+        background: var(--card); border: 1.5px solid var(--border); color: var(--text);
+        font-size: 1rem; padding: 0.9rem 1.1rem; border-radius: 6px; width: 100%; max-width: 320px;
+        text-transform: uppercase;
+      }
+      .gate input:focus { outline: none; border-color: var(--accent); }
+      .gate button {
+        margin-top: 0.85rem; background: var(--accent); color: white; border: none;
+        padding: 0.85rem 1.4rem; border-radius: 6px; font-size: 1rem; font-weight: 600; cursor: pointer;
+      }
+      .fout { color: #ff6b6b; font-size: 0.9rem; margin-top: 0.8rem; }
+      .stats { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
+      .stat {
+        background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+        padding: 1rem 1.4rem; text-align: center; min-width: 130px;
+      }
+      .stat .n {
+        font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+        font-size: 2.4rem; line-height: 1; color: var(--accent);
+      }
+      .stat .l { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.4rem; }
+      .stat .sub { font-size: 0.8rem; color: var(--text); margin-top: 0.2rem; }
+      .tabel-wrap { width: 100%; max-width: 760px; overflow-x: auto; }
+      table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+      th {
+        font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.08em; font-size: 0.8rem; color: var(--muted); text-align: left;
+        padding: 0.6rem 0.75rem; border-bottom: 2px solid var(--border);
+      }
+      td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+      td.num { color: var(--muted); }
+      td.email { color: var(--muted); word-break: break-all; }
+      .leeg { color: var(--muted); margin-top: 2rem; }
+      .avg-noot { margin-top: 2.5rem; font-size: 0.78rem; color: var(--muted); max-width: 620px; text-align: center; }
+    </style>
+  </head>
+
+  <body style="margin:0; background:#08080A;">
+    <main class="cd-page">
+      {!authorized ? (
+        <form class="gate" method="post" autocomplete="off">
+          <p class="eyebrow">Continuum Day · aanmeldingen</p>
+          <label for="code">Voer toegangscode in</label>
+          <input type="password" id="code" name="code" autofocus autocapitalize="characters" />
+          <button type="submit">Open</button>
+          {foutmelding && <p class="fout">{foutmelding}</p>}
+        </form>
+      ) : (
+        <>
+          <p class="eyebrow">Continuum Day · za 12 september 2026</p>
+          <div class="stats">
+            <div class="stat">
+              <div class="n">{aanmeldingen.length}</div>
+              <div class="l">aanmeldingen van {MAX_DEELNEMERS}</div>
+            </div>
+            {jongste && (
+              <div class="stat">
+                <div class="n">{jongste.leeftijd}</div>
+                <div class="l">jongste</div>
+                <div class="sub">{jongste.naam}</div>
+              </div>
+            )}
+            {oudste && (
+              <div class="stat">
+                <div class="n">{oudste.leeftijd}</div>
+                <div class="l">oudste</div>
+                <div class="sub">{oudste.naam}</div>
+              </div>
+            )}
+          </div>
+
+          {aanmeldingen.length === 0 ? (
+            <p class="leeg">Nog geen aanmeldingen.</p>
+          ) : (
+            <div class="tabel-wrap">
+              <table>
+                <thead>
+                  <tr><th>#</th><th>Naam</th><th>Leeftijd</th><th>E-mail</th><th>Aangemeld</th></tr>
+                </thead>
+                <tbody>
+                  {aanmeldingen.map((a, i) => (
+                    <tr>
+                      <td class="num">{aanmeldingen.length - i}</td>
+                      <td>{a.naam}</td>
+                      <td>{a.leeftijd}</td>
+                      <td class="email">{a.email}</td>
+                      <td class="num">{fmt(a.aangemeldOp)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <p class="avg-noot">Persoonsgegevens van deelnemers. Alleen voor de organisatie van Continuum Day; niet delen, niet exporteren naar derden. Uiterlijk drie maanden na het evenement verwijderen (staat zo in de deelnamevoorwaarden).</p>
+        </>
+      )}
+    </main>
+  </body>
+</html>
