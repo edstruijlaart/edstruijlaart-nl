@@ -38,8 +38,8 @@ export function buildContinuumDayEmail({ name }: { name: string }) {
 <p><strong>Wat neem je mee?</strong> Je eigen gitaar. Akoestisch is het makkelijkst; elektrisch mag ook, maar dan wel met een versterkertje op batterijen (stroom is er buiten niet). Verder niks: deelname is gratis. En neem gerust iemand mee die alleen komt meezingen of kijken; aanmelden hoeft alleen voor wie meespeelt.</p>
 ${verlotingHtml}
 <p>Kun je toch niet komen? Stuur me even een berichtje via deze mail, dan maken we je plek vrij voor iemand anders.</p>
+<p><strong>En kom daarna naar de voorstelling!</strong> Continuum Day is namelijk de aftrap van mijn nieuwe theatervoorstelling <strong>Gitaarmannen 4: Continuum</strong>, over twintig jaar Continuum. Vanaf 24 september sta ik ermee in 27 theaters door heel Nederland, met op vrijdag 2 oktober de premi&egrave;re in het Isala Theater in Capelle aan den IJssel. Is Continuum Day iets voor jou, dan is die avond dat helemaal. <a href="${CONTINUUM_URL}"><strong>Bekijk alle speeldata en bestel je kaarten</strong></a>.</p>
 <p>Tot de twaalfde!<br />Ed</p>
-<p style="font-size: 0.85em; color: #888888;">PS: drie weken later, op 2 oktober, ga ik in het Isala Theater in Capelle aan den IJssel in premi&egrave;re met Gitaarmannen 4: Continuum. <a href="${CONTINUUM_URL}">Alle speeldata staan hier</a>.</p>
 <p style="font-size: 0.8em; color: #999999;">Op je deelname zijn de <a href="${VOORWAARDEN_URL}">deelnamevoorwaarden</a> van toepassing. Tijdens het evenement worden foto- en video-opnamen gemaakt voor pers en promotie.</p>
 `;
 
@@ -59,10 +59,10 @@ Wat neem je mee? Je eigen gitaar. Akoestisch is het makkelijkst; elektrisch mag 
 
 ${verlotingText}Kun je toch niet komen? Stuur me even een berichtje via deze mail, dan maken we je plek vrij voor iemand anders.
 
+En kom daarna naar de voorstelling! Continuum Day is namelijk de aftrap van mijn nieuwe theatervoorstelling Gitaarmannen 4: Continuum, over twintig jaar Continuum. Vanaf 24 september sta ik ermee in 27 theaters door heel Nederland, met op vrijdag 2 oktober de premiere in het Isala Theater in Capelle aan den IJssel. Is Continuum Day iets voor jou, dan is die avond dat helemaal. Alle speeldata en kaarten: ${CONTINUUM_URL}
+
 Tot de twaalfde!
 Ed
-
-PS: drie weken later, op 2 oktober, ga ik in het Isala Theater in Capelle aan den IJssel in premiere met Gitaarmannen 4: Continuum. Alle speeldata: ${CONTINUUM_URL}
 
 Op je deelname zijn de deelnamevoorwaarden van toepassing (${VOORWAARDEN_URL}). Tijdens het evenement worden foto- en video-opnamen gemaakt voor pers en promotie.`;
 
