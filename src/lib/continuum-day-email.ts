@@ -30,7 +30,7 @@ export function buildContinuumDayEmail({ name }: { name: string }) {
 <p><strong>Zo ziet de dag eruit:</strong></p>
 <ul>
 <li>11:00 &mdash; verzamelen op het plein voor Beeld &amp; Geluid, Media Park Hilversum</li>
-<li>11:30 &mdash; welkom, het verhaal van de plaat, en samen het nummer instuderen (vijf akkoorden, iedereen kan mee)</li>
+<li>11:30 &mdash; welkom door spreekstalmeester Michiel Veenstra, het verhaal van de plaat, en samen het nummer instuderen (vijf akkoorden, iedereen kan mee)</li>
 <li>12:00 &mdash; we spelen, allemaal tegelijk</li>${trekkingLiHtml}
 <li>12:45 &mdash; einde (napraten op het plein mag altijd)</li>
 </ul>
@@ -49,7 +49,7 @@ Je staat op de lijst. Op zaterdag 12 september is Continuum exact twintig jaar o
 
 Zo ziet de dag eruit:
 - 11:00 verzamelen op het plein voor Beeld & Geluid, Media Park Hilversum
-- 11:30 welkom, het verhaal van de plaat, en samen het nummer instuderen (vijf akkoorden, iedereen kan mee)
+- 11:30 welkom door spreekstalmeester Michiel Veenstra, het verhaal van de plaat, en samen het nummer instuderen (vijf akkoorden, iedereen kan mee)
 - 12:00 we spelen, allemaal tegelijk${trekkingLiText}
 - 12:45 einde (napraten op het plein mag altijd)
 
