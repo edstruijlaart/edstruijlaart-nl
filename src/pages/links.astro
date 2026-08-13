@@ -14,7 +14,7 @@ import AdPixels from "../components/AdPixels.astro";
 
 const pageTitle = "Ed Struijlaart — alle links";
 const pageDescription =
-  "Tickets voor Gitaarmannen 4: Continuum, mijn gratis AFAS Live concert, huiskamerconcerten, de podcast en mijn muziek. Alles op een plek.";
+  "Continuum Day, tickets voor Gitaarmannen 4: Continuum, mijn gratis AFAS Live concert, huiskamerconcerten, de podcast en mijn muziek. Alles op een plek.";
 
 // Per-link UTM zodat je doorkliks kunt toeschrijven (Umami + continuum-pixel).
 function withUtm(href: string, campaign: string): string {
@@ -30,6 +30,12 @@ const buttons = [
     sub: "Mijn nieuwe theatertour, najaar 2026",
     href: "https://www.gitaarmannen.nl/continuum/",
     event: "link-continuum",
+  },
+  {
+    label: "Continuum Day — 12 september",
+    sub: "Speel of zing mee bij Beeld & Geluid en win een PRS Silver Sky",
+    href: "https://www.gitaarmannen.nl/continuum-day",
+    event: "link-continuum-day",
   },
   {
     label: "Gratis: mijn hele AFAS Live concert",
@@ -311,7 +317,12 @@ const buttons = [
         a.addEventListener("click", () => {
           const ev = a.getAttribute("data-umami-event") || "link";
           try {
-            if (window.fbq) fbq("trackCustom", ev === "link-continuum" ? "ClickTickets" : "LinkClick", { link: ev });
+            if (window.fbq) {
+              const naam = ev === "link-continuum" ? "ClickTickets"
+                : ev === "link-continuum-day" ? "ClickContinuumDay"
+                : "LinkClick";
+              fbq("trackCustom", naam, { link: ev });
+            }
           } catch (e) {}
         });
       });
