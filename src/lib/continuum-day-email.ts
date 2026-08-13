@@ -35,7 +35,7 @@ export function buildContinuumDayEmail({ name }: { name: string }) {
 <li>12:45 &mdash; einde (napraten op het plein mag altijd)</li>
 </ul>
 <p>Het hele programma is buiten, en een Hollandse bui wachten we gewoon even af. Alleen bij echt onwerkbaar weer passen we het plan aan: dat besluiten we uiterlijk vrijdag en dan krijg je een mail. Het gaat dus altijd door.</p>
-<p><strong>Wat neem je mee?</strong> Je eigen gitaar. Akoestisch is het makkelijkst; elektrisch mag ook, maar dan wel met een versterkertje op batterijen (stroom is er buiten niet). Verder niks: deelname is gratis.</p>
+<p><strong>Wat neem je mee?</strong> Je eigen gitaar. Akoestisch is het makkelijkst; elektrisch mag ook, maar dan wel met een versterkertje op batterijen (stroom is er buiten niet). Verder niks: deelname is gratis. En neem gerust iemand mee die alleen komt meezingen of kijken; aanmelden hoeft alleen voor wie meespeelt.</p>
 ${verlotingHtml}
 <p>Kun je toch niet komen? Stuur me even een berichtje via deze mail, dan maken we je plek vrij voor iemand anders.</p>
 <p>Tot de twaalfde!<br />Ed</p>
@@ -55,7 +55,7 @@ Zo ziet de dag eruit:
 
 Het hele programma is buiten, en een Hollandse bui wachten we gewoon even af. Alleen bij echt onwerkbaar weer passen we het plan aan: dat besluiten we uiterlijk vrijdag en dan krijg je een mail. Het gaat dus altijd door.
 
-Wat neem je mee? Je eigen gitaar. Akoestisch is het makkelijkst; elektrisch mag ook, maar dan met een versterkertje op batterijen. Verder niks: deelname is gratis.
+Wat neem je mee? Je eigen gitaar. Akoestisch is het makkelijkst; elektrisch mag ook, maar dan met een versterkertje op batterijen. Verder niks: deelname is gratis. En neem gerust iemand mee die alleen komt meezingen of kijken; aanmelden hoeft alleen voor wie meespeelt.
 
 ${verlotingText}Kun je toch niet komen? Stuur me even een berichtje via deze mail, dan maken we je plek vrij voor iemand anders.
 
