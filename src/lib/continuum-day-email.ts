@@ -9,12 +9,13 @@ const VOORWAARDEN_URL = "https://www.gitaarmannen.nl/continuum-day#voorwaarden";
 const CHORDSHEET_URL = "https://www.gitaarmannen.nl/files/continuum-day-akkoorden.pdf";
 const CONTINUUM_URL =
   "https://www.gitaarmannen.nl/continuum?utm_source=continuum-day&utm_medium=email&utm_campaign=bevestiging";
+const TRAILER_URL = "https://www.youtube.com/watch?v=wrsepG3uNg8";
 
 export function buildContinuumDayEmail({ name, wachtlijst = false }: { name: string; wachtlijst?: boolean }) {
   const voornaam = name.split(" ")[0] || "daar";
 
-  const tourHtml = `<p><strong>En kom daarna naar de voorstelling!</strong> Continuum Day is namelijk de aftrap van mijn nieuwe theatervoorstelling <strong>Gitaarmannen 4: Continuum</strong>, over twintig jaar Continuum. Vanaf 24 september sta ik ermee in 27 theaters door heel Nederland, met op vrijdag 2 oktober de premi&egrave;re in het Isala Theater in Capelle aan den IJssel. Is Continuum Day iets voor jou, dan is die avond dat helemaal. <a href="${CONTINUUM_URL}"><strong>Bekijk alle speeldata en bestel je kaarten</strong></a>.</p>`;
-  const tourText = `En kom daarna naar de voorstelling! Continuum Day is namelijk de aftrap van mijn nieuwe theatervoorstelling Gitaarmannen 4: Continuum, over twintig jaar Continuum. Vanaf 24 september sta ik ermee in 27 theaters door heel Nederland, met op vrijdag 2 oktober de premiere in het Isala Theater in Capelle aan den IJssel. Is Continuum Day iets voor jou, dan is die avond dat helemaal. Alle speeldata en kaarten: ${CONTINUUM_URL}`;
+  const tourHtml = `<p><strong>En kom daarna naar de voorstelling!</strong> Continuum Day is namelijk de aftrap van mijn nieuwe theatervoorstelling <strong>Gitaarmannen 4: Continuum</strong>, over twintig jaar Continuum. Vanaf 24 september sta ik ermee in 27 theaters door heel Nederland, met op vrijdag 2 oktober de premi&egrave;re in het Isala Theater in Capelle aan den IJssel. Proef alvast de sfeer met <a href="${TRAILER_URL}">de trailer</a>. Is Continuum Day iets voor jou, dan is die avond dat helemaal. <a href="${CONTINUUM_URL}"><strong>Bekijk alle speeldata en bestel je kaarten</strong></a>.</p>`;
+  const tourText = `En kom daarna naar de voorstelling! Continuum Day is namelijk de aftrap van mijn nieuwe theatervoorstelling Gitaarmannen 4: Continuum, over twintig jaar Continuum. Vanaf 24 september sta ik ermee in 27 theaters door heel Nederland, met op vrijdag 2 oktober de premiere in het Isala Theater in Capelle aan den IJssel. Proef alvast de sfeer met de trailer: ${TRAILER_URL}. Is Continuum Day iets voor jou, dan is die avond dat helemaal. Alle speeldata en kaarten: ${CONTINUUM_URL}`;
 
   const voorwaardenHtml = `<p style="font-size: 0.8em; color: #999999;">Op je deelname zijn de <a href="${VOORWAARDEN_URL}">deelnamevoorwaarden</a> van toepassing. Tijdens het evenement worden foto- en video-opnamen gemaakt voor pers en promotie.</p>`;
   const voorwaardenText = `Op je deelname zijn de deelnamevoorwaarden van toepassing (${VOORWAARDEN_URL}). Tijdens het evenement worden foto- en video-opnamen gemaakt voor pers en promotie.`;
