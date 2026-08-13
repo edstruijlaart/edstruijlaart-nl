@@ -1,6 +1,6 @@
-// Bevestigingsmail voor Continuum Day-aanmeldingen (12 sep 2026, Isala Theater).
+// Bevestigingsmail voor Continuum Day-aanmeldingen (12 sep 2026, plein voor Beeld & Geluid, Media Park Hilversum).
 // PRS bevestigd (29 jul, Piers/PRS Europe): SE Silver Sky Rosewood Gold Spark ltd — verloting staat AAN.
-// Programma zonder borrel: Isala heeft die zaterdag geen barpersoneel (vakantie), trekking direct na het spelen.
+// Locatie sinds 13 aug: Beeld & Geluid (Stadsplein Capelle verviel door een braderie). Trekking direct na het spelen.
 
 export const VERLOTING_IN_MAIL = true;
 
