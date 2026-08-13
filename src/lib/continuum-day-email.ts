@@ -26,10 +26,10 @@ export function buildContinuumDayEmail({ name }: { name: string }) {
 
   const html = `
 <p>Hey ${voornaam},</p>
-<p>Je staat op de lijst. Op zaterdag <strong>12 september</strong> is Continuum exact twintig jaar oud, en dat vieren we samen: om 12:00 spelen we met z'n allen Waiting on the World to Change, op het plein voor het Isala Theater in Capelle aan den IJssel.</p>
+<p>Je staat op de lijst. Op zaterdag <strong>12 september</strong> is Continuum exact twintig jaar oud, en dat vieren we samen: om 12:00 spelen we met z'n allen Waiting on the World to Change, op het plein voor Beeld &amp; Geluid op het Media Park in Hilversum (Media Parkboulevard 1; station Hilversum Media Park ligt ernaast).</p>
 <p><strong>Zo ziet de dag eruit:</strong></p>
 <ul>
-<li>11:00 &mdash; verzamelen op het Stadsplein, voor de deur van het Isala Theater</li>
+<li>11:00 &mdash; verzamelen op het plein voor Beeld &amp; Geluid, Media Park Hilversum</li>
 <li>11:30 &mdash; welkom, het verhaal van de plaat, en samen het nummer instuderen (vijf akkoorden, iedereen kan mee)</li>
 <li>12:00 &mdash; we spelen, allemaal tegelijk</li>${trekkingLiHtml}
 <li>12:45 &mdash; einde (napraten op het plein mag altijd)</li>
@@ -39,16 +39,16 @@ export function buildContinuumDayEmail({ name }: { name: string }) {
 ${verlotingHtml}
 <p>Kun je toch niet komen? Stuur me even een berichtje via deze mail, dan maken we je plek vrij voor iemand anders.</p>
 <p>Tot de twaalfde!<br />Ed</p>
-<p style="font-size: 0.85em; color: #888888;">PS: drie weken later, op 2 oktober, ga ik in datzelfde theater in premi&egrave;re met Gitaarmannen 4: Continuum. <a href="${CONTINUUM_URL}">Alle speeldata staan hier</a>.</p>
+<p style="font-size: 0.85em; color: #888888;">PS: drie weken later, op 2 oktober, ga ik in het Isala Theater in Capelle aan den IJssel in premi&egrave;re met Gitaarmannen 4: Continuum. <a href="${CONTINUUM_URL}">Alle speeldata staan hier</a>.</p>
 <p style="font-size: 0.8em; color: #999999;">Op je deelname zijn de <a href="${VOORWAARDEN_URL}">deelnamevoorwaarden</a> van toepassing. Tijdens het evenement worden foto- en video-opnamen gemaakt voor pers en promotie.</p>
 `;
 
   const text = `Hey ${voornaam},
 
-Je staat op de lijst. Op zaterdag 12 september is Continuum exact twintig jaar oud, en dat vieren we samen: om 12:00 spelen we met z'n allen Waiting on the World to Change, op het plein voor het Isala Theater in Capelle aan den IJssel.
+Je staat op de lijst. Op zaterdag 12 september is Continuum exact twintig jaar oud, en dat vieren we samen: om 12:00 spelen we met z'n allen Waiting on the World to Change, op het plein voor Beeld & Geluid op het Media Park in Hilversum (Media Parkboulevard 1; station Hilversum Media Park ligt ernaast).
 
 Zo ziet de dag eruit:
-- 11:00 verzamelen op het Stadsplein, voor de deur van het Isala Theater
+- 11:00 verzamelen op het plein voor Beeld & Geluid, Media Park Hilversum
 - 11:30 welkom, het verhaal van de plaat, en samen het nummer instuderen (vijf akkoorden, iedereen kan mee)
 - 12:00 we spelen, allemaal tegelijk${trekkingLiText}
 - 12:45 einde (napraten op het plein mag altijd)
@@ -62,7 +62,7 @@ ${verlotingText}Kun je toch niet komen? Stuur me even een berichtje via deze mai
 Tot de twaalfde!
 Ed
 
-PS: drie weken later, op 2 oktober, ga ik in datzelfde theater in premiere met Gitaarmannen 4: Continuum. Alle speeldata: ${CONTINUUM_URL}
+PS: drie weken later, op 2 oktober, ga ik in het Isala Theater in Capelle aan den IJssel in premiere met Gitaarmannen 4: Continuum. Alle speeldata: ${CONTINUUM_URL}
 
 Op je deelname zijn de deelnamevoorwaarden van toepassing (${VOORWAARDEN_URL}). Tijdens het evenement worden foto- en video-opnamen gemaakt voor pers en promotie.`;
 
