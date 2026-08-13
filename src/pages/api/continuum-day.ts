@@ -6,17 +6,34 @@ import { LISTMONK_PUBLIC_API } from "../../data/gm3-funnel";
 import { buildContinuumDayEmail } from "../../lib/continuum-day-email";
 import { sanityWriteClient } from "../../lib/sanity";
 
-// Aanmelding voor Continuum Day (za 12 sep 2026, Isala Theater Capelle a/d IJssel).
+// Aanmelding voor Continuum Day (za 12 sep 2026, plein voor Beeld & Geluid, Media Park Hilversum).
 // Aangeroepen vanaf gitaarmannen.nl/continuum-day (cross-origin, vandaar CORS).
-// Doet: 1) inschrijven op de Continuum Day-lijst in Listmonk,
-//       2) bevestigingsmail met programma + praktische info via Resend.
+// Doet: 1) aanmelding vastleggen in Sanity (de lotenlijst; naam + leeftijd = lot),
+//       2) inschrijven op de Continuum Day-lijst in Listmonk,
+//       3) bevestigingsmail (of wachtlijstmail boven de 150) via Resend.
+//
+// Beveiliging (13 aug): honeypot-veld tegen bots, invoer-limieten + HTML-strip,
+// best-effort rate-limit per IP, en idempotentie per e-mailadres zodat herhaalde
+// POSTs niet telkens opnieuw een mail versturen (mail-bombing via andermans adres).
 
 const CONTINUUM_DAY_LIST_UUID = "a7bbdabd-0da7-48e4-9019-ade58c9fff2e"; // lijst 71
+const MAX_DEELNEMERS = 150;
 
 const ALLOWED_ORIGINS = [
   "https://www.gitaarmannen.nl",
   "https://gitaarmannen.nl",
 ];
+
+// Best-effort: per warme serverless-instance; vangt simpele scripts, geen vervanging
+// voor echte rate-limiting maar ruim genoeg voor dit aanvalsoppervlak.
+const hits = new Map<string, number[]>();
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < 60_000);
+  recent.push(now);
+  hits.set(ip, recent);
+  return recent.length > 5;
+}
 
 function corsHeaders(origin: string | null): Record<string, string> {
   const allow = origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
@@ -39,15 +56,25 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json", ...cors },
     });
 
-  let body: { email?: string; name?: string; akkoord?: boolean; leeftijd?: number | string };
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "onbekend";
+  if (rateLimited(ip)) {
+    return json({ error: "Te veel pogingen achter elkaar. Probeer het over een minuut nog eens." }, 429);
+  }
+
+  let body: { email?: string; name?: string; akkoord?: boolean; leeftijd?: number | string; website?: string };
   try {
     body = await request.json();
   } catch {
     return json({ error: "Ongeldige aanvraag" }, 400);
   }
 
-  const email = (body.email || "").trim();
-  const name = (body.name || "").trim();
+  // Honeypot: het verborgen 'website'-veld vult alleen een bot in. Stil ok teruggeven.
+  if (body.website) {
+    return json({ ok: true });
+  }
+
+  const email = String(body.email || "").trim().toLowerCase().slice(0, 200);
+  const name = String(body.name || "").trim().replace(/[<>&"'`]/g, "").slice(0, 80);
   const leeftijd = Number(body.leeftijd);
 
   if (!name || name.length < 2) {
@@ -63,25 +90,49 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ error: "Ga akkoord met de deelnamevoorwaarden." }, 400);
   }
 
-  // 0) Aanmelding vastleggen in Sanity: dit is de lotenlijst (naam + leeftijd = lot)
-  //    en de bron voor jongste/oudste deelnemer. createIfNotExists: dubbel
-  //    aanmelden overschrijft niks. Faalt dit, dan gaat de aanmelding gewoon door
-  //    (Listmonk heeft naam + mail als vangnet).
+  const emailKey = email.replace(/[^a-z0-9._-]/g, "-");
+  const docId = `continuumDayAanmelding.${emailKey}`;
+
+  // Idempotent: bestaat deze aanmelding al, dan is de bezoeker klaar en sturen we
+  // GEEN nieuwe mail (voorkomt dat herhaalde POSTs iemands inbox volspammen).
   try {
-    const emailKey = email.toLowerCase().replace(/[^a-z0-9._-]/g, "-");
+    const existing = await sanityWriteClient.getDocument(docId);
+    if (existing) {
+      return json({ ok: true });
+    }
+  } catch {
+    // Sanity onbereikbaar: door met de oude flow, liever een dubbele mail dan een verloren aanmelding.
+  }
+
+  // Wachtlijst: boven de MAX_DEELNEMERS spelende plekken (voorwaarden beloven dit expliciet).
+  let wachtlijst = false;
+  try {
+    const count = await sanityWriteClient.fetch<number>(
+      `count(*[_type == "continuumDayAanmelding" && wachtlijst != true])`
+    );
+    wachtlijst = count >= MAX_DEELNEMERS;
+  } catch (e) {
+    console.error("Sanity count faalde (continuum-day)", e);
+  }
+
+  // Aanmelding vastleggen in Sanity: dit is de lotenlijst en de bron voor jongste/oudste.
+  // createIfNotExists: dubbel aanmelden overschrijft niks. Faalt dit, dan gaat de
+  // aanmelding gewoon door (Listmonk heeft naam + mail als vangnet).
+  try {
     await sanityWriteClient.createIfNotExists({
-      _id: `continuumDayAanmelding.${emailKey}`,
+      _id: docId,
       _type: "continuumDayAanmelding",
       naam: name,
-      email: email.toLowerCase(),
+      email,
       leeftijd,
+      wachtlijst,
       aangemeldOp: new Date().toISOString(),
     });
   } catch (e) {
     console.error("Sanity aanmelding wegschrijven faalde (continuum-day)", e);
   }
 
-  // 1) Inschrijven in Listmonk (public API, single opt-in)
+  // Inschrijven in Listmonk (public API, single opt-in)
   try {
     const res = await fetch(LISTMONK_PUBLIC_API, {
       method: "POST",
@@ -98,14 +149,14 @@ export const POST: APIRoute = async ({ request }) => {
     // Door: de bevestigingsmail is de belangrijkste levering richting de bezoeker.
   }
 
-  // 2) Bevestigingsmail
+  // Bevestigings- of wachtlijstmail
   const resendKey = import.meta.env.RESEND_API_KEY;
   if (!resendKey) {
     console.error("RESEND_API_KEY ontbreekt (continuum-day)");
     return json({ error: "Mailserver niet geconfigureerd." }, 500);
   }
 
-  const { subject, html, text } = buildContinuumDayEmail({ name });
+  const { subject, html, text } = buildContinuumDayEmail({ name, wachtlijst });
   try {
     const resend = new Resend(resendKey);
     const sent = await resend.emails.send({
@@ -125,5 +176,5 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ error: "Mail versturen mislukte, probeer het later opnieuw." }, 500);
   }
 
-  return json({ ok: true });
+  return json({ ok: true, wachtlijst });
 };

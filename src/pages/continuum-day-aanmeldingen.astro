@@ -53,6 +53,7 @@ interface Aanmelding {
   leeftijd: number;
   email: string;
   aangemeldOp: string;
+  wachtlijst?: boolean;
 }
 
 let aanmeldingen: Aanmelding[] = [];
@@ -61,7 +62,7 @@ let oudste: Aanmelding | null = null;
 
 if (authorized) {
   aanmeldingen = await sanityWriteClient.fetch(
-    `*[_type == "continuumDayAanmelding"] | order(aangemeldOp desc){naam, leeftijd, email, aangemeldOp}`
+    `*[_type == "continuumDayAanmelding"] | order(aangemeldOp desc){naam, leeftijd, email, aangemeldOp, wachtlijst}`
   );
   for (const a of aanmeldingen) {
     if (typeof a.leeftijd !== "number") continue;
@@ -169,9 +170,15 @@ Astro.response.headers.set("Cache-Control", "no-store");
           <p class="eyebrow">Continuum Day · za 12 september 2026</p>
           <div class="stats">
             <div class="stat">
-              <div class="n">{aanmeldingen.length}</div>
-              <div class="l">aanmeldingen van {MAX_DEELNEMERS}</div>
+              <div class="n">{aanmeldingen.filter((a) => !a.wachtlijst).length}</div>
+              <div class="l">spelers van {MAX_DEELNEMERS}</div>
             </div>
+            {aanmeldingen.some((a) => a.wachtlijst) && (
+              <div class="stat">
+                <div class="n">{aanmeldingen.filter((a) => a.wachtlijst).length}</div>
+                <div class="l">wachtlijst</div>
+              </div>
+            )}
             {jongste && (
               <div class="stat">
                 <div class="n">{jongste.leeftijd}</div>
@@ -200,7 +207,7 @@ Astro.response.headers.set("Cache-Control", "no-store");
                   {aanmeldingen.map((a, i) => (
                     <tr>
                       <td class="num">{aanmeldingen.length - i}</td>
-                      <td>{a.naam}</td>
+                      <td>{a.naam}{a.wachtlijst && <span style="color:#e0a93a; font-size:0.75rem;"> · wachtlijst</span>}</td>
                       <td>{a.leeftijd}</td>
                       <td class="email">{a.email}</td>
                       <td class="num">{fmt(a.aangemeldOp)}</td>
