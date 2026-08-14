@@ -54,6 +54,7 @@ interface Aanmelding {
   email: string;
   aangemeldOp: string;
   wachtlijst?: boolean;
+  land?: string;
 }
 
 let aanmeldingen: Aanmelding[] = [];
@@ -62,7 +63,7 @@ let oudste: Aanmelding | null = null;
 
 if (authorized) {
   aanmeldingen = await sanityWriteClient.fetch(
-    `*[_type == "continuumDayAanmelding"] | order(aangemeldOp desc){naam, leeftijd, email, aangemeldOp, wachtlijst}`
+    `*[_type == "continuumDayAanmelding"] | order(aangemeldOp desc){naam, leeftijd, email, aangemeldOp, wachtlijst, land}`
   );
   for (const a of aanmeldingen) {
     if (typeof a.leeftijd !== "number") continue;
@@ -201,7 +202,7 @@ Astro.response.headers.set("Cache-Control", "no-store");
             <div class="tabel-wrap">
               <table>
                 <thead>
-                  <tr><th>#</th><th>Naam</th><th>Leeftijd</th><th>E-mail</th><th>Aangemeld</th></tr>
+                  <tr><th>#</th><th>Naam</th><th>Leeftijd</th><th>E-mail</th><th>Land</th><th>Aangemeld</th></tr>
                 </thead>
                 <tbody>
                   {aanmeldingen.map((a, i) => (
@@ -210,6 +211,7 @@ Astro.response.headers.set("Cache-Control", "no-store");
                       <td>{a.naam}{a.wachtlijst && <span style="color:#e0a93a; font-size:0.75rem;"> · wachtlijst</span>}</td>
                       <td>{a.leeftijd}</td>
                       <td class="email">{a.email}</td>
+                      <td class="num" style={["NL", "BE", "LU"].includes(a.land ?? "") ? "" : "color:#e0a93a;"}>{a.land ?? "—"}</td>
                       <td class="num">{fmt(a.aangemeldOp)}</td>
                     </tr>
                   ))}

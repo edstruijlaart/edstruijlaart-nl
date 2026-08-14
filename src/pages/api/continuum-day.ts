@@ -15,9 +15,24 @@ import { sanityWriteClient } from "../../lib/sanity";
 // Beveiliging (13 aug): honeypot-veld tegen bots, invoer-limieten + HTML-strip,
 // best-effort rate-limit per IP, en idempotentie per e-mailadres zodat herhaalde
 // POSTs niet telkens opnieuw een mail versturen (mail-bombing via andermans adres).
+//
+// Geo-filter (13 aug): de verloting is Benelux-only (Gedragscode Promotionele
+// Kansspelen; de actie komt in een internationale podcast voorbij). IP's van
+// buiten Europa krijgen een vriendelijke Engelse afwijzing richting #ContinuumDay;
+// Europese IP's mogen door (vakantiegangers), de Benelux-checkbox is de juridische
+// basis. Alleen de landcode wordt opgeslagen, niet het IP.
 
 const CONTINUUM_DAY_LIST_UUID = "a7bbdabd-0da7-48e4-9019-ade58c9fff2e"; // lijst 71
 const MAX_DEELNEMERS = 150;
+
+// Ruim Europees: het filter hoeft alleen de overduidelijke gevallen (VS, Azië,
+// Zuid-Amerika) te keren. Ontbreekt de header (lokaal draaien), dan laten we door.
+const EUROPA = new Set([
+  "AD", "AL", "AT", "BA", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES",
+  "FI", "FR", "GB", "GG", "GI", "GR", "HR", "HU", "IE", "IM", "IS", "IT", "JE",
+  "LI", "LT", "LU", "LV", "MC", "MD", "ME", "MK", "MT", "NL", "NO", "PL", "PT",
+  "RO", "RS", "SE", "SI", "SK", "SM", "TR", "UA", "VA", "XK",
+]);
 
 const ALLOWED_ORIGINS = [
   "https://www.gitaarmannen.nl",
@@ -61,7 +76,20 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ error: "Te veel pogingen achter elkaar. Probeer het over een minuut nog eens." }, 429);
   }
 
-  let body: { email?: string; name?: string; akkoord?: boolean; leeftijd?: number | string; website?: string };
+  // Geo-filter: Vercel zet x-vercel-ip-country op elke request (spoofbare
+  // inkomende waarden worden door de edge overschreven). Buiten Europa = nee.
+  const land = (request.headers.get("x-vercel-ip-country") || "").toUpperCase();
+  if (land && !EUROPA.has(land)) {
+    return json(
+      {
+        error:
+          "The guitar raffle is open to Benelux residents only, and you have to be in Hilversum (NL) on September 12 to take part. But you can play along wherever you are that day at 12:00 CEST — share it with #ContinuumDay!",
+      },
+      403
+    );
+  }
+
+  let body: { email?: string; name?: string; akkoord?: boolean; benelux?: boolean; leeftijd?: number | string; website?: string };
   try {
     body = await request.json();
   } catch {
@@ -88,6 +116,9 @@ export const POST: APIRoute = async ({ request }) => {
   }
   if (body.akkoord !== true) {
     return json({ error: "Ga akkoord met de deelnamevoorwaarden." }, 400);
+  }
+  if (body.benelux !== true) {
+    return json({ error: "Bevestig dat je in de Benelux woont en er op 12 september bij bent." }, 400);
   }
 
   const emailKey = email.replace(/[^a-z0-9._-]/g, "-");
@@ -126,6 +157,7 @@ export const POST: APIRoute = async ({ request }) => {
       email,
       leeftijd,
       wachtlijst,
+      land: land || "onbekend",
       aangemeldOp: new Date().toISOString(),
     });
   } catch (e) {
