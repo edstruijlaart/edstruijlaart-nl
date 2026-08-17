@@ -60,6 +60,9 @@ interface Aanmelding {
 let aanmeldingen: Aanmelding[] = [];
 let jongste: Aanmelding | null = null;
 let oudste: Aanmelding | null = null;
+let spelersCount = 0;
+let pct = 0;
+let gemiddeldeLeeftijd: number | null = null;
 
 if (authorized) {
   aanmeldingen = await sanityWriteClient.fetch(
@@ -69,6 +72,12 @@ if (authorized) {
     if (typeof a.leeftijd !== "number") continue;
     if (!jongste || a.leeftijd < jongste.leeftijd) jongste = a;
     if (!oudste || a.leeftijd > oudste.leeftijd) oudste = a;
+  }
+  spelersCount = aanmeldingen.filter((a) => !a.wachtlijst).length;
+  pct = Math.round((spelersCount / MAX_DEELNEMERS) * 100);
+  const leeftijden = aanmeldingen.map((a) => a.leeftijd).filter((l): l is number => typeof l === "number");
+  if (leeftijden.length) {
+    gemiddeldeLeeftijd = Math.round((leeftijden.reduce((s, l) => s + l, 0) / leeftijden.length) * 10) / 10;
   }
 }
 
@@ -171,9 +180,19 @@ Astro.response.headers.set("Cache-Control", "no-store");
           <p class="eyebrow">Continuum Day · za 12 september 2026</p>
           <div class="stats">
             <div class="stat">
-              <div class="n">{aanmeldingen.filter((a) => !a.wachtlijst).length}</div>
+              <div class="n">{spelersCount}</div>
               <div class="l">spelers van {MAX_DEELNEMERS}</div>
             </div>
+            <div class="stat">
+              <div class="n">{pct}%</div>
+              <div class="l">vol</div>
+            </div>
+            {gemiddeldeLeeftijd !== null && (
+              <div class="stat">
+                <div class="n">{gemiddeldeLeeftijd}</div>
+                <div class="l">gem. leeftijd</div>
+              </div>
+            )}
             {aanmeldingen.some((a) => a.wachtlijst) && (
               <div class="stat">
                 <div class="n">{aanmeldingen.filter((a) => a.wachtlijst).length}</div>
