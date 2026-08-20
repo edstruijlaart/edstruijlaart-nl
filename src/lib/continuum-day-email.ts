@@ -25,7 +25,7 @@ export function buildContinuumDayEmail({ name, wachtlijst = false }: { name: str
 
     const html = `
 <p>Hey ${voornaam},</p>
-<p>Wat gaaf dat je mee wilt spelen op Continuum Day! Eerlijk is eerlijk: de 150 speelplekken zijn inmiddels vergeven, dus je staat op de <strong>wachtlijst</strong>. Komt er een plek vrij (dat gebeurt eigenlijk altijd wel), dan hoor je het meteen van me per mail.</p>
+<p>Wat gaaf dat je mee wilt spelen op Continuum Day! Eerlijk is eerlijk: de 250 speelplekken zijn inmiddels vergeven, dus je staat op de <strong>wachtlijst</strong>. Komt er een plek vrij (dat gebeurt eigenlijk altijd wel), dan hoor je het meteen van me per mail.</p>
 <p>Wat je sowieso kunt doen op zaterdag <strong>12 september</strong>: kom naar het plein voor Beeld &amp; Geluid op het Media Park in Hilversum om mee te zingen en erbij te zijn (publiek is van harte welkom), of speel om 12:00 mee waar je ook bent en deel het met <strong>#ContinuumDay</strong>. De akkoorden staan hier alvast voor je klaar: <a href="${CHORDSHEET_URL}">de chord-sheet (pdf)</a>.</p>
 ${tourHtml}
 <p>Tot snel!<br />Ed</p>
@@ -34,7 +34,7 @@ ${voorwaardenHtml}
 
     const text = `Hey ${voornaam},
 
-Wat gaaf dat je mee wilt spelen op Continuum Day! Eerlijk is eerlijk: de 150 speelplekken zijn inmiddels vergeven, dus je staat op de wachtlijst. Komt er een plek vrij (dat gebeurt eigenlijk altijd wel), dan hoor je het meteen van me per mail.
+Wat gaaf dat je mee wilt spelen op Continuum Day! Eerlijk is eerlijk: de 250 speelplekken zijn inmiddels vergeven, dus je staat op de wachtlijst. Komt er een plek vrij (dat gebeurt eigenlijk altijd wel), dan hoor je het meteen van me per mail.
 
 Wat je sowieso kunt doen op zaterdag 12 september: kom naar het plein voor Beeld & Geluid op het Media Park in Hilversum om mee te zingen en erbij te zijn (publiek is van harte welkom), of speel om 12:00 mee waar je ook bent en deel het met #ContinuumDay. De akkoorden staan hier alvast voor je klaar: ${CHORDSHEET_URL}
 

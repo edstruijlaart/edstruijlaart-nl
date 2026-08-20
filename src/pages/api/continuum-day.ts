@@ -23,7 +23,7 @@ import { sanityWriteClient } from "../../lib/sanity";
 // basis. Alleen de landcode wordt opgeslagen, niet het IP.
 
 const CONTINUUM_DAY_LIST_UUID = "a7bbdabd-0da7-48e4-9019-ade58c9fff2e"; // lijst 71
-const MAX_DEELNEMERS = 150;
+const MAX_DEELNEMERS = 250;
 
 // Ruim Europees: het filter hoeft alleen de overduidelijke gevallen (VS, Azië,
 // Zuid-Amerika) te keren. Ontbreekt de header (lokaal draaien), dan laten we door.
