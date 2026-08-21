@@ -11,7 +11,9 @@
     { "source": "/news", "destination": "/blog", "permanent": true },
     { "source": "/news/", "destination": "/blog/", "permanent": true },
     { "source": "/huiskamerconcert", "destination": "/huiskamerconcerten/", "permanent": true },
-    { "source": "/huiskamerconcert/", "destination": "/huiskamerconcerten/", "permanent": true }
+    { "source": "/huiskamerconcert/", "destination": "/huiskamerconcerten/", "permanent": true },
+    { "source": "/epk", "destination": "https://boeken.edstruijlaart.nl/epk", "permanent": false },
+    { "source": "/epk/", "destination": "https://boeken.edstruijlaart.nl/epk", "permanent": false }
   ],
   "headers": [
     {
