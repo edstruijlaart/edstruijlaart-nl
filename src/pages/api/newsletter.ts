@@ -9,7 +9,17 @@ const LIST_UUID = '681b5ef7-29cc-4be5-a0c7-6d8453f26cc8'; // Ed Struijlaart Nieu
 
 export const POST: APIRoute = async ({ request }) => {
   const body = await request.json();
-  const { email, name } = body || {};
+  const { email, name, website, t } = body || {};
+
+  // Botfilter: het echte formulier stuurt altijd een leeg honeypot-veld en een
+  // token mee. Klopt dat niet, dan doen we alsof het gelukt is maar schrijven
+  // we niets in, zodat de bot niets leert.
+  if (website !== '' || !t) {
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
   if (!email || typeof email !== 'string') {
     return new Response(JSON.stringify({ error: 'Email is verplicht' }), { status: 400 });
