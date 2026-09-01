@@ -1,7 +1,8 @@
 // Bevestigingsmail voor Continuum Day-aanmeldingen (12 sep 2026, plein voor Beeld & Geluid, Media Park Hilversum).
 // PRS bevestigd (29 jul, Piers/PRS Europe): SE Silver Sky Rosewood Gold Spark ltd — verloting staat AAN.
 // Locatie sinds 13 aug: Beeld & Geluid (Stadsplein Capelle verviel door een braderie). Trekking direct na het spelen.
-// Boven de 150 spelende plekken gaat de wachtlijst-variant de deur uit (voorwaarden beloven een wachtlijst).
+// Boven de 250 spelende plekken gaat de wachtlijst-variant de deur uit (voorwaarden beloven een wachtlijst).
+// Kortingscode van Beeld & Geluid (mail Kaija, 1 sep): tweede museumticket gratis met BeeldgeluidJM.
 
 export const VERLOTING_IN_MAIL = true;
 
@@ -20,6 +21,9 @@ export function buildContinuumDayEmail({ name, wachtlijst = false }: { name: str
   const voorwaardenHtml = `<p style="font-size: 0.8em; color: #999999;">Op je deelname zijn de <a href="${VOORWAARDEN_URL}">deelnamevoorwaarden</a> van toepassing. Tijdens het evenement worden foto- en video-opnamen gemaakt voor pers en promotie.</p>`;
   const voorwaardenText = `Op je deelname zijn de deelnamevoorwaarden van toepassing (${VOORWAARDEN_URL}). Tijdens het evenement worden foto- en video-opnamen gemaakt voor pers en promotie.`;
 
+  const bgActieHtml = `<p><strong>Cadeautje van Beeld &amp; Geluid:</strong> zij vinden Continuum Day zo'n leuke actie dat ze alle deelnemers een tweede museumticket gratis geven, met code <strong>BeeldgeluidJM</strong>. Heb je een Vriendenloterij- of Museumkaart? Dan kun je vooraf al gratis een tijdslot reserveren.</p>`;
+  const bgActieText = `Cadeautje van Beeld & Geluid: zij vinden Continuum Day zo'n leuke actie dat ze alle deelnemers een tweede museumticket gratis geven, met code BeeldgeluidJM. Heb je een Vriendenloterij- of Museumkaart? Dan kun je vooraf al gratis een tijdslot reserveren.`;
+
   if (wachtlijst) {
     const subject = "Je staat op de wachtlijst voor Continuum Day (12 september)";
 
@@ -27,6 +31,7 @@ export function buildContinuumDayEmail({ name, wachtlijst = false }: { name: str
 <p>Hey ${voornaam},</p>
 <p>Wat gaaf dat je mee wilt spelen op Continuum Day! Eerlijk is eerlijk: de 250 speelplekken zijn inmiddels vergeven, dus je staat op de <strong>wachtlijst</strong>. Komt er een plek vrij (dat gebeurt eigenlijk altijd wel), dan hoor je het meteen van me per mail.</p>
 <p>Wat je sowieso kunt doen op zaterdag <strong>12 september</strong>: kom naar het plein voor Beeld &amp; Geluid op het Media Park in Hilversum om mee te zingen en erbij te zijn (publiek is van harte welkom), of speel om 12:00 mee waar je ook bent en deel het met <strong>#ContinuumDay</strong>. De akkoorden staan hier alvast voor je klaar: <a href="${CHORDSHEET_URL}">de chord-sheet (pdf)</a>.</p>
+${bgActieHtml}
 ${tourHtml}
 <p>Tot snel!<br />Ed</p>
 ${voorwaardenHtml}
@@ -37,6 +42,8 @@ ${voorwaardenHtml}
 Wat gaaf dat je mee wilt spelen op Continuum Day! Eerlijk is eerlijk: de 250 speelplekken zijn inmiddels vergeven, dus je staat op de wachtlijst. Komt er een plek vrij (dat gebeurt eigenlijk altijd wel), dan hoor je het meteen van me per mail.
 
 Wat je sowieso kunt doen op zaterdag 12 september: kom naar het plein voor Beeld & Geluid op het Media Park in Hilversum om mee te zingen en erbij te zijn (publiek is van harte welkom), of speel om 12:00 mee waar je ook bent en deel het met #ContinuumDay. De akkoorden staan hier alvast voor je klaar: ${CHORDSHEET_URL}
+
+${bgActieText}
 
 ${tourText}
 
@@ -75,6 +82,7 @@ ${voorwaardenText}`;
 <p>Het hele programma is buiten, en een Hollandse bui wachten we gewoon even af. Alleen bij echt onwerkbaar weer passen we het plan aan: dat besluiten we uiterlijk vrijdag en dan krijg je een mail.</p>
 <p><strong>Wat neem je mee?</strong> Je eigen gitaar. Akoestisch is het makkelijkst; elektrisch mag ook, maar dan wel met een versterkertje op batterijen (stroom is er buiten niet). Verder niks: deelname is gratis. En neem gerust iemand mee die alleen komt meezingen of kijken; aanmelden hoeft alleen voor wie meespeelt.</p>
 ${verlotingHtml}
+${bgActieHtml}
 <p>Kun je toch niet komen? Stuur me even een berichtje via deze mail, dan maken we je plek vrij voor iemand anders.</p>
 ${tourHtml}
 <p>Tot de twaalfde!<br />Ed</p>
@@ -97,7 +105,9 @@ Het hele programma is buiten, en een Hollandse bui wachten we gewoon even af. Al
 
 Wat neem je mee? Je eigen gitaar. Akoestisch is het makkelijkst; elektrisch mag ook, maar dan met een versterkertje op batterijen. Verder niks: deelname is gratis. En neem gerust iemand mee die alleen komt meezingen of kijken; aanmelden hoeft alleen voor wie meespeelt.
 
-${verlotingText}Kun je toch niet komen? Stuur me even een berichtje via deze mail, dan maken we je plek vrij voor iemand anders.
+${verlotingText}${bgActieText}
+
+Kun je toch niet komen? Stuur me even een berichtje via deze mail, dan maken we je plek vrij voor iemand anders.
 
 ${tourText}
 
