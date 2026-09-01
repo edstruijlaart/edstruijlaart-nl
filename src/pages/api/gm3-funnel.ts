@@ -10,6 +10,7 @@ import {
   isProvincie,
 } from "../../data/gm3-funnel";
 import { buildWelcomeEmail } from "../../lib/gm3-welcome-email";
+import { showOpMoment } from "../../lib/show-uit-tijdstip";
 
 // Aanmelding voor de gratis GM3-registratie (funnel naar GM4 Continuum).
 // Aangeroepen vanaf gitaarmannen.nl/john-mayer (cross-origin, vandaar CORS).
@@ -43,7 +44,7 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json", ...cors },
     });
 
-  let body: { email?: string; name?: string; provincie?: string };
+  let body: { email?: string; name?: string; provincie?: string; bron?: string };
   try {
     body = await request.json();
   } catch {
@@ -53,6 +54,7 @@ export const POST: APIRoute = async ({ request }) => {
   const email = (body.email || "").trim();
   const name = (body.name || "").trim();
   const provincie = (body.provincie || "").trim();
+  const bron = (body.bron || "").trim();
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return json({ error: "Vul een geldig e-mailadres in." }, 400);
@@ -62,6 +64,15 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const listUuids = listUuidsVoorProvincie(provincie);
+
+  // Kwam deze aanmelding uit de zaal (QR-code op het scherm, of de flyer)?
+  // Dan weten we uit de speellijst welke show het was, en hoeft de bezoeker dat
+  // niet zelf in te vullen. Alleen bij bron=theater, want een online-aanmelding
+  // die toevallig tijdens een voorstelling binnenkomt is géén bezoeker.
+  const treffer = bron === "theater" ? showOpMoment() : null;
+  if (treffer && !listUuids.includes(treffer.listmonkUuid)) {
+    listUuids.push(treffer.listmonkUuid);
+  }
 
   // 1) Inschrijven in Listmonk (public API, single opt-in, geen auth nodig)
   try {
