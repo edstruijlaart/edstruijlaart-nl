@@ -12,6 +12,39 @@ import { buildReminderEmail } from '../../../lib/email-templates';
  * Wordt elke ochtend om 10:00 getriggerd door Vercel Cron.
  * Kan ook handmatig getriggerd worden met de juiste auth header.
  */
+/**
+ * Inhaalronde: aanmeldingen die wél in Sanity staan maar niet op de mailinglijst
+ * belandden (Listmonk onbereikbaar op dat moment). Draait mee met de dagelijkse
+ * cron, zodat één hik geen adres kost.
+ */
+async function haalAchterstalligeSyncsIn(): Promise<{ gedaan: number; mislukt: number }> {
+  const LISTMONK_PUBLIC_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
+  const HK_LIST_UUID = '772c8bce-57f6-4537-ada4-2408b6a839da'; // Huiskamerconcerten
+
+  const open = await sanityClient.fetch(
+    `*[_type == "emailSignup" && syncedToListmonk != true][0...200]{_id, email, firstName}`
+  );
+  let gedaan = 0, mislukt = 0;
+  for (const rij of open || []) {
+    try {
+      const res = await fetch(LISTMONK_PUBLIC_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: rij.email, name: rij.firstName, list_uuids: [HK_LIST_UUID],
+        }),
+      });
+      if (!res.ok && res.status !== 409) throw new Error(`Listmonk ${res.status}`);
+      await sanityWriteClient.patch(rij._id).set({ syncedToListmonk: true }).commit();
+      gedaan++;
+    } catch (e) {
+      console.error('Inhaalsync mislukt voor', rij.email, e);
+      mislukt++;
+    }
+  }
+  return { gedaan, mislukt };
+}
+
 export const GET: APIRoute = async ({ request }) => {
   // Auth: Vercel Cron stuurt Authorization: Bearer CRON_SECRET
   // Handmatig triggeren kan ook met x-api-key header (BOOTLEG_API_KEY)
@@ -57,11 +90,14 @@ export const GET: APIRoute = async ({ request }) => {
       }
     `, { twelveHoursAgo, ninetySixHoursAgo });
 
+    const inhaal = await haalAchterstalligeSyncsIn();
+
     if (!shows || shows.length === 0) {
       return new Response(JSON.stringify({
         success: true,
         message: 'Geen shows gevonden die een reminder nodig hebben',
         showsProcessed: 0,
+        listmonkInhaal: inhaal,
       }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }
 
@@ -226,6 +262,7 @@ export const GET: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({
       success: true,
       showsProcessed: shows.length,
+      listmonkInhaal: inhaal,
       results,
     }), {
       status: 200,

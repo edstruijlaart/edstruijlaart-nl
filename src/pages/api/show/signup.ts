@@ -45,7 +45,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // EmailSignup opslaan in Sanity
-    await sanityWriteClient.create({
+    const signup = await sanityWriteClient.create({
       _type: 'emailSignup',
       firstName: cleanFirstName,
       email: cleanEmail,
@@ -72,8 +72,10 @@ export const POST: APIRoute = async ({ request }) => {
         .commit();
     }
 
-    // Listmonk sync (fire and forget)
-    syncToListmonk(cleanFirstName, cleanEmail, show).catch(console.error);
+    // Listmonk sync (fire and forget: mag de aanmelding nooit laten mislukken).
+    // Faalt hij, dan blijft syncedToListmonk op false staan en pikt de
+    // inhaalronde in /api/show/send-reminder hem de volgende ochtend op.
+    syncToListmonk(cleanFirstName, cleanEmail, signup._id).catch(console.error);
 
     // Late signup: als de herinneringsmail al is verstuurd, stuur direct een mail naar deze persoon
     if (show.reminderSent) {
@@ -149,17 +151,24 @@ async function sendLateSignupReminder(firstName: string, email: string, show: an
   }
 }
 
-async function syncToListmonk(firstName: string, email: string, show: any) {
+async function syncToListmonk(firstName: string, email: string, signupId: string) {
   const LISTMONK_PUBLIC_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
-  const HK_LIST_UUID = 'ebeb2dbf-bec2-4256-9952-329bb030d734'; // Huiskamerlijst op locatie
+  // Huiskamerconcerten (lijst 10) — de lijst die Ed ook echt mailt. Ging tot
+  // 1 sep 2026 naar "Huikamerlijst op locatie" (12), een doodlopende lijst waar
+  // 34 mensen ongebruikt in bleven liggen.
+  const HK_LIST_UUID = '772c8bce-57f6-4537-ada4-2408b6a839da';
 
-  await fetch(LISTMONK_PUBLIC_URL, {
+  const res = await fetch(LISTMONK_PUBLIC_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      email,
-      name: firstName,
-      list_uuids: [HK_LIST_UUID],
-    }),
+    body: JSON.stringify({ email, name: firstName, list_uuids: [HK_LIST_UUID] }),
   });
+  // 409 = stond er al; voor ons even goed als nieuw.
+  if (!res.ok && res.status !== 409) {
+    throw new Error(`Listmonk gaf ${res.status}`);
+  }
+  // Vlaggetje pas nú omzetten. Zolang dat niet gebeurde stond élke aanmelding
+  // op "nog niet gesynct", ook de geslaagde, en was er geen manier om te zien
+  // wie er werkelijk was blijven liggen.
+  await sanityWriteClient.patch(signupId).set({ syncedToListmonk: true }).commit();
 }
