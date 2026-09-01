@@ -34,6 +34,22 @@ export const GET: APIRoute = async ({ request, url }) => {
       } | order(naam asc)
     `);
 
+    if (url.searchParams.get('debug') === '1') {
+      return new Response(
+        JSON.stringify({
+          debug: true,
+          deelnemersType: typeof deelnemers,
+          isArray: Array.isArray(deelnemers),
+          length: deelnemers?.length,
+          sample: deelnemers?.slice(0, 3),
+          hasToken: Boolean(import.meta.env.SANITY_WRITE_TOKEN),
+          projectId: import.meta.env.SANITY_PROJECT_ID || import.meta.env.PUBLIC_SANITY_PROJECT_ID,
+          dataset: import.meta.env.SANITY_DATASET,
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const target = dryrun
       ? [{ naam: 'Ed (dryrun)', email: 'edstruijlaart@gmail.com' }]
       : deelnemers;
