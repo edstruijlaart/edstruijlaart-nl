@@ -13,7 +13,11 @@ const CONTINUUM_URL =
 const TRAILER_URL = "https://www.youtube.com/watch?v=wrsepG3uNg8";
 
 export function buildContinuumDayEmail({ name, wachtlijst = false }: { name: string; wachtlijst?: boolean }) {
-  const voornaam = name.split(" ")[0] || "daar";
+  // Mensen typen hun naam lang niet altijd met een hoofdletter ("rob gijsman"),
+  // en "Hey rob," leest slordig. Alleen de eerste letter fatsoeneren, de rest
+  // laten staan (anders sneuvelt bijvoorbeeld "McCartney").
+  const ruweVoornaam = name.trim().split(/\s+/)[0] || "";
+  const voornaam = ruweVoornaam ? ruweVoornaam.charAt(0).toUpperCase() + ruweVoornaam.slice(1) : "daar";
 
   const tourHtml = `<p><strong>En kom daarna naar de voorstelling!</strong> Continuum Day is namelijk de aftrap van mijn nieuwe theatervoorstelling <strong>Gitaarmannen 4: Continuum</strong>, over twintig jaar Continuum. Vanaf 24 september sta ik ermee in 27 theaters door heel Nederland, met op vrijdag 2 oktober de premi&egrave;re in het Isala Theater in Capelle aan den IJssel. Proef alvast de sfeer met <a href="${TRAILER_URL}">de trailer</a>. Is Continuum Day iets voor jou, dan is die avond dat helemaal. <a href="${CONTINUUM_URL}"><strong>Bekijk alle speeldata en bestel je kaarten</strong></a>.</p>`;
   const tourText = `En kom daarna naar de voorstelling! Continuum Day is namelijk de aftrap van mijn nieuwe theatervoorstelling Gitaarmannen 4: Continuum, over twintig jaar Continuum. Vanaf 24 september sta ik ermee in 27 theaters door heel Nederland, met op vrijdag 2 oktober de premiere in het Isala Theater in Capelle aan den IJssel. Proef alvast de sfeer met de trailer: ${TRAILER_URL}. Is Continuum Day iets voor jou, dan is die avond dat helemaal. Alle speeldata en kaarten: ${CONTINUUM_URL}`;
