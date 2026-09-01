@@ -2,7 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
-import { sanityClient } from '../../../lib/sanity';
+import { sanityWriteClient } from '../../../lib/sanity';
 
 /**
  * Eenmalige bulkmail naar alle huidige Continuum Day-deelnemers (wachtlijst != true):
@@ -27,7 +27,7 @@ export const GET: APIRoute = async ({ request, url }) => {
   try {
     const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
-    const deelnemers = await sanityClient.fetch<{ naam: string; email: string }[]>(`
+    const deelnemers = await sanityWriteClient.fetch<{ naam: string; email: string }[]>(`
       *[_type == "continuumDayAanmelding" && wachtlijst != true] {
         naam,
         email
