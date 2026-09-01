@@ -1,18 +1,25 @@
 export const prerender = false;
+export const config = { maxDuration: 60 };
 
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { sanityWriteClient } from '../../../lib/sanity';
 
 /**
- * Eenmalige bulkmail naar alle huidige Continuum Day-deelnemers (wachtlijst != true):
+ * Eenmalige bulkmail naar alle Continuum Day-deelnemers (wachtlijst != true):
  * update dat de 250 plekken vol zijn + de Beeld & Geluid-kortingscode (BeeldgeluidJM).
  *
- * Geen cron, handmatig getriggerd door Ed met x-api-key header (BOOTLEG_API_KEY).
- * Patroon geleend van send-reminder.ts: retry + delay tegen Resend rate limits,
- * samenvatting achteraf naar Ed zelf.
+ * Handmatig getriggerd door Ed met x-api-key (BOOTLEG_API_KEY), geen cron.
  *
- * Query-param ?dryrun=1 stuurt alleen naar Ed zelf ter controle, verstuurt niets naar deelnemers.
+ * In batches, want een Vercel-functie mag maar 60s draaien en 250 mails met
+ * rate-limit-pauze past daar niet in. Elke geslaagde verzending zet
+ * `updateMailBgActieOp` op het Sanity-document; de query slaat iedereen met dat
+ * veld over. Daardoor is het endpoint veilig herhaalbaar: niemand krijgt de mail
+ * twee keer, ook niet als een batch halverwege afbreekt.
+ *
+ * Query-params:
+ *   ?dryrun=1   stuurt alleen naar Ed zelf, markeert niemand
+ *   ?limit=N    aantal per batch (default 25)
  */
 export const GET: APIRoute = async ({ request, url }) => {
   const apiKey = request.headers.get('x-api-key');
@@ -23,122 +30,79 @@ export const GET: APIRoute = async ({ request, url }) => {
   }
 
   const dryrun = url.searchParams.get('dryrun') === '1';
+  const limit = Math.min(Number(url.searchParams.get('limit')) || 25, 60);
 
   try {
     const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
-    const deelnemers = await sanityWriteClient.fetch<{ naam: string; email: string }[]>(`
-      *[_type == "continuumDayAanmelding" && wachtlijst != true] {
+    const openstaand = await sanityWriteClient.fetch<{ _id: string; naam: string; email: string }[]>(`
+      *[_type == "continuumDayAanmelding" && wachtlijst != true && !defined(updateMailBgActieOp)] {
+        _id,
         naam,
         email
       } | order(naam asc)
     `);
 
-    if (url.searchParams.get('debug') === '1') {
+    const batch = dryrun
+      ? [{ _id: 'dryrun', naam: 'Ed (dryrun)', email: 'edstruijlaart@gmail.com' }]
+      : openstaand.slice(0, limit);
+
+    if (batch.length === 0) {
       return new Response(
-        JSON.stringify({
-          debug: true,
-          deelnemersType: typeof deelnemers,
-          isArray: Array.isArray(deelnemers),
-          length: deelnemers?.length,
-          sample: deelnemers?.slice(0, 3),
-          hasToken: Boolean(import.meta.env.SANITY_WRITE_TOKEN),
-          projectId: import.meta.env.SANITY_PROJECT_ID || import.meta.env.PUBLIC_SANITY_PROJECT_ID,
-          dataset: import.meta.env.SANITY_DATASET,
-        }),
+        JSON.stringify({ success: true, message: 'Iedereen heeft de mail al gehad', sent: 0, resterend: 0 }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    const target = dryrun
-      ? [{ naam: 'Ed (dryrun)', email: 'edstruijlaart@gmail.com' }]
-      : deelnemers;
-
-    if (!target || target.length === 0) {
-      return new Response(JSON.stringify({ success: true, message: 'Geen deelnemers gevonden', sent: 0 }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
+    const vandaag = new Date().toISOString().split('T')[0];
     let sentCount = 0;
     let errorCount = 0;
-    let delayMs = 1000;
-    const failed: Array<{ naam: string; email: string }> = [];
+    const failed: Array<{ naam: string; email: string; reden: string }> = [];
 
-    for (const persoon of target) {
-      if (sentCount > 0 || errorCount > 0) {
-        await new Promise((resolve) => setTimeout(resolve, delayMs));
+    for (const [i, persoon] of batch.entries()) {
+      if (i > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 700));
       }
 
       const { subject, html, text } = buildUpdateEmail(persoon.naam);
 
-      let sent = false;
-      for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-          const result = await resend.emails.send({
-            from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
-            to: persoon.email,
-            subject,
-            html,
-            text,
-          });
-
-          if (result?.data?.id) {
-            sentCount++;
-            sent = true;
-            break;
-          } else {
-            console.error(`Geen ID voor ${persoon.email} (poging ${attempt}):`, JSON.stringify(result));
-            delayMs = Math.min(delayMs * 2, 5000);
-            await new Promise((resolve) => setTimeout(resolve, delayMs));
-          }
-        } catch (err: any) {
-          const isRateLimit = err?.statusCode === 429 || err?.message?.includes('rate');
-          console.error(`Mislukt voor ${persoon.email} (poging ${attempt}):`, err?.message || err);
-          if (isRateLimit) {
-            delayMs = Math.min(delayMs * 2, 5000);
-          }
-          if (attempt < 3) {
-            await new Promise((resolve) => setTimeout(resolve, delayMs));
-          }
-        }
-      }
-
-      if (!sent) {
-        errorCount++;
-        failed.push(persoon);
-      }
-    }
-
-    // Samenvatting naar Ed, alleen bij een echte (niet-dryrun) run
-    if (!dryrun) {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        const failedSection =
-          failed.length > 0
-            ? `<h3 style="color:#cc0000;">⚠️ Niet bezorgd:</h3><ul>${failed
-                .map((f) => `<li>${f.naam} (${f.email})</li>`)
-                .join('')}</ul>`
-            : '';
-        await resend.emails.send({
+        const result = await resend.emails.send({
           from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
-          to: 'edstruijlaart@gmail.com',
-          subject: `${errorCount > 0 ? '⚠️' : '✅'} Continuum Day update-mail: ${sentCount} verstuurd${errorCount > 0 ? `, ${errorCount} mislukt` : ''}`,
-          html: `<p>Update-mail (250 vol + Beeld & Geluid-code) verstuurd naar ${sentCount} van ${target.length} deelnemers.</p>${failedSection}`,
+          to: persoon.email,
+          subject,
+          html,
+          text,
         });
-      } catch (summaryErr) {
-        console.error('Samenvattingsmail mislukt:', summaryErr);
+
+        if (!result?.data?.id) {
+          throw new Error(result?.error?.message || 'Geen message-id terug van Resend');
+        }
+
+        sentCount++;
+
+        // Direct markeren: als de functie hierna alsnog omvalt, krijgt deze
+        // persoon bij de volgende batch geen tweede mail.
+        if (!dryrun) {
+          await sanityWriteClient.patch(persoon._id).set({ updateMailBgActieOp: vandaag }).commit();
+        }
+      } catch (err: any) {
+        errorCount++;
+        const reden = err?.message || String(err);
+        console.error(`Mislukt voor ${persoon.email}:`, reden);
+        failed.push({ naam: persoon.naam, email: persoon.email, reden });
       }
     }
+
+    const resterend = dryrun ? openstaand.length : Math.max(openstaand.length - sentCount, 0);
 
     return new Response(
-      JSON.stringify({ success: true, dryrun, total: target.length, sent: sentCount, errors: errorCount, failed }),
+      JSON.stringify({ success: true, dryrun, batch: batch.length, sent: sentCount, errors: errorCount, resterend, failed }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('send-continuum-day-update error:', error);
-    return new Response(JSON.stringify({ error: 'Er ging iets mis' }), { status: 500 });
+    return new Response(JSON.stringify({ error: error?.message || 'Er ging iets mis' }), { status: 500 });
   }
 };
 
