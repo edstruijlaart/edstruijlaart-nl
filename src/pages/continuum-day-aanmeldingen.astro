@@ -161,16 +161,42 @@ Astro.response.headers.set("Cache-Control", "no-store");
       }
       .stat .l { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.4rem; }
       .stat .sub { font-size: 0.8rem; color: var(--text); margin-top: 0.2rem; }
-      .tabel-wrap { width: 100%; max-width: 760px; overflow-x: auto; }
+      /* De lijst is lang (250+ regels), dus leesbaarheid gaat hier boven compactheid:
+         ruime kolommen zodat niets afbreekt, één regel per persoon, en een header
+         die blijft staan tijdens het scrollen. */
+      .tabel-wrap {
+        width: 100%; max-width: 1180px; overflow-x: auto;
+        background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      }
       table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
       th {
         font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase;
         letter-spacing: 0.08em; font-size: 0.8rem; color: var(--muted); text-align: left;
-        padding: 0.6rem 0.75rem; border-bottom: 2px solid var(--border);
+        padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+        position: sticky; top: 0; z-index: 1; background: #191920; white-space: nowrap;
       }
-      td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-      td.num { color: var(--muted); }
-      td.email { color: var(--muted); word-break: break-all; }
+      td {
+        padding: 0.6rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+        vertical-align: middle; white-space: nowrap;
+      }
+      tbody tr:last-child td { border-bottom: none; }
+      tbody tr:nth-child(even) { background: rgba(255,255,255,0.022); }
+      tbody tr:hover { background: rgba(0,170,204,0.09); }
+      td.num { color: var(--muted); font-variant-numeric: tabular-nums; }
+      /* Volgnummer rechts uitlijnen zodat 9, 99 en 261 onder elkaar staan. */
+      td.tel, th.tel { text-align: right; width: 1%; color: var(--muted); font-variant-numeric: tabular-nums; }
+      td.naam { font-weight: 500; }
+      td.email { color: var(--muted); }
+      td.leeftijd, th.leeftijd { text-align: right; width: 1%; }
+      /* Alleen als het scherm écht smal is mag de tabel horizontaal schuiven. */
+      @media (max-width: 900px) {
+        .tabel-wrap { border-radius: 8px; }
+      }
+      .badge {
+        display: inline-block; margin-left: 0.5rem; padding: 0.1rem 0.4rem; border-radius: 4px;
+        background: rgba(224,169,58,0.15); color: #e0a93a; font-size: 0.7rem;
+        text-transform: uppercase; letter-spacing: 0.06em; vertical-align: middle;
+      }
       .leeg { color: var(--muted); margin-top: 2rem; }
       .avg-noot { margin-top: 2.5rem; font-size: 0.78rem; color: var(--muted); max-width: 620px; text-align: center; }
     </style>
@@ -248,14 +274,14 @@ Astro.response.headers.set("Cache-Control", "no-store");
             <div class="tabel-wrap">
               <table>
                 <thead>
-                  <tr><th>#</th><th>Naam</th><th>Leeftijd</th><th>E-mail</th><th>Land</th><th>Aangemeld</th></tr>
+                  <tr><th class="tel">#</th><th>Naam</th><th class="leeftijd">Lft</th><th>E-mail</th><th>Land</th><th>Aangemeld</th></tr>
                 </thead>
                 <tbody>
                   {aanmeldingen.map((a, i) => (
                     <tr>
-                      <td class="num">{aanmeldingen.length - i}</td>
-                      <td>{a.naam}{a.wachtlijst && <span style="color:#e0a93a; font-size:0.75rem;"> · wachtlijst</span>}</td>
-                      <td>{a.leeftijd}</td>
+                      <td class="tel">{aanmeldingen.length - i}</td>
+                      <td class="naam">{a.naam}{a.wachtlijst && <span class="badge">wachtlijst</span>}</td>
+                      <td class="leeftijd">{a.leeftijd}</td>
                       <td class="email">{a.email}</td>
                       <td class="num" style={["NL", "BE", "LU"].includes(a.land ?? "") ? "" : "color:#e0a93a;"}>{a.land ?? "—"}</td>
                       <td class="num">{fmt(a.aangemeldOp)}</td>
