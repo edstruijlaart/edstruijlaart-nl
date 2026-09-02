@@ -5,12 +5,13 @@ import { Resend } from "resend";
 import { LISTMONK_PUBLIC_API } from "../../data/gm3-funnel";
 import { buildContinuumDayEmail } from "../../lib/continuum-day-email";
 import { sanityWriteClient } from "../../lib/sanity";
+import { INTERN_MAX } from "../../lib/continuum-day-capaciteit";
 
 // Aanmelding voor Continuum Day (za 12 sep 2026, plein voor Beeld & Geluid, Media Park Hilversum).
 // Aangeroepen vanaf gitaarmannen.nl/continuum-day (cross-origin, vandaar CORS).
 // Doet: 1) aanmelding vastleggen in Sanity (de lotenlijst; naam + leeftijd = lot),
 //       2) inschrijven op de Continuum Day-lijst in Listmonk,
-//       3) bevestigingsmail (of wachtlijstmail boven de 150) via Resend.
+//       3) bevestigingsmail (of wachtlijstmail boven INTERN_MAX) via Resend.
 //
 // Beveiliging (13 aug): honeypot-veld tegen bots, invoer-limieten + HTML-strip,
 // best-effort rate-limit per IP, en idempotentie per e-mailadres zodat herhaalde
@@ -23,7 +24,6 @@ import { sanityWriteClient } from "../../lib/sanity";
 // basis. Alleen de landcode wordt opgeslagen, niet het IP.
 
 const CONTINUUM_DAY_LIST_UUID = "a7bbdabd-0da7-48e4-9019-ade58c9fff2e"; // lijst 71
-const MAX_DEELNEMERS = 250;
 
 // Ruim Europees: het filter hoeft alleen de overduidelijke gevallen (VS, Azië,
 // Zuid-Amerika) te keren. Ontbreekt de header (lokaal draaien), dan laten we door.
@@ -135,13 +135,15 @@ export const POST: APIRoute = async ({ request }) => {
     // Sanity onbereikbaar: door met de oude flow, liever een dubbele mail dan een verloren aanmelding.
   }
 
-  // Wachtlijst: boven de MAX_DEELNEMERS spelende plekken (voorwaarden beloven dit expliciet).
+  // Wachtlijst: pas boven INTERN_MAX. Publiek staat de teller al op "vol" bij
+  // PUBLIEK_MAX; daartussen laten we bewust door omdat een deel van de aanmelders
+  // op de dag zelf niet komt opdagen (zie continuum-day-capaciteit.ts).
   let wachtlijst = false;
   try {
     const count = await sanityWriteClient.fetch<number>(
       `count(*[_type == "continuumDayAanmelding" && wachtlijst != true])`
     );
-    wachtlijst = count >= MAX_DEELNEMERS;
+    wachtlijst = count >= INTERN_MAX;
   } catch (e) {
     console.error("Sanity count faalde (continuum-day)", e);
   }

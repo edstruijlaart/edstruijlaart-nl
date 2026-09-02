@@ -10,10 +10,10 @@ export const prerender = false;
 // pas na een geslaagde check server-side uit Sanity gehaald.
 import { createHash, timingSafeEqual } from "node:crypto";
 import { sanityWriteClient } from "../lib/sanity";
+import { PUBLIEK_MAX, INTERN_MAX } from "../lib/continuum-day-capaciteit";
 
 const CODE_HASH = "aa197d639aa233182695cc51b205168ce68add6f7362c92d87f3f9685fa5b9ef";
 const COOKIE = "cd_admin";
-const MAX_DEELNEMERS = 250;
 
 function checkCode(raw: string | null | undefined): string | null {
   if (!raw) return null;
@@ -62,6 +62,10 @@ let jongste: Aanmelding | null = null;
 let oudste: Aanmelding | null = null;
 let spelersCount = 0;
 let pct = 0;
+let publiekGetoond = 0;
+let ruimte = 0;
+let opkomstLaag = 0;
+let opkomstHoog = 0;
 let gemiddeldeLeeftijd: number | null = null;
 
 if (authorized) {
@@ -74,7 +78,14 @@ if (authorized) {
     if (!oudste || a.leeftijd > oudste.leeftijd) oudste = a;
   }
   spelersCount = aanmeldingen.filter((a) => !a.wachtlijst).length;
-  pct = Math.round((spelersCount / MAX_DEELNEMERS) * 100);
+  pct = Math.round((spelersCount / INTERN_MAX) * 100);
+  publiekGetoond = Math.min(spelersCount, PUBLIEK_MAX);
+  ruimte = Math.max(INTERN_MAX - spelersCount, 0);
+  // Grove opkomstschatting. Geen meetcijfer van dit event, maar bij een gratis
+  // buitenevent haakt een fors deel af zonder zich af te melden. Deze range is
+  // waar het om draait: hoeveel gitaristen staan er straks echt op het plein.
+  opkomstLaag = Math.round(spelersCount * 0.65);
+  opkomstHoog = Math.round(spelersCount * 0.85);
   const leeftijden = aanmeldingen.map((a) => a.leeftijd).filter((l): l is number => typeof l === "number");
   if (leeftijden.length) {
     gemiddeldeLeeftijd = Math.round((leeftijden.reduce((s, l) => s + l, 0) / leeftijden.length) * 10) / 10;
@@ -181,11 +192,27 @@ Astro.response.headers.set("Cache-Control", "no-store");
           <div class="stats">
             <div class="stat">
               <div class="n">{spelersCount}</div>
-              <div class="l">spelers van {MAX_DEELNEMERS}</div>
+              <div class="l">spelers, echt</div>
+              <div class="sub">intern plafond {INTERN_MAX}</div>
+            </div>
+            <div class="stat">
+              <div class="n">{publiekGetoond}</div>
+              <div class="l">publiek getoond</div>
+              <div class="sub">{spelersCount >= PUBLIEK_MAX ? "site zegt VOL" : `van de ${PUBLIEK_MAX}`}</div>
+            </div>
+            <div class="stat">
+              <div class="n">{ruimte}</div>
+              <div class="l">nog toe te laten</div>
+              <div class="sub">tot {INTERN_MAX}</div>
+            </div>
+            <div class="stat">
+              <div class="n">{opkomstLaag}&ndash;{opkomstHoog}</div>
+              <div class="l">verwachte opkomst</div>
+              <div class="sub">schatting, 15&ndash;35% no-show</div>
             </div>
             <div class="stat">
               <div class="n">{pct}%</div>
-              <div class="l">vol</div>
+              <div class="l">van intern plafond</div>
             </div>
             {gemiddeldeLeeftijd !== null && (
               <div class="stat">
