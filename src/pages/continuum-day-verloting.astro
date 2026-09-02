@@ -104,8 +104,10 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-    <style>
-      /* Gescoped onder .vl: geen html/body/:root, anders lekt dit site-breed. */
+    <style is:global>
+      /* is:global omdat de schermen client-side via innerHTML worden opgebouwd en
+         Astro's scope-attribuut daar niet op staat. Daarom alles handmatig onder .vl,
+         en geen html/body/:root-selectors: anders lekt het site-breed. */
       .vl * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
       .vl {
         --bg: #08080A; --card: #131316; --text: #F5F5F3; --muted: #8A8A90;
