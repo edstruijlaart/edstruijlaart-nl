@@ -301,9 +301,11 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
             if (!W || !H) return;
             const spans = [...el.children];
             let fs = 120; el.style.fontSize = fs + "px";
+            // offsetWidth/Height = layout-maat zonder transforms; de pop-animatie start op
+            // scale(0.85) en zou via getBoundingClientRect 15% te klein meten.
             for (let i = 0; i < 8; i++) {
-              const w = Math.max(...spans.map((c) => c.getBoundingClientRect().width));
-              const h = spans.reduce((a, c) => a + c.getBoundingClientRect().height, 0);
+              const w = Math.max(...spans.map((c) => c.offsetWidth));
+              const h = spans.reduce((a, c) => a + c.offsetHeight, 0);
               const r = Math.min(W / w, H / h);
               if (r > 0.98 && r < 1.02) break;
               fs = Math.max(24, Math.floor(fs * r)); el.style.fontSize = fs + "px";
