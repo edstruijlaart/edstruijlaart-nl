@@ -1,0 +1,437 @@
+---
+export const prerender = false;
+
+// Verloting Continuum Day (za 12 sep, 12:15 direct na het spelen). Draait op Eds
+// telefoon. Server-side: toegangscode (zelfde hash als het dashboard), lotenlijst
+// uit Sanity, en twee JSON-acties (winnaar vastleggen / alles resetten). Alles wat
+// daarna gebeurt (trekken, rollen, afwezig, overzicht) is client-side en werkt
+// zonder verbinding: buiten met 250 telefoons op één plein is 4G niet te vertrouwen.
+//
+// Eerlijkheid: winnaar = crypto.getRandomValues over de resterende loten. De
+// rol-animatie is puur show; de uitkomst staat vast vóór hij begint. Geen gewichten,
+// geen filters. Eerdere winnaars en afwezig-getrokkenen vallen af voor de rest.
+import { createHash, timingSafeEqual } from "node:crypto";
+import { sanityWriteClient } from "../lib/sanity";
+
+const CODE_HASH = "aa197d639aa233182695cc51b205168ce68add6f7362c92d87f3f9685fa5b9ef";
+const COOKIE = "cd_verloting";
+
+const PRIJZEN = [
+  { key: "snaren", titel: "3e prijs", naam: "John Mayer signature-snaren", sub: "3-pack" },
+  { key: "setup", titel: "2e prijs", naam: "Dunlop System 65 setup-kit", sub: "onderhoudsset" },
+  { key: "gitaar", titel: "1e prijs", naam: "PRS SE Silver Sky", sub: "Rosewood, Gold Spark limited" },
+];
+
+function checkCode(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  const code = raw.trim().toUpperCase();
+  if (code.length < 20 || code.length > 40) return null;
+  const h = createHash("sha256").update(code).digest();
+  const expected = Buffer.from(CODE_HASH, "hex");
+  if (h.length === expected.length && timingSafeEqual(h, expected)) return code;
+  return null;
+}
+
+let authorized = false;
+let foutmelding = "";
+const cookieCode = Astro.cookies.get(COOKIE)?.value;
+if (checkCode(cookieCode)) authorized = true;
+
+const postForm = Astro.request.method === "POST" ? await Astro.request.formData().catch(() => null) : null;
+
+if (!authorized && postForm && !postForm.get("actie")) {
+  const code = checkCode(String(postForm.get("code") ?? ""));
+  if (code) {
+    authorized = true;
+    Astro.cookies.set(COOKIE, code, { httpOnly: true, secure: true, sameSite: "lax", path: "/continuum-day-verloting", maxAge: 60 * 60 * 24 * 60 });
+  } else {
+    foutmelding = "Onjuiste code.";
+  }
+}
+
+// JSON-acties vanuit de app zelf (fetch met cookie). Alleen na auth.
+if (postForm?.get("actie")) {
+  if (!authorized) {
+    return new Response(JSON.stringify({ ok: false, error: "unauthorized" }), { status: 401, headers: { "Content-Type": "application/json" } });
+  }
+  const actie = String(postForm.get("actie"));
+  try {
+    if (actie === "win") {
+      const id = String(postForm.get("id") ?? "");
+      const prijs = String(postForm.get("prijs") ?? "");
+      const p = PRIJZEN.find((x) => x.key === prijs);
+      if (!/^continuumDayAanmelding\.[A-Za-z0-9._@+-]{3,120}$/.test(id) || !p) {
+        return new Response(JSON.stringify({ ok: false, error: "ongeldig" }), { status: 400, headers: { "Content-Type": "application/json" } });
+      }
+      await sanityWriteClient.patch(id).set({ verloting: { prijs: p.key, titel: p.titel, naam: p.naam, gewonnenOp: new Date().toISOString() } }).commit();
+      return new Response(JSON.stringify({ ok: true }), { headers: { "Content-Type": "application/json" } });
+    }
+    if (actie === "reset") {
+      const ids: string[] = await sanityWriteClient.fetch(`*[_type == "continuumDayAanmelding" && defined(verloting)]._id`);
+      if (ids.length) {
+        const tx = sanityWriteClient.transaction();
+        for (const id of ids) tx.patch(id, (pt) => pt.unset(["verloting"]));
+        await tx.commit();
+      }
+      return new Response(JSON.stringify({ ok: true, gewist: ids.length }), { headers: { "Content-Type": "application/json" } });
+    }
+    return new Response(JSON.stringify({ ok: false, error: "onbekende actie" }), { status: 400, headers: { "Content-Type": "application/json" } });
+  } catch (e: any) {
+    return new Response(JSON.stringify({ ok: false, error: e?.message || "fout" }), { status: 500, headers: { "Content-Type": "application/json" } });
+  }
+}
+
+interface Lot { _id: string; naam: string; leeftijd?: number }
+let loten: Lot[] = [];
+if (authorized) {
+  loten = await sanityWriteClient.fetch(
+    `*[_type == "continuumDayAanmelding" && wachtlijst != true]{_id, naam, leeftijd} | order(naam asc)`
+  );
+}
+
+Astro.response.headers.set("Cache-Control", "no-store");
+Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
+---
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#08080A" />
+    <title>Verloting · Continuum Day</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+      /* Gescoped onder .vl: geen html/body/:root, anders lekt dit site-breed. */
+      .vl * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+      .vl {
+        --bg: #08080A; --card: #131316; --text: #F5F5F3; --muted: #8A8A90;
+        --accent: #00AACC; --accent-dark: #0088A3; --border: rgba(255,255,255,0.1);
+        --groen: #5ad18a; --rood: #ff6b6b; --amber: #e0a93a;
+        margin: 0; min-height: 100svh; background: var(--bg); color: var(--text);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased; user-select: none; -webkit-user-select: none;
+        display: flex; flex-direction: column;
+        padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom));
+      }
+      .vl .kop { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+      .vl .eyebrow {
+        font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.85rem;
+        letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0;
+      }
+      .vl .modus {
+        font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.25rem 0.6rem;
+        border-radius: 999px; border: 1px solid var(--amber); color: var(--amber); font-weight: 600;
+      }
+      .vl.presentatie .modus, .vl.presentatie .eyebrow { display: none; }
+      .vl main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 1.2rem; }
+
+      .vl .gate { max-width: 340px; width: 100%; }
+      .vl .gate label { display: block; color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
+      .vl .gate input {
+        width: 100%; background: var(--card); border: 1.5px solid var(--border); color: var(--text);
+        font: inherit; font-size: 1rem; padding: 0.9rem 1.1rem; border-radius: 8px; text-transform: uppercase;
+      }
+      .vl .gate button { margin-top: 0.85rem; width: 100%; }
+      .vl .fout { color: var(--rood); font-size: 0.9rem; margin-top: 0.8rem; }
+
+      .vl button {
+        font: inherit; font-weight: 600; border: none; border-radius: 12px; cursor: pointer;
+        padding: 1.1rem 1.6rem; font-size: 1.1rem; color: white; background: var(--accent);
+        touch-action: manipulation;
+      }
+      .vl button:active { transform: scale(0.98); }
+      .vl button.groot {
+        font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 0.06em; font-size: 2rem; padding: 1.3rem 3rem; border-radius: 16px; min-width: 240px;
+      }
+      .vl button.grijs { background: var(--card); border: 1.5px solid var(--border); color: var(--text); }
+      .vl button.groen { background: var(--groen); color: #08080A; }
+      .vl button.rood { background: transparent; border: 1.5px solid var(--rood); color: var(--rood); }
+      .vl button:disabled { opacity: 0.4; }
+
+      .vl .prijskaart { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem 1.6rem; max-width: 420px; width: 100%; }
+      .vl .prijskaart .t { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-size: 0.9rem; }
+      .vl .prijskaart .n { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.9rem; line-height: 1.05; margin: 0.3rem 0 0.2rem; text-transform: uppercase; }
+      .vl .prijskaart .s { color: var(--muted); font-size: 0.9rem; }
+
+      .vl .loten { color: var(--muted); font-size: 0.95rem; }
+      .vl .loten b { color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.6rem; }
+
+      .vl .naam {
+        font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase;
+        font-size: clamp(2.6rem, 11vw, 6rem); line-height: 0.95; letter-spacing: 0.01em;
+        min-height: 2.2em; display: flex; align-items: center; justify-content: center; padding: 0 0.5rem;
+        overflow-wrap: anywhere;
+      }
+      .vl .naam.rolt { color: var(--muted); }
+      .vl .naam.winnaar { color: var(--accent); animation: vl-pop 0.45s cubic-bezier(.2,1.4,.4,1); }
+      @keyframes vl-pop { from { transform: scale(0.85); opacity: 0.3; } to { transform: scale(1); opacity: 1; } }
+      .vl .leeftijd { color: var(--muted); font-size: 1.1rem; margin-top: -0.6rem; }
+      .vl .knoppen { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+
+      .vl .overzicht { width: 100%; max-width: 480px; text-align: left; }
+      .vl .overzicht h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase; font-size: 2.2rem; text-align: center; margin: 0 0 1rem; }
+      .vl .win { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.2rem; margin-bottom: 0.7rem; display: flex; gap: 1rem; align-items: center; }
+      .vl .win .p { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-size: 0.8rem; min-width: 64px; }
+      .vl .win .w { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.6rem; line-height: 1; text-transform: uppercase; }
+      .vl .win .w small { display: block; font-family: 'Inter', sans-serif; font-weight: 400; text-transform: none; color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
+      .vl .win.top { border-color: var(--accent); background: rgba(0,170,204,0.1); }
+      .vl .afwezig { color: var(--muted); font-size: 0.85rem; margin-top: 1rem; }
+
+      .vl .tandwiel {
+        position: fixed; left: max(0.6rem, env(safe-area-inset-left)); bottom: max(0.6rem, env(safe-area-inset-bottom));
+        width: 44px; height: 44px; border-radius: 50%; background: transparent; color: rgba(255,255,255,0.18);
+        border: none; font-size: 1.4rem; padding: 0; display: flex; align-items: center; justify-content: center;
+      }
+      .vl.presentatie .tandwiel { color: rgba(255,255,255,0.08); }
+      .vl .paneel {
+        position: fixed; inset: auto 0 0 0; background: #191920; border-top: 1px solid var(--border);
+        border-radius: 18px 18px 0 0; padding: 1.2rem 1.2rem max(1.2rem, env(safe-area-inset-bottom));
+        display: none; flex-direction: column; gap: 0.7rem; z-index: 10;
+      }
+      .vl .paneel.open { display: flex; }
+      .vl .paneel h3 { margin: 0 0 0.3rem; font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1rem; color: var(--muted); }
+      .vl .paneel .status { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+      .vl .paneel .status b { color: var(--text); }
+      .vl .paneel button { font-size: 1rem; padding: 0.9rem 1.2rem; }
+      .vl .sluier { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: none; z-index: 9; }
+      .vl .sluier.open { display: block; }
+      .vl .gefeliciteerd { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--groen); font-size: 1rem; }
+      .vl .hint { color: var(--muted); font-size: 0.85rem; max-width: 320px; }
+    </style>
+  </head>
+  <body class="vl" id="vl">
+    {!authorized ? (
+      <main>
+        <form class="gate" method="post">
+          <p class="eyebrow" style="text-align:center; margin-bottom:1.2rem;">Continuum Day · Verloting</p>
+          <label for="code">Toegangscode</label>
+          <input id="code" name="code" type="password" autocomplete="off" autocapitalize="characters" required />
+          <button type="submit">Open</button>
+          {foutmelding && <p class="fout">{foutmelding}</p>}
+        </form>
+      </main>
+    ) : (
+      <>
+        <div class="kop">
+          <p class="eyebrow">Continuum Day · Verloting</p>
+          <span class="modus" id="modus">Oefenen</span>
+        </div>
+        <main id="scherm"></main>
+        <button class="tandwiel" id="tandwiel" aria-label="Instellingen">⚙</button>
+        <div class="sluier" id="sluier"></div>
+        <div class="paneel" id="paneel">
+          <h3>Instellingen</h3>
+          <div class="status" id="status"></div>
+          <button class="grijs" id="btn-modus"></button>
+          <button class="rood" id="btn-reset">Schone lei: alles wissen</button>
+          <button class="grijs" id="btn-herladen">Lijst opnieuw laden (vraagt verbinding)</button>
+          <button class="grijs" id="btn-sluit">Sluiten</button>
+        </div>
+        <script is:inline define:vars={{ loten, PRIJZEN }}>
+          const OPSLAG = "cd-verloting-v1";
+          const root = document.getElementById("vl");
+          const scherm = document.getElementById("scherm");
+          const modusEl = document.getElementById("modus");
+
+          // Namen die helemaal in kleine letters zijn ingevuld netjes tonen.
+          const toon = (n) => {
+            const s = String(n || "").trim();
+            if (!s) return "—";
+            return s === s.toLowerCase() ? s.replace(/(^|\s|-)(\p{L})/gu, (m, a, b) => a + b.toUpperCase()) : s;
+          };
+
+          const leeg = () => ({ modus: "oefen", stap: 0, winnaars: [], afwezig: [], huidig: null, wachtrij: [] });
+          let st = leeg();
+          try { const r = localStorage.getItem(OPSLAG); if (r) st = { ...leeg(), ...JSON.parse(r) }; } catch {}
+          const bewaar = () => { try { localStorage.setItem(OPSLAG, JSON.stringify(st)); } catch {} };
+
+          const uitgesloten = () => new Set([...st.winnaars.map((w) => w._id), ...st.afwezig.map((a) => a._id)]);
+          const resterend = () => loten.filter((l) => !uitgesloten().has(l._id));
+
+          // Eerlijke trekking: uniforme index via crypto, zonder modulo-bias.
+          function trekLot(pool) {
+            const n = pool.length;
+            if (!n) return null;
+            const max = Math.floor(0xffffffff / n) * n;
+            const buf = new Uint32Array(1);
+            let x;
+            do { crypto.getRandomValues(buf); x = buf[0]; } while (x >= max);
+            return pool[x % n];
+          }
+
+          // Winnaars naar Sanity, alleen in presentatiemodus. Mislukt = in de wachtrij, later opnieuw.
+          async function stuur(body) {
+            const fd = new FormData();
+            for (const [k, v] of Object.entries(body)) fd.append(k, v);
+            const r = await fetch(location.pathname, { method: "POST", body: fd, credentials: "same-origin" });
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+          }
+          async function verwerkWachtrij() {
+            if (!st.wachtrij.length || !navigator.onLine) return;
+            const rest = [];
+            for (const item of st.wachtrij) { try { await stuur(item); } catch { rest.push(item); } }
+            st.wachtrij = rest; bewaar(); renderStatus();
+          }
+          window.addEventListener("online", verwerkWachtrij);
+
+          function zetModus(m) {
+            st.modus = m; bewaar();
+            root.classList.toggle("presentatie", m === "live");
+            modusEl.textContent = m === "live" ? "Live" : "Oefenen";
+            if (m === "live") wakeLock();
+            renderStatus();
+          }
+          let lock = null;
+          async function wakeLock() {
+            try { lock = await navigator.wakeLock?.request("screen"); } catch {}
+          }
+          document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && st.modus === "live") wakeLock(); });
+
+          let rolTimer = null;
+          function stopRol() { if (rolTimer) { clearTimeout(rolTimer); rolTimer = null; } }
+
+          function render() {
+            stopRol();
+            const prijs = PRIJZEN[st.stap];
+            if (!prijs) return renderOverzicht();
+            if (st.huidig) return renderWinnaar(prijs);
+            const pool = resterend();
+            scherm.innerHTML = `
+              <div class="prijskaart">
+                <div class="t">${prijs.titel}</div>
+                <div class="n">${prijs.naam}</div>
+                <div class="s">${prijs.sub}</div>
+              </div>
+              <div class="loten"><b>${pool.length}</b> loten in de pot</div>
+              <button class="groot" id="trek" ${pool.length ? "" : "disabled"}>Trek</button>
+              ${st.stap === 0 && st.modus === "oefen" ? '<p class="hint">Oefenmodus: er wordt niets vastgelegd. Zet via ⚙ op Live voor de echte trekking.</p>' : ""}
+            `;
+            document.getElementById("trek").onclick = () => trek(prijs);
+          }
+
+          function trek(prijs) {
+            const pool = resterend();
+            const winnaar = trekLot(pool);
+            if (!winnaar) return;
+            // Uitkomst staat nu vast. Wat volgt is alleen show.
+            scherm.innerHTML = `
+              <div class="prijskaart"><div class="t">${prijs.titel}</div><div class="n">${prijs.naam}</div></div>
+              <div class="naam rolt" id="rol">…</div>
+            `;
+            const rol = document.getElementById("rol");
+            let interval = 45;
+            const tik = () => {
+              const r = pool[Math.floor(Math.random() * pool.length)];
+              rol.textContent = toon(r.naam);
+              interval *= 1.09;
+              if (interval < 420) { rolTimer = setTimeout(tik, interval); }
+              else {
+                rolTimer = null;
+                st.huidig = { _id: winnaar._id, naam: winnaar.naam, leeftijd: winnaar.leeftijd, prijs: prijs.key, tijd: new Date().toISOString() };
+                bewaar();
+                renderWinnaar(prijs);
+              }
+            };
+            tik();
+          }
+
+          function renderWinnaar(prijs) {
+            const w = st.huidig;
+            scherm.innerHTML = `
+              <div class="prijskaart"><div class="t">${prijs.titel}</div><div class="n">${prijs.naam}</div></div>
+              <div class="naam winnaar">${toon(w.naam)}</div>
+              ${typeof w.leeftijd === "number" ? `<div class="leeftijd">${w.leeftijd} jaar</div>` : ""}
+              <div class="knoppen">
+                <button class="groen" id="iser">Is er!</button>
+                <button class="rood" id="nietaanwezig">Niet aanwezig</button>
+              </div>
+            `;
+            document.getElementById("iser").onclick = () => {
+              st.winnaars.push({ ...w, titel: prijs.titel, prijsNaam: prijs.naam });
+              if (st.modus === "live") st.wachtrij.push({ actie: "win", id: w._id, prijs: prijs.key });
+              st.huidig = null; st.stap += 1; bewaar();
+              scherm.innerHTML = `<div class="gefeliciteerd">Gefeliciteerd</div><div class="naam winnaar">${toon(w.naam)}</div>`;
+              verwerkWachtrij();
+              setTimeout(render, 1600);
+            };
+            document.getElementById("nietaanwezig").onclick = () => {
+              st.afwezig.push({ ...w, titel: prijs.titel });
+              st.huidig = null; bewaar();
+              trek(prijs); // meteen door
+            };
+          }
+
+          function renderOverzicht() {
+            const kaarten = [...st.winnaars].reverse().map((w, i) => `
+              <div class="win ${i === 0 ? "top" : ""}">
+                <div class="p">${w.titel}</div>
+                <div class="w">${toon(w.naam)}<small>${w.prijsNaam}${typeof w.leeftijd === "number" ? " · " + w.leeftijd + " jaar" : ""}</small></div>
+              </div>`).join("");
+            const afw = st.afwezig.length
+              ? `<p class="afwezig">Getrokken maar niet aanwezig: ${st.afwezig.map((a) => toon(a.naam) + " (" + a.titel + ")").join(", ")}.</p>` : "";
+            scherm.innerHTML = `
+              <div class="overzicht">
+                <h2>De winnaars</h2>
+                ${kaarten}
+                ${afw}
+                <div class="knoppen" style="margin-top:1.2rem;">
+                  <button class="grijs" id="kopieer">Kopieer overzicht</button>
+                </div>
+              </div>
+            `;
+            document.getElementById("kopieer").onclick = async () => {
+              const regels = [
+                "Continuum Day verloting · " + new Date().toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" }),
+                ...[...st.winnaars].reverse().map((w) => `${w.titel}: ${toon(w.naam)}${typeof w.leeftijd === "number" ? " (" + w.leeftijd + ")" : ""} · ${w.prijsNaam}`),
+                ...(st.afwezig.length ? ["", "Getrokken, niet aanwezig: " + st.afwezig.map((a) => toon(a.naam) + " (" + a.titel + ")").join(", ")] : []),
+              ];
+              try { await navigator.clipboard.writeText(regels.join("\n")); document.getElementById("kopieer").textContent = "Gekopieerd"; } catch {}
+            };
+          }
+
+          // Instellingenpaneel
+          const paneel = document.getElementById("paneel"), sluier = document.getElementById("sluier");
+          const openPaneel = (o) => { paneel.classList.toggle("open", o); sluier.classList.toggle("open", o); if (o) renderStatus(); };
+          document.getElementById("tandwiel").onclick = () => openPaneel(true);
+          document.getElementById("btn-sluit").onclick = () => openPaneel(false);
+          sluier.onclick = () => openPaneel(false);
+          function renderStatus() {
+            document.getElementById("status").innerHTML =
+              `Modus: <b>${st.modus === "live" ? "Live (winnaars worden vastgelegd)" : "Oefenen (niets wordt vastgelegd)"}</b><br>` +
+              `Loten geladen: <b>${loten.length}</b> · nog in de pot: <b>${resterend().length}</b><br>` +
+              `Trekking: <b>${Math.min(st.stap + 1, 3)} van 3</b> · winnaars: <b>${st.winnaars.length}</b> · afwezig: <b>${st.afwezig.length}</b><br>` +
+              `Verbinding: <b>${navigator.onLine ? "ja" : "nee"}</b>${st.wachtrij.length ? ` · <b style="color:var(--amber)">${st.wachtrij.length} nog weg te schrijven</b>` : ""}`;
+            document.getElementById("btn-modus").textContent = st.modus === "live" ? "Terug naar Oefenen" : "Zet op Live (presentatie)";
+          }
+          document.getElementById("btn-modus").onclick = () => {
+            if (st.modus === "oefen") {
+              if (st.winnaars.length || st.afwezig.length || st.huidig) {
+                if (!confirm("Je hebt geoefend. Eerst alles wissen en met een schone lei live gaan?")) return;
+                st = { ...leeg(), modus: "live" }; bewaar();
+              } else zetModus("live");
+              zetModus("live"); openPaneel(false); render();
+            } else { zetModus("oefen"); openPaneel(false); render(); }
+          };
+          document.getElementById("btn-reset").onclick = async () => {
+            if (!confirm("Alles wissen? Winnaars, afwezigen, de hele stand. Ook wat al naar de website is geschreven.")) return;
+            const wasLive = st.modus === "live";
+            st = { ...leeg(), modus: st.modus }; bewaar();
+            if (wasLive) { try { await stuur({ actie: "reset" }); } catch { alert("Lokaal gewist, maar de website was niet bereikbaar. Probeer de reset zo nog eens met verbinding."); } }
+            openPaneel(false); render();
+          };
+          document.getElementById("btn-herladen").onclick = () => location.reload();
+
+          zetModus(st.modus);
+          render();
+          verwerkWachtrij();
+        </script>
+      </>
+    )}
+  </body>
+</html>
