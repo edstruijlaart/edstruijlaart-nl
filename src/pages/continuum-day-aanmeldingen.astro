@@ -168,36 +168,33 @@ Astro.response.headers.set("Cache-Control", "no-store");
         width: 100%; max-width: 1180px; overflow-x: auto;
         background: var(--card); border: 1px solid var(--border); border-radius: 10px;
       }
-      table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-      th {
+      /* Alles onder .tabel-wrap: de reset hierboven wordt door Astro vertaald naar
+         twee attribuutselectors en weegt daardoor zwaarder dan een kale td-regel.
+         Met .tabel-wrap ervoor winnen deze regels wel en houdt de padding stand. */
+      .tabel-wrap table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+      .tabel-wrap th {
         font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase;
         letter-spacing: 0.08em; font-size: 0.8rem; color: var(--muted); text-align: left;
         padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
         position: sticky; top: 0; z-index: 1; background: #191920; white-space: nowrap;
       }
-      td {
+      .tabel-wrap td {
         padding: 0.6rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);
         vertical-align: middle; white-space: nowrap;
       }
-      tbody tr:last-child td { border-bottom: none; }
-      tbody tr:nth-child(even) { background: rgba(255,255,255,0.022); }
-      tbody tr:hover { background: rgba(0,170,204,0.09); }
-      td.num { color: var(--muted); font-variant-numeric: tabular-nums; }
-      /* Volgnummer en leeftijd rechts uitlijnen zodat 9, 99 en 261 onder elkaar
-         staan. Géén width:1% hier: met box-sizing border-box drukt dat de padding
-         plat en plakken de kolommen tegen elkaar. */
-      td.tel, th.tel {
+      .tabel-wrap tbody tr:last-child td { border-bottom: none; }
+      .tabel-wrap tbody tr:nth-child(even) { background: rgba(255,255,255,0.022); }
+      .tabel-wrap tbody tr:hover { background: rgba(0,170,204,0.09); }
+      /* Volgnummer en leeftijd rechts uitlijnen zodat 9, 99 en 261 onder elkaar staan. */
+      .tabel-wrap td.tel, .tabel-wrap th.tel {
         text-align: right; color: var(--muted); font-variant-numeric: tabular-nums;
-        padding-right: 1.5rem;
       }
-      td.naam { font-weight: 500; padding-right: 2rem; }
-      td.email { color: var(--muted); padding-right: 2rem; }
-      td.leeftijd, th.leeftijd { text-align: right; padding-right: 2rem; }
-      td.land, th.land { padding-right: 1.5rem; }
-      /* Alleen als het scherm écht smal is mag de tabel horizontaal schuiven. */
-      @media (max-width: 900px) {
-        .tabel-wrap { border-radius: 8px; }
-      }
+      .tabel-wrap td.num { color: var(--muted); font-variant-numeric: tabular-nums; }
+      .tabel-wrap td.naam { font-weight: 500; color: var(--text); }
+      .tabel-wrap td.email { color: var(--muted); }
+      .tabel-wrap td.leeftijd, .tabel-wrap th.leeftijd { text-align: right; }
+      /* De naamkolom mag de resterende ruimte opslokken, de rest blijft compact. */
+      .tabel-wrap td.naam, .tabel-wrap th:nth-child(2) { width: 100%; }
       .badge {
         display: inline-block; margin-left: 0.5rem; padding: 0.1rem 0.4rem; border-radius: 4px;
         background: rgba(224,169,58,0.15); color: #e0a93a; font-size: 0.7rem;
