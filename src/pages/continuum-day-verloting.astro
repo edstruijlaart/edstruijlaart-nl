@@ -144,10 +144,27 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
         touch-action: manipulation;
       }
       .vl button:active { transform: scale(0.98); }
+      /* De TREK-knop is hét moment. Beeldvullend breed, hoog, en hij ademt. */
       .vl button.groot {
         font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase;
-        letter-spacing: 0.06em; font-size: 2rem; padding: 1.3rem 3rem; border-radius: 16px; min-width: 240px;
+        letter-spacing: 0.12em; font-size: 3rem; line-height: 1;
+        width: 100%; max-width: 520px; min-height: 112px; padding: 1rem 2rem; border-radius: 22px;
+        background: linear-gradient(135deg, #16CFF0 0%, #00AACC 55%, #0088A3 100%);
+        box-shadow: 0 0 0 0 rgba(0,170,204,0.55), 0 14px 40px rgba(0,170,204,0.35);
+        text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+        animation: vl-adem 2.2s ease-in-out infinite;
       }
+      .vl button.groot:disabled { animation: none; box-shadow: none; }
+      @keyframes vl-adem {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(0,170,204,0.55), 0 14px 40px rgba(0,170,204,0.35); transform: scale(1); }
+        50% { box-shadow: 0 0 0 18px rgba(0,170,204,0), 0 18px 50px rgba(0,170,204,0.5); transform: scale(1.02); }
+      }
+      .vl main.start { justify-content: space-evenly; }
+      .vl main.start .prijskaart { border-color: rgba(0,170,204,0.35); padding: 1.5rem 1.4rem; }
+      .vl main.start .prijskaart .t { font-size: 1.05rem; }
+      .vl main.start .prijskaart .n { font-size: clamp(2.2rem, 9vw, 3.2rem); }
+      .vl main.start .prijskaart .s { font-size: 1rem; }
+      .vl main.start .loten b { font-size: 2.2rem; }
       .vl button.grijs { background: var(--card); border: 1.5px solid var(--border); color: var(--text); }
       .vl button.groen { background: var(--groen); color: #08080A; }
       .vl button.rood { background: transparent; border: 1.5px solid var(--rood); color: var(--rood); }
@@ -345,6 +362,7 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
             if (st.huidig) return renderWinnaar(prijs);
             const pool = resterend();
             scherm.classList.remove("toon-naam");
+            scherm.classList.add("start");
             scherm.innerHTML = `
               <div class="prijskaart">
                 <div class="t">${prijs.titel}</div>
@@ -363,7 +381,7 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
             const winnaar = trekLot(pool);
             if (!winnaar) return;
             // Uitkomst staat nu vast. Wat volgt is alleen show.
-            scherm.classList.add("toon-naam");
+            scherm.classList.remove("start"); scherm.classList.add("toon-naam");
             scherm.innerHTML = `
               <div class="prijskaart klein"><div class="t">${prijs.titel}</div><div class="n">${prijs.naam}</div></div>
               <div class="naam rolt" id="rol"></div>
@@ -388,7 +406,7 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
 
           function renderWinnaar(prijs) {
             const w = st.huidig;
-            scherm.classList.add("toon-naam");
+            scherm.classList.remove("start"); scherm.classList.add("toon-naam");
             scherm.innerHTML = `
               <div class="prijskaart klein"><div class="t">${prijs.titel}</div><div class="n">${prijs.naam}</div></div>
               <div class="naam winnaar" id="wn"></div>
@@ -417,7 +435,7 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
           }
 
           function renderOverzicht() {
-            scherm.classList.remove("toon-naam");
+            scherm.classList.remove("toon-naam", "start");
             const kaarten = [...st.winnaars].reverse().map((w, i) => `
               <div class="win ${i === 0 ? "top" : ""}">
                 <div class="p">${w.titel}</div>
