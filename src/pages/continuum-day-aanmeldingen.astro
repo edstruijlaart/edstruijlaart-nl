@@ -183,11 +183,17 @@ Astro.response.headers.set("Cache-Control", "no-store");
       tbody tr:nth-child(even) { background: rgba(255,255,255,0.022); }
       tbody tr:hover { background: rgba(0,170,204,0.09); }
       td.num { color: var(--muted); font-variant-numeric: tabular-nums; }
-      /* Volgnummer rechts uitlijnen zodat 9, 99 en 261 onder elkaar staan. */
-      td.tel, th.tel { text-align: right; width: 1%; color: var(--muted); font-variant-numeric: tabular-nums; }
-      td.naam { font-weight: 500; }
-      td.email { color: var(--muted); }
-      td.leeftijd, th.leeftijd { text-align: right; width: 1%; }
+      /* Volgnummer en leeftijd rechts uitlijnen zodat 9, 99 en 261 onder elkaar
+         staan. Géén width:1% hier: met box-sizing border-box drukt dat de padding
+         plat en plakken de kolommen tegen elkaar. */
+      td.tel, th.tel {
+        text-align: right; color: var(--muted); font-variant-numeric: tabular-nums;
+        padding-right: 1.5rem;
+      }
+      td.naam { font-weight: 500; padding-right: 2rem; }
+      td.email { color: var(--muted); padding-right: 2rem; }
+      td.leeftijd, th.leeftijd { text-align: right; padding-right: 2rem; }
+      td.land, th.land { padding-right: 1.5rem; }
       /* Alleen als het scherm écht smal is mag de tabel horizontaal schuiven. */
       @media (max-width: 900px) {
         .tabel-wrap { border-radius: 8px; }
@@ -274,7 +280,7 @@ Astro.response.headers.set("Cache-Control", "no-store");
             <div class="tabel-wrap">
               <table>
                 <thead>
-                  <tr><th class="tel">#</th><th>Naam</th><th class="leeftijd">Lft</th><th>E-mail</th><th>Land</th><th>Aangemeld</th></tr>
+                  <tr><th class="tel">#</th><th>Naam</th><th class="leeftijd">Lft</th><th>E-mail</th><th class="land">Land</th><th>Aangemeld</th></tr>
                 </thead>
                 <tbody>
                   {aanmeldingen.map((a, i) => (
@@ -283,7 +289,7 @@ Astro.response.headers.set("Cache-Control", "no-store");
                       <td class="naam">{a.naam}{a.wachtlijst && <span class="badge">wachtlijst</span>}</td>
                       <td class="leeftijd">{a.leeftijd}</td>
                       <td class="email">{a.email}</td>
-                      <td class="num" style={["NL", "BE", "LU"].includes(a.land ?? "") ? "" : "color:#e0a93a;"}>{a.land ?? "—"}</td>
+                      <td class="num land" style={["NL", "BE", "LU"].includes(a.land ?? "") ? "" : "color:#e0a93a;"}>{a.land ?? "—"}</td>
                       <td class="num">{fmt(a.aangemeldOp)}</td>
                     </tr>
                   ))}
