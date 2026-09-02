@@ -267,21 +267,23 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
           const modusEl = document.getElementById("modus");
 
           // Namen die helemaal in kleine letters zijn ingevuld netjes tonen.
+          const PARTIKELS = new Set(["van","de","der","den","ter","te","het","'t","op","in","la","le","du","von","d'","'s","en","aan"]);
           const toon = (n) => {
-            const s = String(n || "").trim();
+            const s = String(n || "").trim().replace(/\s+/g, " ");
             if (!s) return "—";
-            return s === s.toLowerCase() ? s.replace(/(^|\s|-)(\p{L})/gu, (m, a, b) => a + b.toUpperCase()) : s;
+            return s.split(" ").map((w) => PARTIKELS.has(w.toLowerCase()) ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
           };
 
-          // Woorden onder elkaar; korte tussenvoegsels ("van de") blijven bij elkaar op één regel.
-          const PARTIKELS = new Set(["van","de","der","den","ter","te","het","'t","op","in","la","le","du","von","d'","'s","en","aan"]);
+          // Woorden onder elkaar; korte tussenvoegsels ("van de") blijven bij elkaar op één
+          // regel, en een lange dubbele naam (Goos-Noordermeer) gaat na het streepje verder.
           function regels(naam) {
             const w = toon(naam).split(/\s+/).filter(Boolean);
             const out = []; let buf = [];
             for (const x of w) {
               if (PARTIKELS.has(x.toLowerCase())) { buf.push(x); continue; }
               if (buf.length) { out.push(buf.join(" ")); buf = []; }
-              out.push(x);
+              if (x.length > 11 && x.includes("-")) { const i = x.indexOf("-"); out.push(x.slice(0, i + 1)); out.push(x.slice(i + 1)); }
+              else out.push(x);
             }
             if (buf.length) out.push(buf.join(" "));
             return out.length ? out : ["—"];
@@ -304,9 +306,12 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
               fs = Math.max(24, Math.floor(fs * r)); el.style.fontSize = fs + "px";
             }
           }
-          window.addEventListener("resize", () => { const el = scherm.querySelector(".naam"); if (el) pasNaam(el); });
+          const hermeet = () => { const el = scherm.querySelector(".naam"); if (el) pasNaam(el); };
+          window.addEventListener("resize", hermeet);
+          // Eerste meting kan op het terugval-lettertype gebeuren (breder); zodra Barlow er is, opnieuw.
+          if (document.fonts) { document.fonts.ready.then(hermeet); document.fonts.addEventListener("loadingdone", hermeet); }
 
-          const leeg = () => ({ modus: "oefen", stap: 0, winnaars: [], afwezig: [], huidig: null, wachtrij: [] });
+          const leeg = () => ({ modus: "oefen", stap: 0, winnaars: [], afwezig: [], huidig: null, wachtrij: [], toonGefeliciteerd: false });
           let st = leeg();
           try { const r = localStorage.getItem(OPSLAG); if (r) st = { ...leeg(), ...JSON.parse(r) }; } catch {}
           const bewaar = () => { try { localStorage.setItem(OPSLAG, JSON.stringify(st)); } catch {} };
@@ -359,6 +364,10 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
 
           function render() {
             stopRol();
+            if (st.toonGefeliciteerd && st.winnaars.length) {
+              const w = st.winnaars[st.winnaars.length - 1];
+              return renderGefeliciteerd(w, { titel: w.titel, naam: w.prijsNaam });
+            }
             const prijs = PRIJZEN[st.stap];
             if (!prijs) return renderOverzicht();
             if (st.huidig) return renderWinnaar(prijs);
@@ -422,18 +431,30 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
             document.getElementById("iser").onclick = () => {
               st.winnaars.push({ ...w, titel: prijs.titel, prijsNaam: prijs.naam });
               if (st.modus === "live") st.wachtrij.push({ actie: "win", id: w._id, prijs: prijs.key });
-              st.huidig = null; st.stap += 1; bewaar();
-              scherm.classList.add("toon-naam");
-              scherm.innerHTML = `<div class="gefeliciteerd">Gefeliciteerd</div><div class="naam winnaar" id="gf"></div><div></div>`;
-              vulNaam(document.getElementById("gf"), w.naam);
+              st.huidig = null; st.stap += 1; st.toonGefeliciteerd = true; bewaar();
               verwerkWachtrij();
-              setTimeout(render, 1600);
+              renderGefeliciteerd(w, prijs);
             };
             document.getElementById("nietaanwezig").onclick = () => {
               st.afwezig.push({ ...w, titel: prijs.titel });
               st.huidig = null; bewaar();
               trek(prijs); // meteen door
             };
+          }
+
+          // Blijft staan zolang Ed wil: hij houdt de telefoon omhoog, Michiel praat, en pas
+          // bij "Volgende" gaat het door. Overleeft ook een reload (st.toonGefeliciteerd).
+          function renderGefeliciteerd(w, prijs) {
+            const laatste = st.stap >= PRIJZEN.length;
+            scherm.classList.remove("start"); scherm.classList.add("toon-naam");
+            scherm.innerHTML = `
+              <div class="prijskaart klein"><div class="t">${prijs.titel}</div><div class="n">${prijs.naam}</div></div>
+              <div class="naam winnaar" id="gf"></div>
+              <div class="gefeliciteerd">Gefeliciteerd${typeof w.leeftijd === "number" ? " · " + w.leeftijd + " jaar" : ""}</div>
+              <div class="knoppen"><button class="grijs" id="volgende">${laatste ? "Naar het overzicht" : "Volgende prijs"}</button></div>
+            `;
+            vulNaam(document.getElementById("gf"), w.naam);
+            document.getElementById("volgende").onclick = () => { st.toonGefeliciteerd = false; bewaar(); render(); };
           }
 
           function renderOverzicht() {
