@@ -96,7 +96,7 @@ function buildOproep(naam: string, link: string) {
   const html = `
 <p>Hey ${voornaam},</p>
 <p>Even een leuke vraag. Op ${TV_DATUM_TEKST} zit ik bij Tijd voor Max (NPO 1) voor een voorproefje van Continuum Day, en ik mag een groepje gitaristen meenemen. Samen een stuk van Waiting on the World to Change spelen, akoestisch, in de studio op het Media Park in Hilversum. Met je gitaar op nationale tv, en het zijn maar vijf akkoorden. Wie wil dat nou niet?</p>
-<p>We nemen het die donderdag op; de uitzending is ${TV_UITZENDING_TEKST}, de dag voor het echte werk.</p>
+<p>We nemen het die donderdag op; de uitzending is ${TV_UITZENDING_TEKST}, de dag voor het echte werk. Wie meegaat krijgt van mij vooraf een filmpje waarin ik het vormpje dat we spelen uitleg en voorspeel, zodat je er thuis rustig op kunt oefenen. Wie meegaat krijgt van mij vooraf een filmpje waarin ik het vormpje dat we spelen uitleg en voorspeel, zodat je er thuis rustig op kunt oefenen.</p>
 <p>Ik heb plek voor ongeveer tien mensen. Dat is dus een kans en geen garantie: ik kies op een goede mix en op wie die dag echt kan. Wil je dit? Klik dan hieronder en beantwoord vijf korte vragen, dat duurt een minuut.</p>
 <p style="margin: 1.6em 0;"><a href="${link}" style="display:inline-block; background:#00AACC; color:#ffffff; text-decoration:none; font-weight:600; padding:14px 22px; border-radius:8px;">Ja, ik wil mee naar Tijd voor Max</a></p>
 <p>Reken op ${TV_DATUM_TEKST} ${TV_TIJD_TEKST} in Hilversum, lunch is geregeld. Eén ding wel: reageer alleen als je die dag zeker kunt. Je naam moet vooraf bij de beveiliging van de studio worden aangemeld, dus op het laatst afzeggen kan niet. Reageer graag uiterlijk ${TV_DEADLINE_TEKST}. Iedereen die reageert hoort van me, ook als het niet lukt. En op de twaalfde staan we sowieso allemaal samen op het plein.</p>
@@ -108,7 +108,7 @@ function buildOproep(naam: string, link: string) {
 
 Even een leuke vraag. Op ${TV_DATUM_TEKST} zit ik bij Tijd voor Max (NPO 1) voor een voorproefje van Continuum Day, en ik mag een groepje gitaristen meenemen. Samen een stuk van Waiting on the World to Change spelen, akoestisch, in de studio op het Media Park in Hilversum. Met je gitaar op nationale tv, en het zijn maar vijf akkoorden. Wie wil dat nou niet?
 
-We nemen het die donderdag op; de uitzending is ${TV_UITZENDING_TEKST}, de dag voor het echte werk.
+We nemen het die donderdag op; de uitzending is ${TV_UITZENDING_TEKST}, de dag voor het echte werk. Wie meegaat krijgt van mij vooraf een filmpje waarin ik het vormpje dat we spelen uitleg en voorspeel, zodat je er thuis rustig op kunt oefenen.
 
 Ik heb plek voor ongeveer tien mensen. Dat is dus een kans en geen garantie: ik kies op een goede mix en op wie die dag echt kan. Wil je dit? Open dan deze link en beantwoord vijf korte vragen, dat duurt een minuut:
 
