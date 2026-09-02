@@ -161,17 +161,26 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
       .vl .loten { color: var(--muted); font-size: 0.95rem; }
       .vl .loten b { color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.6rem; }
 
+      /* De naam is het hele punt: staande iPhone, omhoog gehouden voor 250 man.
+         Elk woord op een eigen regel, lettergrootte wordt door JS opgeschaald tot de
+         breedte (en hoogte) vol is. Alles eromheen wijkt. */
+      .vl main.toon-naam { justify-content: space-between; gap: 0.6rem; }
       .vl .naam {
         font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase;
-        font-size: clamp(2.6rem, 11vw, 6rem); line-height: 0.95; letter-spacing: 0.01em;
-        min-height: 2.2em; display: flex; align-items: center; justify-content: center; padding: 0 0.5rem;
-        overflow-wrap: anywhere;
+        line-height: 0.88; letter-spacing: 0; width: 100%; flex: 1;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        overflow: hidden; padding: 0 0.15rem;
       }
+      .vl .naam span { display: block; white-space: nowrap; }
       .vl .naam.rolt { color: var(--muted); }
       .vl .naam.winnaar { color: var(--accent); animation: vl-pop 0.45s cubic-bezier(.2,1.4,.4,1); }
       @keyframes vl-pop { from { transform: scale(0.85); opacity: 0.3; } to { transform: scale(1); opacity: 1; } }
-      .vl .leeftijd { color: var(--muted); font-size: 1.1rem; margin-top: -0.6rem; }
-      .vl .knoppen { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+      .vl .leeftijd { color: var(--muted); font-size: 1.15rem; }
+      .vl .knoppen { display: flex; gap: 0.7rem; width: 100%; max-width: 520px; }
+      .vl .knoppen button { flex: 1; min-height: 68px; font-size: 1.15rem; padding: 0.9rem 0.6rem; }
+      .vl .prijskaart.klein { padding: 0.55rem 1rem; display: flex; gap: 0.7rem; align-items: baseline; justify-content: center; flex-wrap: wrap; }
+      .vl .prijskaart.klein .t { font-size: 0.8rem; }
+      .vl .prijskaart.klein .n { font-size: 1.15rem; margin: 0; }
 
       .vl .overzicht { width: 100%; max-width: 480px; text-align: left; }
       .vl .overzicht h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase; font-size: 2.2rem; text-align: center; margin: 0 0 1rem; }
@@ -245,6 +254,39 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
             return s === s.toLowerCase() ? s.replace(/(^|\s|-)(\p{L})/gu, (m, a, b) => a + b.toUpperCase()) : s;
           };
 
+          // Woorden onder elkaar; korte tussenvoegsels ("van de") blijven bij elkaar op één regel.
+          const PARTIKELS = new Set(["van","de","der","den","ter","te","het","'t","op","in","la","le","du","von","d'","'s","en","aan"]);
+          function regels(naam) {
+            const w = toon(naam).split(/\s+/).filter(Boolean);
+            const out = []; let buf = [];
+            for (const x of w) {
+              if (PARTIKELS.has(x.toLowerCase())) { buf.push(x); continue; }
+              if (buf.length) { out.push(buf.join(" ")); buf = []; }
+              out.push(x);
+            }
+            if (buf.length) out.push(buf.join(" "));
+            return out.length ? out : ["—"];
+          }
+          function vulNaam(el, naam) {
+            el.innerHTML = regels(naam).map((r) => `<span>${r}</span>`).join("");
+            pasNaam(el);
+          }
+          // Schaal tot de breedste regel ~96% van de breedte pakt en het blok in de hoogte past.
+          function pasNaam(el) {
+            const W = el.clientWidth * 0.96, H = el.clientHeight * 0.96;
+            if (!W || !H) return;
+            let fs = 100; el.style.fontSize = fs + "px";
+            const spans = [...el.children];
+            const meet = () => ({ w: Math.max(...spans.map((c) => c.scrollWidth)), h: el.scrollHeight });
+            for (let i = 0; i < 6; i++) {
+              const m = meet();
+              const r = Math.min(W / m.w, H / m.h);
+              if (Math.abs(r - 1) < 0.03) break;
+              fs = Math.max(24, Math.floor(fs * r)); el.style.fontSize = fs + "px";
+            }
+          }
+          window.addEventListener("resize", () => { const el = scherm.querySelector(".naam"); if (el) pasNaam(el); });
+
           const leeg = () => ({ modus: "oefen", stap: 0, winnaars: [], afwezig: [], huidig: null, wachtrij: [] });
           let st = leeg();
           try { const r = localStorage.getItem(OPSLAG); if (r) st = { ...leeg(), ...JSON.parse(r) }; } catch {}
@@ -302,6 +344,7 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
             if (!prijs) return renderOverzicht();
             if (st.huidig) return renderWinnaar(prijs);
             const pool = resterend();
+            scherm.classList.remove("toon-naam");
             scherm.innerHTML = `
               <div class="prijskaart">
                 <div class="t">${prijs.titel}</div>
@@ -320,15 +363,17 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
             const winnaar = trekLot(pool);
             if (!winnaar) return;
             // Uitkomst staat nu vast. Wat volgt is alleen show.
+            scherm.classList.add("toon-naam");
             scherm.innerHTML = `
-              <div class="prijskaart"><div class="t">${prijs.titel}</div><div class="n">${prijs.naam}</div></div>
-              <div class="naam rolt" id="rol">…</div>
+              <div class="prijskaart klein"><div class="t">${prijs.titel}</div><div class="n">${prijs.naam}</div></div>
+              <div class="naam rolt" id="rol"></div>
+              <div class="knoppen" style="visibility:hidden"><button>.</button></div>
             `;
             const rol = document.getElementById("rol");
             let interval = 45;
             const tik = () => {
               const r = pool[Math.floor(Math.random() * pool.length)];
-              rol.textContent = toon(r.naam);
+              vulNaam(rol, r.naam);
               interval *= 1.09;
               if (interval < 420) { rolTimer = setTimeout(tik, interval); }
               else {
@@ -343,20 +388,24 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
 
           function renderWinnaar(prijs) {
             const w = st.huidig;
+            scherm.classList.add("toon-naam");
             scherm.innerHTML = `
-              <div class="prijskaart"><div class="t">${prijs.titel}</div><div class="n">${prijs.naam}</div></div>
-              <div class="naam winnaar">${toon(w.naam)}</div>
+              <div class="prijskaart klein"><div class="t">${prijs.titel}</div><div class="n">${prijs.naam}</div></div>
+              <div class="naam winnaar" id="wn"></div>
               ${typeof w.leeftijd === "number" ? `<div class="leeftijd">${w.leeftijd} jaar</div>` : ""}
               <div class="knoppen">
                 <button class="groen" id="iser">Is er!</button>
                 <button class="rood" id="nietaanwezig">Niet aanwezig</button>
               </div>
             `;
+            vulNaam(document.getElementById("wn"), w.naam);
             document.getElementById("iser").onclick = () => {
               st.winnaars.push({ ...w, titel: prijs.titel, prijsNaam: prijs.naam });
               if (st.modus === "live") st.wachtrij.push({ actie: "win", id: w._id, prijs: prijs.key });
               st.huidig = null; st.stap += 1; bewaar();
-              scherm.innerHTML = `<div class="gefeliciteerd">Gefeliciteerd</div><div class="naam winnaar">${toon(w.naam)}</div>`;
+              scherm.classList.add("toon-naam");
+              scherm.innerHTML = `<div class="gefeliciteerd">Gefeliciteerd</div><div class="naam winnaar" id="gf"></div><div></div>`;
+              vulNaam(document.getElementById("gf"), w.naam);
               verwerkWachtrij();
               setTimeout(render, 1600);
             };
@@ -368,6 +417,7 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
           }
 
           function renderOverzicht() {
+            scherm.classList.remove("toon-naam");
             const kaarten = [...st.winnaars].reverse().map((w, i) => `
               <div class="win ${i === 0 ? "top" : ""}">
                 <div class="p">${w.titel}</div>
