@@ -5,9 +5,13 @@
 // invullen door alleen een e-mailadres te raden.
 import { createHmac, timingSafeEqual } from "node:crypto";
 
+// Bron: bevestiging Angelique de Vries (Tijd voor MAX) 21 aug. VOOROPNAME do 10 sep:
+// aankomst muzikanten 10:45, soundcheck 11:15, lunch 11:45, opname 13:30-14:15.
+// Uitzending vr 11 sep 17:10-17:50 NPO 1. Alle gasten moeten vooraf aangemeld (beveiliging).
 export const TV_DATUM_TEKST = "donderdag 10 september";
 export const TV_DEADLINE_TEKST = "vrijdag 4 september";
-export const TV_TIJD_TEKST = "ongeveer 14:30 tot 18:30";
+export const TV_TIJD_TEKST = "van 10:45 tot ongeveer 14:30";
+export const TV_UITZENDING_TEKST = "vrijdag 11 september om 17:10 op NPO 1";
 
 export function tvToken(email: string, secret: string): string {
   return createHmac("sha256", secret).update(email.trim().toLowerCase()).digest("hex").slice(0, 20);

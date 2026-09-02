@@ -7,7 +7,7 @@ export const prerender = false;
 // `tvKandidaat` op het bestaande aanmeld-document gezet, zodat het dashboard er
 // direct bij kan en Ed er een status aan kan hangen (gekozen / reserve / nee).
 import { sanityWriteClient } from "../../lib/sanity";
-import { tvTokenGeldig, TV_DATUM_TEKST, TV_DEADLINE_TEKST, TV_TIJD_TEKST } from "../../lib/continuum-day-tv";
+import { tvTokenGeldig, TV_DATUM_TEKST, TV_DEADLINE_TEKST, TV_TIJD_TEKST, TV_UITZENDING_TEKST } from "../../lib/continuum-day-tv";
 
 const SECRET = (import.meta.env.BOOTLEG_API_KEY as string) ?? "";
 
@@ -183,7 +183,7 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
           ) : (
             <p class="intro">Vijf korte vragen, één minuut. Vul het e-mailadres in waarmee je je voor Continuum Day hebt aangemeld, dan weet ik wie je bent.</p>
           )}
-          <p class="noot">Ik heb plek voor ongeveer tien mensen, dus dit is een kans en geen garantie. Ik kies op een goede mix en op wie die middag echt kan. Reageer graag uiterlijk {TV_DEADLINE_TEKST}.</p>
+          <p class="noot">Ik heb plek voor ongeveer tien mensen, dus dit is een kans en geen garantie. Ik kies op een goede mix en op wie die dag echt kan. Reageer graag uiterlijk {TV_DEADLINE_TEKST}.</p>
 
           {fout && <p class="fout">{fout}</p>}
           {alEerder && !fout && <p class="waarschuwing">Je hebt dit al eens ingevuld. Opnieuw versturen overschrijft je vorige antwoorden, dat is prima.</p>}
@@ -201,8 +201,8 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
             )}
 
             <div class="veld">
-              <span class="vraag">Ben je {TV_DATUM_TEKST} 's middags in Hilversum?</span>
-              <p class="uitleg">Reken op {TV_TIJD_TEKST}, in de studio op het Media Park. De precieze tijden volgen.</p>
+              <span class="vraag">Kun je {TV_DATUM_TEKST} overdag naar Hilversum komen?</span>
+              <p class="uitleg">We nemen het die dag op in de studio op het Media Park. Reken op {TV_TIJD_TEKST}, lunch is geregeld. De uitzending is {TV_UITZENDING_TEKST}.</p>
               <div class="opties">
                 <input type="radio" id="b-ja" name="beschikbaar" value="ja" required checked={v.beschikbaar === "ja"} /><label for="b-ja">Ja</label>
                 <input type="radio" id="b-mis" name="beschikbaar" value="misschien" checked={v.beschikbaar === "misschien"} /><label for="b-mis">Waarschijnlijk, nog niet zeker</label>
