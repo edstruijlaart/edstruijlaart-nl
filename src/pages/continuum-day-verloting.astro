@@ -292,17 +292,20 @@ Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
             el.innerHTML = regels(naam).map((r) => `<span>${r}</span>`).join("");
             pasNaam(el);
           }
-          // Schaal tot de breedste regel ~96% van de breedte pakt en het blok in de hoogte past.
+          // Schaal tot de breedste regel ~97% van de breedte pakt, tenzij de regels samen
+          // hoger worden dan het vak. Let op: NIET el.scrollHeight gebruiken; bij een
+          // flexbox met overflow:hidden is dat de vakhoogte, niet de tekst, waardoor de
+          // schaal elke ronde 4% kromp en op ~76px bleef hangen.
           function pasNaam(el) {
-            const W = el.clientWidth * 0.96, H = el.clientHeight * 0.96;
+            const W = el.clientWidth * 0.97, H = el.clientHeight * 0.95;
             if (!W || !H) return;
-            let fs = 100; el.style.fontSize = fs + "px";
             const spans = [...el.children];
-            const meet = () => ({ w: Math.max(...spans.map((c) => c.scrollWidth)), h: el.scrollHeight });
-            for (let i = 0; i < 6; i++) {
-              const m = meet();
-              const r = Math.min(W / m.w, H / m.h);
-              if (Math.abs(r - 1) < 0.03) break;
+            let fs = 120; el.style.fontSize = fs + "px";
+            for (let i = 0; i < 8; i++) {
+              const w = Math.max(...spans.map((c) => c.getBoundingClientRect().width));
+              const h = spans.reduce((a, c) => a + c.getBoundingClientRect().height, 0);
+              const r = Math.min(W / w, H / h);
+              if (r > 0.98 && r < 1.02) break;
               fs = Math.max(24, Math.floor(fs * r)); el.style.fontSize = fs + "px";
             }
           }
