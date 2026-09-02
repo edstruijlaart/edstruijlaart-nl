@@ -1,0 +1,263 @@
+---
+export const prerender = false;
+
+// Aanmeldformulier voor het Tijd voor Max-voorproefje (do 10 sep). Alleen bereikbaar
+// via de persoonlijke link uit de oproep-mail; wie zonder geldige link komt kan zijn
+// e-mailadres intikken, mits dat bij de deelnemers staat. Antwoorden worden als
+// `tvKandidaat` op het bestaande aanmeld-document gezet, zodat het dashboard er
+// direct bij kan en Ed er een status aan kan hangen (gekozen / reserve / nee).
+import { sanityWriteClient } from "../../lib/sanity";
+import { tvTokenGeldig, TV_DATUM_TEKST, TV_DEADLINE_TEKST, TV_TIJD_TEKST } from "../../lib/continuum-day-tv";
+
+const SECRET = (import.meta.env.BOOTLEG_API_KEY as string) ?? "";
+
+type Deelnemer = { _id: string; naam: string; email: string; tvKandidaat?: { status?: string } | null };
+
+async function zoekDeelnemer(email: string): Promise<Deelnemer | null> {
+  const e = email.trim().toLowerCase();
+  if (!e || e.length > 200 || !e.includes("@")) return null;
+  return sanityWriteClient.fetch(
+    `*[_type == "continuumDayAanmelding" && email == $e && wachtlijst != true][0]{_id, naam, email, tvKandidaat}`,
+    { e }
+  );
+}
+
+const BESCHIKBAAR = ["ja", "misschien", "nee"];
+const JAREN = ["<2", "2-5", "5-10", "10+"];
+const PUBLIEK = ["nooit", "soms", "regelmatig"];
+
+let email = (Astro.url.searchParams.get("e") ?? "").trim().toLowerCase();
+let token = Astro.url.searchParams.get("t") ?? "";
+let deelnemer: Deelnemer | null = null;
+let herkend = false;
+let klaar = false;
+let alEerder = false;
+let fout = "";
+// Bewaar ingevulde waarden bij een validatiefout, zodat niemand opnieuw hoeft te typen.
+let v: Record<string, string> = {};
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData().catch(() => null);
+  if (form) {
+    email = String(form.get("email") ?? "").trim().toLowerCase();
+    token = String(form.get("t") ?? "");
+    for (const k of ["beschikbaar", "woonplaats", "jaren", "publiek", "verhaal", "video", "telefoon"]) {
+      v[k] = String(form.get(k) ?? "").trim();
+    }
+    deelnemer = await zoekDeelnemer(email);
+    herkend = Boolean(deelnemer) && tvTokenGeldig(email, token, SECRET);
+    if (!deelnemer) {
+      fout = "Dit e-mailadres staat niet bij de aanmeldingen. Gebruik het adres waarmee je je voor Continuum Day hebt aangemeld.";
+    } else if (
+      !BESCHIKBAAR.includes(v.beschikbaar) || !JAREN.includes(v.jaren) ||
+      !PUBLIEK.includes(v.publiek) || v.woonplaats.length === 0
+    ) {
+      fout = "Vul in elk geval de eerste vier vragen in.";
+    } else {
+      await sanityWriteClient
+        .patch(deelnemer._id)
+        .set({
+          tvKandidaat: {
+            beschikbaar: v.beschikbaar,
+            woonplaats: v.woonplaats.slice(0, 80),
+            jaren: v.jaren,
+            publiek: v.publiek,
+            verhaal: v.verhaal.slice(0, 600),
+            video: v.video.slice(0, 300),
+            telefoon: v.telefoon.slice(0, 30),
+            ingevuldOp: new Date().toISOString(),
+            // Een tweede keer invullen mag, maar gooit Eds keuze niet weg.
+            status: deelnemer.tvKandidaat?.status ?? "kandidaat",
+          },
+        })
+        .commit();
+      klaar = true;
+    }
+  }
+} else if (email) {
+  deelnemer = await zoekDeelnemer(email);
+  if (deelnemer && tvTokenGeldig(email, token, SECRET)) {
+    herkend = true;
+    alEerder = Boolean(deelnemer.tvKandidaat);
+  } else {
+    deelnemer = null;
+    email = "";
+  }
+}
+
+const voornaam = deelnemer?.naam?.trim().split(/\s+/)[0] ?? "";
+const aanhef = voornaam ? voornaam.charAt(0).toUpperCase() + voornaam.slice(1) : "";
+
+Astro.response.headers.set("Cache-Control", "no-store");
+Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
+---
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Mee naar Tijd voor Max? · Continuum Day</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+      /* Gescoped onder .tv-page: geen html/body/:root, anders lekt dit site-breed. */
+      .tv-page * { box-sizing: border-box; }
+      .tv-page {
+        --bg: #08080A; --card: #131316; --text: #F5F5F3; --muted: #8A8A90;
+        --accent: #00AACC; --accent-dark: #0088A3; --border: rgba(255,255,255,0.1);
+        min-height: 100svh; margin: 0; background: var(--bg); color: var(--text);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased; line-height: 1.5;
+        display: flex; justify-content: center; padding: 2rem 1rem 4rem;
+      }
+      .tv-page .kaart { width: 100%; max-width: 560px; }
+      .tv-page .eyebrow {
+        font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.9rem;
+        letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 0.6rem;
+      }
+      .tv-page h1 {
+        font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 2.6rem;
+        line-height: 1; margin: 0 0 1rem; text-transform: uppercase;
+      }
+      .tv-page p { margin: 0 0 1rem; }
+      .tv-page .intro { color: var(--text); font-size: 1.02rem; }
+      .tv-page .noot { color: var(--muted); font-size: 0.9rem; }
+      .tv-page .veld { margin: 1.6rem 0; }
+      .tv-page .vraag { display: block; font-weight: 600; margin-bottom: 0.35rem; }
+      .tv-page .uitleg { color: var(--muted); font-size: 0.86rem; margin: 0 0 0.6rem; }
+      .tv-page .opties { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+      .tv-page .opties input { position: absolute; opacity: 0; width: 0; height: 0; }
+      .tv-page .opties label {
+        display: inline-block; padding: 0.7rem 1rem; border: 1.5px solid var(--border);
+        border-radius: 999px; background: var(--card); color: var(--text); cursor: pointer;
+        font-size: 0.95rem; user-select: none;
+      }
+      .tv-page .opties input:checked + label { border-color: var(--accent); background: rgba(0,170,204,0.16); }
+      .tv-page .opties input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .tv-page input[type="text"], .tv-page input[type="email"], .tv-page input[type="url"],
+      .tv-page input[type="tel"], .tv-page textarea {
+        width: 100%; background: var(--card); border: 1.5px solid var(--border); color: var(--text);
+        font: inherit; font-size: 1rem; padding: 0.85rem 1rem; border-radius: 8px;
+      }
+      .tv-page textarea { min-height: 110px; resize: vertical; }
+      .tv-page input:focus, .tv-page textarea:focus { outline: none; border-color: var(--accent); }
+      .tv-page button {
+        width: 100%; margin-top: 0.5rem; background: var(--accent); color: white; border: none;
+        padding: 1rem 1.4rem; border-radius: 8px; font: inherit; font-size: 1.05rem; font-weight: 600;
+        cursor: pointer;
+      }
+      .tv-page button:hover { background: var(--accent-dark); }
+      .tv-page .fout {
+        background: rgba(255,107,107,0.12); border: 1px solid rgba(255,107,107,0.4);
+        color: #ffb3b3; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.92rem;
+      }
+      .tv-page .waarschuwing {
+        background: rgba(224,169,58,0.12); border: 1px solid rgba(224,169,58,0.4);
+        color: #f0c86a; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.92rem;
+      }
+      .tv-page .klaar { text-align: center; padding: 3rem 0; }
+      .tv-page .klaar .vink {
+        width: 64px; height: 64px; border-radius: 50%; background: var(--accent);
+        display: inline-flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 1.2rem;
+      }
+      .tv-page .voet { margin-top: 2.5rem; color: var(--muted); font-size: 0.82rem; }
+    </style>
+  </head>
+  <body class="tv-page">
+    <main class="kaart">
+      <p class="eyebrow">Continuum Day · Tijd voor Max · {TV_DATUM_TEKST}</p>
+
+      {klaar ? (
+        <div class="klaar">
+          <div class="vink">✓</div>
+          <h1>Dank je{aanhef ? `, ${aanhef}` : ""}!</h1>
+          <p class="intro">Je staat op de lijst voor Tijd voor Max. Ik kies begin volgende week en laat iedereen iets weten, ook als het niet lukt.</p>
+          <p class="noot">En op zaterdag de twaalfde staan we in elk geval allemaal samen op het plein.</p>
+        </div>
+      ) : (
+        <>
+          <h1>Mee naar Tijd voor Max?</h1>
+          {aanhef ? (
+            <p class="intro">Hey {aanhef}, leuk dat je dit wil. Vijf korte vragen, één minuut.</p>
+          ) : (
+            <p class="intro">Vijf korte vragen, één minuut. Vul het e-mailadres in waarmee je je voor Continuum Day hebt aangemeld, dan weet ik wie je bent.</p>
+          )}
+          <p class="noot">Ik heb plek voor ongeveer tien mensen, dus dit is een kans en geen garantie. Ik kies op een goede mix en op wie die middag echt kan. Reageer graag uiterlijk {TV_DEADLINE_TEKST}.</p>
+
+          {fout && <p class="fout">{fout}</p>}
+          {alEerder && !fout && <p class="waarschuwing">Je hebt dit al eens ingevuld. Opnieuw versturen overschrijft je vorige antwoorden, dat is prima.</p>}
+
+          <form method="post">
+            <input type="hidden" name="t" value={token} />
+            {herkend ? (
+              <input type="hidden" name="email" value={email} />
+            ) : (
+              <div class="veld">
+                <label class="vraag" for="email">Je e-mailadres</label>
+                <p class="uitleg">Hetzelfde adres als bij je aanmelding voor Continuum Day.</p>
+                <input type="email" id="email" name="email" required value={email} autocomplete="email" />
+              </div>
+            )}
+
+            <div class="veld">
+              <span class="vraag">Ben je {TV_DATUM_TEKST} 's middags in Hilversum?</span>
+              <p class="uitleg">Reken op {TV_TIJD_TEKST}, in de studio op het Media Park. De precieze tijden volgen.</p>
+              <div class="opties">
+                <input type="radio" id="b-ja" name="beschikbaar" value="ja" required checked={v.beschikbaar === "ja"} /><label for="b-ja">Ja</label>
+                <input type="radio" id="b-mis" name="beschikbaar" value="misschien" checked={v.beschikbaar === "misschien"} /><label for="b-mis">Waarschijnlijk, nog niet zeker</label>
+                <input type="radio" id="b-nee" name="beschikbaar" value="nee" checked={v.beschikbaar === "nee"} /><label for="b-nee">Nee</label>
+              </div>
+            </div>
+
+            <div class="veld">
+              <label class="vraag" for="woonplaats">Waar woon je?</label>
+              <input type="text" id="woonplaats" name="woonplaats" required maxlength="80" value={v.woonplaats ?? ""} autocomplete="address-level2" placeholder="Plaatsnaam" />
+            </div>
+
+            <div class="veld">
+              <span class="vraag">Hoe lang speel je gitaar?</span>
+              <div class="opties">
+                <input type="radio" id="j1" name="jaren" value="<2" required checked={v.jaren === "<2"} /><label for="j1">Korter dan 2 jaar</label>
+                <input type="radio" id="j2" name="jaren" value="2-5" checked={v.jaren === "2-5"} /><label for="j2">2 tot 5 jaar</label>
+                <input type="radio" id="j3" name="jaren" value="5-10" checked={v.jaren === "5-10"} /><label for="j3">5 tot 10 jaar</label>
+                <input type="radio" id="j4" name="jaren" value="10+" checked={v.jaren === "10+"} /><label for="j4">Langer dan 10 jaar</label>
+              </div>
+            </div>
+
+            <div class="veld">
+              <span class="vraag">Speel je wel eens voor publiek?</span>
+              <div class="opties">
+                <input type="radio" id="p1" name="publiek" value="nooit" required checked={v.publiek === "nooit"} /><label for="p1">Nooit</label>
+                <input type="radio" id="p2" name="publiek" value="soms" checked={v.publiek === "soms"} /><label for="p2">Af en toe</label>
+                <input type="radio" id="p3" name="publiek" value="regelmatig" checked={v.publiek === "regelmatig"} /><label for="p3">Regelmatig</label>
+              </div>
+            </div>
+
+            <div class="veld">
+              <label class="vraag" for="verhaal">Wat betekent Continuum, of John Mayer, voor jou?</label>
+              <p class="uitleg">Een of twee zinnen is genoeg. Dit helpt mij kiezen, en de redactie vindt dit soort verhalen prachtig.</p>
+              <textarea id="verhaal" name="verhaal" maxlength="600">{v.verhaal ?? ""}</textarea>
+            </div>
+
+            <div class="veld">
+              <label class="vraag" for="video">Heb je al een filmpje waarop je speelt? <span style="color:var(--muted);font-weight:400;">(optioneel)</span></label>
+              <p class="uitleg">YouTube, Instagram, Drive, wat je hebt. Geen filmpje is prima, dan vraag ik het later misschien nog.</p>
+              <input type="url" id="video" name="video" maxlength="300" value={v.video ?? ""} placeholder="https://" inputmode="url" />
+            </div>
+
+            <div class="veld">
+              <label class="vraag" for="telefoon">Telefoonnummer <span style="color:var(--muted);font-weight:400;">(optioneel)</span></label>
+              <p class="uitleg">Alleen als je gekozen wordt, voor snel contact op de dag zelf.</p>
+              <input type="tel" id="telefoon" name="telefoon" maxlength="30" value={v.telefoon ?? ""} autocomplete="tel" />
+            </div>
+
+            <button type="submit">Verstuur</button>
+          </form>
+
+          <p class="voet">Je antwoorden gebruik ik alleen om de groep voor Tijd voor Max samen te stellen. Ze vallen onder dezelfde afspraken als je aanmelding voor Continuum Day.</p>
+        </>
+      )}
+    </main>
+  </body>
+</html>

@@ -11,6 +11,7 @@ export const prerender = false;
 import { createHash, timingSafeEqual } from "node:crypto";
 import { sanityWriteClient } from "../lib/sanity";
 import { PUBLIEK_MAX, INTERN_MAX } from "../lib/continuum-day-capaciteit";
+import { TV_STATUSSEN, type TvStatus } from "../lib/continuum-day-tv";
 
 const CODE_HASH = "aa197d639aa233182695cc51b205168ce68add6f7362c92d87f3f9685fa5b9ef";
 const COOKIE = "cd_admin";
@@ -31,8 +32,12 @@ let foutmelding = "";
 const cookieCode = Astro.cookies.get(COOKIE)?.value;
 if (checkCode(cookieCode)) authorized = true;
 
-if (!authorized && Astro.request.method === "POST") {
-  const form = await Astro.request.formData().catch(() => null);
+// formData kan maar één keer gelezen worden; zowel de code-check als de
+// tv-statusknoppen komen via POST binnen.
+const postForm = Astro.request.method === "POST" ? await Astro.request.formData().catch(() => null) : null;
+
+if (!authorized && postForm) {
+  const form = postForm;
   const code = checkCode(String(form?.get("code") ?? ""));
   if (code) {
     authorized = true;
@@ -47,6 +52,23 @@ if (!authorized && Astro.request.method === "POST") {
     foutmelding = "Onjuiste code.";
   }
 }
+
+// Tijd voor Max: Ed zet per kandidaat een status. Alleen na auth, alleen via POST,
+// alleen bekende statussen, alleen op ID's die eruitzien als een aanmeld-document.
+if (authorized && postForm?.get("actie") === "tvstatus") {
+  const id = String(postForm.get("id") ?? "");
+  const status = String(postForm.get("status") ?? "") as TvStatus;
+  if (/^continuumDayAanmelding\.[A-Za-z0-9._@+-]{3,120}$/.test(id) && (TV_STATUSSEN as readonly string[]).includes(status)) {
+    await sanityWriteClient.patch(id).set({ "tvKandidaat.status": status }).commit();
+  }
+}
+
+interface TvKandidaat {
+  beschikbaar: string; woonplaats: string; jaren: string; publiek: string;
+  verhaal: string; video: string; telefoon: string; ingevuldOp: string; status: TvStatus;
+}
+interface TvRij { _id: string; naam: string; leeftijd: number; email: string; land?: string; tvKandidaat: TvKandidaat; }
+let tvKandidaten: TvRij[] = [];
 
 interface Aanmelding {
   naam: string;
@@ -69,6 +91,9 @@ let opkomstHoog = 0;
 let gemiddeldeLeeftijd: number | null = null;
 
 if (authorized) {
+  tvKandidaten = await sanityWriteClient.fetch(
+    `*[_type == "continuumDayAanmelding" && defined(tvKandidaat)] | order(tvKandidaat.ingevuldOp desc){_id, naam, leeftijd, email, land, tvKandidaat}`
+  );
   aanmeldingen = await sanityWriteClient.fetch(
     `*[_type == "continuumDayAanmelding"] | order(aangemeldOp desc){naam, leeftijd, email, aangemeldOp, wachtlijst, land}`
   );
@@ -91,6 +116,15 @@ if (authorized) {
     gemiddeldeLeeftijd = Math.round((leeftijden.reduce((s, l) => s + l, 0) / leeftijden.length) * 10) / 10;
   }
 }
+
+const LBL: Record<string, string> = {
+  ja: "Ja", misschien: "Misschien", nee: "Nee",
+  "<2": "< 2 jr", "2-5": "2–5 jr", "5-10": "5–10 jr", "10+": "10+ jr",
+  nooit: "nooit", soms: "af en toe", regelmatig: "regelmatig",
+  kandidaat: "—", gekozen: "Gekozen", reserve: "Reserve",
+};
+const tvTel = (st: TvStatus) => tvKandidaten.filter((k) => k.tvKandidaat.status === st).length;
+const tvBeschikbaar = tvKandidaten.filter((k) => k.tvKandidaat.beschikbaar === "ja").length;
 
 function fmt(iso: string): string {
   try {
@@ -195,6 +229,34 @@ Astro.response.headers.set("Cache-Control", "no-store");
       .tabel-wrap td.leeftijd, .tabel-wrap th.leeftijd { text-align: right; }
       /* De naamkolom mag de resterende ruimte opslokken, de rest blijft compact. */
       .tabel-wrap td.naam, .tabel-wrap th:nth-child(2) { width: 100%; }
+      /* Tijd voor Max-blok: eigen kaart boven de grote lijst, deze week het belangrijkste. */
+      .tv { width: 100%; max-width: 1180px; margin-bottom: 2.5rem; }
+      .tv .tv-kop {
+        display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.8rem;
+        font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.5rem;
+        text-transform: uppercase; letter-spacing: 0.04em;
+      }
+      .tv .tv-kop .tv-sub { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.85rem; color: var(--muted); text-transform: none; letter-spacing: 0; }
+      .tv .tv-kop .tv-sub b { color: var(--accent); font-weight: 600; }
+      .tv .tabel-wrap td.verhaal { white-space: normal; min-width: 260px; max-width: 380px; font-size: 0.84rem; color: var(--text); line-height: 1.4; }
+      .tv .tabel-wrap td.ja { color: #5ad18a; font-weight: 600; }
+      .tv .tabel-wrap td.nee { color: #ff6b6b; }
+      .tv .tabel-wrap td.mis { color: #e0a93a; }
+      .tv .tabel-wrap tbody tr.st-gekozen { background: rgba(90,209,138,0.10); }
+      .tv .tabel-wrap tbody tr.st-reserve { background: rgba(224,169,58,0.10); }
+      .tv .tabel-wrap tbody tr.st-nee td { opacity: 0.4; }
+      .tv .tabel-wrap tbody tr.st-nee td.acties { opacity: 1; }
+      .tv .tabel-wrap td.acties form { display: flex; gap: 0.3rem; }
+      .tv .tabel-wrap td.acties button {
+        font: inherit; font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.55rem; border-radius: 5px;
+        border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer;
+      }
+      .tv .tabel-wrap td.acties button:hover { border-color: var(--accent); color: var(--text); }
+      .tv .tabel-wrap td.acties button.actief-gekozen { background: #5ad18a; color: #08080A; border-color: #5ad18a; }
+      .tv .tabel-wrap td.acties button.actief-reserve { background: #e0a93a; color: #08080A; border-color: #e0a93a; }
+      .tv .tabel-wrap td.acties button.actief-nee { background: #ff6b6b; color: #08080A; border-color: #ff6b6b; }
+      .tv .tabel-wrap a { color: var(--accent); }
+      .tv .leeg-tv { color: var(--muted); font-size: 0.9rem; padding: 1rem 1.2rem; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
       .badge {
         display: inline-block; margin-left: 0.5rem; padding: 0.1rem 0.4rem; border-radius: 4px;
         background: rgba(224,169,58,0.15); color: #e0a93a; font-size: 0.7rem;
@@ -270,6 +332,53 @@ Astro.response.headers.set("Cache-Control", "no-store");
               </div>
             )}
           </div>
+
+          <section class="tv">
+            <h2 class="tv-kop">
+              Tijd voor Max · do 10 sep
+              <span class="tv-sub"><b>{tvKandidaten.length}</b> reacties · <b>{tvBeschikbaar}</b> beschikbaar · <b>{tvTel("gekozen")}</b> gekozen · <b>{tvTel("reserve")}</b> reserve</span>
+            </h2>
+            {tvKandidaten.length === 0 ? (
+              <p class="leeg-tv">Nog geen reacties op de oproep. Zodra iemand het formulier invult, verschijnt hij hier.</p>
+            ) : (
+              <div class="tabel-wrap">
+                <table>
+                  <thead>
+                    <tr><th>Naam</th><th class="leeftijd">Lft</th><th>Woont</th><th>10 sep</th><th>Speelt</th><th>Publiek</th><th>Verhaal</th><th>Film</th><th>Tel</th><th>Keuze</th></tr>
+                  </thead>
+                  <tbody>
+                    {tvKandidaten.map((k) => {
+                      const t = k.tvKandidaat;
+                      const bClass = t.beschikbaar === "ja" ? "ja" : t.beschikbaar === "nee" ? "nee" : "mis";
+                      return (
+                        <tr class={`st-${t.status}`}>
+                          <td class="naam">{k.naam}</td>
+                          <td class="leeftijd">{k.leeftijd}</td>
+                          <td>{t.woonplaats}</td>
+                          <td class={bClass}>{LBL[t.beschikbaar] ?? t.beschikbaar}</td>
+                          <td class="num">{LBL[t.jaren] ?? t.jaren}</td>
+                          <td class="num">{LBL[t.publiek] ?? t.publiek}</td>
+                          <td class="verhaal">{t.verhaal || <span style="color:var(--muted)">—</span>}</td>
+                          <td>{t.video ? <a href={t.video} target="_blank" rel="noopener noreferrer">bekijk</a> : <span style="color:var(--muted)">—</span>}</td>
+                          <td class="num">{t.telefoon || "—"}</td>
+                          <td class="acties">
+                            <form method="post">
+                              <input type="hidden" name="actie" value="tvstatus" />
+                              <input type="hidden" name="id" value={k._id} />
+                              <button type="submit" name="status" value="gekozen" class={t.status === "gekozen" ? "actief-gekozen" : ""} title="Gekozen">✓</button>
+                              <button type="submit" name="status" value="reserve" class={t.status === "reserve" ? "actief-reserve" : ""} title="Reserve">R</button>
+                              <button type="submit" name="status" value="nee" class={t.status === "nee" ? "actief-nee" : ""} title="Niet">✕</button>
+                              {t.status !== "kandidaat" && <button type="submit" name="status" value="kandidaat" title="Terug naar open">↺</button>}
+                            </form>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
 
           {aanmeldingen.length === 0 ? (
             <p class="leeg">Nog geen aanmeldingen.</p>
