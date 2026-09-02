@@ -121,10 +121,9 @@ const LBL: Record<string, string> = {
   ja: "Ja", misschien: "Misschien", nee: "Nee",
   "<2": "< 2 jr", "2-5": "2–5 jr", "5-10": "5–10 jr", "10+": "10+ jr",
   nooit: "nooit", soms: "af en toe", regelmatig: "regelmatig",
-  kandidaat: "—", gekozen: "Gekozen", reserve: "Reserve",
+  kandidaat: "—", gekozen: "Gekozen", reserve: "Reserve", nee: "Nee",
 };
 const tvTel = (st: TvStatus) => tvKandidaten.filter((k) => k.tvKandidaat.status === st).length;
-const tvBeschikbaar = tvKandidaten.filter((k) => k.tvKandidaat.beschikbaar === "ja").length;
 
 function fmt(iso: string): string {
   try {
@@ -336,7 +335,7 @@ Astro.response.headers.set("Cache-Control", "no-store");
           <section class="tv">
             <h2 class="tv-kop">
               Tijd voor Max · do 10 sep
-              <span class="tv-sub"><b>{tvKandidaten.length}</b> reacties · <b>{tvBeschikbaar}</b> beschikbaar · <b>{tvTel("gekozen")}</b> gekozen · <b>{tvTel("reserve")}</b> reserve</span>
+              <span class="tv-sub"><b>{tvKandidaten.length}</b> toezeggingen · <b>{tvTel("gekozen")}</b> gekozen · <b>{tvTel("reserve")}</b> reserve · <b>{tvTel("nee")}</b> nee</span>
             </h2>
             {tvKandidaten.length === 0 ? (
               <p class="leeg-tv">Nog geen reacties op de oproep. Zodra iemand het formulier invult, verschijnt hij hier.</p>
@@ -344,18 +343,16 @@ Astro.response.headers.set("Cache-Control", "no-store");
               <div class="tabel-wrap">
                 <table>
                   <thead>
-                    <tr><th>Naam</th><th class="leeftijd">Lft</th><th>Woont</th><th>10 sep</th><th>Speelt</th><th>Publiek</th><th>Verhaal</th><th>Film</th><th>Tel</th><th>Keuze</th></tr>
+                    <tr><th>Naam</th><th class="leeftijd">Lft</th><th>Woont</th><th>Speelt</th><th>Publiek</th><th>Verhaal</th><th>Film</th><th>Tel</th><th>Keuze</th></tr>
                   </thead>
                   <tbody>
                     {tvKandidaten.map((k) => {
                       const t = k.tvKandidaat;
-                      const bClass = t.beschikbaar === "ja" ? "ja" : t.beschikbaar === "nee" ? "nee" : "mis";
                       return (
                         <tr class={`st-${t.status}`}>
                           <td class="naam">{k.naam}</td>
                           <td class="leeftijd">{k.leeftijd}</td>
                           <td>{t.woonplaats}</td>
-                          <td class={bClass}>{LBL[t.beschikbaar] ?? t.beschikbaar}</td>
                           <td class="num">{LBL[t.jaren] ?? t.jaren}</td>
                           <td class="num">{LBL[t.publiek] ?? t.publiek}</td>
                           <td class="verhaal">{t.verhaal || <span style="color:var(--muted)">—</span>}</td>
