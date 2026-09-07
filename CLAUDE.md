@@ -104,6 +104,24 @@ Na WordPress → Astro migratie is de SEO volledig opgezet:
 6. **Geen credentials** in code of CLAUDE.md (repo is public!)
 7. Alle env vars via Vercel dashboard
 
+## Listmonk-inschrijvingen (sinds 7 sep 2026)
+
+Alle inschrijvingen lopen via `src/lib/listmonk.ts` (beheer-API, sleutel `api_website`
+met alleen inschrijfrechten) achter Cloudflare Access met een service token. De publieke
+Listmonk-ingang (`/subscription/form`, `/api/public/subscription`) staat **uit**: bots
+schreven zich daar rechtstreeks in. Browserformulieren (ook die op gitaarmannen.nl) posten
+naar `/api/subscribe` (honeypot `website` leeg + token `t`, vaste toegestane lijsten).
+
+Env in Vercel: `LISTMONK_API_BASE`, `LISTMONK_API_USER`, `LISTMONK_API_TOKEN`,
+`CF_ACCESS_CLIENT_ID`, `CF_ACCESS_CLIENT_SECRET`. Lokaal testen: `vercel env pull .env.local`
+en `LISTMONK_API_BASE` op een ssh-doorstuur naar de Pi zetten (omzeilt Access).
+
+Valkuilen: een `PUT /api/users/{id}` op de API-gebruiker maakt de sleutel ongeldig
+(verwijderen + opnieuw aanmaken mét `list_role_id`); `?query=` vereist `subscribers:sql_query`
+(niet toegekend), gebruik `?search=`; nieuwe Listmonk-lijsten moeten aan lijstrol
+`website-lijsten` worden toegevoegd én, voor browserformulieren, aan de allow-list in
+`src/pages/api/subscribe.ts`.
+
 ## Relatie met Andere Projecten
 
 - **Sanity CMS**: Deelt content met Gig Manager op Pi

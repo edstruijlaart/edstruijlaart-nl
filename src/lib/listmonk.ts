@@ -169,14 +169,22 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
     }
 
     // Bestaand adres: opzoeken en de lijsten erbij zetten.
-    const q = encodeURIComponent(`subscribers.email = '${email.replace(/'/g, "''")}'`);
-    const zoek = await api(`/api/subscribers?query=${q}&per_page=1`);
+    //
+    // Niet via `query=` (SQL-filter): dat vereist subscribers:sql_query, en dat
+    // recht houden we bewust van de sleutel af. `search=` volstaat, maar zoekt
+    // op woorden en struikelt over een plusje in het adres. Daarom zoeken we op
+    // het deel ná de laatste plus (het meest specifieke stuk) en filteren we
+    // daarna zelf op het exacte adres.
+    const zoekterm = email.includes("+") ? email.slice(email.lastIndexOf("+") + 1) : email;
+    const zoek = await api(`/api/subscribers?search=${encodeURIComponent(zoekterm)}&per_page=100`);
     if (!zoek.ok) {
       const zt = await zoek.text().catch(() => "");
       return { ok: false, status: "error", error: `opzoeken: HTTP ${zoek.status} ${zt.slice(0, 160)}` };
     }
-    const gevonden = (await zoek.json())?.data?.results?.[0];
-    if (!gevonden) return { ok: false, status: "error", error: "bestaat volgens 409 maar niet gevonden" };
+    const kandidaten: Array<{ id: number; email: string; status: string }> =
+      (await zoek.json())?.data?.results ?? [];
+    const gevonden = kandidaten.find((k) => k.email.toLowerCase() === email);
+    if (!gevonden) return { ok: false, status: "error", error: "bestaat volgens 409 maar niet teruggevonden via search" };
     if (gevonden.status === "blocklisted") return { ok: false, status: "blocklisted" };
 
     const koppel = await api("/api/subscribers/lists", {
