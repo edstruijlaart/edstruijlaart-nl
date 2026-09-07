@@ -3,7 +3,6 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { Resend } from "resend";
 import {
-  LISTMONK_PUBLIC_API,
   listUuidsVoorProvincie,
   dichtstbijzijndeShows,
   alleGM4Shows,
@@ -11,6 +10,7 @@ import {
 } from "../../data/gm3-funnel";
 import { buildWelcomeEmail } from "../../lib/gm3-welcome-email";
 import { showOpMoment } from "../../lib/show-uit-tijdstip";
+import { subscribe } from "../../lib/listmonk";
 
 // Aanmelding voor de gratis GM3-registratie (funnel naar GM4 Continuum).
 // Aangeroepen vanaf gitaarmannen.nl/john-mayer (cross-origin, vandaar CORS).
@@ -74,22 +74,13 @@ export const POST: APIRoute = async ({ request }) => {
     listUuids.push(treffer.listmonkUuid);
   }
 
-  // 1) Inschrijven in Listmonk (public API, single opt-in, geen auth nodig)
-  try {
-    const res = await fetch(LISTMONK_PUBLIC_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, name, list_uuids: listUuids }),
-    });
-    // Listmonk geeft 200 bij nieuw, 409 als al ingeschreven. Beide zijn voor de
-    // bezoeker een succes (ze krijgen sowieso de mail met de link).
-    if (!res.ok && res.status !== 409) {
-      const detail = await res.text().catch(() => "");
-      console.error("Listmonk subscribe faalde", res.status, detail);
-    }
-  } catch (e) {
-    console.error("Listmonk onbereikbaar", e);
-    // We gaan door: de welkomstmail met de kijk-link is de belangrijkste levering.
+  // 1) Inschrijven in Listmonk via de beheer-API (single opt-in). Bestaat het
+  //    adres al, dan komen alleen de lijsten erbij; dat is voor de bezoeker ook
+  //    een succes. Faalt het, dan gaan we door: de welkomstmail met de
+  //    kijk-link is de belangrijkste levering.
+  const inschrijving = await subscribe({ email, name, listUuids });
+  if (!inschrijving.ok && inschrijving.status === "error") {
+    console.error("Listmonk subscribe faalde (gm3-funnel)", inschrijving.error);
   }
 
   // 2) Welkomstmail met cadeau + volledige speellijst + ticketlinks

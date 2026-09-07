@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { sanityWriteClient, sanityClient } from '../../../lib/sanity';
 import { buildReminderEmail } from '../../../lib/email-templates';
+import { subscribe } from '../../../lib/listmonk';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -152,20 +153,16 @@ async function sendLateSignupReminder(firstName: string, email: string, show: an
 }
 
 async function syncToListmonk(firstName: string, email: string, signupId: string) {
-  const LISTMONK_PUBLIC_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
   // Huiskamerconcerten (lijst 10) — de lijst die Ed ook echt mailt. Ging tot
   // 1 sep 2026 naar "Huikamerlijst op locatie" (12), een doodlopende lijst waar
-  // 34 mensen ongebruikt in bleven liggen.
+  // 17 mensen ongebruikt in bleven liggen.
   const HK_LIST_UUID = '772c8bce-57f6-4537-ada4-2408b6a839da';
 
-  const res = await fetch(LISTMONK_PUBLIC_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, name: firstName, list_uuids: [HK_LIST_UUID] }),
-  });
-  // 409 = stond er al; voor ons even goed als nieuw.
-  if (!res.ok && res.status !== 409) {
-    throw new Error(`Listmonk gaf ${res.status}`);
+  const r = await subscribe({ email, name: firstName, listUuids: [HK_LIST_UUID] });
+  // Al ingeschreven of geblokkeerd: voor ons afgehandeld. Alleen een echte
+  // storing laten we staan, zodat de inhaalronde het later opnieuw probeert.
+  if (!r.ok && r.status === 'error') {
+    throw new Error(`Listmonk: ${r.error}`);
   }
   // Vlaggetje pas nú omzetten. Zolang dat niet gebeurde stond élke aanmelding
   // op "nog niet gesynct", ook de geslaagde, en was er geen manier om te zien

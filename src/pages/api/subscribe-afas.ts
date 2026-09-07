@@ -3,13 +3,13 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { Resend } from "resend";
 import {
-  LISTMONK_PUBLIC_API,
   afasListUuids,
   resolveProvincie,
   isProvincie,
 } from "../../data/afas-funnel";
 import { dichtstbijzijndeShows, alleGM4Shows } from "../../data/gm3-funnel";
 import { buildAfasWelcomeEmail } from "../../lib/afas-welcome-email";
+import { subscribe } from "../../lib/listmonk";
 
 // AFAS Live cadeau-funnel (reel -> landingspagina edstruijlaart.nl/afas).
 // Doet: 1) woonplaats -> provincie, 2) inschrijven in Listmonk (funnel-lijst +
@@ -45,21 +45,11 @@ export const POST: APIRoute = async ({ request }) => {
     : await resolveProvincie(woonplaats);
   const listUuids = afasListUuids(provincie);
 
-  // 1) Inschrijven in Listmonk (public API, single opt-in, geen auth).
-  try {
-    const res = await fetch(LISTMONK_PUBLIC_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, name, list_uuids: listUuids }),
-    });
-    // 200 = nieuw, 409 = al ingeschreven. Beide is voor de bezoeker een succes.
-    if (!res.ok && res.status !== 409) {
-      const detail = await res.text().catch(() => "");
-      console.error("Listmonk subscribe faalde", res.status, detail);
-    }
-  } catch (e) {
-    console.error("Listmonk onbereikbaar", e);
-    // Doorgaan: de bedankmail met de kijklink is de belangrijkste levering.
+  // 1) Inschrijven in Listmonk via de beheer-API (single opt-in). Doorgaan bij
+  //    een storing: de bedankmail met de kijklink is de belangrijkste levering.
+  const inschrijving = await subscribe({ email, name, listUuids });
+  if (!inschrijving.ok && inschrijving.status === "error") {
+    console.error("Listmonk subscribe faalde (afas)", inschrijving.error);
   }
 
   // 2) Bedankmail met het concert + de GM4-speellijst (dichtstbij bovenaan).

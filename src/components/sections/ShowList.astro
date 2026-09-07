@@ -30,7 +30,9 @@ function formatDate(dateStr: string) {
   return { day, month };
 }
 
-const LISTMONK_FORM_URL = 'https://newsletter.earswantmusic.nl/subscription/form';
+// Inschrijven loopt via ons eigen tussenstation (botfilter + beheer-API);
+// Listmonks publieke formulier is dicht sinds 7 sep 2026.
+const SUBSCRIBE_URL = '/api/subscribe';
 ---
 
 {displayShows.length > 0 ? (
@@ -145,9 +147,13 @@ const LISTMONK_FORM_URL = 'https://newsletter.earswantmusic.nl/subscription/form
       <p class="text-base text-[var(--fg-muted)] mt-4 mb-6">
         Laat je e-mailadres achter en je hoort het persoonlijk zodra de kaartverkoop voor deze show start, plus updates van Ed.
       </p>
-      <form id="show-interest-form" class="flex flex-col gap-3" action={LISTMONK_FORM_URL} method="POST">
+      <form id="show-interest-form" class="flex flex-col gap-3" action={SUBSCRIBE_URL} method="POST">
         <input type="hidden" name="nonce" value="" />
         <input type="hidden" name="l" id="show-modal-list" value="" />
+        {/* Botfilter: honeypot blijft leeg, t wordt bij verzenden gezet */}
+        <input type="text" name="website" value="" tabindex="-1" autocomplete="off" aria-hidden="true"
+               style="position:absolute;left:-9999px;height:0;width:0;opacity:0;pointer-events:none;" />
+        <input type="hidden" name="t" value="" />
         <input
           type="text"
           name="name"
@@ -281,8 +287,10 @@ const LISTMONK_FORM_URL = 'https://newsletter.earswantmusic.nl/subscription/form
       if (submitBtn) submitBtn.disabled = true;
 
       try {
+        (form!.querySelector<HTMLInputElement>('input[name="t"]'))!.value = String(Date.now());
         const fd = new FormData(form!);
-        await fetch(form!.action, { method: 'POST', body: fd, mode: 'no-cors' });
+        const res = await fetch(form!.action, { method: 'POST', body: fd });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         // Show success
         form!.classList.add('hidden');
         successEl!.classList.remove('hidden');

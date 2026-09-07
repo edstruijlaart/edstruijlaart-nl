@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { sanityClient, sanityWriteClient } from '../../../lib/sanity';
 import { buildReminderEmail } from '../../../lib/email-templates';
+import { subscribe } from '../../../lib/listmonk';
 
 /**
  * Vercel Cron endpoint: verstuurt herinneringsmails voor shows
@@ -18,7 +19,6 @@ import { buildReminderEmail } from '../../../lib/email-templates';
  * cron, zodat één hik geen adres kost.
  */
 async function haalAchterstalligeSyncsIn(): Promise<{ gedaan: number; mislukt: number }> {
-  const LISTMONK_PUBLIC_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
   const HK_LIST_UUID = '772c8bce-57f6-4537-ada4-2408b6a839da'; // Huiskamerconcerten
 
   const open = await sanityClient.fetch(
@@ -27,14 +27,8 @@ async function haalAchterstalligeSyncsIn(): Promise<{ gedaan: number; mislukt: n
   let gedaan = 0, mislukt = 0;
   for (const rij of open || []) {
     try {
-      const res = await fetch(LISTMONK_PUBLIC_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: rij.email, name: rij.firstName, list_uuids: [HK_LIST_UUID],
-        }),
-      });
-      if (!res.ok && res.status !== 409) throw new Error(`Listmonk ${res.status}`);
+      const r = await subscribe({ email: rij.email, name: rij.firstName, listUuids: [HK_LIST_UUID] });
+      if (!r.ok && r.status === 'error') throw new Error(`Listmonk: ${r.error}`);
       await sanityWriteClient.patch(rij._id).set({ syncedToListmonk: true }).commit();
       gedaan++;
     } catch (e) {

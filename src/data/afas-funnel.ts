@@ -15,9 +15,6 @@ import {
 
 export { PROVINCIES, isProvincie, type Provincie };
 
-/** Listmonk public subscription API (geen auth, single opt-in). */
-export const LISTMONK_PUBLIC_API =
-  "https://newsletter.earswantmusic.nl/api/public/subscription";
 
 /** Unlisted YouTube-link naar het volledige AFAS Live concert (door Ed aangeleverd). */
 export const AFAS_KIJK_URL = "https://youtu.be/yD-7deHA9wg";

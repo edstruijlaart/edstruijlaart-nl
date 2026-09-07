@@ -8,9 +8,6 @@ import { shows, type Show } from "./shows";
 /** Hoofdlijst "Gitaarmannen 3 Cadeau (GM4 funnel)" — id 44 in Listmonk. */
 export const FUNNEL_LIST_UUID = "b715ca0d-74ad-4fea-a810-9fb58d08c2b2";
 
-/** Listmonk public subscription API (geen auth, single opt-in). */
-export const LISTMONK_PUBLIC_API =
-  "https://newsletter.earswantmusic.nl/api/public/subscription";
 
 /** Unlisted YouTube-link naar de volledige GM3-registratie (4K). */
 export const GM3_KIJK_URL = "https://youtu.be/Ct0AHaUQqTM";

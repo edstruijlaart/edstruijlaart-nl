@@ -2,9 +2,10 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
+import { subscribe } from '../../lib/listmonk';
 
-// Listmonk public API via Cloudflare tunnel
-const LISTMONK_URL = 'https://newsletter.earswantmusic.nl/api/public/subscription';
+// Via de beheer-API met een sleutel die alleen mag inschrijven; de publieke
+// Listmonk-ingang is dicht sinds 7 sep 2026 (spam). Zie src/lib/listmonk.ts.
 const LIST_UUID = '681b5ef7-29cc-4be5-a0c7-6d8453f26cc8'; // Ed Struijlaart Nieuwsbrief
 
 export const POST: APIRoute = async ({ request }) => {
@@ -30,15 +31,10 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const response = await fetch(LISTMONK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email,
-        name: name || '',
-        list_uuids: [LIST_UUID],
-      }),
-    });
+    const result = await subscribe({ email, name: name || '', listUuids: [LIST_UUID] });
+    // Al ingeschreven of geblokkeerd telt voor de bezoeker als gelukt; alleen een
+    // echte storing melden we.
+    const response = { ok: result.ok || result.status !== 'error', status: result.ok ? 200 : 502 };
 
     if (response.ok) {
       // Notificatie naar Ed (fire-and-forget)
@@ -60,10 +56,8 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const errorData: Record<string, string> = await response.json().catch(() => ({}));
-    return new Response(JSON.stringify({
-      error: errorData.message || 'Inschrijving mislukt',
-    }), { status: response.status });
+    console.error('newsletter: Listmonk-fout', result.error);
+    return new Response(JSON.stringify({ error: 'Inschrijving mislukt' }), { status: 502 });
   } catch {
     return new Response(JSON.stringify({ error: 'Kon geen verbinding maken met de nieuwsbriefserver' }), {
       status: 502,

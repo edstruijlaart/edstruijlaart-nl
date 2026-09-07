@@ -2,7 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from "astro";
 import { Resend } from "resend";
-import { LISTMONK_PUBLIC_API } from "../../data/gm3-funnel";
+import { subscribe } from "../../lib/listmonk";
 import { buildContinuumDayEmail } from "../../lib/continuum-day-email";
 import { sanityWriteClient } from "../../lib/sanity";
 import { INTERN_MAX } from "../../lib/continuum-day-capaciteit";
@@ -166,21 +166,11 @@ export const POST: APIRoute = async ({ request }) => {
     console.error("Sanity aanmelding wegschrijven faalde (continuum-day)", e);
   }
 
-  // Inschrijven in Listmonk (public API, single opt-in)
-  try {
-    const res = await fetch(LISTMONK_PUBLIC_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, name, list_uuids: [CONTINUUM_DAY_LIST_UUID] }),
-    });
-    // 200 = nieuw, 409 = al ingeschreven; beide zijn voor de bezoeker een succes.
-    if (!res.ok && res.status !== 409) {
-      const detail = await res.text().catch(() => "");
-      console.error("Listmonk subscribe faalde (continuum-day)", res.status, detail);
-    }
-  } catch (e) {
-    console.error("Listmonk onbereikbaar (continuum-day)", e);
-    // Door: de bevestigingsmail is de belangrijkste levering richting de bezoeker.
+  // Inschrijven in Listmonk via de beheer-API (single opt-in). Door bij een
+  // storing: de bevestigingsmail is de belangrijkste levering richting de bezoeker.
+  const inschrijving = await subscribe({ email, name, listUuids: [CONTINUUM_DAY_LIST_UUID] });
+  if (!inschrijving.ok && inschrijving.status === "error") {
+    console.error("Listmonk subscribe faalde (continuum-day)", inschrijving.error);
   }
 
   // Bevestigings- of wachtlijstmail
