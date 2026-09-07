@@ -71,7 +71,7 @@ function bouwMail(naam: string) {
 <li>Slot: G Am F C, twee keer (op "we keep on waiting"), dan drie keer F C (op "waiting on the world to change"), en eindigen op één grote C</li>
 </ul>
 <p><strong>Nog even de dag.</strong> Donderdag 10 september, Studio 23 op het Media Park in Hilversum, publieksingang. Zet <strong>10:30</strong> in je agenda: het schema bij Max is krap, dus ik wil dat we dan allemaal binnen zijn. Om 11:15 begint de soundcheck. Lunch is geregeld, rond 14:30 ben je klaar.</p>
-<p><strong>Parkeren</strong> doe je op Parkeerdek A van het Media Park; de paar plekken bij de studio zelf zijn voor de band met de instrumenten. Kom je met de trein: station Hilversum Media Park ligt naast de studio.</p>
+<p><strong>Parkeren</strong> doe je op Parkeerdek A van het Media Park. Kom je met de trein: station Hilversum Media Park ligt naast de studio.</p>
 <p>Akoestische gitaar mee, geen versterker. Kleding zonder fijne streepjes, stipjes, ruitjes of logo's. En kijk donderdag naar mij voor de start en het einde, de rest gaat vanzelf.</p>
 <p>Tot donderdag!<br />Ed</p>
 `;
@@ -95,7 +95,7 @@ De akkoorden per stuk (elk akkoord twee tellen, net als op de sheet):
 
 Nog even de dag. Donderdag 10 september, Studio 23 op het Media Park in Hilversum, publieksingang. Zet 10:30 in je agenda: het schema bij Max is krap, dus ik wil dat we dan allemaal binnen zijn. Om 11:15 begint de soundcheck. Lunch is geregeld, rond 14:30 ben je klaar.
 
-Parkeren doe je op Parkeerdek A van het Media Park; de paar plekken bij de studio zelf zijn voor de band met de instrumenten. Kom je met de trein: station Hilversum Media Park ligt naast de studio.
+Parkeren doe je op Parkeerdek A van het Media Park. Kom je met de trein: station Hilversum Media Park ligt naast de studio.
 
 Akoestische gitaar mee, geen versterker. Kleding zonder fijne streepjes, stipjes, ruitjes of logo's. En kijk donderdag naar mij voor de start en het einde, de rest gaat vanzelf.
 
