@@ -60,6 +60,16 @@ function bouwMail(naam: string) {
 <p>Zoals beloofd, twee filmpjes voor donderdag. Dezelfde akkoorden als op je chord-sheet, zonder capo, en het vormpje is precies twee minuten.</p>
 <p><a href="${FILM_UITLEG}">Filmpje 1: het arrangement stap voor stap uitgelegd</a><br /><a href="${FILM_DOORGESPEELD}">Filmpje 2: het hele arrangement in één keer doorgespeeld, om mee te spelen</a></p>
 <p>Kijk eerst filmpje 1, speel daarna een paar keer mee met filmpje 2, dan zit het.</p>
+<p><strong>De akkoorden per stuk</strong> (elk akkoord twee tellen, net als op de sheet):</p>
+<ul>
+<li>Twee maten drumintro: jij doet nog niks.</li>
+<li>Intro band, vier maten: C Am F C · G Am F C</li>
+<li>Couplet 1: C Am F C · G Am F C, twee keer</li>
+<li>Refrein: C Am F C · G Am F C · C Dm Am Dm · G Am F C</li>
+<li>Solo: dezelfde rondgang als het couplet, C Am F C · G Am F C, rustig doorspelen</li>
+<li>Refrein 2: hetzelfde als het eerste refrein</li>
+<li>Slot: G Am F C, twee keer (op "we keep on waiting"), dan drie keer F C (op "waiting on the world to change"), en eindigen op één grote C</li>
+</ul>
 <p><strong>Nog even de dag.</strong> Donderdag 10 september, Studio 23 op het Media Park in Hilversum, publieksingang. Zet <strong>10:30</strong> in je agenda: het schema bij Max is krap, dus ik wil dat we dan allemaal binnen zijn. Om 11:15 begint de soundcheck. Lunch is geregeld, rond 14:30 ben je klaar.</p>
 <p><strong>Parkeren</strong> doe je op Parkeerdek A van het Media Park; de paar plekken bij de studio zelf zijn voor de band met de instrumenten. Kom je met de trein: station Hilversum Media Park ligt naast de studio.</p>
 <p>Akoestische gitaar mee, geen versterker. Kleding zonder fijne streepjes, stipjes, ruitjes of logo's. En kijk donderdag naar mij voor de start en het einde, de rest gaat vanzelf.</p>
@@ -73,6 +83,15 @@ Filmpje 1, het arrangement stap voor stap uitgelegd: ${FILM_UITLEG}
 Filmpje 2, het hele arrangement in één keer doorgespeeld, om mee te spelen: ${FILM_DOORGESPEELD}
 
 Kijk eerst filmpje 1, speel daarna een paar keer mee met filmpje 2, dan zit het.
+
+De akkoorden per stuk (elk akkoord twee tellen, net als op de sheet):
+- Twee maten drumintro: jij doet nog niks.
+- Intro band, vier maten: C Am F C · G Am F C
+- Couplet 1: C Am F C · G Am F C, twee keer
+- Refrein: C Am F C · G Am F C · C Dm Am Dm · G Am F C
+- Solo: dezelfde rondgang als het couplet, C Am F C · G Am F C, rustig doorspelen
+- Refrein 2: hetzelfde als het eerste refrein
+- Slot: G Am F C, twee keer (op "we keep on waiting"), dan drie keer F C (op "waiting on the world to change"), en eindigen op één grote C
 
 Nog even de dag. Donderdag 10 september, Studio 23 op het Media Park in Hilversum, publieksingang. Zet 10:30 in je agenda: het schema bij Max is krap, dus ik wil dat we dan allemaal binnen zijn. Om 11:15 begint de soundcheck. Lunch is geregeld, rond 14:30 ben je klaar.
 
