@@ -10,8 +10,8 @@ import { sanityWriteClient } from '../../../lib/sanity';
  * laatste praktische info (10:30 aanwezig, Parkeerdek A). Individuele mails.
  * Idempotent via tvFilmpjeMailOp. ?dryrun=1 stuurt één voorbeeld naar Ed.
  */
-const FILM_VORMPJE = 'https://cdn.earswantmusic.nl/cdaytvm6989c76a/continuum-day-instructie-2.mp4';
-const FILM_EXTRA = 'https://cdn.earswantmusic.nl/cdaytvm6989c76a/continuum-day-instructie-1.mp4';
+const FILM_UITLEG = 'https://cdn.earswantmusic.nl/cdaytvm6989c76a/continuum-day-instructie-1.mp4'; // 2:29, arrangement stap voor stap
+const FILM_DOORGESPEELD = 'https://cdn.earswantmusic.nl/cdaytvm6989c76a/continuum-day-instructie-2.mp4'; // 3:49, hele arrangement in één keer
 
 export const GET: APIRoute = async ({ request, url }) => {
   const apiKey = request.headers.get('x-api-key');
@@ -57,8 +57,9 @@ function bouwMail(naam: string) {
   const subject = 'Tijd voor Max: hier zijn de filmpjes';
   const html = `
 <p>Hey ${voornaam},</p>
-<p>Zoals beloofd: het filmpje waarin ik het vormpje voor donderdag uitleg en voorspeel. Precies twee minuten, dezelfde akkoorden als op je chord-sheet, zonder capo. Speel het een paar keer mee, dan zit het.</p>
-<p><a href="${FILM_VORMPJE}">Filmpje 1: het vormpje, uitgelegd en voorgespeeld</a><br /><a href="${FILM_EXTRA}">Filmpje 2: nog een keer, wat korter</a></p>
+<p>Zoals beloofd, twee filmpjes voor donderdag. Dezelfde akkoorden als op je chord-sheet, zonder capo, en het vormpje is precies twee minuten.</p>
+<p><a href="${FILM_UITLEG}">Filmpje 1: het arrangement stap voor stap uitgelegd</a><br /><a href="${FILM_DOORGESPEELD}">Filmpje 2: het hele arrangement in één keer doorgespeeld, om mee te spelen</a></p>
+<p>Kijk eerst filmpje 1, speel daarna een paar keer mee met filmpje 2, dan zit het.</p>
 <p><strong>Nog even de dag.</strong> Donderdag 10 september, Studio 23 op het Media Park in Hilversum, publieksingang. Zet <strong>10:30</strong> in je agenda: het schema bij Max is krap, dus ik wil dat we dan allemaal binnen zijn. Om 11:15 begint de soundcheck. Lunch is geregeld, rond 14:30 ben je klaar.</p>
 <p><strong>Parkeren</strong> doe je op Parkeerdek A van het Media Park; de paar plekken bij de studio zelf zijn voor de band met de instrumenten. Kom je met de trein: station Hilversum Media Park ligt naast de studio.</p>
 <p>Akoestische gitaar mee, geen versterker. Kleding zonder fijne streepjes, stipjes, ruitjes of logo's. En kijk donderdag naar mij voor de start en het einde, de rest gaat vanzelf.</p>
@@ -66,10 +67,12 @@ function bouwMail(naam: string) {
 `;
   const text = `Hey ${voornaam},
 
-Zoals beloofd: het filmpje waarin ik het vormpje voor donderdag uitleg en voorspeel. Precies twee minuten, dezelfde akkoorden als op je chord-sheet, zonder capo. Speel het een paar keer mee, dan zit het.
+Zoals beloofd, twee filmpjes voor donderdag. Dezelfde akkoorden als op je chord-sheet, zonder capo, en het vormpje is precies twee minuten.
 
-Filmpje 1, het vormpje uitgelegd en voorgespeeld: ${FILM_VORMPJE}
-Filmpje 2, nog een keer, wat korter: ${FILM_EXTRA}
+Filmpje 1, het arrangement stap voor stap uitgelegd: ${FILM_UITLEG}
+Filmpje 2, het hele arrangement in één keer doorgespeeld, om mee te spelen: ${FILM_DOORGESPEELD}
+
+Kijk eerst filmpje 1, speel daarna een paar keer mee met filmpje 2, dan zit het.
 
 Nog even de dag. Donderdag 10 september, Studio 23 op het Media Park in Hilversum, publieksingang. Zet 10:30 in je agenda: het schema bij Max is krap, dus ik wil dat we dan allemaal binnen zijn. Om 11:15 begint de soundcheck. Lunch is geregeld, rond 14:30 ben je klaar.
 
