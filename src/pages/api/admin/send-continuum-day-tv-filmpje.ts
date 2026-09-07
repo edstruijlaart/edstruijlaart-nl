@@ -1,0 +1,83 @@
+export const prerender = false;
+export const config = { maxDuration: 60 };
+
+import type { APIRoute } from 'astro';
+import { Resend } from 'resend';
+import { sanityWriteClient } from '../../../lib/sanity';
+
+/**
+ * Instructiefilmpjes naar de tien gekozen Tijd voor Max-gitaristen, plus de
+ * laatste praktische info (10:30 aanwezig, Parkeerdek A). Individuele mails.
+ * Idempotent via tvFilmpjeMailOp. ?dryrun=1 stuurt één voorbeeld naar Ed.
+ */
+const FILM_VORMPJE = 'https://cdn.earswantmusic.nl/cdaytvm6989c76a/continuum-day-instructie-2.mp4';
+const FILM_EXTRA = 'https://cdn.earswantmusic.nl/cdaytvm6989c76a/continuum-day-instructie-1.mp4';
+
+export const GET: APIRoute = async ({ request, url }) => {
+  const apiKey = request.headers.get('x-api-key');
+  const secret = import.meta.env.BOOTLEG_API_KEY as string;
+  if (!secret || apiKey !== secret) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
+  }
+  const dryrun = url.searchParams.get('dryrun') === '1';
+
+  try {
+    const resend = new Resend(import.meta.env.RESEND_API_KEY);
+    const openstaand = await sanityWriteClient.fetch<{ _id: string; naam: string; email: string }[]>(
+      `*[_type == "continuumDayAanmelding" && tvKandidaat.status == "gekozen" && !defined(tvFilmpjeMailOp)]
+        { _id, naam, email } | order(naam asc)`
+    );
+    const batch = dryrun ? [{ _id: 'dry', naam: 'Ed Voorbeeld', email: 'edstruijlaart@gmail.com' }] : openstaand;
+    if (batch.length === 0) {
+      return new Response(JSON.stringify({ success: true, message: 'Iedereen heeft de filmpjes al', sent: 0, resterend: 0 }), { headers: { 'Content-Type': 'application/json' } });
+    }
+    const vandaag = new Date().toISOString().split('T')[0];
+    let sent = 0; const failed: Array<{ naam: string; email: string; reden: string }> = [];
+    for (const [i, p] of batch.entries()) {
+      if (i > 0) await new Promise((r) => setTimeout(r, 700));
+      const { subject, html, text } = bouwMail(p.naam);
+      try {
+        const result = await resend.emails.send({ from: 'Ed Struijlaart <ed@edstruijlaart.nl>', to: p.email, subject, html, text });
+        if (!result?.data?.id) throw new Error(result?.error?.message || 'Geen message-id van Resend');
+        sent++;
+        if (!dryrun) await sanityWriteClient.patch(p._id).set({ tvFilmpjeMailOp: vandaag }).commit();
+      } catch (err: any) {
+        failed.push({ naam: p.naam, email: p.email, reden: err?.message || String(err) });
+      }
+    }
+    return new Response(JSON.stringify({ success: true, dryrun, batch: batch.length, sent, errors: failed.length, resterend: dryrun ? openstaand.length : openstaand.length - sent, failed }), { headers: { 'Content-Type': 'application/json' } });
+  } catch (error: any) {
+    return new Response(JSON.stringify({ error: error?.message || 'Er ging iets mis' }), { status: 500 });
+  }
+};
+
+function bouwMail(naam: string) {
+  const ruw = naam.trim().split(/\s+/)[0] || '';
+  const voornaam = ruw ? ruw.charAt(0).toUpperCase() + ruw.slice(1) : 'daar';
+  const subject = 'Tijd voor Max: hier zijn de filmpjes';
+  const html = `
+<p>Hey ${voornaam},</p>
+<p>Zoals beloofd: het filmpje waarin ik het vormpje voor donderdag uitleg en voorspeel. Precies twee minuten, dezelfde akkoorden als op je chord-sheet, zonder capo. Speel het een paar keer mee, dan zit het.</p>
+<p><a href="${FILM_VORMPJE}">Filmpje 1: het vormpje, uitgelegd en voorgespeeld</a><br /><a href="${FILM_EXTRA}">Filmpje 2: nog een keer, wat korter</a></p>
+<p><strong>Nog even de dag.</strong> Donderdag 10 september, Studio 23 op het Media Park in Hilversum, publieksingang. Zet <strong>10:30</strong> in je agenda: het schema bij Max is krap, dus ik wil dat we dan allemaal binnen zijn. Om 11:15 begint de soundcheck. Lunch is geregeld, rond 14:30 ben je klaar.</p>
+<p><strong>Parkeren</strong> doe je op Parkeerdek A van het Media Park; de paar plekken bij de studio zelf zijn voor de band met de instrumenten. Kom je met de trein: station Hilversum Media Park ligt naast de studio.</p>
+<p>Akoestische gitaar mee, geen versterker. Kleding zonder fijne streepjes, stipjes, ruitjes of logo's. En kijk donderdag naar mij voor de start en het einde, de rest gaat vanzelf.</p>
+<p>Tot donderdag!<br />Ed</p>
+`;
+  const text = `Hey ${voornaam},
+
+Zoals beloofd: het filmpje waarin ik het vormpje voor donderdag uitleg en voorspeel. Precies twee minuten, dezelfde akkoorden als op je chord-sheet, zonder capo. Speel het een paar keer mee, dan zit het.
+
+Filmpje 1, het vormpje uitgelegd en voorgespeeld: ${FILM_VORMPJE}
+Filmpje 2, nog een keer, wat korter: ${FILM_EXTRA}
+
+Nog even de dag. Donderdag 10 september, Studio 23 op het Media Park in Hilversum, publieksingang. Zet 10:30 in je agenda: het schema bij Max is krap, dus ik wil dat we dan allemaal binnen zijn. Om 11:15 begint de soundcheck. Lunch is geregeld, rond 14:30 ben je klaar.
+
+Parkeren doe je op Parkeerdek A van het Media Park; de paar plekken bij de studio zelf zijn voor de band met de instrumenten. Kom je met de trein: station Hilversum Media Park ligt naast de studio.
+
+Akoestische gitaar mee, geen versterker. Kleding zonder fijne streepjes, stipjes, ruitjes of logo's. En kijk donderdag naar mij voor de start en het einde, de rest gaat vanzelf.
+
+Tot donderdag!
+Ed`;
+  return { subject, html, text };
+}
