@@ -1,7 +1,7 @@
 // Bevestigingsmail voor Continuum Day-aanmeldingen (12 sep 2026, plein voor Beeld & Geluid, Media Park Hilversum).
 // PRS bevestigd (29 jul, Piers/PRS Europe): SE Silver Sky Rosewood Gold Spark ltd — verloting staat AAN.
 // Locatie sinds 13 aug: Beeld & Geluid (Stadsplein Capelle verviel door een braderie). Trekking direct na het spelen.
-// Boven de 250 spelende plekken gaat de wachtlijst-variant de deur uit (voorwaarden beloven een wachtlijst).
+// Boven INTERN_MAX (330, publiek 300) gaat de wachtlijst-variant de deur uit (voorwaarden beloven een wachtlijst).
 // Kortingscode van Beeld & Geluid (mail Kaija, 1 sep): tweede museumticket gratis met BeeldgeluidJM.
 
 export const VERLOTING_IN_MAIL = true;
@@ -33,7 +33,7 @@ export function buildContinuumDayEmail({ name, wachtlijst = false }: { name: str
 
     const html = `
 <p>Hey ${voornaam},</p>
-<p>Wat gaaf dat je mee wilt spelen op Continuum Day! Eerlijk is eerlijk: de 250 speelplekken zijn inmiddels vergeven, dus je staat op de <strong>wachtlijst</strong>. Komt er een plek vrij (dat gebeurt eigenlijk altijd wel), dan hoor je het meteen van me per mail.</p>
+<p>Wat gaaf dat je mee wilt spelen op Continuum Day! Eerlijk is eerlijk: de 300 speelplekken zijn inmiddels vergeven, dus je staat op de <strong>wachtlijst</strong>. Komt er een plek vrij (dat gebeurt eigenlijk altijd wel), dan hoor je het meteen van me per mail.</p>
 <p>Wat je sowieso kunt doen op zaterdag <strong>12 september</strong>: kom naar het plein voor Beeld &amp; Geluid op het Media Park in Hilversum om mee te zingen en erbij te zijn (publiek is van harte welkom), of speel om 12:00 mee waar je ook bent en deel het met <strong>#ContinuumDay</strong>. De akkoorden staan hier alvast voor je klaar: <a href="${CHORDSHEET_URL}">de chord-sheet (pdf)</a>.</p>
 ${bgActieHtml}
 ${tourHtml}
@@ -43,7 +43,7 @@ ${voorwaardenHtml}
 
     const text = `Hey ${voornaam},
 
-Wat gaaf dat je mee wilt spelen op Continuum Day! Eerlijk is eerlijk: de 250 speelplekken zijn inmiddels vergeven, dus je staat op de wachtlijst. Komt er een plek vrij (dat gebeurt eigenlijk altijd wel), dan hoor je het meteen van me per mail.
+Wat gaaf dat je mee wilt spelen op Continuum Day! Eerlijk is eerlijk: de 300 speelplekken zijn inmiddels vergeven, dus je staat op de wachtlijst. Komt er een plek vrij (dat gebeurt eigenlijk altijd wel), dan hoor je het meteen van me per mail.
 
 Wat je sowieso kunt doen op zaterdag 12 september: kom naar het plein voor Beeld & Geluid op het Media Park in Hilversum om mee te zingen en erbij te zijn (publiek is van harte welkom), of speel om 12:00 mee waar je ook bent en deel het met #ContinuumDay. De akkoorden staan hier alvast voor je klaar: ${CHORDSHEET_URL}
 

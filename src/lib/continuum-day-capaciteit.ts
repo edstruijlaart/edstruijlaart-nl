@@ -10,5 +10,8 @@
 //
 // Alleen het aanmeld-endpoint en het afgeschermde dashboard kennen INTERN_MAX.
 // De publieke teller geeft nooit meer dan PUBLIEK_MAX terug.
-export const PUBLIEK_MAX = 250;
-export const INTERN_MAX = 300;
+// 8 sep 2026: van 250/300 naar 300/330. De eerste 250 waren in twee weken vergeven;
+// in de laatste week kwamen de afmeldingen, dus we hebben er publiek 50 bij gemaakt
+// zodat de site weer "plekken vrij" toont in plaats van VOL.
+export const PUBLIEK_MAX = 300;
+export const INTERN_MAX = 330;
