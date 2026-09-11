@@ -91,11 +91,11 @@ function bouwMail(naam: string, BACKING_URL: string) {
   const subject = 'Morgen 12:00: alles voor Continuum Day op een rij';
 
   const backingHtml = BACKING_URL
-    ? `<p><strong>Oefenen vanavond?</strong> Ik heb een backing track gemaakt van de Where the Light Is-versie, een hele toon lager, dus precies onze toonsoort, met alleen drums, bas en toetsen: <a href="${BACKING_URL}">download de backing track</a> (WeTransfer, een week geldig). Speel er een paar keer mee en je bent klaar. Morgen bij het instuderen speel ik 'm ook af.</p>`
-    : '';
+    ? `<p><strong>Oefenen vanavond?</strong> Dezelfde backing track, een hele toon lager, dus precies onze toonsoort: <a href="${BACKING_URL}">download de backing track</a> (WeTransfer, een week geldig). Speel er een paar keer mee en je bent klaar.</p>`
+    : `<p><strong>Oefenen vanavond?</strong> De downloadlink van die backing track, om thuis mee te spelen, stuur ik je vanavond nog na in een korte mail.</p>`;
   const backingText = BACKING_URL
-    ? `Oefenen vanavond? Ik heb een backing track gemaakt van de Where the Light Is-versie, een hele toon lager, dus precies onze toonsoort, met alleen drums, bas en toetsen: ${BACKING_URL} (WeTransfer, een week geldig). Speel er een paar keer mee en je bent klaar. Morgen bij het instuderen speel ik 'm ook af.\n\n`
-    : '';
+    ? `Oefenen vanavond? Dezelfde backing track, een hele toon lager, dus precies onze toonsoort: ${BACKING_URL} (WeTransfer, een week geldig). Speel er een paar keer mee en je bent klaar.\n\n`
+    : `Oefenen vanavond? De downloadlink van die backing track, om thuis mee te spelen, stuur ik je vanavond nog na in een korte mail.\n\n`;
 
   const html = `
 <p>Hey ${voornaam},</p>
@@ -111,7 +111,7 @@ function bouwMail(naam: string, BACKING_URL: string) {
 </ul>
 <p><strong>Parkeren en OV:</strong> de parkeergarage van Beeld &amp; Geluid (Media Parkboulevard 1, 2 euro per uur, maximaal 2 meter hoog) of Parkeerdek A van het Media Park. Station Hilversum Media Park ligt naast het plein.</p>
 <p><strong>Wat neem je mee:</strong> je akoestische gitaar, thuis gestemd, en een band, want we spelen staand. Een stemapparaatje is handig. Een plectrum krijg je van mij: iedereen krijgt de Continuum Day-plectrum. Elektrisch mag, maar alleen met een versterkertje op batterijen; stroom is er buiten niet.</p>
-<p><strong>Het nummer:</strong> we spelen Waiting on the World to Change een hele toon lager dan de plaat, in C, zonder capo. Vijf akkoorden: C, G, Am, F en Dm. Het vormpje staat op <a href="${CHORDSHEET_URL}">de chord-sheet (pdf)</a>: intro, couplet, refrein, couplet, refrein, refrein, en &eacute;&eacute;n groot slotakkoord. Kijk morgen naar mij voor de start en het einde, de rest gaat vanzelf. De tekst zoek je zo op je telefoon op; meezingen mag, hoeft niet.</p>
+<p><strong>Het nummer:</strong> we spelen Waiting on the World to Change een hele toon lager dan de plaat, in C, zonder capo. Vijf akkoorden: C, G, Am, F en Dm, ze staan op <a href="${CHORDSHEET_URL}">de chord-sheet (pdf)</a>. Qua vorm houden we de Where the Light Is-versie aan, de liveversie van John Mayer. Om daar met z'n allen structuur in te houden spelen we morgen met een lichte backing track als houvast: drums, bas en toetsen, die ik afspeel over de boxen. Kijk naar mij voor de start en het einde. Het komt goed, we oefenen het morgen nog lekker met elkaar. De tekst zoek je zo op je telefoon op; meezingen mag, hoeft niet.</p>
 ${backingHtml}
 <p><strong>Even verwachtingsmanagement.</strong> Dit is geen concert. Er is geen podium, geen ledscherm en geen geluidsinstallatie voor 250 gitaren. Het is buiten, op een plein. Ik sta op een verhoging zodat je me kunt zien, Michiel Veenstra praat de boel aan elkaar. Het is een guerrilla-actie met een hoop gitaristen die elkaar niet kennen en samen &eacute;&eacute;n nummer spelen. Lekker low-key, en vooral leuk.</p>
 <p><strong>De verloting:</strong> direct na het spelen van het nummer doen we de verloting van de PRS SE Silver Sky, de Dunlop-onderhoudskit en de Ernie Ball John Mayer-snaren. Je aanmelding is je lot. Je maakt alleen kans op de gitaar als je erbij bent; is een getrokken naam er niet, dan trekken we opnieuw.</p>
@@ -139,7 +139,7 @@ PARKEREN EN OV: de parkeergarage van Beeld & Geluid (Media Parkboulevard 1, 2 eu
 
 WAT NEEM JE MEE: je akoestische gitaar, thuis gestemd, en een band, want we spelen staand. Een stemapparaatje is handig. Een plectrum krijg je van mij: iedereen krijgt de Continuum Day-plectrum. Elektrisch mag, maar alleen met een versterkertje op batterijen; stroom is er buiten niet.
 
-HET NUMMER: we spelen Waiting on the World to Change een hele toon lager dan de plaat, in C, zonder capo. Vijf akkoorden: C, G, Am, F en Dm. Het vormpje staat op de chord-sheet: ${CHORDSHEET_URL} (intro, couplet, refrein, couplet, refrein, refrein, en één groot slotakkoord). Kijk morgen naar mij voor de start en het einde, de rest gaat vanzelf. De tekst zoek je zo op je telefoon op; meezingen mag, hoeft niet.
+HET NUMMER: we spelen Waiting on the World to Change een hele toon lager dan de plaat, in C, zonder capo. Vijf akkoorden: C, G, Am, F en Dm, ze staan op de chord-sheet: ${CHORDSHEET_URL}. Qua vorm houden we de Where the Light Is-versie aan, de liveversie van John Mayer. Om daar met z'n allen structuur in te houden spelen we morgen met een lichte backing track als houvast: drums, bas en toetsen, die ik afspeel over de boxen. Kijk naar mij voor de start en het einde. Het komt goed, we oefenen het morgen nog lekker met elkaar. De tekst zoek je zo op je telefoon op; meezingen mag, hoeft niet.
 
 ${backingText}EVEN VERWACHTINGSMANAGEMENT. Dit is geen concert. Er is geen podium, geen ledscherm en geen geluidsinstallatie voor 250 gitaren. Het is buiten, op een plein. Ik sta op een verhoging zodat je me kunt zien, Michiel Veenstra praat de boel aan elkaar. Het is een guerrilla-actie met een hoop gitaristen die elkaar niet kennen en samen één nummer spelen. Lekker low-key, en vooral leuk.
 
