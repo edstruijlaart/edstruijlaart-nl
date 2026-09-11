@@ -116,7 +116,7 @@ ${backingHtml}
 <p><strong>Even verwachtingsmanagement.</strong> Dit is geen concert. Er is geen podium, geen ledscherm en geen geluidsinstallatie voor 250 gitaren. Het is buiten, op een plein. Ik sta op een verhoging zodat je me kunt zien, Michiel praat de boel aan elkaar. Het is een guerrilla-actie met een hoop gitaristen die elkaar niet kennen en samen &eacute;&eacute;n nummer spelen. Lekker low-key, en vooral leuk.</p>
 <p><strong>De verloting:</strong> om 12:15 trekken we de PRS SE Silver Sky, de Dunlop-onderhoudskit en de Ernie Ball John Mayer-snaren. Je aanmelding is je lot, en je moet er zijn om te winnen. Is een getrokken naam er niet, dan trekken we opnieuw.</p>
 <p><strong>Neem mensen mee.</strong> Kijken en meezingen mag altijd, daar hoeft niemand zich voor aan te melden. En met code <strong>BeeldgeluidJM</strong> krijgen deelnemers een tweede museumticket gratis, mocht je na afloop het museum in willen.</p>
-<p>Er wordt gefilmd en gefotografeerd, er komt pers, en vanochtend zit ik rond 07:55 in het NOS Radio 1 Journaal. Vanavond om 17:10 zie je tien deelnemers en mij bij Tijd voor MAX op NPO 1, als voorproefje.</p>
+<p>Er wordt gefilmd en gefotografeerd, er komt pers, en morgenochtend rond 07:55 zit ik live in het NOS Radio 1 Journaal. Vanavond om 17:10 zie je tien deelnemers en mij bij Tijd voor MAX op NPO 1, als voorproefje.</p>
 <p><strong>Zeven minuten podcast:</strong> vanmiddag nam ik <a href="${PODCAST_URL}">een korte aflevering</a> op met precies dit verhaal, voor als je liever luistert dan leest.</p>
 <p>Kun je toch niet komen? Stuur me even een berichtje, dan weet ik het.</p>
 <p>Tot morgen, twaalf uur!<br />Ed</p>
@@ -147,7 +147,7 @@ DE VERLOTING: om 12:15 trekken we de PRS SE Silver Sky, de Dunlop-onderhoudskit 
 
 NEEM MENSEN MEE. Kijken en meezingen mag altijd, daar hoeft niemand zich voor aan te melden. En met code BeeldgeluidJM krijgen deelnemers een tweede museumticket gratis, mocht je na afloop het museum in willen.
 
-Er wordt gefilmd en gefotografeerd, er komt pers, en vanochtend zit ik rond 07:55 in het NOS Radio 1 Journaal. Vanavond om 17:10 zie je tien deelnemers en mij bij Tijd voor MAX op NPO 1, als voorproefje.
+Er wordt gefilmd en gefotografeerd, er komt pers, en morgenochtend rond 07:55 zit ik live in het NOS Radio 1 Journaal. Vanavond om 17:10 zie je tien deelnemers en mij bij Tijd voor MAX op NPO 1, als voorproefje.
 
 Zeven minuten podcast: vanmiddag nam ik een korte aflevering op met precies dit verhaal, voor als je liever luistert dan leest: ${PODCAST_URL}
 
