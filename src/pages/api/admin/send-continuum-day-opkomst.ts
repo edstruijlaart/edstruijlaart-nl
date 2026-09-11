@@ -91,10 +91,10 @@ function bouwMail(naam: string, BACKING_URL: string) {
   const subject = 'Morgen 12:00: alles voor Continuum Day op een rij';
 
   const backingHtml = BACKING_URL
-    ? `<p><strong>Oefenen vanavond?</strong> Dezelfde backing track, een hele toon lager, dus precies onze toonsoort: <a href="${BACKING_URL}">download de backing track</a> (WeTransfer, een week geldig). Speel er een paar keer mee en je bent klaar.</p>`
+    ? `<p><strong>Oefenen vanavond?</strong> Hier staat het nummer zoals we 'm morgen gaan spelen, met het ritme erbij, zodat we samen wat meer houvast hebben: <a href="${BACKING_URL}">download de backing track</a> (WeTransfer, een week geldig). Speel er een paar keer mee en je bent klaar.</p>`
     : `<p><strong>Oefenen vanavond?</strong> De downloadlink van die backing track, om thuis mee te spelen, stuur ik je vanavond nog na in een korte mail.</p>`;
   const backingText = BACKING_URL
-    ? `Oefenen vanavond? Dezelfde backing track, een hele toon lager, dus precies onze toonsoort: ${BACKING_URL} (WeTransfer, een week geldig). Speel er een paar keer mee en je bent klaar.\n\n`
+    ? `Oefenen vanavond? Hier staat het nummer zoals we 'm morgen gaan spelen, met het ritme erbij, zodat we samen wat meer houvast hebben: ${BACKING_URL} (WeTransfer, een week geldig). Speel er een paar keer mee en je bent klaar.\n\n`
     : `Oefenen vanavond? De downloadlink van die backing track, om thuis mee te spelen, stuur ik je vanavond nog na in een korte mail.\n\n`;
 
   const html = `
