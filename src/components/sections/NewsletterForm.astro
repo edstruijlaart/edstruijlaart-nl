@@ -98,6 +98,8 @@ const t = useTranslations(locale);
 </div>
 
 <script>
+  const PAGINA_GELADEN = Date.now();
+
   function initNewsletterForms() {
     document.querySelectorAll<HTMLFormElement>('.newsletter-form').forEach(form => {
       if (form.dataset.init) return;
@@ -129,7 +131,9 @@ const t = useTranslations(locale);
           const response = await fetch('/api/newsletter', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, name, website, t: Date.now() }),
+            // t = moment waarop de pagina laadde: de server eist een paar
+            // seconden tussen laden en verzenden (bots doen het in één tel).
+            body: JSON.stringify({ email, name, website, t: PAGINA_GELADEN }),
           });
 
           if (response.ok) {

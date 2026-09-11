@@ -3,6 +3,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { subscribe } from '../../lib/listmonk';
+import { beoordeel } from '../../lib/botfilter';
 
 // Via de beheer-API met een sleutel die alleen mag inschrijven; de publieke
 // Listmonk-ingang is dicht sinds 7 sep 2026 (spam). Zie src/lib/listmonk.ts.
@@ -12,10 +13,11 @@ export const POST: APIRoute = async ({ request }) => {
   const body = await request.json();
   const { email, name, website, t } = body || {};
 
-  // Botfilter: het echte formulier stuurt altijd een leeg honeypot-veld en een
-  // token mee. Klopt dat niet, dan doen we alsof het gelukt is maar schrijven
-  // we niets in, zodat de bot niets leert.
-  if (website !== '' || !t) {
+  // Botfilter (zie lib/botfilter.ts): honeypot, token-leeftijd, wegwerpdomein.
+  // Bij een bot doen we alsof het gelukt is zonder iets op te slaan.
+  const oordeel = beoordeel({ website, t, email: String(email || '') });
+  if (oordeel.bot) {
+    console.warn('newsletter: bot geweigerd', oordeel.reden);
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

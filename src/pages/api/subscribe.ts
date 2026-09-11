@@ -3,6 +3,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 import { subscribe } from "../../lib/listmonk";
 import { shows } from "../../data/shows";
+import { beoordeel } from "../../lib/botfilter";
 
 /**
  * Tussenstation voor formulieren die vanuit de browser inschrijven.
@@ -118,10 +119,14 @@ export const POST: APIRoute = async ({ request }) => {
   const inz = await lees(request);
   if (!inz) return klaar();
 
-  // Botfilter: zelfde regels als /api/newsletter.
-  if (inz.website !== "" || !inz.t) return klaar();
-
   const email = inz.email.trim();
+
+  // Botfilter (zie lib/botfilter.ts): honeypot, token-leeftijd, wegwerpdomein.
+  const oordeel = beoordeel({ website: inz.website, t: inz.t, email });
+  if (oordeel.bot) {
+    console.warn("subscribe: bot geweigerd", oordeel.reden);
+    return klaar();
+  }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return new Response(JSON.stringify({ error: "Ongeldig e-mailadres" }), {
       status: 400, headers: { "Content-Type": "application/json", ...cors(origin) },
