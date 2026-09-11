@@ -100,25 +100,25 @@ function bouwMail(naam: string, BACKING_URL: string) {
   const html = `
 <p>Hey ${voornaam},</p>
 <p>Morgen is het zover. Hier alles op een rij, dan hoef je nergens meer naar te zoeken.</p>
-<p><strong>Het weer:</strong> bewolkt en droog, een graad of 18 rond twaalf uur, nauwelijks wind. Perfect gitaarweer. Komt er toch een bui, dan wachten we die even af.</p>
+<p><strong>Het weer:</strong> de verwachting voor Hilversum is bewolkt en droog, een graad of 18 rond twaalf uur, weinig wind.</p>
 <p><strong>Zo loopt de ochtend</strong></p>
 <ul>
 <li>11:00 &mdash; inloop op het plein voor Beeld &amp; Geluid, Media Parkboulevard 1, Hilversum</li>
 <li>11:30 &mdash; welkom door Michiel Veenstra en samen het nummer instuderen</li>
 <li>12:00 &mdash; we spelen, allemaal tegelijk</li>
-<li>12:15 &mdash; de trekking van de verloting, buiten op het plein</li>
+<li>12:15 &mdash; direct na het nummer: de verloting, buiten op het plein</li>
 <li>12:45 &mdash; einde</li>
 </ul>
 <p><strong>Parkeren en OV:</strong> de parkeergarage van Beeld &amp; Geluid (Media Parkboulevard 1, 2 euro per uur, maximaal 2 meter hoog) of Parkeerdek A van het Media Park. Station Hilversum Media Park ligt naast het plein.</p>
 <p><strong>Wat neem je mee:</strong> je akoestische gitaar, thuis gestemd, en een band, want we spelen staand. Een stemapparaatje is handig. Een plectrum krijg je van mij: iedereen krijgt de Continuum Day-plectrum. Elektrisch mag, maar alleen met een versterkertje op batterijen; stroom is er buiten niet.</p>
 <p><strong>Het nummer:</strong> we spelen Waiting on the World to Change een hele toon lager dan de plaat, in C, zonder capo. Vijf akkoorden: C, G, Am, F en Dm. Het vormpje staat op <a href="${CHORDSHEET_URL}">de chord-sheet (pdf)</a>: intro, couplet, refrein, couplet, refrein, refrein, en &eacute;&eacute;n groot slotakkoord. Kijk morgen naar mij voor de start en het einde, de rest gaat vanzelf. De tekst zoek je zo op je telefoon op; meezingen mag, hoeft niet.</p>
 ${backingHtml}
-<p><strong>Even verwachtingsmanagement.</strong> Dit is geen concert. Er is geen podium, geen ledscherm en geen geluidsinstallatie voor 250 gitaren. Het is buiten, op een plein. Ik sta op een verhoging zodat je me kunt zien, Michiel praat de boel aan elkaar. Het is een guerrilla-actie met een hoop gitaristen die elkaar niet kennen en samen &eacute;&eacute;n nummer spelen. Lekker low-key, en vooral leuk.</p>
-<p><strong>De verloting:</strong> om 12:15 trekken we de PRS SE Silver Sky, de Dunlop-onderhoudskit en de Ernie Ball John Mayer-snaren. Je aanmelding is je lot, en je moet er zijn om te winnen. Is een getrokken naam er niet, dan trekken we opnieuw.</p>
+<p><strong>Even verwachtingsmanagement.</strong> Dit is geen concert. Er is geen podium, geen ledscherm en geen geluidsinstallatie voor 250 gitaren. Het is buiten, op een plein. Ik sta op een verhoging zodat je me kunt zien, Michiel Veenstra praat de boel aan elkaar. Het is een guerrilla-actie met een hoop gitaristen die elkaar niet kennen en samen &eacute;&eacute;n nummer spelen. Lekker low-key, en vooral leuk.</p>
+<p><strong>De verloting:</strong> direct na het spelen van het nummer doen we de verloting van de PRS SE Silver Sky, de Dunlop-onderhoudskit en de Ernie Ball John Mayer-snaren. Je aanmelding is je lot. Je maakt alleen kans op de gitaar als je erbij bent; is een getrokken naam er niet, dan trekken we opnieuw.</p>
 <p><strong>Neem mensen mee.</strong> Kijken en meezingen mag altijd, daar hoeft niemand zich voor aan te melden. En met code <strong>BeeldgeluidJM</strong> krijgen deelnemers een tweede museumticket gratis, mocht je na afloop het museum in willen.</p>
 <p>Er wordt gefilmd en gefotografeerd, er komt pers, en morgenochtend rond 07:55 zit ik live in het NOS Radio 1 Journaal. Vanavond om 17:10 zie je tien deelnemers en mij bij Tijd voor MAX op NPO 1, als voorproefje.</p>
 <p><strong>Zeven minuten podcast:</strong> vanmiddag nam ik <a href="${PODCAST_URL}">een korte aflevering</a> op met precies dit verhaal, voor als je liever luistert dan leest.</p>
-<p>Kun je toch niet komen? Stuur me even een berichtje, dan weet ik het.</p>
+<p><strong>Kun je toch niet komen?</strong> Laat het me dan even weten, dat is fijn voor de planning. En nog &eacute;&eacute;n keer: je maakt alleen kans op de gitaar als je er morgen bij bent.</p>
 <p>Tot morgen, twaalf uur!<br />Ed</p>
 `;
 
@@ -126,13 +126,13 @@ ${backingHtml}
 
 Morgen is het zover. Hier alles op een rij, dan hoef je nergens meer naar te zoeken.
 
-HET WEER: bewolkt en droog, een graad of 18 rond twaalf uur, nauwelijks wind. Perfect gitaarweer. Komt er toch een bui, dan wachten we die even af.
+HET WEER: de verwachting voor Hilversum is bewolkt en droog, een graad of 18 rond twaalf uur, weinig wind.
 
 ZO LOOPT DE OCHTEND
 - 11:00 inloop op het plein voor Beeld & Geluid, Media Parkboulevard 1, Hilversum
 - 11:30 welkom door Michiel Veenstra en samen het nummer instuderen
 - 12:00 we spelen, allemaal tegelijk
-- 12:15 de trekking van de verloting, buiten op het plein
+- 12:15 direct na het nummer: de verloting, buiten op het plein
 - 12:45 einde
 
 PARKEREN EN OV: de parkeergarage van Beeld & Geluid (Media Parkboulevard 1, 2 euro per uur, maximaal 2 meter hoog) of Parkeerdek A van het Media Park. Station Hilversum Media Park ligt naast het plein.
@@ -141,9 +141,9 @@ WAT NEEM JE MEE: je akoestische gitaar, thuis gestemd, en een band, want we spel
 
 HET NUMMER: we spelen Waiting on the World to Change een hele toon lager dan de plaat, in C, zonder capo. Vijf akkoorden: C, G, Am, F en Dm. Het vormpje staat op de chord-sheet: ${CHORDSHEET_URL} (intro, couplet, refrein, couplet, refrein, refrein, en één groot slotakkoord). Kijk morgen naar mij voor de start en het einde, de rest gaat vanzelf. De tekst zoek je zo op je telefoon op; meezingen mag, hoeft niet.
 
-${backingText}EVEN VERWACHTINGSMANAGEMENT. Dit is geen concert. Er is geen podium, geen ledscherm en geen geluidsinstallatie voor 250 gitaren. Het is buiten, op een plein. Ik sta op een verhoging zodat je me kunt zien, Michiel praat de boel aan elkaar. Het is een guerrilla-actie met een hoop gitaristen die elkaar niet kennen en samen één nummer spelen. Lekker low-key, en vooral leuk.
+${backingText}EVEN VERWACHTINGSMANAGEMENT. Dit is geen concert. Er is geen podium, geen ledscherm en geen geluidsinstallatie voor 250 gitaren. Het is buiten, op een plein. Ik sta op een verhoging zodat je me kunt zien, Michiel Veenstra praat de boel aan elkaar. Het is een guerrilla-actie met een hoop gitaristen die elkaar niet kennen en samen één nummer spelen. Lekker low-key, en vooral leuk.
 
-DE VERLOTING: om 12:15 trekken we de PRS SE Silver Sky, de Dunlop-onderhoudskit en de Ernie Ball John Mayer-snaren. Je aanmelding is je lot, en je moet er zijn om te winnen. Is een getrokken naam er niet, dan trekken we opnieuw.
+DE VERLOTING: direct na het spelen van het nummer doen we de verloting van de PRS SE Silver Sky, de Dunlop-onderhoudskit en de Ernie Ball John Mayer-snaren. Je aanmelding is je lot. Je maakt alleen kans op de gitaar als je erbij bent; is een getrokken naam er niet, dan trekken we opnieuw.
 
 NEEM MENSEN MEE. Kijken en meezingen mag altijd, daar hoeft niemand zich voor aan te melden. En met code BeeldgeluidJM krijgen deelnemers een tweede museumticket gratis, mocht je na afloop het museum in willen.
 
@@ -151,7 +151,7 @@ Er wordt gefilmd en gefotografeerd, er komt pers, en morgenochtend rond 07:55 zi
 
 Zeven minuten podcast: vanmiddag nam ik een korte aflevering op met precies dit verhaal, voor als je liever luistert dan leest: ${PODCAST_URL}
 
-Kun je toch niet komen? Stuur me even een berichtje, dan weet ik het.
+KUN JE TOCH NIET KOMEN? Laat het me dan even weten, dat is fijn voor de planning. En nog één keer: je maakt alleen kans op de gitaar als je er morgen bij bent.
 
 Tot morgen, twaalf uur!
 Ed`;
