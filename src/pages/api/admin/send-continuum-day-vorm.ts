@@ -95,7 +95,7 @@ function bouwMail(naam: string) {
 <li><a href="${BACKING_MP3_URL}">De nieuwe backing track (mp3)</a>, in C, 88 BPM, drums, bas en toetsen.</li>
 </ul>
 <p>Zo loopt het: acht maten alleen ritme, dan intro &middot; couplet &middot; refrein &middot; couplet &middot; refrein &middot; solo &middot; refrein &middot; slot. Kijk naar mij voor de inzet en voor het slotakkoord. Om 11:30 studeren we het samen in.</p>
-<p>Tot straks, twaalf uur!<br />Ed</p>
+<p>11 uur verzamelen, tot zo!<br />Ed</p>
 `;
 
   const text = `Hey ${voornaam},
@@ -107,7 +107,7 @@ Nog één ding voor vanmiddag. Ik heb de backing track opnieuw gemaakt: de brug,
 
 Zo loopt het: acht maten alleen ritme, dan intro · couplet · refrein · couplet · refrein · solo · refrein · slot. Kijk naar mij voor de inzet en voor het slotakkoord. Om 11:30 studeren we het samen in.
 
-Tot straks, twaalf uur!
+11 uur verzamelen, tot zo!
 Ed`;
 
   return { subject, html, text };
