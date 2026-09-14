@@ -9,6 +9,11 @@ interface CTA {
 interface Slide {
   image: ImageMetadata;
   imagePosition?: string;
+  // Optionele bewegende achtergrond (stil, loopt). `image` blijft de poster/fallback
+  // (o.a. bij prefers-reduced-motion en tot de video speelt).
+  video?: { src: string; srcMobile?: string };
+  // Hoe lang deze slide blijft staan (ms). Default 7000; video-slides typisch de videolengte.
+  durationMs?: number;
   tagline?: string;
   title?: string;
   subtitle?: string;
@@ -72,6 +77,7 @@ if (slides && slides.length > 0) {
 }
 
 const hasMultipleSlides = effectiveSlides.length > 1;
+const hasVideo = effectiveSlides.some((s) => s.video);
 ---
 
 <section class:list={['hero-section relative flex items-end overflow-hidden', heightClasses[height]]}>
@@ -83,6 +89,7 @@ const hasMultipleSlides = effectiveSlides.length > 1;
         i === 0 ? 'opacity-100' : 'opacity-0',
       ]}
       data-slide-index={i}
+      data-duration={slide.durationMs ?? 7000}
     >
       <Image
         src={slide.image}
@@ -94,6 +101,22 @@ const hasMultipleSlides = effectiveSlides.length > 1;
         loading={i === 0 ? "eager" : "lazy"}
         fetchpriority={i === 0 ? "high" : undefined}
       />
+      {slide.video && (
+        <video
+          class="hero-video absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700"
+          style={slide.imagePosition ? `object-position: ${slide.imagePosition}` : undefined}
+          muted
+          loop
+          playsinline
+          autoplay={i === 0}
+          preload={i === 0 ? 'auto' : 'none'}
+          aria-hidden="true"
+          data-video-index={i}
+        >
+          {slide.video.srcMobile && <source src={slide.video.srcMobile} type="video/mp4" media="(max-width: 1024px)" />}
+          <source src={slide.video.src} type="video/mp4" />
+        </video>
+      )}
     </div>
   ))}
 
@@ -111,7 +134,7 @@ const hasMultipleSlides = effectiveSlides.length > 1;
     >
       <div class="w-full px-4 sm:px-6 lg:px-8 pb-16 md:pb-20 lg:pb-24 max-w-[1200px] mx-auto">
         {slide.tagline && (
-          <p class="text-[var(--color-gold)] text-sm font-medium uppercase tracking-widest mb-4">
+          <p class="text-[var(--color-gold)] text-sm font-medium uppercase tracking-widest mb-4 [text-shadow:0_1px_10px_rgb(0_0_0/0.7)]">
             {slide.tagline}
           </p>
         )}
@@ -121,7 +144,7 @@ const hasMultipleSlides = effectiveSlides.length > 1;
           </h1>
         )}
         {slide.subtitle && (
-          <p class="mt-4 text-base sm:text-lg md:text-xl text-white/80 tracking-wide max-w-2xl">
+          <p class="mt-4 text-base sm:text-lg md:text-xl text-white/80 tracking-wide max-w-2xl [text-shadow:0_1px_10px_rgb(0_0_0/0.6)]">
             {slide.subtitle}
           </p>
         )}
@@ -168,18 +191,52 @@ const hasMultipleSlides = effectiveSlides.length > 1;
   )}
 </section>
 
-{hasMultipleSlides && (
+{(hasMultipleSlides || hasVideo) && (
   <script>
+    const w = window as unknown as { __heroTimer?: ReturnType<typeof setTimeout> };
+
     function initHeroSlider() {
       const slides = document.querySelectorAll<HTMLElement>('.hero-slide');
       const contents = document.querySelectorAll<HTMLElement>('.hero-content');
       const dots = document.querySelectorAll<HTMLElement>('.hero-dot');
-      if (slides.length <= 1) return;
+      if (slides.length === 0) return;
+      clearTimeout(w.__heroTimer);
+
+      // Video's: stil, alleen de actieve slide speelt; bij reduced motion blijft de posterfoto staan
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const videoAt = (i: number) => slides[i]?.querySelector<HTMLVideoElement>('video.hero-video') ?? null;
+      slides.forEach((_, i) => {
+        const v = videoAt(i);
+        v?.addEventListener('playing', () => {
+          v.classList.remove('opacity-0');
+          v.classList.add('opacity-100');
+        });
+      });
+      function playVideo(i: number) {
+        const v = videoAt(i);
+        if (!v || reduceMotion) return;
+        if (v.preload === 'none') v.preload = 'auto';
+        try { v.currentTime = 0; } catch {}
+        v.play()?.catch(() => {});
+      }
+      function pauseVideo(i: number) {
+        videoAt(i)?.pause();
+      }
+      if (reduceMotion) slides.forEach((_, i) => pauseVideo(i));
 
       let current = 0;
       const total = slides.length;
+      playVideo(0);
+      if (total <= 1) return;
+
+      const durationOf = (i: number) => Number(slides[i].dataset.duration) || 7000;
+      function schedule() {
+        clearTimeout(w.__heroTimer);
+        w.__heroTimer = setTimeout(() => goTo((current + 1) % total), durationOf(current));
+      }
 
       function goTo(index: number) {
+        pauseVideo(current);
         slides[current].classList.remove('opacity-100');
         slides[current].classList.add('opacity-0');
         contents[current]?.classList.remove('opacity-100');
@@ -195,18 +252,16 @@ const hasMultipleSlides = effectiveSlides.length > 1;
         contents[current]?.classList.add('opacity-100');
         dots[current].classList.remove('bg-white/50');
         dots[current].classList.add('bg-white', 'w-6');
+        playVideo(current);
+        schedule();
       }
 
-      // Auto-advance every 7 seconds (iets langer omdat er nu ook tekst wisselt)
-      let timer = setInterval(() => goTo((current + 1) % total), 7000);
+      // Auto-advance per slide (default 7 s, video-slides zo lang als de video)
+      schedule();
 
       // Click dots to navigate
       dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-          clearInterval(timer);
-          goTo(i);
-          timer = setInterval(() => goTo((current + 1) % total), 7000);
-        });
+        dot.addEventListener('click', () => goTo(i));
       });
     }
 

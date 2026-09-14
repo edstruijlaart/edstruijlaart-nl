@@ -22,6 +22,9 @@ import aboutPhoto from '../../assets/photos/ed-struijlaart-spelend.jpg';
 // GM4 Continuum tour hero
 import gm4Backdrop from '../../assets/theater/gm4-hero/backdrop.jpg';
 
+// Continuum Day (12 sep 2026): poster = eerste frame van de highlightvideo (video zelf op de CDN)
+import continuumDayPoster from '../../assets/continuum-day/hero-poster.jpg';
+
 // AFAS Live concert weggeef (funnel naar /afas)
 import afasConcertHero from '../../assets/afas/afas-concert-hero.jpg';
 
@@ -37,6 +40,20 @@ Astro.response.headers.set('CDN-Cache-Control', 'public, max-age=3600, s-maxage=
     imageAlt="Ed Struijlaart"
     height="full"
     slides={[
+      {
+        image: continuumDayPoster,
+        video: {
+          src: 'https://cdn.earswantmusic.nl/site/edstruijlaart-nl/continuum-day-hero-1080.mp4',
+          srcMobile: 'https://cdn.earswantmusic.nl/site/edstruijlaart-nl/continuum-day-hero-720.mp4',
+        },
+        durationMs: 21000,
+        imagePosition: 'center 40%',
+        tagline: 'Continuum Day · 12 september',
+        title: "300 gitaristen, één nummer",
+        subtitle: 'Twintig jaar na Continuum speelden we met z\'n allen Waiting on the World to Change op het plein voor Beeld & Geluid.',
+        ctaPrimary: { label: 'Bekijk de aftermovie', href: '/news/continuum-day-300-gitaristen-aftermovie/' },
+        ctaSecondary: { label: 'Gitaarmannen 4: alle data', href: 'https://www.gitaarmannen.nl/continuum/' },
+      },
       {
         image: gm4Backdrop,
         imagePosition: 'center 30%',
