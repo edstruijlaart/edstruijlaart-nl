@@ -110,7 +110,7 @@ function bouwMail(naam: string) {
 <li>De code is geldig tot aan de premi&egrave;re</li>
 </ul>
 <p>Kun je op 2 oktober niet? De andere speeldata staan op <a href="${TOUR_URL}">edstruijlaart.nl/tour</a>.</p>
-<p>Tot in het theater,<br />Ed</p>
+<p>Nogmaals dank dat je er was, het was onvergetelijk. Tot in het theater!<br />Ed</p>
 `;
 
   const text = `Hey ${voornaam},
@@ -132,7 +132,7 @@ En dan nog iets leuks. Het Isala Theater geeft alle deelnemers van Continuum Day
 
 Kun je op 2 oktober niet? De andere speeldata staan op ${TOUR_URL}
 
-Tot in het theater,
+Nogmaals dank dat je er was, het was onvergetelijk. Tot in het theater!
 Ed`;
 
   return { subject, html, text };
