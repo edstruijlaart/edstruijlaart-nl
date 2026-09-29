@@ -84,9 +84,16 @@ const SUBSCRIBE_URL = '/api/subscribe';
                 {t.showList.soldOut}
               </span>
             ) : show.ticketUrl ? (
-              <Button href={show.ticketUrl} variant="outline" size="sm">
-                Tickets
-              </Button>
+              <div class="flex flex-col items-end gap-1">
+                <Button href={show.ticketUrl} variant="outline" size="sm">
+                  Tickets
+                </Button>
+                {show.lastTickets && (
+                  <span class="text-[11px] uppercase tracking-wider font-semibold text-[var(--color-gold)] whitespace-nowrap">
+                    Laatste kaarten
+                  </span>
+                )}
+              </div>
             ) : showUrl ? (
               <Button href={showUrl} variant="outline" size="sm">
                 Info

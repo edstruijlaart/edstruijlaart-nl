@@ -18,6 +18,7 @@ const gevallen = [
   ["17 okt 21:45 NL (Emmen late show)",  "2026-10-17T19:45:00Z", "Emmen|21:15"],
   ["2 okt 21:00 NL (Capelle)",           "2026-10-02T19:00:00Z", "Capelle aan den IJssel"],
   ["16 dec 21:00 NL (wintertijd!)",      "2026-12-16T20:00:00Z", "Heerhugowaard"],
+  ["22 jan 20:15 NL (Hoogwoud)",         "2027-01-22T19:15:00Z", "Hoogwoud"],
 ];
 
 let fout = 0;

@@ -40,6 +40,7 @@ const CITY_PROVINCIE: Record<string, Provincie> = {
   "Den Helder": "Noord-Holland",
   "Beverwijk": "Noord-Holland",
   "Heerhugowaard": "Noord-Holland",
+  "Hoogwoud": "Noord-Holland",
   "Zaandam": "Noord-Holland",
   "Emmen": "Drenthe",
   "Goes": "Zeeland",
