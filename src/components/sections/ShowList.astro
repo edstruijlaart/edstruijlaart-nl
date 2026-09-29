@@ -61,6 +61,11 @@ const SUBSCRIBE_URL = '/api/subscribe';
             </h3>
             <p class="text-sm text-[var(--fg-muted)] flex items-center gap-2 flex-wrap">
               <span>{show.city}</span>
+              {show.premiere && (
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[var(--color-gold)] text-white">
+                  Première
+                </span>
+              )}
               {show.acoustic && (
                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider border border-[var(--color-gold)]/50 text-[var(--color-gold)]">
                   Akoestisch

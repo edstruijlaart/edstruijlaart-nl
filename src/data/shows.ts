@@ -7,6 +7,8 @@ export interface Show {
   soldOut?: boolean;
   /** True = bijna uitverkocht. Toont "laatste kaarten" bij de ticketknop. */
   lastTickets?: boolean;
+  /** True = de première. Blijft ook na afloop staan; het was de première. */
+  premiere?: boolean;
   production?: string;
   isHuiskamerconcert?: boolean;
   showPageUrl?: string;
@@ -22,7 +24,7 @@ export interface Show {
 export const shows: Show[] = [
   { date: "2026-09-24", time: "20:15", venue: "Cascade", city: "Hendrik-Ido-Ambacht", ticketUrl: "https://www.cascade.nl/agenda/ed-struijlaart-gitaarmannen-4-continuum-20-jaar-john-mayers-meesterwerk-try-out/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "f4caad4a-30e8-424b-9813-d7b1dbecdfca" },
   { date: "2026-09-25", time: "20:30", venue: "Theater de Stoep", city: "Spijkenisse", ticketUrl: "https://theaterdestoep.nl/voorstelling/ed-struijlaart-2627", production: "Gitaarmannen 4: Continuum", listmonkUuid: "9be61522-ff37-4ec3-bff0-4431eac83505" },
-  { date: "2026-10-02", time: "20:15", venue: "Isala theater", city: "Capelle aan den IJssel", ticketUrl: "https://www.isalatheater.nl/agenda/ed-struijlaart-ryf3", production: "Gitaarmannen 4: Continuum", listmonkUuid: "62b78b63-1d09-421f-85c5-21cd5dc0b888" },
+  { date: "2026-10-02", time: "20:15", venue: "Isala theater", city: "Capelle aan den IJssel", ticketUrl: "https://www.isalatheater.nl/agenda/ed-struijlaart-ryf3", production: "Gitaarmannen 4: Continuum", listmonkUuid: "62b78b63-1d09-421f-85c5-21cd5dc0b888", premiere: true },
   { date: "2026-10-09", time: "20:30", venue: "Junushoff", city: "Wageningen", ticketUrl: "https://www.junushoff.nl/programma/ed-struijlaart-7pg4", production: "Gitaarmannen 4: Continuum", listmonkUuid: "c455d506-8cda-4193-892f-ca7975291a41" },
   { date: "2026-10-16", time: "20:30", venue: "Theater de Kampanje", city: "Den Helder", ticketUrl: "https://www.kampanje.nl/voorstellingen/ed-struijlaart-83f9", production: "Gitaarmannen 4: Continuum", listmonkUuid: "2a440730-1b5c-47c1-b467-89cfc73fa6a7" },
   { date: "2026-10-17", time: "19:00", venue: "RensenTheater (19:00)", city: "Emmen", ticketUrl: "https://ticketshop.eventree.nl/shop/4073236b-c9c1-4fb1-9891-31c4e16587e7/event/3775", production: "Gitaarmannen 4: Continuum", listmonkUuid: "b949957f-6d53-4c78-8380-e139b9444c96", acoustic: true, soldOut: true },
