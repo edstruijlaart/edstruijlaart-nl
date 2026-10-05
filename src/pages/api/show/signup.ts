@@ -1,6 +1,7 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
+import { randomUUID } from 'node:crypto';
 import { Resend } from 'resend';
 import { sanityWriteClient } from '../../../lib/sanity';
 import { subscribe } from '../../../lib/listmonk';
@@ -88,7 +89,9 @@ export const POST: APIRoute = async ({ request }) => {
     if (bestaand) {
       signupId = bestaand._id;
     } else {
+      // ID met een punt: alleen leesbaar met een token, ook in deze publieke dataset (audit #4).
       const signup = await sanityWriteClient.create({
+        _id: `prive.${randomUUID()}`,
         _type: 'emailSignup',
         firstName: cleanFirstName,
         email: cleanEmail,

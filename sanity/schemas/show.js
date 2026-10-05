@@ -50,9 +50,17 @@ export default {
     },
     {
       name: 'hostEmail',
-      title: 'Email gastheer',
+      title: 'Email gastheer (vervallen)',
       type: 'string',
-      description: 'Niet zichtbaar op de pagina, alleen voor interne communicatie'
+      description: 'Vervallen sinds 5 okt 2026: de dataset is publiek leesbaar. Zie hostEmailHash.',
+      readOnly: true,
+    },
+    {
+      name: 'hostEmailHash',
+      title: 'Hash mailadres gastheer',
+      type: 'string',
+      description: 'SHA-256 van het mailadres (gezet door de Gig Manager). Herkent de gastheer in de herinneringsmail.',
+      readOnly: true,
     },
     {
       name: 'privateAddress',

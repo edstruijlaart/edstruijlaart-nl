@@ -18,6 +18,8 @@ import {
   moderatieToken,
   isGeldigeItemKey,
   isGeldigDocId,
+  hashEmail,
+  isGastheer,
 } from '../src/lib/show-veiligheid.ts';
 import { buildReminderEmail } from '../src/lib/email-templates.ts';
 
@@ -109,6 +111,15 @@ toets('moderatietoken is per item',
   moderatieToken('s', 'guestbook', 'k1', 'g') !== moderatieToken('s', 'guestbook', 'k2', 'g'));
 toets('item-keys: alleen base36', isGeldigeItemKey('ab12cd34') && !isGeldigeItemKey('a"]') && !isGeldigeItemKey(''));
 toets('doc-ids: geen GROQ-tekens', isGeldigDocId('drafts.abc-123_X') && !isGeldigDocId('x"] || true') && !isGeldigDocId(null));
+
+
+// Gastheer herkennen via hash (dataset is publiek; geen leesbaar hostEmail meer). Moet exact gelijk
+// zijn aan host_email_hash() in sanity_sync.py van de Gig Manager.
+toets('hashEmail gelijk aan Python (trim + lowercase + sha256)', hashEmail('  Gastheer@Example.test ') === '0432f39c9d466f292707e2f304e85bc6b46443ff68577214e0ba032bf193f24b');
+toets('isGastheer herkent via hash', isGastheer({ hostEmailHash: '0432f39c9d466f292707e2f304e85bc6b46443ff68577214e0ba032bf193f24b' }, 'GASTHEER@example.test'));
+toets('isGastheer: ander adres is geen gastheer', !isGastheer({ hostEmailHash: '0432f39c9d466f292707e2f304e85bc6b46443ff68577214e0ba032bf193f24b' }, 'gast@example.test'));
+toets('isGastheer: oud document met leesbaar hostEmail werkt nog', isGastheer({ hostEmail: 'Gastheer@Example.test' }, 'gastheer@example.test'));
+toets('isGastheer: zonder gegevens nooit gastheer', !isGastheer({}, 'gastheer@example.test'));
 
 console.log(fout === 0 ? '\nalles klopt' : `\n${fout} fout(en)`);
 process.exit(fout === 0 ? 0 : 1);

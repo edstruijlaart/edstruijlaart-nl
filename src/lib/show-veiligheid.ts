@@ -135,3 +135,19 @@ export function isGeldigeItemKey(key: unknown): key is string {
 export function isGeldigDocId(id: unknown): id is string {
   return typeof id === 'string' && /^[a-zA-Z0-9._-]{1,128}$/.test(id);
 }
+
+/**
+ * Is dit mailadres dat van de gastheer? De dataset is publiek leesbaar (gratis Sanity-plan, geen
+ * privé dataset mogelijk), dus het showdocument bevat sinds 5 okt 2026 alleen een SHA-256-hash
+ * van het genormaliseerde adres (hostEmailHash, zelfde normalisatie als host_email_hash() in
+ * sanity_sync.py van de Gig Manager). Oude documenten hebben nog een leesbaar hostEmail.
+ */
+export function hashEmail(email: string): string {
+  return createHash('sha256').update((email || '').trim().toLowerCase(), 'utf8').digest('hex');
+}
+
+export function isGastheer(show: { hostEmail?: string; hostEmailHash?: string }, email: string): boolean {
+  if (!email) return false;
+  if (show.hostEmailHash) return show.hostEmailHash === hashEmail(email);
+  return !!(show.hostEmail && email.trim().toLowerCase() === show.hostEmail.trim().toLowerCase());
+}

@@ -6,6 +6,7 @@
  */
 import { sanityWriteClient } from './sanity';
 import { buildReminderEmail } from './email-templates';
+import { isGastheer } from './show-veiligheid';
 
 /** Velden van een show die de herinneringsmail nodig heeft (GROQ-projectie). */
 export const HERINNERING_SHOW_VELDEN = `
@@ -14,6 +15,7 @@ export const HERINNERING_SHOW_VELDEN = `
   city,
   hostName,
   hostEmail,
+  hostEmailHash,
   startDateTime,
   status,
   reminderSent,
@@ -29,6 +31,7 @@ export interface HerinneringShow {
   city: string;
   hostName?: string;
   hostEmail?: string;
+  hostEmailHash?: string;
   startDateTime?: string;
   status?: string;
   reminderSent?: boolean;
@@ -87,7 +90,7 @@ export function bouwHerinnering(
     const match = String(videoUrl).match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
     youtubeVideoId = match?.[1];
   }
-  const isHost = !!(show.hostEmail && signup.email.toLowerCase() === show.hostEmail.toLowerCase());
+  const isHost = isGastheer(show, signup.email);
 
   return buildReminderEmail({
     firstName: signup.firstName,
