@@ -271,8 +271,14 @@ const config = typeConfig[type] || typeConfig.algemeen;
         });
 
         if (!res.ok) {
-          const result = await res.json();
-          throw new Error(result.detail || 'Er ging iets mis');
+          const result = await res.json().catch(() => ({}));
+          // Bij een 422 (ongeldige invoer) stuurt de Gig Manager een lijst met objecten, geen tekst.
+          const melding = typeof result.detail === 'string' && result.detail
+            ? result.detail
+            : res.status === 422
+              ? 'Controleer je invoer: een van de velden is te lang of ongeldig.'
+              : 'Er ging iets mis';
+          throw new Error(melding);
         }
 
         localStorage.setItem(effectiveStorageKey, 'true');
