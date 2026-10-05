@@ -2,6 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { sanityClient, sanityWriteClient } from '../../../lib/sanity';
+import { bootlegToken, isGeldigDocId, tokenKlopt } from '../../../lib/show-veiligheid';
 
 /**
  * Bootleg download tracker.
@@ -9,23 +10,64 @@ import { sanityClient, sanityWriteClient } from '../../../lib/sanity';
  * Telt het aantal downloads en redirect naar de echte Sanity CDN URL.
  * Wordt gebruikt in herinneringsmails en op de showpagina.
  *
- * GET /api/show/bootleg-download?show={showId}
+ * GET /api/show/bootleg-download?show={showId}&s={signupId}&t={token}
+ *
+ * De opname is beloofd aan wie zich via de mail-gate aanmeldde, voor de termijn in
+ * bootlegExpiresAt (audit #43). De link is daarom persoonlijk: s = emailSignup-_id,
+ * t = HMAC(CRON_SECRET) over show + aanmelding. Die staat in de herinneringsmail en komt na de
+ * gate terug naar de showpagina. Zonder geldige link geen download.
  *
  * Flow:
- * 1. Haal show op uit Sanity
- * 2. Check of bootlegUrl bestaat en niet verlopen is
+ * 1. Controleer de persoonlijke link en of de aanmelding (nog) bestaat
+ * 2. Haal show op uit Sanity, check of bootlegUrl bestaat en niet verlopen is
  * 3. Increment bootlegDownloads counter
  * 4. Redirect (302) naar de CDN URL
  */
+function ongeldigeLink(): Response {
+  return new Response(`<!DOCTYPE html>
+<html lang="nl">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex"><title>Downloadlink niet geldig</title></head>
+<body style="margin:0;padding:0;background:#0F0F0F;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#F0EDE8;display:flex;align-items:center;justify-content:center;min-height:100vh;">
+  <div style="text-align:center;padding:40px 24px;max-width:480px;">
+    <p style="font-size:48px;margin:0 0 16px;">🎵</p>
+    <h1 style="font-family:Georgia,serif;font-size:24px;color:#B8860B;margin:0 0 16px;">Deze downloadlink werkt niet</h1>
+    <p style="font-size:16px;line-height:1.6;color:#9B9B9B;margin:0 0 32px;">
+      De opname is er voor de gasten van de avond. Gebruik de knop uit je herinneringsmail, of open de showpagina op het apparaat waarmee je je die avond hebt aangemeld.
+    </p>
+    <a href="https://edstruijlaart.nl" style="display:inline-block;background:#B8860B;color:#fff;padding:12px 28px;border-radius:9999px;text-decoration:none;font-weight:600;font-size:15px;">Naar edstruijlaart.nl</a>
+  </div>
+</body>
+</html>`, {
+    status: 403,
+    headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
+  });
+}
+
 export const GET: APIRoute = async ({ url, request }) => {
   try {
     const showId = url.searchParams.get('show');
+    const signupId = url.searchParams.get('s');
+    const token = url.searchParams.get('t');
 
     if (!showId) {
       return new Response(JSON.stringify({ error: 'Missing show parameter' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
+    }
+
+    const secret = import.meta.env.CRON_SECRET;
+    if (!secret || !isGeldigDocId(showId) || !isGeldigDocId(signupId)
+        || !tokenKlopt(token, bootlegToken(showId, signupId, secret))) {
+      return ongeldigeLink();
+    }
+    // Aanmelding nog aanwezig? (Verwijdert Ed een aanmelding, dan vervalt ook de link.)
+    const aanmelding = await sanityWriteClient.fetch(
+      `*[_type == "emailSignup" && _id == $s && show._ref == $show][0]._id`,
+      { s: signupId, show: showId }
+    );
+    if (!aanmelding) {
+      return ongeldigeLink();
     }
 
     // Haal show op met bootleg info

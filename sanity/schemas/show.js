@@ -56,10 +56,18 @@ export default {
     },
     {
       name: 'privateAddress',
-      title: 'Adres (privé)',
+      title: 'Adres (privé, vervallen)',
       type: 'text',
       rows: 2,
-      description: 'Wordt NOOIT getoond op de pagina. Alleen voor eigen administratie.'
+      readOnly: true,
+      description: 'Niet meer gebruikt sinds okt 2026: het adres staat alleen in de Gig Manager. Wordt leeggemaakt.'
+    },
+    {
+      name: 'bookingReference',
+      title: 'Boekingsreferentie',
+      type: 'string',
+      readOnly: true,
+      description: 'Gezet door de Gig Manager (bv. HK-ABC123). Koppelt deze pagina aan precies één boeking.'
     },
 
     // --- CONTENT (fase 1: promo) ---
@@ -181,12 +189,12 @@ export default {
             name: 'approved',
             title: 'Goedgekeurd',
             type: 'boolean',
-            initialValue: true // MVP: direct zichtbaar
+            initialValue: true // Direct zichtbaar, tenzij SHOW_MODERATIE=vooraf
           },
           { name: 'submittedAt', title: 'Ingezonden', type: 'datetime', readOnly: true }
         ]
       }],
-      description: 'Berichten van gasten. MVP: direct zichtbaar (approved=true).'
+      description: 'Berichten van gasten. Direct zichtbaar; Ed krijgt per bericht een mail met een verbergknop. Met SHOW_MODERATIE=vooraf pas na goedkeuring.'
     },
 
     // --- FOTO'S ---
@@ -228,7 +236,8 @@ export default {
         list: [
           { title: 'Concept', value: 'draft' },
           { title: 'Live', value: 'live' },
-          { title: 'Gearchiveerd', value: 'archived' }
+          { title: 'Geweest (herinnering verstuurd)', value: 'past' },
+          { title: 'Gearchiveerd (afgewezen/geannuleerd, 404)', value: 'archived' }
         ]
       },
       initialValue: 'draft'

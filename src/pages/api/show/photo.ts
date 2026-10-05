@@ -1,33 +1,37 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { Resend } from 'resend';
 import { sanityWriteClient, sanityClient } from '../../../lib/sanity';
+import { isActieveShow, isGeldigDocId, isGestart } from '../../../lib/show-veiligheid';
+import { nieuweItemKey, stuurModeratieMelding, voorafModereren } from '../../../lib/show-moderatie';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const formData = await request.formData();
-    const showId = formData.get('showId') as string;
-    const uploadedBy = (formData.get('uploadedBy') as string) || 'Anoniem';
-    const message = (formData.get('message') as string)?.trim() || '';
-    const photo = formData.get('photo') as File;
-    const honeypot = formData.get('honeypot') as string;
+    const showId = formData.get('showId');
+    const uploadedByRaw = formData.get('uploadedBy');
+    const messageRaw = formData.get('message');
+    const photo = formData.get('photo');
+    const honeypot = formData.get('honeypot');
 
     // Honeypot check - bots vullen dit in, echte gebruikers niet
     if (honeypot) {
       return new Response(JSON.stringify({ success: true }), { status: 200 });
     }
 
-    if (!showId || !photo) {
+    if (!isGeldigDocId(showId) || !(photo instanceof File)) {
       return new Response(JSON.stringify({ error: 'Verplichte velden ontbreken' }), { status: 400 });
     }
+    const uploadedBy = (typeof uploadedByRaw === 'string' && uploadedByRaw.trim() ? uploadedByRaw : 'Anoniem').trim().slice(0, 100);
+    const message = (typeof messageRaw === 'string' ? messageRaw : '').trim().slice(0, 280);
 
-    // Valideer dat show bestaat
+    // Valideer dat show bestaat, niet gearchiveerd is en begonnen is (het formulier staat pas
+    // na de aanvang op de pagina; daarna blijft het open, gasten sturen foto's ook dagen later)
     const show = await sanityClient.fetch(
-      `*[_type == "show" && _id == $id][0]{_id}`,
+      `*[_type == "show" && _id == $id][0]{_id, status, startDateTime, city, "slug": slug.current}`,
       { id: showId }
     );
-    if (!show) {
+    if (!isActieveShow(show) || !isGestart(show.startDateTime)) {
       return new Response(JSON.stringify({ error: 'Show niet gevonden' }), { status: 404 });
     }
 
@@ -49,7 +53,8 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     // Voeg toe aan show.guestPhotos[]
-    const key = Math.random().toString(36).slice(2, 10);
+    const key = nieuweItemKey();
+    const zichtbaar = !voorafModereren();
     await sanityWriteClient
       .patch(showId)
       .setIfMissing({ guestPhotos: [] })
@@ -59,17 +64,22 @@ export const POST: APIRoute = async ({ request }) => {
           _type: 'image',
           asset: { _type: 'reference', _ref: asset._id },
         },
-        uploadedBy: uploadedBy.trim().slice(0, 100),
-        message: message.slice(0, 280),
-        approved: true,
+        uploadedBy,
+        message,
+        approved: zichtbaar,
         uploadedAt: new Date().toISOString(),
       }])
       .commit();
 
-    // Notificatie naar Ed (fire and forget)
-    notifyPhotoUpload(showId, uploadedBy, message, asset).catch(console.error);
+    // Notificatie naar Ed met verberg-/toonknop (fire and forget). Alles ge-escaped (audit #42).
+    stuurModeratieMelding({
+      showId, city: show.city, slug: show.slug, type: 'photo', key,
+      naam: uploadedBy, bericht: message,
+      fotoUrl: asset?.url ? `${asset.url}?w=400&q=80` : undefined,
+      zichtbaar,
+    }).catch((err) => console.error('Failed to send photo notification:', err));
 
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({ success: true, zichtbaar }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -78,37 +88,3 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: 'Upload mislukt' }), { status: 500 });
   }
 };
-
-async function notifyPhotoUpload(showId: string, uploadedBy: string, message: string, asset: any) {
-  try {
-    const resend = new Resend(import.meta.env.RESEND_API_KEY);
-
-    // Haal show info op voor context
-    const show = await sanityClient.fetch(
-      `*[_type == "show" && _id == $id][0]{ city, slug }`,
-      { id: showId }
-    );
-
-    const showSlug = show?.slug?.current || '';
-    const city = show?.city || 'Onbekend';
-    const imageUrl = asset?.url ? `${asset.url}?w=400&q=80` : '';
-    const showPageUrl = `https://edstruijlaart.nl/shows/${showSlug}`;
-
-    await resend.emails.send({
-      from: 'Ed Struijlaart <ed@edstruijlaart.nl>',
-      to: 'edstruijlaart@gmail.com',
-      subject: `📸 Nieuwe foto van ${uploadedBy}, ${city}`,
-      html: `
-        <div style="font-family:-apple-system,sans-serif;max-width:500px;margin:0 auto;background:#0F0F0F;color:#F0EDE8;padding:32px;border-radius:12px;">
-          <p style="color:#D4A843;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 12px;">📸 Nieuwe gastenfoto</p>
-          <p style="font-size:16px;margin:0 0 8px;"><strong>${uploadedBy}</strong> heeft een foto geüpload voor ${city}.</p>
-          ${message ? `<p style="color:#9B9B9B;font-size:14px;font-style:italic;margin:0 0 16px;">"${message}"</p>` : ''}
-          ${imageUrl ? `<img src="${imageUrl}" alt="Gastenfoto" style="width:100%;max-width:400px;border-radius:8px;margin:16px 0;" />` : ''}
-          <p style="margin:16px 0 0;"><a href="${showPageUrl}" style="color:#D4A843;text-decoration:none;">Bekijk showpagina →</a></p>
-        </div>
-      `,
-    });
-  } catch (err) {
-    console.error('Failed to send photo notification:', err);
-  }
-}

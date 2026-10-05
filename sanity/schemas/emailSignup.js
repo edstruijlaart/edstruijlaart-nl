@@ -34,6 +34,20 @@ export default {
       type: 'datetime'
     },
     {
+      name: 'reminderSentAt',
+      title: 'Herinneringsmail verstuurd op',
+      type: 'datetime',
+      readOnly: true,
+      description: 'Per gast, zodat niemand de herinneringsmail twee keer krijgt.'
+    },
+    {
+      name: 'reminderDubbel',
+      title: 'Dubbele aanmelding',
+      type: 'boolean',
+      readOnly: true,
+      description: 'Zelfde adres al eerder aangemeld voor deze show: geen tweede mail.'
+    },
+    {
       name: 'source',
       title: 'Bron',
       type: 'string',

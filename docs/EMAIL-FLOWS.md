@@ -22,7 +22,8 @@ Afzender: `Ed Struijlaart <ed@edstruijlaart.nl>`
 2. Hero image (als beschikbaar, Sanity asset met `?w=600&q=80`)
 3. Persoonlijke begroeting: "Hey {firstName}"
 4. **Bootleg sectie** (alleen als bootlegUrl bestaat):
-   - Download knop → `/api/show/bootleg-download?show={showId}`
+   - Download knop → persoonlijke link `/api/show/bootleg-download?show={showId}&s={signupId}&t={HMAC}`
+     (nooit de kale CDN-URL)
    - Verloopdatum
 5. **Spotify sectie**: Link naar Ed's playlist
 6. **Video sectie**: YouTube thumbnail + link (configureerbaar, default: luchtballon video `GBx2WfYluWE`)
@@ -32,22 +33,27 @@ Afzender: `Ed Struijlaart <ed@edstruijlaart.nl>`
 10. Footer met uitleg + link naar edstruijlaart.nl
 
 **Na verzending**:
+- Elke aanmelding krijgt `reminderSentAt` (vóór het versturen geclaimd, bij mislukken teruggezet);
+  per show krijgt elk e-mailadres maar één mail
 - Show krijgt `reminderSent: true`, `status: "past"`, `emailsSent: {count}`
 - Ed ontvangt samenvattingsmail met resultaten per show
 
-**Retry**: 3 pogingen per mail, exponential backoff (1s→2s→4s), rate limit detection
+**Retry**: 3 pogingen per mail; de wachttijd gaat alleen omhoog bij een echte 429
+
+**Escaping**: voornaam, stad en gastheernaam worden ge-escaped (ze komen van bezoekers).
 
 ---
 
 ## 2. Late Signup Reminder (automatisch)
 
-**Trigger**: Wanneer iemand zich aanmeldt op een show waar `reminderSent = true`
+**Trigger**: Wanneer iemand zich voor het eerst aanmeldt op een show waar `reminderSent = true` en de
+aanvang meer dan 12 uur geleden is (een tweede aanmelding met hetzelfde adres krijgt niets)
 **Endpoint**: `POST /api/show/signup` → `sendLateSignupReminder()`
 **Bestand**: `src/pages/api/show/signup.ts`
 
 **Identiek aan** herinneringsmail, maar:
 - Alleen verzonden aan de nieuwe aanmelder
-- Wordt meteen verstuurd (niet via cron)
+- Wordt meteen verstuurd (niet via cron), na een claim op `reminderSentAt`
 - Increment `emailsSent` counter op show
 
 ---
@@ -63,14 +69,15 @@ Afzender: `Ed Struijlaart <ed@edstruijlaart.nl>`
 
 ---
 
-## 4. Foto Upload Notificatie (automatisch)
+## 4. Foto- en gastenboekmelding (automatisch)
 
-**Trigger**: Gast uploadt foto op showpagina
-**Endpoint**: `POST /api/show/photo` → `notifyPhotoUpload()`
-**Bestand**: `src/pages/api/show/photo.ts`
+**Trigger**: Gast uploadt een foto of schrijft in het gastenboek (ook via de mail-gate)
+**Endpoint**: `POST /api/show/photo`, `POST /api/show/guestbook`, `POST /api/show/signup` → `stuurModeratieMelding()`
+**Bestand**: `src/lib/show-moderatie.ts`
 
 **Ontvanger**: edstruijlaart@gmail.com
-**Inhoud**: Naam uploader, bericht (als gegeven), foto preview (400px breed), link naar showpagina
+**Inhoud**: Naam, bericht, foto preview (400px breed), knop "Verbergen" (of "Tonen" bij
+`SHOW_MODERATIE=vooraf`) naar `/api/show/moderate`, link naar showpagina. Alles ge-escaped.
 
 ---
 

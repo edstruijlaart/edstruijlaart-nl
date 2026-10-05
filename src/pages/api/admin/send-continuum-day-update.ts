@@ -4,6 +4,7 @@ export const config = { maxDuration: 60 };
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { sanityWriteClient } from '../../../lib/sanity';
+import { geheimKlopt } from '../../../lib/show-veiligheid';
 
 /**
  * Eenmalige bulkmail naar alle Continuum Day-deelnemers (wachtlijst != true):
@@ -25,7 +26,7 @@ export const GET: APIRoute = async ({ request, url }) => {
   const apiKey = request.headers.get('x-api-key');
   const bootlegApiKey = import.meta.env.BOOTLEG_API_KEY;
 
-  if (!bootlegApiKey || apiKey !== bootlegApiKey) {
+  if (!geheimKlopt(apiKey, bootlegApiKey)) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 

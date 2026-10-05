@@ -4,6 +4,7 @@ export const config = { maxDuration: 60 };
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { sanityWriteClient } from '../../../lib/sanity';
+import { geheimKlopt } from '../../../lib/show-veiligheid';
 
 /**
  * Laatste mail vóór Continuum Day (za 12 sep 2026) aan alle deelnemers (wachtlijst != true):
@@ -24,7 +25,7 @@ const PODCAST_URL = 'https://open.spotify.com/episode/6YUi52fzqmP0a2EwOXMtXo';
 export const GET: APIRoute = async ({ request, url }) => {
   const apiKey = request.headers.get('x-api-key');
   const bootlegApiKey = import.meta.env.BOOTLEG_API_KEY;
-  if (!bootlegApiKey || apiKey !== bootlegApiKey) {
+  if (!geheimKlopt(apiKey, bootlegApiKey)) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 

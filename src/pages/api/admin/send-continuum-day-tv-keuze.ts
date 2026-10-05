@@ -4,6 +4,7 @@ export const config = { maxDuration: 60 };
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { sanityWriteClient } from '../../../lib/sanity';
+import { geheimKlopt } from '../../../lib/show-veiligheid';
 
 /**
  * Uitslag Tijd voor Max naar iedereen die het formulier invulde. Drie varianten op
@@ -24,7 +25,7 @@ type Kandidaat = { _id: string; naam: string; email: string; leeftijd?: number; 
 export const GET: APIRoute = async ({ request, url }) => {
   const apiKey = request.headers.get('x-api-key');
   const secret = import.meta.env.BOOTLEG_API_KEY as string;
-  if (!secret || apiKey !== secret) {
+  if (!geheimKlopt(apiKey, secret)) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 

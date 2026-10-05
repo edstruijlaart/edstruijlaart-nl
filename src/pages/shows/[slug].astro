@@ -17,8 +17,10 @@ import ShowReviewForm from '../../components/show/ShowReviewForm.astro';
 
 const { slug } = Astro.params;
 
+// Gearchiveerde shows (afgewezen/geannuleerd) geven een 404. Bewust NIET filteren op
+// status == "live": handmatig aangemaakte pagina's staan op "draft" (audit #22).
 const show = await sanityClient.fetch(`
-  *[_type == "show" && slug.current == $slug][0] {
+  *[_type == "show" && slug.current == $slug && status != "archived"][0] {
     _id,
     title,
     startDateTime,
@@ -32,8 +34,9 @@ const show = await sanityClient.fetch(`
     practicalInfo,
     setlist[]->{ title, artist, spotifyUrl, isOriginal },
     spotifyPlaylistUrl,
-    bootlegUrl,
+    "hasBootlegUrl": defined(bootlegUrl),
     bootlegExpiresAt,
+    bootlegFileSize,
     guestbookEntries[approved == true] { name, message, submittedAt },
     guestPhotos[approved == true] { image, uploadedBy, uploadedAt, message },
     status,
@@ -51,7 +54,12 @@ const startTime = new Date(show.startDateTime);
 const endTime = new Date(startTime.getTime() + 24 * 60 * 60 * 1000);
 const isPhase2 = now >= startTime;
 const isArchived = now >= endTime;
-const hasBootleg = show.bootlegUrl && new Date(show.bootlegExpiresAt) > now;
+// De CDN-URL van de opname komt nooit in de HTML: downloaden gaat via een persoonlijke link
+// (/api/show/bootleg-download) die je na de mail-gate of in de herinneringsmail krijgt (audit #43).
+const hasBootleg = !!show.hasBootlegUrl && new Date(show.bootlegExpiresAt) > now;
+const bootlegTot = hasBootleg
+  ? new Date(show.bootlegExpiresAt).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Amsterdam' })
+  : '';
 const hasTicketing = !!show.ticketUrl;
 const concertDate = startTime.toISOString().split('T')[0]; // YYYY-MM-DD
 
@@ -273,18 +281,19 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
     </section>
   )}
 
-  {/* Bootleg download (als beschikbaar) */}
+  {/* Bootleg download (als beschikbaar): verborgen tot na de mail-gate, link komt uit localStorage */}
   {isPhase2 && hasBootleg && (
-    <section class="py-16 sm:py-20" style="background-color: var(--bg-surface);">
+    <section id="bootleg-section" class="hidden py-16 sm:py-20" style="background-color: var(--bg-surface);">
       <div class="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="font-[var(--font-display)] text-2xl sm:text-3xl text-[var(--fg)] mb-4">
           De opname van vanavond
         </h2>
         <p class="text-[var(--fg-muted)] mb-6">
-          Download de live-opname van dit huiskamerconcert. Deze link is 30 dagen geldig.
+          Download de live-opname van dit huiskamerconcert. Beschikbaar tot {bootlegTot}.
         </p>
         <a
-          href={show.bootlegUrl}
+          id="bootleg-link"
+          href="#"
           class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-medium transition-colors duration-300"
           style="background-color: var(--color-gold);"
         >
@@ -305,10 +314,36 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
 
   {/* Client-side: email-gate form handler + fase check */}
   <script define:vars={{ startDateTime: show.startDateTime, showId: show._id }}>
-    // Gastenboek ontgrendelen
-    function unlockGuestbook() {
+    const PAGINA_GELADEN = Date.now(); // botfilter: te snel verzonden = bot
+
+    // Gastenboek ontgrendelen, en de opname als we een persoonlijke downloadlink hebben
+    function unlockGuestbook(download) {
       const gb = document.getElementById('guestbook-section');
       if (gb) gb.classList.remove('hidden');
+      const bootleg = document.getElementById('bootleg-section');
+      const link = document.getElementById('bootleg-link');
+      if (bootleg && link && typeof download === 'string' && download.startsWith('/api/show/bootleg-download?')) {
+        link.setAttribute('href', download);
+        bootleg.classList.remove('hidden');
+      }
+    }
+
+    // Naam als tekst in een element zetten (nooit via innerHTML)
+    function welkom(gate, regel1, regel2) {
+      gate.textContent = '';
+      const wrap = document.createElement('div');
+      wrap.className = 'text-center';
+      const p1 = document.createElement('p');
+      p1.className = 'text-lg text-[var(--fg)]' + (regel2 ? ' mb-2' : '');
+      p1.textContent = regel1;
+      wrap.appendChild(p1);
+      if (regel2) {
+        const p2 = document.createElement('p');
+        p2.className = 'text-[var(--fg-muted)]';
+        p2.textContent = regel2;
+        wrap.appendChild(p2);
+      }
+      gate.appendChild(wrap);
     }
 
     // Email-gate form handler
@@ -317,14 +352,14 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
     const successEl = document.getElementById('form-success');
 
     // Check of gebruiker al door de gate is
-    const stored = localStorage.getItem(`show-gate-${showId}`);
-    if (stored && form) {
-      const parsed = JSON.parse(stored);
+    let parsed = null;
+    try { parsed = JSON.parse(localStorage.getItem(`show-gate-${showId}`) || 'null'); } catch (e) { parsed = null; }
+    if (parsed) {
       const gate = document.getElementById('email-gate');
-      if (gate) {
-        gate.innerHTML = `<p class="text-lg text-[var(--fg)]">Welkom terug, ${parsed.firstName}!</p>`;
+      if (gate && form) {
+        welkom(gate, `Welkom terug, ${parsed.firstName || ''}!`);
       }
-      unlockGuestbook();
+      unlockGuestbook(parsed.download);
     }
 
     if (form) {
@@ -336,7 +371,8 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
           firstName: formData.get('firstName'),
           email: formData.get('email'),
           message: formData.get('message') || undefined,
-          honeypot: formData.get('website')
+          website: formData.get('website') || '',
+          t: PAGINA_GELADEN
         };
 
         errorEl.classList.add('hidden');
@@ -351,27 +387,23 @@ const pageDescription = show.introText || `Huiskamerconcert van Ed Struijlaart i
             body: JSON.stringify(data)
           });
 
+          const result = await res.json().catch(() => ({}));
           if (!res.ok) {
-            const result = await res.json();
             throw new Error(result.error || 'Er ging iets mis');
           }
 
           localStorage.setItem(`show-gate-${showId}`, JSON.stringify({
             firstName: data.firstName,
-            email: data.email
+            email: data.email,
+            download: result.download
           }));
 
           // Track email gate submit in Umami
           if (typeof umami !== 'undefined') { umami.track('emailgate-submit'); }
 
           const gate = document.getElementById('email-gate');
-          gate.innerHTML = `
-            <div class="text-center">
-              <p class="text-lg text-[var(--fg)] mb-2">Bedankt, ${data.firstName}!</p>
-              <p class="text-[var(--fg-muted)]">Scroll naar beneden om het gastenboek te zien en foto's te delen.</p>
-            </div>
-          `;
-          unlockGuestbook();
+          welkom(gate, `Bedankt, ${data.firstName}!`, "Scroll naar beneden om het gastenboek te zien en foto's te delen.");
+          unlockGuestbook(result.download);
         } catch (err) {
           errorEl.textContent = err.message;
           errorEl.classList.remove('hidden');

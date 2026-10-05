@@ -272,6 +272,7 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
       hideStatus();
 
       try {
+        let zichtbaar = true;
         if (photo) {
           // Foto (optioneel met bericht) - alles in een call
           const photoData = new FormData();
@@ -286,6 +287,7 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
             body: photoData,
           });
           if (!res.ok) throw new Error('Foto uploaden mislukt');
+          zichtbaar = (await res.json().catch(() => ({}))).zichtbaar !== false;
         } else if (message) {
           // Alleen bericht, geen foto
           const res = await fetch('/api/show/guestbook', {
@@ -294,6 +296,19 @@ timeline.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
             body: JSON.stringify({ showId, name, message, honeypot }),
           });
           if (!res.ok) throw new Error('Bericht plaatsen mislukt');
+          zichtbaar = (await res.json().catch(() => ({}))).zichtbaar !== false;
+        }
+
+        if (!zichtbaar) {
+          // Vooraf modereren staat aan (SHOW_MODERATIE=vooraf): Ed zet het er zelf op.
+          showStatus('Dank je! Ed zet het er zo op.', 'success');
+          (form.querySelector('textarea') as HTMLTextAreaElement).value = '';
+          photoInput.value = '';
+          photoPreview!.classList.add('hidden');
+          photoLabel!.textContent = 'Voeg foto toe';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Delen';
+          return;
         }
 
         showStatus('Geplaatst! De pagina ververst zo...', 'success');

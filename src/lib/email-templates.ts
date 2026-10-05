@@ -4,6 +4,7 @@
  */
 
 import crypto from 'crypto';
+import { escapeHtml, bootlegDownloadPad } from './show-veiligheid.ts';
 
 interface ReminderMailData {
   firstName: string;
@@ -13,6 +14,8 @@ interface ReminderMailData {
   bootlegExpiresAt?: string;
   showSlug: string;
   showId?: string;
+  /** emailSignup-_id van de ontvanger: nodig voor de persoonlijke bootleg-downloadlink. */
+  signupId?: string;
   youtubeVideoId?: string;
   heroImageUrl?: string;
   email?: string;
@@ -35,33 +38,36 @@ const SPOTIFY_URL = 'https://open.spotify.com/playlist/5ZoRiQK1FP8OXrKRuPp56J?si
 
 export function buildReminderEmail(data: ReminderMailData): { subject: string; html: string } {
   const {
-    firstName,
-    city,
-    hostName,
     bootlegUrl,
     bootlegExpiresAt,
     showSlug,
     showId,
+    signupId,
     youtubeVideoId,
     heroImageUrl,
   } = data;
+  // Naam en stad komen (deels) van bezoekers: altijd escapen voordat ze in de HTML gaan.
+  const firstName = escapeHtml(data.firstName);
+  const city = escapeHtml(data.city);
+  const hostName = data.hostName ? escapeHtml(data.hostName) : '';
 
   const videoId = youtubeVideoId || DEFAULT_YOUTUBE_VIDEO;
   const showUrl = `${SITE_URL}/shows/${showSlug}`;
 
-  // Gebruik tracker-URL als showId beschikbaar is, anders directe CDN URL met ?dl= parameter
-  // Sanity CDN stuurt standaard content-disposition: inline, waardoor desktop browsers
-  // het bestand proberen af te spelen i.p.v. te downloaden. Met ?dl=filename forceert
-  // Sanity content-disposition: attachment.
-  const bootlegDownloadUrl = bootlegUrl && showId
-    ? `${SITE_URL}/api/show/bootleg-download?show=${showId}`
-    : bootlegUrl
-      ? `${bootlegUrl}${bootlegUrl.includes('?') ? '&' : '?'}dl=bootleg-${showSlug || 'opname'}.m4a`
-      : undefined;
+  // Persoonlijke downloadlink via de tracker (telt downloads, regelt iOS/Android, controleert de
+  // vervaldatum en of je je hebt aangemeld). Nooit de kale Sanity-CDN-URL: die verloopt niet.
+  // Zonder signupId of geheim valt de knop terug op de showpagina.
+  const bootlegDownloadUrl = bootlegUrl
+    ? showId && signupId && data.cronSecret
+      ? `${SITE_URL}${bootlegDownloadPad(showId, signupId, data.cronSecret)}`
+      : showUrl
+    : undefined;
 
-  const subject = bootlegUrl
-    ? `De opname van ${city}, jouw herinneringspakket 🎵`
-    : `Wat een avond in ${city}, jouw herinneringspakket 🎵`;
+  // Onderwerp is platte tekst (geen HTML), maar wel zonder regeleinden.
+  const cityPlat = String(data.city ?? '').replace(/[\r\n]+/g, ' ');
+  const subject = data.bootlegUrl
+    ? `De opname van ${cityPlat}, jouw herinneringspakket 🎵`
+    : `Wat een avond in ${cityPlat}, jouw herinneringspakket 🎵`;
 
   // Bootleg sectie (alleen als er een opname is)
   const bootlegSection = bootlegUrl
@@ -78,7 +84,7 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="background-color: #B8860B; border-radius: 9999px;">
-                    <a href="${bootlegDownloadUrl}" style="display: inline-block; padding: 14px 32px; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none;">
+                    <a href="${escapeHtml(bootlegDownloadUrl)}" style="display: inline-block; padding: 14px 32px; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none;">
                       ↓ Download opname
                     </a>
                   </td>
@@ -185,7 +191,7 @@ export function buildReminderEmail(data: ReminderMailData): { subject: string; h
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${subject}</title>
+  <title>${escapeHtml(subject)}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #0F0F0F; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0F0F0F;">

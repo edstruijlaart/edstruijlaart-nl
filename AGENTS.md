@@ -66,8 +66,9 @@ collections, per taal), `src/components/` (Astro + React), `src/layouts/` (BaseL
 > worden geblokkeerd.
 
 **Datastromen (samengevat):**
-- **Show-data:** beheerd in Sanity → website leest CDN-cached via `sanityClient`; mutaties (gasten,
-  bootleg, ratings) via `sanityWriteClient` met write-token.
+- **Show-data:** beheerd in Sanity → website leest CDN-cached via `sanityClient` (server-side, met
+  `SANITY_READ_TOKEN` zodra de dataset privé is); mutaties (gasten, bootleg, ratings) via
+  `sanityWriteClient` met write-token. Browsercode praat nooit rechtstreeks met de Sanity-API.
 - **Huiskamerconcert-funnel:** boeking in Pi-gig-manager → synct naar Sanity → showpagina live →
   gast meldt zich aan (`signup.ts`, e-mail-gate) → Sanity + Listmonk → concert → bootleg-upload
   (iOS Shortcut → `bootleg.ts`) → cron `send-reminder.ts` (09:00 UTC) stuurt herinneringsmail →
@@ -111,6 +112,8 @@ De echte waarden staan in het Vercel-dashboard en in de privé-`CLAUDE-local.md`
 | `SANITY_PROJECT_ID` / `PUBLIC_SANITY_PROJECT_ID` | VERPLICHT | Sanity project-id (`q407odag`). Code valt terug van de eerste op de tweede. |
 | `SANITY_DATASET` | OPTIONEEL | Sanity dataset; default `production` als leeg. |
 | `SANITY_WRITE_TOKEN` | VERPLICHT | Write-token voor mutaties (gasten, bootleg, ratings) via `sanityWriteClient`. |
+| `SANITY_READ_TOKEN` | VERPLICHT zodra de dataset privé is | Viewer-token voor `sanityClient` (showpagina's, `/live`, health, cron). Alleen server-side, NOOIT met `PUBLIC_`-prefix. Leeg = anoniem lezen (werkt alleen bij een publieke dataset). |
+| `SHOW_MODERATIE` | OPTIONEEL | `vooraf` = gastenboek en gastfoto's pas zichtbaar na Eds goedkeuring. Leeg = meteen zichtbaar, Ed kan via de mail verbergen. |
 | `RESEND_API_KEY` | VERPLICHT | Verzenden van e-mails (herinnering, bevestiging, notificaties). |
 | `CRON_SECRET` | VERPLICHT | Bearer-/`x-api-key`-auth voor `send-reminder` (cron) + `manage`-endpoint; ook HMAC-seed voor rating-tokens. |
 | `BOOTLEG_API_KEY` | VERPLICHT | `x-api-key`-auth voor bootleg-upload (iOS Shortcut) en `bootleg-confirm`. |

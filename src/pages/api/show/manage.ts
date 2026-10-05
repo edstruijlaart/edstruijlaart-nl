@@ -2,6 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { sanityWriteClient } from '../../../lib/sanity';
+import { geheimKlopt } from '../../../lib/show-veiligheid';
 
 /**
  * Beheer gastenboek-berichten en foto's.
@@ -14,7 +15,7 @@ import { sanityWriteClient } from '../../../lib/sanity';
 export const DELETE: APIRoute = async ({ request }) => {
   try {
     const apiKey = request.headers.get('x-api-key');
-    if (apiKey !== import.meta.env.CRON_SECRET) {
+    if (!geheimKlopt(apiKey, import.meta.env.CRON_SECRET)) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
     }
 

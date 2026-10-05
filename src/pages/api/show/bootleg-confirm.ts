@@ -3,6 +3,7 @@ export const prerender = false;
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { sanityWriteClient } from '../../../lib/sanity';
+import { geheimKlopt } from '../../../lib/show-veiligheid';
 
 /**
  * Stuurt een bevestigingsmail naar Ed wanneer een bootleg succesvol is geüpload.
@@ -19,7 +20,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     // Auth check
     const apiKey = request.headers.get('x-api-key');
-    if (apiKey !== import.meta.env.BOOTLEG_API_KEY) {
+    if (!geheimKlopt(apiKey, import.meta.env.BOOTLEG_API_KEY)) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
     }
 
