@@ -108,6 +108,9 @@ const pageDescription =
       .gm2 .klaar h2 { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: 2.2rem; line-height: 1; }
       .gm2 .klaar p { color: var(--muted); }
       .gm2 .download { display: block; text-align: center; text-decoration: none; color: #fff; }
+      .gm2 .inapp { background: rgba(255,255,255,.06); padding: 1rem; border-radius: 8px; display: grid; gap: .8rem; }
+      .gm2 .inapp[hidden] { display: none; }
+      .gm2 .tip { font-size: .9rem; }
       .gm2 .tour { border-top: 1px solid var(--line); padding-top: 1.2rem; }
 
       @media (max-width: 520px) { .gm2 .twee { grid-template-columns: 1fr; } }
@@ -199,6 +202,12 @@ const pageDescription =
           <h2>Dank je wel!</h2>
           <p>Hier is Gitaarmannen 2: Eric Clapton Unplugged. Zestien nummers, live in het theater. Zet 'm lekker hard.</p>
           <a class="knop download" id="downloadlink" href="#" rel="nofollow">Download de 16 nummers (90 MB)</a>
+          <p class="inapp" id="inapp" hidden>
+            <strong>Zit je in Instagram of Facebook?</strong> Die kunnen geen bestanden downloaden. Tik rechtsboven op
+            de drie puntjes en kies <em>Openen in browser</em>, of kopieer de link hieronder en plak hem in Safari of Chrome.
+            <button type="button" class="knop" id="kopieer">Kopieer de downloadlink</button>
+          </p>
+          <p class="tip">Op een iPhone komt het bestand in de app Bestanden: tik erop om het uit te pakken.</p>
           <div class="tour">
             <p>
               Dit seizoen sta ik met <strong>Gitaarmannen 4: Continuum</strong> in 26 theaters door het hele land.
@@ -258,6 +267,16 @@ const pageDescription =
             var j = await r.json().catch(function () { return {}; });
             if (!r.ok) throw new Error(j.error || "Er ging iets mis. Probeer het zo nog eens.");
             if (j.download) document.getElementById("downloadlink").href = j.download;
+            // In-app browsers (Instagram, Facebook, Messenger, TikTok) kunnen geen downloads aan.
+            if (/Instagram|FBAN|FBAV|FB_IAB|Messenger|musical_ly|TikTok/i.test(navigator.userAgent)) {
+              document.getElementById("inapp").hidden = false;
+              document.getElementById("kopieer").addEventListener("click", function () {
+                var b = this, url = document.getElementById("downloadlink").href;
+                (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject())
+                  .then(function () { b.textContent = "Gekopieerd! Plak hem in je browser"; })
+                  .catch(function () { window.prompt("Kopieer deze link:", url); });
+              });
+            }
             form.style.display = "none";
             document.getElementById("klaar").classList.add("aan");
             document.getElementById("klaar").scrollIntoView({ behavior: "smooth", block: "start" });
