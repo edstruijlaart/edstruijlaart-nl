@@ -1,0 +1,273 @@
+---
+export const prerender = true;
+
+import { GITAAR, GEZIEN, ZIN, BRON, MAX_VRIJ } from "../data/fan-vragen";
+
+// Fanvragen met Gitaarmannen 2 (Eric Clapton Unplugged) als cadeau.
+// URL: edstruijlaart.nl/clapton
+//  - vanuit de nieuwsbrief: ?u=<subscriber-uuid> (naam + e-mail niet nodig)
+//  - vanuit social / /links: zonder ?u, dan voornaam + e-mail invullen
+// Post naar /api/fan; daarna verschijnt de downloadknop op de pagina.
+// CSS gescoped onder .gm2 (bare :root/html/body lekt in Astro site-breed).
+
+const pageTitle = "Gitaarmannen 2: Eric Clapton Unplugged cadeau · Ed Struijlaart";
+const pageDescription =
+  "Zes korte vragen, dan krijg je mijn hele Clapton Unplugged-voorstelling als download. Zo weet ik wanneer ik bij jou in de buurt speel.";
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <meta name="robots" content="noindex,follow" />
+    <link rel="canonical" href="https://edstruijlaart.nl/clapton" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://edstruijlaart.nl/clapton" />
+    <meta property="og:title" content="Gitaarmannen 2: Eric Clapton Unplugged, cadeau" />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content="https://edstruijlaart.nl/images/afas/ed-hero.jpg" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <script defer src="https://analytics.earswantmusic.nl/script.js" data-website-id="98cc05e1-4825-4c78-a94a-e823227f0cc3"></script>
+
+    <style>
+      .gm2, .gm2 *, .gm2 *::before, .gm2 *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      .gm2 {
+        --bg: #161614; --bg2: #0e0e0d;
+        --muted: rgba(255,255,255,0.74); --faint: rgba(255,255,255,0.52);
+        --accent: #00aacc; --accent-dark: #0092b0; --line: rgba(255,255,255,0.14);
+        --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+        --body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: var(--body); background: var(--bg); color: #fff;
+        line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100svh;
+      }
+      .gm2 a { color: var(--accent); }
+      .gm2 .wrap { max-width: 640px; margin: 0 auto; padding: 0 1.25rem; }
+
+      .gm2 .hero {
+        background: radial-gradient(circle at 75% 15%, rgba(0,170,204,0.18), transparent 55%), var(--bg2);
+        padding: clamp(2.2rem, 6vw, 4rem) 0 2rem;
+      }
+      .gm2 .photo { border-radius: 8px; overflow: hidden; aspect-ratio: 16 / 9; margin-bottom: 1.6rem; background: #222; }
+      .gm2 .photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block; }
+      .gm2 .eyebrow {
+        font-family: var(--display); text-transform: uppercase; letter-spacing: 0.16em;
+        font-weight: 700; font-size: 0.88rem; color: var(--accent); margin-bottom: 0.7rem;
+      }
+      .gm2 h1 {
+        font-family: var(--display); font-weight: 900; text-transform: uppercase;
+        font-size: clamp(2.2rem, 7vw, 3.4rem); line-height: 0.98; margin-bottom: 1rem;
+      }
+      .gm2 h1 .accent { color: var(--accent); }
+      .gm2 .lead { color: var(--muted); font-size: 1.08rem; }
+
+      .gm2 form { padding: 2rem 0 3rem; display: grid; gap: 1.6rem; }
+      .gm2 fieldset { border: 0; display: grid; gap: 0.55rem; }
+      .gm2 legend, .gm2 .label {
+        font-family: var(--display); font-weight: 800; text-transform: uppercase;
+        letter-spacing: 0.04em; font-size: 1.2rem; margin-bottom: 0.35rem;
+      }
+      .gm2 .hint { color: var(--faint); font-size: 0.86rem; margin-top: -0.35rem; }
+      .gm2 input[type=text], .gm2 input[type=email], .gm2 textarea {
+        width: 100%; padding: 0.9rem 1rem; background: rgba(255,255,255,0.06);
+        border: 1px solid var(--line); border-radius: 4px; color: #fff;
+        font: inherit; font-size: 1rem;
+      }
+      .gm2 textarea { min-height: 96px; resize: vertical; }
+      .gm2 input:focus, .gm2 textarea:focus { outline: none; border-color: var(--accent); }
+      .gm2 .twee { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .gm2 .keuze {
+        display: flex; gap: 0.7rem; align-items: center; padding: 0.7rem 0.9rem;
+        border: 1px solid var(--line); border-radius: 4px; cursor: pointer;
+        background: rgba(255,255,255,0.03);
+      }
+      .gm2 .keuze:has(input:checked) { border-color: var(--accent); background: rgba(0,170,204,0.10); }
+      .gm2 .keuze input { accent-color: var(--accent); width: 18px; height: 18px; flex-shrink: 0; }
+      .gm2 .toestemming { align-items: flex-start; }
+      .gm2 .knop {
+        width: 100%; background: var(--accent); color: #fff; border: 0; border-radius: 4px;
+        font-family: var(--display); font-weight: 800; text-transform: uppercase;
+        letter-spacing: 0.05em; font-size: 1.15rem; padding: 1.05rem; cursor: pointer;
+      }
+      .gm2 .knop:hover { background: var(--accent-dark); }
+      .gm2 .knop:disabled { opacity: 0.6; cursor: wait; }
+      .gm2 .klein { color: var(--faint); font-size: 0.82rem; }
+      .gm2 .fout { color: #ff8a80; font-weight: 600; min-height: 1.2em; }
+      .gm2 .honing { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+      .gm2 .klaar { display: none; padding: 2rem 0 4rem; }
+      .gm2 .klaar.aan { display: grid; gap: 1.2rem; }
+      .gm2 .klaar h2 { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: 2.2rem; line-height: 1; }
+      .gm2 .klaar p { color: var(--muted); }
+      .gm2 .download { display: block; text-align: center; text-decoration: none; color: #fff; }
+      .gm2 .tour { border-top: 1px solid var(--line); padding-top: 1.2rem; }
+
+      @media (max-width: 520px) { .gm2 .twee { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body style="background:#161614;margin:0">
+    <main class="gm2">
+      <section class="hero">
+        <div class="wrap">
+          <div class="photo"><img src="/images/afas/ed-hero.jpg" alt="Ed Struijlaart met gitaar" width="1200" height="675" /></div>
+          <p class="eyebrow">Cadeau voor jou</p>
+          <h1>Gitaarmannen 2:<br /><span class="accent">Eric Clapton Unplugged</span></h1>
+          <p class="lead">
+            Mijn hele Clapton Unplugged-voorstelling, 16 nummers, om te downloaden. Van Signe tot Layla en
+            Old Love. Daarvoor vraag ik je alleen even wat over jezelf, zodat ik je laat weten wanneer ik bij jou
+            in de buurt speel. Dertig seconden werk.
+          </p>
+        </div>
+      </section>
+
+      <div class="wrap">
+        <form id="fanform" novalidate>
+          <div class="honing" aria-hidden="true">
+            <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+          </div>
+
+          <fieldset id="wie">
+            <legend>Wie ben je?</legend>
+            <div class="twee">
+              <input type="text" name="naam" placeholder="Voornaam" autocomplete="given-name" maxlength="60" />
+              <input type="email" name="email" placeholder="E-mailadres" autocomplete="email" maxlength="200" />
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>1. Waar woon je?</legend>
+            <input type="text" name="woonplaats" placeholder="Woonplaats" autocomplete="address-level2" maxlength="60" required />
+            <p class="hint">Dan laat ik je weten als ik bij jou in de buurt speel.</p>
+          </fieldset>
+
+          <fieldset>
+            <legend>2. Speel je zelf gitaar?</legend>
+            {Object.entries(GITAAR).map(([k, v]) => (
+              <label class="keuze"><input type="radio" name="gitaar" value={k} /> {v}</label>
+            ))}
+          </fieldset>
+
+          <fieldset>
+            <legend>3. Welke Gitaarmannen-voorstellingen heb je gezien?</legend>
+            <p class="hint">Meerdere mogelijk.</p>
+            {Object.entries(GEZIEN).map(([k, v]) => (
+              <label class="keuze"><input type="checkbox" name="gezien" value={k} /> {v}</label>
+            ))}
+          </fieldset>
+
+          <fieldset>
+            <legend>4. Waar heb je zin in?</legend>
+            <p class="hint">Meerdere mogelijk.</p>
+            {Object.entries(ZIN).map(([k, v]) => (
+              <label class="keuze"><input type="checkbox" name="zin" value={k} /> {v}</label>
+            ))}
+          </fieldset>
+
+          <fieldset>
+            <legend>5. Hoe heb je mij leren kennen?</legend>
+            {Object.entries(BRON).map(([k, v]) => (
+              <label class="keuze"><input type="radio" name="bron" value={k} /> {v}</label>
+            ))}
+          </fieldset>
+
+          <fieldset>
+            <legend>6. Wil je nog iets kwijt?</legend>
+            <textarea name="vrij" maxlength={MAX_VRIJ} placeholder="Een vraag, een wens, een nummer dat ik echt eens moet spelen..."></textarea>
+          </fieldset>
+
+          <label class="keuze toestemming">
+            <input type="checkbox" name="regio" />
+            <span>Ja, mail me als ik bij jou in de buurt speel.</span>
+          </label>
+
+          <p class="fout" id="fout" role="alert"></p>
+          <button class="knop" type="submit" id="verstuur">Download Gitaarmannen 2</button>
+          <p class="klein" id="microcopy-nieuw">
+            Je komt op mijn mailinglijst. Ik mail alleen als ik iets te melden heb, en afmelden kan altijd met één klik.
+          </p>
+        </form>
+
+        <section class="klaar" id="klaar" aria-live="polite">
+          <h2>Dank je wel!</h2>
+          <p>Hier is Gitaarmannen 2: Eric Clapton Unplugged. Zestien nummers, live in het theater. Zet 'm lekker hard.</p>
+          <a class="knop download" id="downloadlink" href="#" rel="nofollow">Download de 16 nummers (90 MB)</a>
+          <div class="tour">
+            <p>
+              Dit seizoen sta ik met <strong>Gitaarmannen 4: Continuum</strong> in 26 theaters door het hele land.
+              <a href="https://www.gitaarmannen.nl/continuum/?utm_source=edstruijlaart&utm_medium=web&utm_campaign=gm2-cadeau">Kijk waar ik bij jou in de buurt speel</a>.
+            </p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script is:inline>
+      (function () {
+        var geladen = Date.now();
+        var params = new URLSearchParams(location.search);
+        var u = (params.get("u") || "").trim();
+        var uuidOk = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(u);
+        var form = document.getElementById("fanform");
+        var fout = document.getElementById("fout");
+        var knop = document.getElementById("verstuur");
+
+        // Via de nieuwsbrief: we weten al wie je bent. Haal de u-parameter wel uit de
+        // adresbalk, zodat hij niet in een gedeelde link of in de geschiedenis blijft hangen.
+        if (uuidOk) {
+          document.getElementById("wie").style.display = "none";
+          document.getElementById("microcopy-nieuw").style.display = "none";
+          history.replaceState(null, "", location.pathname);
+        }
+
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+          fout.textContent = "";
+          var fd = new FormData(form);
+          var alle = function (n) { return fd.getAll(n).map(String); };
+          var data = {
+            u: uuidOk ? u : "",
+            naam: String(fd.get("naam") || ""),
+            email: String(fd.get("email") || ""),
+            woonplaats: String(fd.get("woonplaats") || ""),
+            gitaar: String(fd.get("gitaar") || ""),
+            gezien: alle("gezien"),
+            zin: alle("zin"),
+            bron: String(fd.get("bron") || ""),
+            vrij: String(fd.get("vrij") || ""),
+            regio: fd.get("regio") === "on",
+            website: String(fd.get("website") || ""),
+            t: geladen,
+          };
+          if (!uuidOk && (!data.naam.trim() || !data.email.trim())) { fout.textContent = "Vul je voornaam en e-mailadres in."; return; }
+          if (!data.woonplaats.trim()) { fout.textContent = "Vul je woonplaats in."; return; }
+          if (!data.gitaar) { fout.textContent = "Laat even weten of je zelf gitaar speelt."; return; }
+
+          knop.disabled = true; knop.textContent = "Even geduld...";
+          try {
+            var r = await fetch("/api/fan", {
+              method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data),
+            });
+            var j = await r.json().catch(function () { return {}; });
+            if (!r.ok) throw new Error(j.error || "Er ging iets mis. Probeer het zo nog eens.");
+            if (j.download) document.getElementById("downloadlink").href = j.download;
+            form.style.display = "none";
+            document.getElementById("klaar").classList.add("aan");
+            document.getElementById("klaar").scrollIntoView({ behavior: "smooth", block: "start" });
+            if (window.umami) window.umami.track("gm2-cadeau", { via: uuidOk ? "mail" : "web" });
+          } catch (err) {
+            fout.textContent = err.message;
+            knop.disabled = false; knop.textContent = "Download Gitaarmannen 2";
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
