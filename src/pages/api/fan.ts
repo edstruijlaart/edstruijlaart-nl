@@ -47,13 +47,17 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
     });
 
-  // Alleen vanaf de eigen site (formulieren elders kunnen hier niet op posten).
+  // Alleen vanaf de eigen site. Exacte vergelijking (een startsWith liet ook
+  // 'localhost.ander-domein' door); localhost alleen tijdens lokaal ontwikkelen.
   const origin = request.headers.get("origin");
-  if (origin && !ORIGINS.has(origin) && !origin.startsWith("http://localhost")) {
+  const lokaal = import.meta.env.DEV && !!origin && /^http:\/\/localhost(:\d+)?$/.test(origin);
+  if (origin && !ORIGINS.has(origin) && !lokaal) {
     return json({ error: "Niet toegestaan." }, 403);
   }
 
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "onbekend";
+  // IP voor de rate-limit: de door Vercel zelf gezette header, niet het (vervalsbare)
+  // eerste item van x-forwarded-for.
+  const ip = request.headers.get("x-real-ip") || request.headers.get("x-vercel-forwarded-for") || "onbekend";
   if (teVaak(ip)) return json({ error: "Even rustig aan. Probeer het over een minuut nog eens." }, 429);
 
   let b: Record<string, unknown>;
@@ -109,7 +113,9 @@ export const POST: APIRoute = async ({ request }) => {
     await sanityWriteClient.createOrReplace({
       _id: `prive.fanantwoord-${hash}`,
       _type: "fanAntwoord",
-      ...(viaMail ? { uuid: uuid.toLowerCase() } : { email, naam }),
+      // 'web' = adres ingevuld, niet bewezen dat het van de invuller is. De Pi vult bij een
+      // bestaand adres dan alleen lege velden aan en zet niemand op een regiolijst.
+      ...(viaMail ? { uuid: uuid.toLowerCase(), via: "mail" } : { email, naam, via: "web" }),
       woonplaats,
       provincie,
       gitaar,
