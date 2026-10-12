@@ -2,23 +2,23 @@
 title: "Ed in Curaçao: three nights live at Blue Bay"
 slug: "curacao-blue-bay-oktober-2026"
 date: "2026-10-12"
-excerpt: "Next week I'm playing three nights in Curaçao at Blue Bay Golf & Beach Resort. On the beach, on the patio and with my feet in the sand. On the island? Come and say hi."
+excerpt: "Next week I'm flying to Curaçao. Blue Bay asked me to come and play three nights, and I didn't have to think about that for very long."
 featuredImage: "/images/news/curacao-campfire-header.jpg"
 ---
 
-Next week I'm trading the theatre for the beach for a while. From 21 to 23 October I'm playing three nights at Blue Bay Golf & Beach Resort in Curaçao. Solo, with my acoustic guitar, and every night has its own vibe.
+Next week I'm flying to Curaçao. Blue Bay Golf & Beach Resort asked me to come and play three nights, and I didn't have to think about that for very long. I'm going on my own, with my guitar, and every night I'm playing something different.
 
 ## Wednesday 21 October: Campfire Live Music Sessions
 
 **Blend Beach Bar, Blue Bay · starts 6:30 PM**
 
-A special edition of the Campfire Sessions, right on the beach. An evening of John Mayer and Eric Clapton covers, the two guitarists whose music took me on theatre tours across the Netherlands with my show Gitaarmannen. With stories in between and the audience up close.
+This one is a John Mayer and Eric Clapton night, with my feet in the sand. I've made a theatre show about each of them, so I know those songs a little by now.
 
 ## Thursday 22 October: Happy Hour at Bayside
 
 **Bayside Boutique Hotel, Blue Bay · starts 6:30 PM**
 
-A Bubbly Patio Session: small, intimate and acoustic, on the patio of the Bayside Boutique Hotel. This night is all about my own songs, from Make It On Your Own to songs from my albums Closer Than Skin and Head, Heart & Hands, mixed with well-known acoustic covers. And I'll tell the stories behind them: where a song comes from and what happened once it was finished. Songs, stories & guitars.
+On Thursday I'm playing on the terrace of the Bayside Boutique Hotel. This is the night for my own songs. Make It On Your Own of course, and songs from my albums Closer Than Skin and Head, Heart & Hands. There'll be a few covers too, and I'll tell you how some of those songs came about.
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 2rem 0;">
   <img src="/images/news/curacao-campfire-post.jpg" alt="Campfire Live Music Sessions with Ed Struijlaart, Wednesday 21 October at Blend Beach Bar, Blue Bay Curaçao" style="width: 100%; border-radius: 12px;" loading="lazy" />
@@ -29,12 +29,12 @@ A Bubbly Patio Session: small, intimate and acoustic, on the patio of the Baysid
 
 **On the beach at Blue Bay · starts 6:00 PM**
 
-Cocktails, sunset and live guitar music. Songs by John Mayer, Eric Clapton, the Eagles, Dire Straits, Jack Johnson and Jason Mraz. A relaxed happy hour where you can keep chatting and enjoying your drink while the sun sinks into the sea.
+On Friday I'm wrapping up with a happy hour on the beach. Songs by Mayer and Clapton, but also the Eagles, Dire Straits, Jack Johnson and Jason Mraz. No need to sit still for it. Order a drink, have a chat, and in the meantime the sun goes down.
 
 ## On the island?
 
-Come and join! Whether you live in Curaçao or you happen to be on holiday that week, I'd love to see you there. Come and say hi after the show.
+Do you live in Curaçao, or are you there on holiday that week? Come along and say hi.
 
-After Curaçao I'm back in Dutch theatres with Gitaarmannen 4: Continuum.
+After that I'm back in Dutch theatres with my show Gitaarmannen 4: Continuum.
 
 **[All dates and tickets at gitaarmannen.nl/continuum](https://www.gitaarmannen.nl/continuum)**
