@@ -54,5 +54,5 @@ export const shows: Show[] = [
   // Veendam = theaterweekend: losse verkoop start ~november; oude theater-URL wees naar de GM2 Clapton-pagina.
   { date: "2027-01-29", time: "20:15", venue: "Cultuurcentrum van Beresteyn", city: "Veendam", production: "Gitaarmannen 4: Continuum", listmonkUuid: "1880216e-fcee-43a0-8fcc-f0f5f79bda55" },
   { date: "2027-02-05", time: "20:00", venue: "Cultureel Centrum Bullekerk", city: "Zaandam", ticketUrl: "https://bullekerk.nl/agenda/ed-struijlaart-gitaarmannen-4-continuum/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "b6ac3a7d-9d1d-456e-a3de-ed1a346b236b" },
-  { date: "2027-03-12", time: "20:00", venue: "Activiteitencentrum Het Punt", city: "Vroomshoop", ticketUrl: "https://www.welkombijhetpunt.nl/agenda-2/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "e240cbd8-7d37-4e7b-9794-58ddea3934b3", acoustic: true },
+  { date: "2027-03-12", time: "19:00", venue: "Katholieke kerk (Het Punt)", city: "Vroomshoop", ticketUrl: "https://www.welkombijhetpunt.nl/agenda-2/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "e240cbd8-7d37-4e7b-9794-58ddea3934b3", acoustic: true },
 ];
