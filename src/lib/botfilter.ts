@@ -24,7 +24,7 @@ const MIN_DWELL_MS = 4000;
 const MAX_AGE_MS = 36 * 60 * 60 * 1000;
 
 const WEGWERP_DOMEINEN = new Set([
-  "sigismail.com", "emalupe.com", "kliedu.us", "cecb.us",
+  "sigismail.com", "emalupe.com", "kliedu.us", "cecb.us", "mailchuwee.com",
   "mailinator.com", "guerrillamail.com", "10minutemail.com", "tempmail.com",
   "yopmail.com", "trashmail.com", "sharklasers.com", "dispostable.com",
 ]);
