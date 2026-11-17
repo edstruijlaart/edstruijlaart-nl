@@ -51,8 +51,8 @@ export const shows: Show[] = [
   // 29-9-2026 geverifieerd op podiumpardoes.nl: zaal open 19:45, start 20:30, 17,50 incl. fee.
   { date: "2027-01-22", time: "20:30", venue: "Podium Pardoes", city: "Hoogwoud", ticketUrl: "https://podiumpardoes.nl/event/gitaarmannen-4/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "a1cfa84a-14fd-449e-af7c-a732842714a9", acoustic: true },
   { date: "2027-01-23", time: "20:30", venue: "Theater de Meerpaal", city: "Dronten", ticketUrl: "https://www.meerpaal.nl/agenda/ed-struijlaart-gitaarmannen-4-continuum-20-jaar-john-mayers-meesterwerk", production: "Gitaarmannen 4: Continuum", listmonkUuid: "cf65097d-2c71-44fe-9120-114dc7ae69dc" },
-  // Veendam = theaterweekend: losse verkoop start ~november; oude theater-URL wees naar de GM2 Clapton-pagina.
-  { date: "2027-01-29", time: "20:15", venue: "Cultuurcentrum van Beresteyn", city: "Veendam", production: "Gitaarmannen 4: Continuum", listmonkUuid: "1880216e-fcee-43a0-8fcc-f0f5f79bda55" },
+  // Veendam = Nationaal Theaterweekend (kaarten 10 euro); in de verkoop sinds 17-11-2026.
+  { date: "2027-01-29", time: "20:15", venue: "Cultuurcentrum van Beresteyn", city: "Veendam", ticketUrl: "https://www.vanberesteyn.nl/programma/ed-struijlaart-nationaal-theaterweekend-2027/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "1880216e-fcee-43a0-8fcc-f0f5f79bda55" },
   { date: "2027-02-05", time: "20:00", venue: "Cultureel Centrum Bullekerk", city: "Zaandam", ticketUrl: "https://bullekerk.nl/agenda/ed-struijlaart-gitaarmannen-4-continuum/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "b6ac3a7d-9d1d-456e-a3de-ed1a346b236b" },
   { date: "2027-03-12", time: "19:00", venue: "Katholieke kerk (Het Punt)", city: "Vroomshoop", ticketUrl: "https://www.welkombijhetpunt.nl/agenda-2/", production: "Gitaarmannen 4: Continuum", listmonkUuid: "e240cbd8-7d37-4e7b-9794-58ddea3934b3", acoustic: true },
 ];
